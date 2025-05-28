@@ -4,11 +4,9 @@ import com.NutriApp.NutriApp.Exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.Modelo.Persona;
 import com.NutriApp.NutriApp.Servicio.PersonaServicio;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
 public class PersonaControler {
     private final PersonaServicio personaServicio;
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<Persona>> obtenerTodasPersonas() {
         List<Persona> personas = personaServicio.obtenerTodas();
         if (personas.isEmpty()) {
@@ -28,11 +26,15 @@ public class PersonaControler {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/Obtener/{id}")
     public ResponseEntity<Persona> obtenerPersonaXid(@PathVariable int id) throws PersonaInvalidaException {
         return ResponseEntity.ok(personaServicio.obtenerPorId(id));
     }
 
-    public ResponseEntity<> guardarPersona (Persona persona) throws PersonaInvalidaException
-        return ResponseEntity.ok()
+    @PostMapping("/guardar")
+    public ResponseEntity<Persona> guardarPersona(@RequestBody Persona persona) throws PersonaInvalidaException {
+        Persona personaGuardada = personaServicio.guardar(persona);
+        return ResponseEntity.status(HttpStatus.CREATED).body(personaGuardada);
+    }
+
 }
