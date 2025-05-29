@@ -1,24 +1,23 @@
-package com.NutriApp.NutriApp.Servicio;
+package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.Exceptions.PersonaInvalidaException;
-import com.NutriApp.NutriApp.Modelo.Persona;
-import com.NutriApp.NutriApp.Repositorio.PersonaRepositorio;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.modelo.Persona;
+import com.NutriApp.NutriApp.repository.PersonaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Data
-@RequiredArgsConstructor
+
+
 @Service
+public class PersonaService {
 
-public class PersonaServicio {
+    private final PersonaRepository personaRepository;
 
-    private final PersonaRepositorio personaRepository;
+    public PersonaService(PersonaRepository personaRepository) {
+        this.personaRepository = personaRepository;
+    }
 
     public List<Persona> obtenerTodas() {
         return personaRepository.findAll();

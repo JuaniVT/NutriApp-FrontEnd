@@ -1,9 +1,10 @@
-package com.NutriApp.NutriApp.Controler;
+package com.NutriApp.NutriApp.controller;
 
-import com.NutriApp.NutriApp.Exceptions.PersonaInvalidaException;
-import com.NutriApp.NutriApp.Modelo.Persona;
-import com.NutriApp.NutriApp.Servicio.PersonaServicio;
+import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.modelo.Persona;
+import com.NutriApp.NutriApp.service.PersonaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +12,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/persona")
-public class PersonaControler {
-    private final PersonaServicio personaServicio;
+public class PersonaController {
+
+
+    private final PersonaService personaService;
+
+    public PersonaController(PersonaService personaService) {
+        this.personaService = personaService;
+    }
 
     @GetMapping("/listar")
     public ResponseEntity<List<Persona>> obtenerTodasPersonas() {
-        List<Persona> personas = personaServicio.obtenerTodas();
+        List<Persona> personas = personaService.obtenerTodas();
         if (personas.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -28,12 +34,12 @@ public class PersonaControler {
 
     @GetMapping("/Obtener/{id}")
     public ResponseEntity<Persona> obtenerPersonaXid(@PathVariable int id) throws PersonaInvalidaException {
-        return ResponseEntity.ok(personaServicio.obtenerPorId(id));
+        return ResponseEntity.ok(personaService.obtenerPorId(id));
     }
 
     @PostMapping("/guardar")
     public ResponseEntity<Persona> guardarPersona(@RequestBody Persona persona) throws PersonaInvalidaException {
-        Persona personaGuardada = personaServicio.guardar(persona);
+        Persona personaGuardada = personaService.guardar(persona);
         return ResponseEntity.status(HttpStatus.CREATED).body(personaGuardada);
     }
 

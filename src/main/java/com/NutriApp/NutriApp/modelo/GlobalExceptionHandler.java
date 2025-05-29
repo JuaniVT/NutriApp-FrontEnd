@@ -1,6 +1,6 @@
-package com.NutriApp.NutriApp.Modelo;
+package com.NutriApp.NutriApp.modelo;
 
-import com.NutriApp.NutriApp.Exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
