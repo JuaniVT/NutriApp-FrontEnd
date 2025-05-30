@@ -39,6 +39,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/usuarios/registro").permitAll() // <- Permitir acceso sin login
                         .requestMatchers("/api/persona/listar").hasRole("ADMIN")
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .anyRequest().authenticated()

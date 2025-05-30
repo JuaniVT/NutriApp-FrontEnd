@@ -3,6 +3,7 @@ package com.NutriApp.NutriApp.controller;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.service.PersonaService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/persona")
+@RequiredArgsConstructor
 public class PersonaController {
 
 
     private final PersonaService personaService;
-
-    public PersonaController(PersonaService personaService) {
-        this.personaService = personaService;
-    }
 
     @GetMapping("/listar")
     public ResponseEntity<List<Persona>> obtenerTodasPersonas() {

@@ -11,13 +11,12 @@ import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class PersonaService {
 
     private final PersonaRepository personaRepository;
 
-    public PersonaService(PersonaRepository personaRepository) {
-        this.personaRepository = personaRepository;
-    }
+
 
     public List<Persona> obtenerTodas() {
         return personaRepository.findAll();
