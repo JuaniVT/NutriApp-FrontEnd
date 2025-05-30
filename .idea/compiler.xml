@@ -10,13 +10,13 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="Tp-Final-Progra-III" />
+        <module name="NutriApp" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Tp-Final-Progra-III" options="-parameters" />
+      <module name="NutriApp" options="-parameters" />
     </option>
   </component>
 </project>
