@@ -1,20 +1,17 @@
 package com.NutriApp.NutriApp.modelo;
 
-import com.NutriApp.NutriApp.modelo.enums.Authority;
+import com.NutriApp.NutriApp.modelo.enums.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
@@ -28,11 +25,8 @@ public class Usuario implements UserDetails {
 
     private boolean enabled; // este campo es obligatorio en tu tabla SQL
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "username"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "authority")
-    private Set<Authority> roles = new HashSet<>();
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Authority authority;
 
     @OneToOne
     @JoinColumn(name = "persona_id")
@@ -40,7 +34,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return List.of();
     }
 
     @Override

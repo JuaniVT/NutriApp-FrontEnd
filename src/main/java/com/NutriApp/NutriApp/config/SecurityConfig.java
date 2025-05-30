@@ -2,6 +2,8 @@ package com.NutriApp.NutriApp.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,8 +41,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuarios/registro").permitAll() // <- Permitir acceso sin login
-                        .requestMatchers("/api/persona/listar").hasRole("ADMIN")
+                        .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
+                        .requestMatchers("/api/persona/listar").permitAll()
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -60,5 +62,14 @@ public class SecurityConfig {
     @Bean
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        var hierarchy = new RoleHierarchyImpl();
+        hierarchy.setHierarchy(
+                "ROLE_BOSS > ROLE_CLIENT"
+        );
+        return hierarchy;
     }
 }
