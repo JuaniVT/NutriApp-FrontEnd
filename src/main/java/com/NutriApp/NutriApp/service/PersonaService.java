@@ -15,6 +15,12 @@ import java.util.List;
 @Service
 public class PersonaService {
 
+    // No es necesario usar @Autowired para inyectar la instancia de PersonaRepository,
+    // ya que Spring detecta que esta clase (PersonaService) tiene un único constructor
+    // que recibe como parámetro un bean (PersonaService).
+    // Spring automáticamente realiza la inyección de dependencias usando ese constructor.
+    // Si existieran múltiples constructores, Spring no sabría cuál usar y se necesitaría
+    // especificar la inyección de otra manera (por ejemplo, con @Autowired).
     private final PersonaRepository personaRepository;
 
     public PersonaService(PersonaRepository personaRepository) {
