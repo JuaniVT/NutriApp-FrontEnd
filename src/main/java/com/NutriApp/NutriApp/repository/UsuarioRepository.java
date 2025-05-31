@@ -8,5 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
-    boolean existsByUsername(String username);
+    boolean existsByUsername(String username); //aca no hace falta especificar la query que se va a lanzar con este metodo ya que hay
+    //algunos nombres de metodos como este caso que JPA los interpreta automaticamente.
+    //Pero sino, se deberia de poner la firma del metodo y arriba la sentencia sql con @Query.
+    //Y si la query es muy compleja se deberia de crear un DAO y delegarle el metodo
 }
