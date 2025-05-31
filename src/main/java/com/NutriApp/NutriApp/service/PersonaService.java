@@ -13,6 +13,7 @@ import java.util.List;
 
 
 @Service
+@RequiredArgsConstructor
 public class PersonaService {
 
     // No es necesario usar @Autowired para inyectar la instancia de PersonaRepository,
@@ -23,9 +24,7 @@ public class PersonaService {
     // especificar la inyección de otra manera (por ejemplo, con @Autowired).
     private final PersonaRepository personaRepository;
 
-    public PersonaService(PersonaRepository personaRepository) {
-        this.personaRepository = personaRepository;
-    }
+
 
     public List<Persona> obtenerTodas() {
         return personaRepository.findAll();
