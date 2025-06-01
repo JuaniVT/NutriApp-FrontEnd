@@ -37,10 +37,10 @@ public class PersonaService {
     }
 
     // Crear nueva persona
-    public Persona guardar(Persona persona) throws PersonaInvalidaException {
+    public void guardar(Persona persona) throws PersonaInvalidaException {
         if (personaRepository.existsByDni(persona.getDni())) {
             throw new PersonaInvalidaException("La persona a ingresar ya se encuentra registrada");
         }
-        return personaRepository.save(persona);
+        personaRepository.save(persona);
     }
 }

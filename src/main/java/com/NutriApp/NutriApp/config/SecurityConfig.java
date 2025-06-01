@@ -53,6 +53,7 @@ public class SecurityConfig {
     }
 
 
+    //Eleccion del tipo de passwordEncoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         // Por ejemplo, BCryptPasswordEncoder es una buena práctica
@@ -64,6 +65,7 @@ public class SecurityConfig {
         return new JdbcUserDetailsManager(dataSource);
     }
 
+    //herencia de roles
     @Bean
     public RoleHierarchy roleHierarchy() {
         var hierarchy = new RoleHierarchyImpl();
