@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -27,10 +28,12 @@ public class Usuario implements UserDetails {
     private boolean enabled; // este campo es obligatorio en tu tabla SQL
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Authority authority;
 
     @OneToOne
     @JoinColumn(name = "persona_id")
+    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Persona persona;
 
     @Override
@@ -52,6 +55,4 @@ public class Usuario implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
-
 }

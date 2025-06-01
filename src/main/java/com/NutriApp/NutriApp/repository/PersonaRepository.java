@@ -12,4 +12,5 @@ public interface PersonaRepository extends JpaRepository <Persona, Integer> {
     //Y si la query es muy compleja se deberia de crear un DAO y delegarle el metodo
 
 
+
 }

@@ -62,5 +62,6 @@ public class Persona {
     // EL uso del cascade para eliminar el con el cascade = TIPOCASCADE
     // y el orphanRemoval (este es para el OnDeleteCascade de mysql)
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Usuario usuario;
 }

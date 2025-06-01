@@ -25,5 +25,6 @@ public class Authority {
 
     @OneToOne
     @JoinColumn (name = "username")
+    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Usuario usuario;
 }

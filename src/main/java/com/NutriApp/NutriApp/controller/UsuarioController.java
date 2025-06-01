@@ -1,5 +1,8 @@
 package com.NutriApp.NutriApp.controller;
 
+import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
+import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
 import com.NutriApp.NutriApp.modelo.Authority;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
@@ -10,8 +13,11 @@ import com.NutriApp.NutriApp.repository.UsuarioRepository;
 import com.NutriApp.NutriApp.service.PersonaService;
 import com.NutriApp.NutriApp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,9 +26,6 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    private final PersonaService personaService;
-    private final A
-    private final PasswordEncoder passwordEncoder;
 
 
     //Este metodo esta mal ya que antes se tenia instancias de los repositories en este controler
@@ -63,9 +66,12 @@ public class UsuarioController {
     }*/
 
 
-    @PostMapping("/registro/")
-    public ResponseEntity<String> registrarUsuario (@RequestParam Usuario usuario){
-        usuarioService
+    @PostMapping("/registro")
+    public ResponseEntity<String> registrarUsuarioCliente (@RequestBody @Validated Usuario usuario) throws PersonaInvalidaException, UsuarioInvalidoException, AuthorityInvalidaException {
+        usuarioService.insertarUsuarioCliente(usuario);
+
+        return ResponseEntity.ok("Usuario registrado correctamente como cliente");
     }
+
 }
 
