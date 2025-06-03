@@ -21,7 +21,7 @@ public class Authority {
     private String username;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role authority;
 
     @OneToOne
     @JoinColumn (name = "username")

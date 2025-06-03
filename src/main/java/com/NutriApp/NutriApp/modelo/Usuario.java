@@ -26,7 +26,7 @@ public class Usuario implements UserDetails {
     private boolean enabled; // este campo es obligatorio en tu tabla SQL
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Authority authority;
+    private Authority role;
 
     @OneToOne
     @JoinColumn(name = "persona_id")
