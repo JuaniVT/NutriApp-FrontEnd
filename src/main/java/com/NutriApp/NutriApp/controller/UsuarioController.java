@@ -67,8 +67,8 @@ public class UsuarioController {
 
 
     @PostMapping("/registro")
-    public ResponseEntity<String> registrarUsuarioCliente (@RequestBody @Validated Usuario usuario) throws PersonaInvalidaException, UsuarioInvalidoException, AuthorityInvalidaException {
-        usuarioService.insertarUsuarioCliente(usuario);
+    public ResponseEntity<String> registrarUsuarioCliente (@RequestBody @Validated Usuario usuario, @RequestParam int idPerosonaBuscar) throws PersonaInvalidaException, UsuarioInvalidoException, AuthorityInvalidaException {
+        usuarioService.insertarUsuarioCliente(usuario, idPerosonaBuscar);
 
         return ResponseEntity.ok("Usuario registrado correctamente como cliente");
     }

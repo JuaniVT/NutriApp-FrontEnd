@@ -41,8 +41,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuario/registro/cliente").permitAll() // <- Permitir acceso sin login
-                        .requestMatchers("/api/usuario/registro/admin").permitAll() // <- Permitir acceso sin login
+                        .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
                         .requestMatchers("/api/persona/listar").permitAll()
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .anyRequest().authenticated()

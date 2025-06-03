@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.modelo.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,7 @@ public class Usuario implements UserDetails {
     @Column(length = 50)
     private String username;  // puede ser email
 
+    @Size(min = 1, max = 3)
     private String password;
 
     private boolean enabled; // este campo es obligatorio en tu tabla SQL
@@ -32,7 +34,7 @@ public class Usuario implements UserDetails {
     private Authority authority;
 
     @OneToOne
-    @JoinColumn(name = "persona_id")
+    @JoinColumn(name = "persona_id", nullable = false, unique = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Persona persona;
 

@@ -1,7 +1,9 @@
 package com.NutriApp.NutriApp.exceptions;
 
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,5 +31,23 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> manejarAuthorityInvalida(AuthorityInvalidaException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> manejarValidationException(MethodArgumentNotValidException exception) {
+        StringBuilder mensaje = new StringBuilder("Errores de validación:\n");
+
+        exception.getBindingResult().getFieldErrors().forEach(error -> {
+            mensaje.append("Campo: ")
+                    .append(error.getField()) // el nombre del campo
+                    .append(" | Valor rechazado: ")
+                    .append(error.getRejectedValue()) // el valor que falló
+                    .append(" | Error: ")
+                    .append(error.getDefaultMessage()) // el mensaje de error
+                    .append("\n");
+        });
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje.toString());
+    }
+
 }
 

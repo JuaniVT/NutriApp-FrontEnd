@@ -7,18 +7,19 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.List;
+
 @Entity
 @Data
-@Table (name = "authorities")
+@Table(name = "authorities")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Authority {
 
     @Id
-    @Column (length = 50)
-    @NotNull
-    private String username;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Enumerated(EnumType.STRING)
     private Role role;

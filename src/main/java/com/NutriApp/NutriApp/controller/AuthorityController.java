@@ -20,14 +20,14 @@ public class AuthorityController {
     private final AuthorityService authorityService;
 
     @PostMapping("/cambiar/admin")
-    public ResponseEntity<String> cambiarRolAdmin (@RequestParam String id) throws AuthorityInvalidaException {
+    public ResponseEntity<String> cambiarRolAdmin (@RequestParam int id) throws AuthorityInvalidaException {
         authorityService.cambiaRol_A_ADMIN(id);
 
         return ResponseEntity.ok("Se cambio el rol a ADMIN correctamente");
     }
 
     @PostMapping("/cambiar/cliente")
-    public ResponseEntity<String> cambiarRolCliente (@RequestParam String id) throws AuthorityInvalidaException {
+    public ResponseEntity<String> cambiarRolCliente (@RequestParam int id) throws AuthorityInvalidaException {
         authorityService.cambiaRol_A_CLIENTE(id);
 
         return ResponseEntity.ok("Se cambio el rol a CLIENTE correctamente");

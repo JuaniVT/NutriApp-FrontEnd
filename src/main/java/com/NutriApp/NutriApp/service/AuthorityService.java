@@ -17,8 +17,8 @@ public class AuthorityService {
     private final AuthorityRepository authorityRepository;
 
     public void insertar (Authority authority) throws AuthorityInvalidaException {
-        if (authorityRepository.existsById(authority.getUsername())){
-            throw new AuthorityInvalidaException("El authority ya existe con el username = " +authority.getUsername());
+        if (authorityRepository.existsById(authority.getId())){
+            throw new AuthorityInvalidaException("El authority ya existe con el id = " +authority.getId());
         }
 
         authorityRepository.save(authority);
@@ -26,7 +26,7 @@ public class AuthorityService {
 
 
     @PreAuthorize("hasRole('ADMIN')")   //le agrego seguridad al service por las dudas
-    public void cambiaRol_A_ADMIN (String id) throws AuthorityInvalidaException{
+    public void cambiaRol_A_ADMIN (int id) throws AuthorityInvalidaException{
         Optional<Authority> optionalAuthority = authorityRepository.findById(id);
 
         if (optionalAuthority.isEmpty()){
@@ -42,7 +42,7 @@ public class AuthorityService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")   //le agrego seguridad al service por las dudas
-    public void cambiaRol_A_CLIENTE (String id) throws AuthorityInvalidaException{
+    public void cambiaRol_A_CLIENTE (int id) throws AuthorityInvalidaException{
         Optional<Authority> optionalAuthority = authorityRepository.findById(id);
 
         if (optionalAuthority.isEmpty()){

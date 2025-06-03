@@ -50,30 +50,29 @@ public class UsuarioService implements UserDetailsService {
     //este metodo inserta un usuario con rol cliente
     // por defecto a una persona ya registrada
     @Transactional
-    public void insertarUsuarioCliente (Usuario usuario) throws PersonaInvalidaException, UsuarioInvalidoException, AuthorityInvalidaException{
+    public void insertarUsuarioCliente (Usuario usuario, int idPerosonaBuscar) throws PersonaInvalidaException, UsuarioInvalidoException, AuthorityInvalidaException{
 
         if (usuarioRepository.existsById(usuario.getUsername())){
             throw new UsuarioInvalidoException("El usuario ya existe con el username = " +usuario.getUsername());
         }
 
-        Persona persona = personaService.obtenerPorId(usuario.getPersona().getId());
+        Persona persona = personaService.obtenerPorId(idPerosonaBuscar);
 
         if (persona.getUsuario() != null){
             throw new PersonaInvalidaException("La persona ya tiene un usuario asociado");
         }
 
         Authority authority = Authority.builder()
-                .usuario(usuario)
-                .username(usuario.getUsername())
+
                 .role(Role.ROL_CLIENT)      //se setea por defecto en este metodo el rol de cliente
+                .usuario(usuario)
                 .build();
 
 
         usuario.setPersona(persona);
-        persona.setUsuario(usuario);
 
         usuario.setAuthority(authority);  //hace falta setearle los 3 objetos a cada uno porque tenemos una relacion bidireccional
-        authority.setUsuario(usuario);
+
 
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword())); //se cifra la contraseña
         usuario.setEnabled(true);    //se setea la cuenta como activa
@@ -81,7 +80,7 @@ public class UsuarioService implements UserDetailsService {
 
 
         //----IMPORTANTE----//        // Limpia el contexto de persistencia (entityManager) para evitar conflictos
-        entityManager.clear();        // con entidades duplicadas ya gestionadas en la sesión actual de Hibernate.
+//        entityManager.clear();        // con entidades duplicadas ya gestionadas en la sesión actual de Hibernate.
         //----IMPORTANTE----//        // En este caso, evita el error de identidad duplicada al asociar una Persona
                                       // ya cargada con un nuevo Usuario.
 
