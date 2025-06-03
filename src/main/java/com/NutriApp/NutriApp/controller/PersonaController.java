@@ -36,10 +36,16 @@ public class PersonaController {
         }
     }
 
-    @GetMapping("/Obtener/{id}")
+    @GetMapping("/obtener/{id}")
     public ResponseEntity<Persona> obtenerPersonaXid(@PathVariable int id) throws PersonaInvalidaException {
         return ResponseEntity.ok(personaService.obtenerPorId(id));
     }
+    @GetMapping("/mostrarMisDatos")
+    public ResponseEntity <Persona> mostrarPerfil () throws PersonaInvalidaException
+    {
+        return ResponseEntity.ok(personaService)
+    }
+
 
     @PostMapping("/guardar")
     public ResponseEntity<Persona> guardarPersona(@RequestBody Persona persona) throws PersonaInvalidaException {

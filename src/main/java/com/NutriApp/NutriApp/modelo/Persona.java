@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.modelo.enums.Genero;
 import com.NutriApp.NutriApp.modelo.enums.GeneroConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -61,5 +62,6 @@ public class Persona {
     // EL uso del cascade para eliminar el con el cascade = TIPOCASCADE
     // y el orphanRemoval (este es para el OnDeleteCascade de mysql)
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Usuario usuario;
 }

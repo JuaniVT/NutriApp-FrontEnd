@@ -36,6 +36,12 @@ public class PersonaService {
                 .orElseThrow(() -> new PersonaInvalidaException("Persona no encontrada con ID: " + id));
     }
 
+    // Obtener datos de mi perfil
+    public Persona obtenerMiPerfil() throws PersonaInvalidaException {
+        return personaRepository.findById()
+                .orElseThrow(() -> new PersonaInvalidaException("Persona no encontrada con ID: " + id));
+    }
+
     // Crear nueva persona
     public Persona guardar(Persona persona) throws PersonaInvalidaException {
         if (personaRepository.existsByDni(persona.getDni())) {
