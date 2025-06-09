@@ -25,9 +25,6 @@ public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final PersonaService personaService;
-    private final AuthorityService authorityService;
-    @PersistenceContext
-    private EntityManager entityManager;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -39,12 +36,6 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.findById(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
-
-    public Usuario obtener (String username) throws UsuarioInvalidoException {
-        return usuarioRepository.findById(username)
-                .orElseThrow(() -> new UsuarioInvalidoException(username));
-    }
-
 
 
     //este metodo inserta un usuario con rol cliente

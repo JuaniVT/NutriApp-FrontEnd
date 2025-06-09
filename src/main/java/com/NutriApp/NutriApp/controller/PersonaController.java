@@ -39,8 +39,8 @@ public class PersonaController {
 
     //La exception que se lanza su no se encunetra la persona, en este metodo se vuelva a lanzar delegando la responsabilidad
     // a la clase GlobalExceptionHandler (buena practica)
-    @GetMapping("/Obtener/{id}")
-    public ResponseEntity<Persona> obtenerPersonaXid(@PathVariable int id) throws PersonaInvalidaException {
+    @GetMapping("/obtener")
+    public ResponseEntity<Persona> obtenerPersonaXid(@RequestParam int id) throws PersonaInvalidaException {
         return ResponseEntity.ok(personaService.obtenerPorId(id));
     }
 

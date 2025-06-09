@@ -24,7 +24,8 @@ public class Usuario implements UserDetails {
     @Column(length = 50)
     private String username;  // puede ser email
 
-    @Size(min = 1, max = 3)
+
+    @Size(min = 6, max = 64) //max = 64 porque cuando se encripta es muy larga
     private String password;
 
     private boolean enabled; // este campo es obligatorio en tu tabla SQL

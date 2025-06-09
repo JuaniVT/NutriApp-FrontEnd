@@ -1,6 +1,8 @@
-package com.NutriApp.NutriApp.exceptions;
+package com.NutriApp.NutriApp.exceptions.Handlers;
 
-import jakarta.validation.ValidationException;
+import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
+import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
