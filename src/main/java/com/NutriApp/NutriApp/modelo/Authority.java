@@ -24,7 +24,7 @@ public class Authority {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn (name = "username")
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Usuario usuario;

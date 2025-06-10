@@ -34,7 +34,7 @@ public class Usuario implements UserDetails {
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Authority authority;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "persona_id", nullable = false, unique = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Persona persona;

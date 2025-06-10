@@ -12,7 +12,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -46,7 +49,9 @@ public class SecurityConfig {
                 )
 
                 .exceptionHandling(exception -> exception
-                        .accessDeniedHandler(accesDeniedExceptionHandler)       //maneja la exception de acceso denegado
+                        .accessDeniedHandler(accesDeniedExceptionHandler)       //maneja la exception de acceso denegado aca
+                                                                                //porque antes que llegue a globalExceptionHandler
+                                                                                //sea catchea antes entonces hay que manejarla aca
                 )
 
                 .formLogin(Customizer.withDefaults())   //Body: x-www-form-urlencoded username:admin password:admin123
@@ -61,6 +66,13 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         // Por ejemplo, BCryptPasswordEncoder es una buena práctica
         return new BCryptPasswordEncoder();
+    }
+
+
+    // nos permite manejar usuarios desde el codigo Java
+    @Bean
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     //herencia de roles

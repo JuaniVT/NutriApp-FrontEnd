@@ -5,6 +5,7 @@ import com.NutriApp.NutriApp.modelo.enums.GeneroConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import lombok.experimental.Tolerate;
 
 import java.time.LocalDate;
 
@@ -64,4 +65,16 @@ public class Persona {
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Usuario usuario;
+
+    @Tolerate   //esto es para que lombok me tome el contructor de persona personalizado
+    public Persona(String nombre, String apellido, String dni, LocalDate fechaNacimiento, String telefono, String direccion, Genero genero, String email) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.fechaNacimiento = fechaNacimiento;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.genero = genero;
+        this.email = email;
+    }
 }
