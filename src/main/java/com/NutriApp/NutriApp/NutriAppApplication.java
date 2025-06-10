@@ -2,6 +2,8 @@ package com.NutriApp.NutriApp;
 
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.enums.Genero;
+import com.NutriApp.NutriApp.service.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
