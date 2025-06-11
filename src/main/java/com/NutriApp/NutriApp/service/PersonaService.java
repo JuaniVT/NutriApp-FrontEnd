@@ -2,14 +2,15 @@ package com.NutriApp.NutriApp.service;
 
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
+import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.repository.PersonaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-
 
 
 @Service
@@ -25,7 +26,6 @@ public class PersonaService {
     private final PersonaRepository personaRepository;
 
 
-
     public List<Persona> obtenerTodas() {
         return personaRepository.findAll();
     }
@@ -38,15 +38,21 @@ public class PersonaService {
 
     // Obtener datos de mi perfil
     public Persona obtenerMiPerfil() throws PersonaInvalidaException {
-        return personaRepository.findById()
-                .orElseThrow(() -> new PersonaInvalidaException("Persona no encontrada con ID: " + id));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuario = (Usuario) auth.getPrincipal(); // si tu clase Usuario implementa UserDetails
+        Persona persona = usuario.getPersona();
+        return persona;
+    }
+
+    public boolean existsByDni(String dni) {
+        if (personaRepository.existsByDni(dni)) {
+            return true;
+        }
+        return false;
     }
 
     // Crear nueva persona
-    public Persona guardar(Persona persona) throws PersonaInvalidaException {
-        if (personaRepository.existsByDni(persona.getDni())) {
-            throw new PersonaInvalidaException("La persona a ingresar ya se encuentra registrada");
-        }
-        return personaRepository.save(persona);
+    public void guardar(Persona persona) {
+        personaRepository.save(persona);
     }
 }

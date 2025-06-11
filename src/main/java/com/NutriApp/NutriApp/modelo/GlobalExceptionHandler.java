@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,5 +21,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Error inesperado: " + ex.getMessage());
     }
+
+    @ExceptionHandler(UsuarioExistente.class)
+    public ResponseEntity<String> manejarPersonaInvalida(UsuarioExistente ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
 }
 

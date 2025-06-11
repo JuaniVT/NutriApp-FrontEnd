@@ -1,5 +1,6 @@
 package com.NutriApp.NutriApp.config;
 
+import com.NutriApp.NutriApp.service.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -46,7 +47,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtAuthFilter,
-                                                   UserDetailsService userDetailsService) throws Exception {
+                                                   UsuarioDetailsService userDetailsService) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -61,13 +62,13 @@ public class SecurityConfig {
 
     // Bean que obtiene los usuarios desde la base de datos
     @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
+    public UserDetailsService userDetailsService(UsuarioDetailsService usuarioDetailsService) {
+        return usuarioDetailsService;
     }
 
     // Proveedor de autenticación que conecta al servicio de usuarios y al codificador
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+    public AuthenticationProvider authenticationProvider(UsuarioDetailsService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
