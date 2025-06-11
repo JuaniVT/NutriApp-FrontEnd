@@ -44,7 +44,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
                         .requestMatchers("/api/persona/listar").permitAll()
-                        .requestMatchers("/api/rol/mandar").permitAll()
+                        .requestMatchers("api/alimentos/buscar").permitAll()
+                        .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
