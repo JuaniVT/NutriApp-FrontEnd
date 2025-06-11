@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,44 +27,6 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-
-
-    //Este metodo esta mal ya que antes se tenia instancias de los repositories en este controler
-    //y eso es responsabilidad del service de cada clase
-    /*@PostMapping("/registro")
-    public ResponseEntity<String> registrarUsuario(@RequestBody Usuario request) {
-        if (usuarioRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.badRequest().body("El usuario ya existe.");
-        }
-
-        Persona persona = new Persona();
-        persona.setNombre(request.getPersona().getNombre());
-        persona.setApellido(request.getPersona().getApellido());
-        persona.setDni(request.getPersona().getDni());
-        persona.setGenero(request.getPersona().getGenero());
-        persona.setFechaNacimiento(request.getPersona().getFechaNacimiento());
-        persona.setTelefono(request.getPersona().getTelefono());
-        persona.setDireccion(request.getPersona().getDireccion());
-        persona.setEmail(request.getPersona().getEmail());
-        personaRepository.save(persona);
-
-        Usuario usuario = new Usuario();
-        usuario.setUsername(request.getUsername());
-        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-        usuario.setEnabled(true);
-        usuario.setPersona(persona);
-        usuario.setAuthority(Authority.builder()
-                .role(Role.ROL_CLIENT)
-                .username(request.getUsername())
-                .build());
-
-        authorityRepository.save(usuario.getAuthority());
-
-
-        usuarioRepository.save(usuario);
-
-        return ResponseEntity.ok("Usuario registrado correctamente.");
-    }*/
 
 
     @PostMapping("/registro")

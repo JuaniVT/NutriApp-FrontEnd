@@ -4,11 +4,12 @@ import com.NutriApp.NutriApp.modelo.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.mapping.List;
+import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Getter
@@ -32,7 +33,7 @@ public class Usuario implements UserDetails {
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
-    private Authority authority;
+    private Authority role;
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "persona_id", nullable = false, unique = true)
@@ -58,4 +59,6 @@ public class Usuario implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
+
 }

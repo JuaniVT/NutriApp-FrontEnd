@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.modelo.enums.Genero;
 import com.NutriApp.NutriApp.modelo.enums.GeneroConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -64,6 +65,7 @@ public class Persona {
     // y el orphanRemoval (este es para el OnDeleteCascade de mysql)
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    @JsonIgnore
     private Usuario usuario;
 
     @Tolerate   //esto es para que lombok me tome el contructor de persona personalizado

@@ -2,12 +2,15 @@ package com.NutriApp.NutriApp.controller;
 
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
+import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.service.PersonaService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +51,12 @@ public class PersonaController {
     public ResponseEntity<String> guardarPersona(@RequestBody @Validated Persona persona) throws PersonaInvalidaException {
         personaService.guardar(persona);
         return ResponseEntity.status(HttpStatus.CREATED).body("Persona guardada correctamente");
+    }
+
+    @GetMapping("/mostrarMisDatos")
+    public ResponseEntity <Persona> mostrarPerfil () throws PersonaInvalidaException
+    {
+        return ResponseEntity.ok(personaService.obtenerMiPerfil());
     }
 
 }

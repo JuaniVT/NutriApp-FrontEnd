@@ -22,7 +22,7 @@ public class Authority {
     private int id;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role authority;
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn (name = "username")

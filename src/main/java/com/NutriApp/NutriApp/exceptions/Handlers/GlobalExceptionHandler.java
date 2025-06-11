@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.exceptions.Handlers;
 
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,11 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje.toString());
+    }
+
+    @ExceptionHandler(UsuarioExistente.class)
+    public ResponseEntity<String> manejarPersonaInvalida(UsuarioExistente ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
 }
