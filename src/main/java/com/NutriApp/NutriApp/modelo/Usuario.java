@@ -4,12 +4,12 @@ import com.NutriApp.NutriApp.modelo.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.mapping.List;
 import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter

@@ -63,12 +63,12 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         Authority authority = (Authority.builder()
-                .role(Role.ROL_ADMIN)
+                .authority(Role.ROL_ADMIN)
                 .usuario(usuario)
                 .build());
 
 
-        usuario.setAuthority(authority);
+        usuario.setRole(authority);
         usuario.setPersona(persona);
 
         return usuario;
@@ -95,12 +95,12 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         Authority authority = (Authority.builder()
-                .role(Role.ROL_ADMIN)
+                .authority(Role.ROL_ADMIN)
                 .usuario(usuario)
                 .build());
 
 
-        usuario.setAuthority(authority);
+        usuario.setRole(authority);
         usuario.setPersona(persona);
 
 
@@ -110,30 +110,30 @@ public class CargaInicialDeUsuarios {
     private Usuario usuarioJuani(){
 
         Usuario usuario = Usuario.builder()
-                .username("juanivalles")
-                .password(passwordEncoder.encode("juani"))
+                .username("JuaniVT")
+                .password(passwordEncoder.encode("juanjuli2"))
                 .enabled(true)
                 .build();
 
         Persona persona = (Persona.builder()
-                .nombre("juan")
-                .apellido("valles")
-                .dni("47057890")
-                .email("ekianuruzuna@gmail.com")
-                .fechaNacimiento(LocalDate.of(2005, 9, 4))
-                .telefono("2236826147")
+                .nombre("Juan Ignacio")
+                .apellido("Valle Torres")
+                .dni("46277918")
+                .email("juanignaciovalletorres241104@gmail.com")
+                .fechaNacimiento(LocalDate.of(2004, 11, 24))
+                .telefono("2235836600")
                 .genero(Genero.MASCULINO)
-                .direccion("Udine 1355")
+                .direccion("Ortiz de Zarate 7062")
                 .usuario(usuario)
                 .build());
 
         Authority authority = (Authority.builder()
-                .role(Role.ROL_ADMIN)
+                .authority(Role.ROL_ADMIN)
                 .usuario(usuario)
                 .build());
 
 
-        usuario.setAuthority(authority);
+        usuario.setRole(authority);
         usuario.setPersona(persona);
 
 
@@ -161,12 +161,12 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         Authority authority = (Authority.builder()
-                .role(Role.ROL_ADMIN)
+                .authority(Role.ROL_ADMIN)
                 .usuario(usuario)
                 .build());
 
 
-        usuario.setAuthority(authority);
+        usuario.setRole(authority);
         usuario.setPersona(persona);
 
 

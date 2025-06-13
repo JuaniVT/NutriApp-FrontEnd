@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.config;
 
 import com.NutriApp.NutriApp.service.JwtService;
+import com.NutriApp.NutriApp.service.UsuarioService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UsuarioService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

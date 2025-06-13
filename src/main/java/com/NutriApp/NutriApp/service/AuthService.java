@@ -33,8 +33,6 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
     @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
     private UsuarioService usuarioDetailsService;
     @Autowired
     private PersonaService personaService;
@@ -52,7 +50,7 @@ public class AuthService {
         );
 
         // Obtenemos los detalles del usuario desde la base de datos
-        UserDetails user = userDetailsService.loadUserByUsername(request.getUsername());
+        UserDetails user = usuarioDetailsService.loadUserByUsername(request.getUsername());
 
         // Generamos el token JWT
         String token = jwtService.generateToken(user);
@@ -100,7 +98,7 @@ public class AuthService {
         authorityRepository.save(usuario.getRole());
 
         // Cargar UserDetails para generar token
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsuario().getUsername());
+        UserDetails userDetails = usuarioDetailsService.loadUserByUsername(request.getUsuario().getUsername());
         String token = jwtService.generateToken(userDetails);
 
         // Devolver token en la respuesta

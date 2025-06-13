@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.config;
 
 import com.NutriApp.NutriApp.exceptions.Handlers.AccesDeniedExceptionHandler;
+import com.NutriApp.NutriApp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +48,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtAuthFilter,
-                                                   UsuarioDetailsService userDetailsService) throws Exception {
+                                                   UsuarioService userDetailsService) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -72,15 +73,9 @@ public class SecurityConfig {
 
     }
 
-    // Bean que obtiene los usuarios desde la base de datos
-    @Bean
-    public UserDetailsService userDetailsService(UsuarioDetailsService usuarioDetailsService) {
-        return usuarioDetailsService;
-    }
-
     // Proveedor de autenticación que conecta al servicio de usuarios y al codificador
     @Bean
-    public AuthenticationProvider authenticationProvider(UsuarioDetailsService userDetailsService) {
+    public AuthenticationProvider authenticationProvider(UsuarioService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());

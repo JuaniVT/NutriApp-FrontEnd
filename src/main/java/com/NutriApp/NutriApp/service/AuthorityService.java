@@ -34,7 +34,7 @@ public class AuthorityService {
         }
 
 
-        if (optionalAuthority.get().getRole().equals(Role.ROL_ADMIN)) {
+        if (optionalAuthority.get().getAuthority().equals(Role.ROL_ADMIN)) {
             throw new AuthorityInvalidaException("El authority ya tiene el rol al cual desea cambiar");
         }
 
@@ -50,7 +50,7 @@ public class AuthorityService {
         }
 
 
-        if (optionalAuthority.get().getRole().equals(Role.ROL_CLIENT)) {
+        if (optionalAuthority.get().getAuthority().equals(Role.ROL_CLIENT)) {
             throw new AuthorityInvalidaException("El authority ya tiene el rol al cual desea cambiar");
         }
 
