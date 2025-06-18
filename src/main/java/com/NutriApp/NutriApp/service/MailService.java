@@ -3,6 +3,7 @@ package com.NutriApp.NutriApp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.beans.JavaBean;
@@ -13,6 +14,7 @@ public class MailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Async
     public void enviarMail (String para, String asunto, String mensaje){
         SimpleMailMessage mail = new SimpleMailMessage();
 

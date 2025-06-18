@@ -4,14 +4,23 @@ import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
+import jakarta.mail.SendFailedException;
+import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.SqlReturnType;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler{
 
     // Podés agregar más manejadores para otras excepciones
     @ExceptionHandler(Exception.class)
@@ -56,6 +65,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> manejarPersonaInvalida(UsuarioExistente ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarTipoNoSoportado (HttpMediaTypeNotSupportedException ex){
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("El contenido no es soportado = " +ex.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarMailException (SMTPAddressFailedException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El correo no se pudo mandar = " +ex.getMessage());
+    }
+
+
 
 }
 
