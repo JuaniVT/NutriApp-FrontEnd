@@ -1,5 +1,6 @@
 package com.NutriApp.NutriApp.service;
 
+import com.NutriApp.NutriApp.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
@@ -12,7 +13,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -92,6 +95,16 @@ public class UsuarioService implements UserDetailsService {
 
 
         usuarioRepository.save(usuario); //se guarda en la bdd
+    }
+
+    @Transactional
+    public void actualizarDatosUsuario (UsuarioDTO usuario)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+        user.setUsername(usuario.getUsername());
+        user.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuarioRepository.save(user);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.NutriApp.NutriApp.controller;
 
+import com.NutriApp.NutriApp.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
@@ -34,6 +35,13 @@ public class UsuarioController {
         usuarioService.insertarUsuarioCliente(usuario, idPerosonaBuscar);
 
         return ResponseEntity.ok("Usuario registrado correctamente como cliente");
+    }
+
+    @PostMapping("/modificarUsuario")
+    public ResponseEntity <String> actualizarUsuario (@RequestBody UsuarioDTO nuevo)
+    {
+        usuarioService.actualizarDatosUsuario(nuevo);
+        return ResponseEntity.ok("Se actualizaron correctamente los cambios");
     }
 
 }

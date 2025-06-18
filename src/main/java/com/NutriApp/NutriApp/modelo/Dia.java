@@ -23,9 +23,9 @@ public class Dia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", nullable = false, unique = false)
     @JsonIgnore  // Para que no se arme ciclo infinito al hacer toString o JSON
     private Usuario usuario;
