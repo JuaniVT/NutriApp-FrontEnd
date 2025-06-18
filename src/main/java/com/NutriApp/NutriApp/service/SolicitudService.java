@@ -52,6 +52,6 @@ public class SolicitudService {
         mailService.enviarMail("ekianuruzuna@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
         mailService.enviarMail("zuriuruzuna6@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
         mailService.enviarMail("juanignaciovalletorres241104@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
-        mailService.enviarMail("sachetamail", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
+        mailService.enviarMail("valen6sacchetta@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
     }
 }

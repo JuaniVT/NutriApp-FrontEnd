@@ -14,6 +14,7 @@ import com.NutriApp.NutriApp.modelo.enums.Role;
 import com.NutriApp.NutriApp.repository.AuthorityRepository;
 import com.NutriApp.NutriApp.repository.PersonaRepository;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +64,8 @@ public class AuthService {
         return new LoginResponse(token);
     }
 
-    public LoginResponse registrarUsuario(RegistroUsuarioRequest request, PerfilNutricionalDTO perfilNutricionalDTO) throws UsuarioExistente, PersonaInvalidaException {
+    @Transactional
+    public LoginResponse registrarUsuario(RegistroUsuarioRequest request) throws UsuarioExistente, PersonaInvalidaException {
 
         if (usuarioDetailsService.existsByUsername(request.getUsuario().getUsername())) {
             throw new UsuarioExistente("El nombre de usaurio ya está en uso");
@@ -82,7 +84,7 @@ public class AuthService {
         persona.setTelefono(request.getPersona().getTelefono());
         persona.setDireccion(request.getPersona().getDireccion());
         persona.setEmail(request.getPersona().getEmail());
-        personaService.guardar(persona);
+
 
 
         Usuario usuario = new Usuario();
@@ -97,13 +99,11 @@ public class AuthService {
                 .build();
 
         usuario.setRole(authority);
+
+        PerfilNutricional perfilNutricional = perfilNutricionalService.realizar_calculo_BMR(request.getPerfilNutricional(), persona.getGenero());
+        usuario.setPerfilNutricional(perfilNutricional);
+
         usuarioDetailsService.guardar(usuario);
-
-        PerfilNutricional perfilNutricional = perfilNutricionalService.realizar_calculo_BMR(perfilNutricionalDTO, persona.getGenero());
-
-        perfilNutricionalService.guardar(perfilNutricional);
-
-        authorityRepository.save(usuario.getRole());
 
 
         // Cargar UserDetails para generar token

@@ -3,6 +3,8 @@ package com.NutriApp.NutriApp.modelo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Email;
 
 import java.time.LocalDate;
@@ -28,6 +30,7 @@ public class Dia {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = false)
     @JsonIgnore  // Para que no se arme ciclo infinito al hacer toString o JSON
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
 
     @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)

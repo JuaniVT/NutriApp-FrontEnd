@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @NoArgsConstructor
@@ -35,5 +37,6 @@ public class ComidaIngerida {
     @ManyToOne
     @JoinColumn(name = "dia_id", nullable = false, unique = false)
     @JsonIgnore  // Para que no se arme ciclo infinito al hacer toString o JSON
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Dia dia;
 }

@@ -7,5 +7,6 @@ import lombok.*;
 public class RegistroUsuarioRequest {
     private UsuarioDTO usuario;
     private PersonaDTO persona;
+    private PerfilNutricionalDTO perfilNutricional;
 }
 

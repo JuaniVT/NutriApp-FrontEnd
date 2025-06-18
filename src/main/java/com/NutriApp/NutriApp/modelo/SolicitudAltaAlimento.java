@@ -3,6 +3,8 @@ package com.NutriApp.NutriApp.modelo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
 
 @AllArgsConstructor
@@ -42,6 +44,7 @@ public class SolicitudAltaAlimento {
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
 
 

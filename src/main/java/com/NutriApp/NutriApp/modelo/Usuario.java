@@ -4,6 +4,8 @@ import com.NutriApp.NutriApp.modelo.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,11 +41,13 @@ public class Usuario implements UserDetails {
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "persona_id", nullable = false, unique = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Persona persona;
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "perfilNutricional_id", nullable = false, unique = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private PerfilNutricional perfilNutricional;
 
     @OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)

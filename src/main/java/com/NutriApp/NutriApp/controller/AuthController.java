@@ -40,8 +40,8 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<LoginResponse> registrarUsuario(@RequestBody RegistroUsuarioRequest request, @RequestBody PerfilNutricionalDTO perfilNutricionalDTO) {
-        return ResponseEntity.ok(authService.registrarUsuario(request, perfilNutricionalDTO));
+    public ResponseEntity<LoginResponse> registrarUsuario(@RequestBody RegistroUsuarioRequest request) {
+        return ResponseEntity.ok(authService.registrarUsuario(request));
     }
 
 }
