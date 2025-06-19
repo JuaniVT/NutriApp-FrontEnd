@@ -1,9 +1,7 @@
 package com.NutriApp.NutriApp.exceptions.Handlers;
 
-import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
-import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
-import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
-import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
+import com.NutriApp.NutriApp.exceptions.*;
+import com.NutriApp.NutriApp.modelo.Dia;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,6 +20,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PersonaInvalidaException.class)
     public ResponseEntity<String> manejarPersonaInvalida(PersonaInvalidaException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DiaInvalidoException.class)
+    public ResponseEntity<String> manejarPersonaInvalida(DiaInvalidoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

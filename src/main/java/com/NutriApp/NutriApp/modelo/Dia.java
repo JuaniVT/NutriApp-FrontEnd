@@ -25,7 +25,7 @@ public class Dia {
 
     private LocalDate fecha;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = false)
     @JsonIgnore  // Para que no se arme ciclo infinito al hacer toString o JSON
     private Usuario usuario;
