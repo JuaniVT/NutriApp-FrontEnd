@@ -15,6 +15,7 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -88,6 +89,11 @@ public class GlobalExceptionHandler{
     @ExceptionHandler
     public ResponseEntity<String> manejarNoResourceFoundException (NoResourceFoundException ex){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No existe la ruta especificada");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarMissingServletRequestParameterException (MissingServletRequestParameterException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se requiere el parametro = " +ex.getParameterName());
     }
 
 
