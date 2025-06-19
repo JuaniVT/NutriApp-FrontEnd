@@ -96,7 +96,7 @@ public class SolicitudService {
                         return o1.getFecha().compareTo(o2.getFecha());
                     }
                 })
-                .filter(x -> x.getFecha().toLocalDate().isAfter(fechaFiltrar))
+                .filter(x -> !x.getFecha().toLocalDate().isBefore(fechaFiltrar))    //filtra todo lo que no es antes de esa fecha
                 .limit(100)
                 .toList();
     }
