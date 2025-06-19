@@ -49,7 +49,6 @@ public class Persona {
     private String direccion;
 
     @NotNull
-    @Convert(converter = GeneroConverter.class)
     private Genero genero;
 
     @NotBlank

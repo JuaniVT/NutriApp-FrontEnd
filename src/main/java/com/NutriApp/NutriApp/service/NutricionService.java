@@ -1,9 +1,8 @@
 package com.NutriApp.NutriApp.service;
 
 
-import com.NutriApp.NutriApp.modelo.DTO.MacronutrienteDTO;
+import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 @Service

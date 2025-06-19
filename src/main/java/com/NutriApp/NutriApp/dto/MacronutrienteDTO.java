@@ -1,4 +1,4 @@
-package com.NutriApp.NutriApp.modelo.DTO;
+package com.NutriApp.NutriApp.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

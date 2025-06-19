@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.ParameterScriptAssert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +40,15 @@ public class Usuario implements UserDetails {
     @JoinColumn(name = "persona_id", nullable = false, unique = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private Persona persona;
+
+    @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "perfilNutricional_id", nullable = false, unique = true)
+    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    private PerfilNutricional perfilNutricional;
+
+    @OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    private List<Dia> dias = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

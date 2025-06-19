@@ -1,11 +1,16 @@
 package com.NutriApp.NutriApp.Init;
 
+import com.NutriApp.NutriApp.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.modelo.Authority;
+import com.NutriApp.NutriApp.modelo.PerfilNutricional;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.Genero;
+import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.ObjetivoCaloricoTipo;
 import com.NutriApp.NutriApp.modelo.enums.Role;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
+import com.NutriApp.NutriApp.service.PerfilNutricionalService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +27,9 @@ public class CargaInicialDeUsuarios {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private PerfilNutricionalService perfilNutricionalService;
+
 
     //esta notacion le dice a spring que ejecute esto al inicializar la aplicacion
     @PostConstruct
@@ -34,7 +42,7 @@ public class CargaInicialDeUsuarios {
             usuarioRepository.save(usuarioZuri());
         }
 
-        if (!usuarioRepository.existsById("juanivalles")) {
+        if (!usuarioRepository.existsById("JuaniVT")) {
             usuarioRepository.save(usuarioJuani());
         }
 
@@ -67,7 +75,16 @@ public class CargaInicialDeUsuarios {
                 .usuario(usuario)
                 .build());
 
+        PerfilNutricionalDTO perfilDTO = PerfilNutricionalDTO.builder()
+                .peso(70.0)
+                .altura(173.0)
+                .nivelActividadFisica(NivelActividadFisica.MUY_INTENSA)
+                .edad(19)
+                .objetivoCaloricoTipo(ObjetivoCaloricoTipo.SUPERAVIT_LIGERO)
+                .build();
 
+        PerfilNutricional perfilNutricional = perfilNutricionalService.realizar_calculo_BMR(perfilDTO, persona.getGenero());
+        usuario.setPerfilNutricional(perfilNutricional);
         usuario.setRole(authority);
         usuario.setPersona(persona);
 
@@ -99,6 +116,16 @@ public class CargaInicialDeUsuarios {
                 .usuario(usuario)
                 .build());
 
+        PerfilNutricionalDTO perfilDTO = PerfilNutricionalDTO.builder()
+                .peso(70.0)
+                .altura(173.0)
+                .nivelActividadFisica(NivelActividadFisica.MODERADA)
+                .edad(19)
+                .objetivoCaloricoTipo(ObjetivoCaloricoTipo.SUPERAVIT_LIGERO)
+                .build();
+
+        PerfilNutricional perfilNutricional = perfilNutricionalService.realizar_calculo_BMR(perfilDTO, persona.getGenero());
+        usuario.setPerfilNutricional(perfilNutricional);
 
         usuario.setRole(authority);
         usuario.setPersona(persona);
@@ -132,6 +159,16 @@ public class CargaInicialDeUsuarios {
                 .usuario(usuario)
                 .build());
 
+        PerfilNutricionalDTO perfilDTO = PerfilNutricionalDTO.builder()
+                .peso(74.0)
+                .altura(173.0)
+                .nivelActividadFisica(NivelActividadFisica.INTENSA)
+                .edad(20)
+                .objetivoCaloricoTipo(ObjetivoCaloricoTipo.SUPERAVIT_LIGERO)
+                .build();
+
+        PerfilNutricional perfilNutricional = perfilNutricionalService.realizar_calculo_BMR(perfilDTO, persona.getGenero());
+        usuario.setPerfilNutricional(perfilNutricional);
 
         usuario.setRole(authority);
         usuario.setPersona(persona);
@@ -165,7 +202,16 @@ public class CargaInicialDeUsuarios {
                 .usuario(usuario)
                 .build());
 
+        PerfilNutricionalDTO perfilDTO = PerfilNutricionalDTO.builder()
+                .peso(70.0)
+                .altura(173.0)
+                .nivelActividadFisica(NivelActividadFisica.MUY_INTENSA)
+                .edad(19)
+                .objetivoCaloricoTipo(ObjetivoCaloricoTipo.SUPERAVIT_LIGERO)
+                .build();
 
+        PerfilNutricional perfilNutricional = perfilNutricionalService.realizar_calculo_BMR(perfilDTO, persona.getGenero());
+        usuario.setPerfilNutricional(perfilNutricional);
         usuario.setRole(authority);
         usuario.setPersona(persona);
 

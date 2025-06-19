@@ -1,7 +1,7 @@
 package com.NutriApp.NutriApp.controller;
 
-import com.NutriApp.NutriApp.modelo.DTO.AlimentoBusquedaDTO;
-import com.NutriApp.NutriApp.modelo.DTO.MacronutrienteDTO;
+import com.NutriApp.NutriApp.dto.AlimentoBusquedaDTO;
+import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.service.FoodDataService;
 import com.NutriApp.NutriApp.service.NutricionService;
 import com.fasterxml.jackson.databind.JsonNode;

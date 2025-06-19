@@ -1,4 +1,4 @@
-package com.NutriApp.NutriApp.modelo.DTO;
+package com.NutriApp.NutriApp.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -2,10 +2,12 @@ package com.NutriApp.NutriApp.service;
 
 import com.NutriApp.NutriApp.dto.LoginRequest;
 import com.NutriApp.NutriApp.dto.LoginResponse;
+import com.NutriApp.NutriApp.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.dto.RegistroUsuarioRequest;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
 import com.NutriApp.NutriApp.modelo.Authority;
+import com.NutriApp.NutriApp.modelo.PerfilNutricional;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.Role;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Service
 public class AuthService {
 
+    @Autowired
+    private PerfilNutricionalService perfilNutricionalService;
     @Autowired
     private AuthorityRepository authorityRepository;
     @Autowired
@@ -59,7 +63,7 @@ public class AuthService {
         return new LoginResponse(token);
     }
 
-    public LoginResponse registrarUsuario(@RequestBody RegistroUsuarioRequest request) throws UsuarioExistente, PersonaInvalidaException {
+    public LoginResponse registrarUsuario(RegistroUsuarioRequest request, PerfilNutricionalDTO perfilNutricionalDTO) throws UsuarioExistente, PersonaInvalidaException {
 
         if (usuarioDetailsService.existsByUsername(request.getUsuario().getUsername())) {
             throw new UsuarioExistente("El nombre de usaurio ya está en uso");
@@ -88,14 +92,19 @@ public class AuthService {
         usuario.setPersona(persona);
 
         Authority authority = Authority.builder()
-                .authority(Role.ROL_ADMIN)
+                .authority(Role.ROL_CLIENT)
                 .usuario(usuario)
                 .build();
 
         usuario.setRole(authority);
         usuarioDetailsService.guardar(usuario);
 
+        PerfilNutricional perfilNutricional = perfilNutricionalService.realizar_calculo_BMR(perfilNutricionalDTO, persona.getGenero());
+
+        perfilNutricionalService.guardar(perfilNutricional);
+
         authorityRepository.save(usuario.getRole());
+
 
         // Cargar UserDetails para generar token
         UserDetails userDetails = usuarioDetailsService.loadUserByUsername(request.getUsuario().getUsername());

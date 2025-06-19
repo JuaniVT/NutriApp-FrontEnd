@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.controller;
 
 import com.NutriApp.NutriApp.dto.LoginRequest;
 import com.NutriApp.NutriApp.dto.LoginResponse;
+import com.NutriApp.NutriApp.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.dto.RegistroUsuarioRequest;
 import com.NutriApp.NutriApp.modelo.Authority;
 import com.NutriApp.NutriApp.modelo.Persona;
@@ -39,8 +40,8 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<LoginResponse> registrarUsuario(@RequestBody RegistroUsuarioRequest request) {
-        return ResponseEntity.ok(authService.registrarUsuario(request));
+    public ResponseEntity<LoginResponse> registrarUsuario(@RequestBody RegistroUsuarioRequest request, @RequestBody PerfilNutricionalDTO perfilNutricionalDTO) {
+        return ResponseEntity.ok(authService.registrarUsuario(request, perfilNutricionalDTO));
     }
 
 }
