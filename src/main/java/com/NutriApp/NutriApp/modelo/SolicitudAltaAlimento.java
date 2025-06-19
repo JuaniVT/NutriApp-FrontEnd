@@ -1,5 +1,7 @@
 package com.NutriApp.NutriApp.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -49,7 +51,26 @@ public class SolicitudAltaAlimento {
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_solicitud_usuario")/*anotacion para generar un nombre interno de la FK en la bdd*/)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Usuario usuario;
 
+    @JsonProperty ("username")
+    public String getUsername(){
+        return usuario.getUsername();
+    }
 
+    @Override
+    public String toString() {
+        return "SolicitudAltaAlimento{" +
+                "id=" + id +
+                ", nombreComida='" + nombreComida + '\'' +
+                ", porcion=" + porcion +
+                ", calorias=" + calorias +
+                ", proteinas=" + proteinas +
+                ", grasas=" + grasas +
+                ", carbohidratos=" + carbohidratos +
+                ", fecha=" + fecha +
+                ", usuario=" + usuario.getUsername() +
+                '}';
+    }
 }

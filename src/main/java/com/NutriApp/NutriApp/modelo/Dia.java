@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.modelo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -35,4 +36,10 @@ public class Dia {
 
     @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ComidaIngerida> comidasIngeridas;
+
+
+    @JsonProperty("username")  //le estamos diciendo que cuando agararre un json de este objeto tambien tome este como atributo, ya que el usuario lo ignora con el @JsonIgnore
+    public String getUsername(){
+        return usuario.getUsername();
+    }
 }

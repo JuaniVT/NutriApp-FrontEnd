@@ -27,7 +27,7 @@ public class SolicitudController {
     }
 
     @GetMapping("/listarTodas")
-    public ResponseEntity<String> listarTodas (){
-        return ResponseEntity.ok(solicitudService.listarTodas().toString());
+    public ResponseEntity<List<SolicitudAltaAlimento>> listarTodas (){
+        return ResponseEntity.ok(solicitudService.listarTodas());
     }
 }
