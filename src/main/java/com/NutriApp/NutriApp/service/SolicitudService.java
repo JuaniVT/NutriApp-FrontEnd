@@ -7,10 +7,13 @@ import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.repository.AlimentoIngresadoPorUsuarioRepository;
 import com.NutriApp.NutriApp.repository.SolicitudRespository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class SolicitudService {
@@ -26,6 +29,8 @@ public class SolicitudService {
 
     @Autowired
     private MailService mailService;
+
+
 
     public void insertar (SolicitudAltaAlimento solicitud) throws SolicitudInvalidaException{
         if (alimentoIngresadoPorUsuarioRepository.existsByNombreComida(solicitud.getNombreComida())){
@@ -46,6 +51,9 @@ public class SolicitudService {
         // Asignar el usuario a la solicitud
         solicitud.setUsuario(usuario);
 
+        // Se le setea la fecha del momento de insertar la solicitud
+        solicitud.setFecha(LocalDateTime.now());
+
 
         solicitudRespository.save(solicitud);
 
@@ -53,5 +61,23 @@ public class SolicitudService {
         mailService.enviarMail("zuriuruzuna6@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
         mailService.enviarMail("juanignaciovalletorres241104@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
         mailService.enviarMail("valen6sacchetta@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
+    }
+
+
+    // te lista todas las solicitudes ordenadas por fehca de creacion con un limite de 100 para no sobrecarcar
+    public List<SolicitudAltaAlimento> listarTodas() throws SolicitudInvalidaException{
+        if (solicitudRespository.count() == 0){
+            throw new SolicitudInvalidaException("No hay solicitudes cargadas");
+        }
+
+        return solicitudRespository.findAll().stream()
+                .sorted(new Comparator<SolicitudAltaAlimento>() {
+                    @Override
+                    public int compare(SolicitudAltaAlimento o1, SolicitudAltaAlimento o2) {
+                        return o1.getFecha().compareTo(o2.getFecha());
+                    }
+                })
+                .limit(100)
+                .toList();
     }
 }

@@ -1,29 +1,13 @@
 package com.NutriApp.NutriApp.controller;
 
-import com.NutriApp.NutriApp.dto.LoginRequest;
-import com.NutriApp.NutriApp.dto.LoginResponse;
-import com.NutriApp.NutriApp.dto.PerfilNutricionalDTO;
-import com.NutriApp.NutriApp.dto.RegistroUsuarioRequest;
-import com.NutriApp.NutriApp.modelo.Authority;
-import com.NutriApp.NutriApp.modelo.Persona;
-import com.NutriApp.NutriApp.modelo.Usuario;
-import com.NutriApp.NutriApp.modelo.enums.Role;
-import com.NutriApp.NutriApp.repository.AuthorityRepository;
-import com.NutriApp.NutriApp.repository.PersonaRepository;
-import com.NutriApp.NutriApp.repository.UsuarioRepository;
+import com.NutriApp.NutriApp.modelo.dto.LoginRequest;
+import com.NutriApp.NutriApp.modelo.dto.LoginResponse;
+import com.NutriApp.NutriApp.modelo.dto.RegistroUsuarioRequest;
 import com.NutriApp.NutriApp.service.AuthService;
-import com.NutriApp.NutriApp.service.JwtService;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController // Define que esta clase manejará peticiones HTTP

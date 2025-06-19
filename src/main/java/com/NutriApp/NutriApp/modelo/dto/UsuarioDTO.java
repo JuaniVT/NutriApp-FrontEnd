@@ -1,4 +1,4 @@
-package com.NutriApp.NutriApp.dto;
+package com.NutriApp.NutriApp.modelo.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.*;

@@ -1,8 +1,8 @@
 package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.dto.LoginRequest;
-import com.NutriApp.NutriApp.dto.LoginResponse;
-import com.NutriApp.NutriApp.dto.RegistroUsuarioRequest;
+import com.NutriApp.NutriApp.modelo.dto.LoginRequest;
+import com.NutriApp.NutriApp.modelo.dto.LoginResponse;
+import com.NutriApp.NutriApp.modelo.dto.RegistroUsuarioRequest;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
 import com.NutriApp.NutriApp.modelo.Authority;

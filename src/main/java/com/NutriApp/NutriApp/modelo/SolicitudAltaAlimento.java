@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Length;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -41,6 +43,8 @@ public class SolicitudAltaAlimento {
     @NotNull
     @DecimalMin("0.0")
     private Double carbohidratos;
+
+    private LocalDateTime fecha;
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_solicitud_usuario")/*anotacion para generar un nombre interno de la FK en la bdd*/)

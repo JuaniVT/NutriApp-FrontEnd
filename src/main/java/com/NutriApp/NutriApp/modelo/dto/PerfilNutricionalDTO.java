@@ -1,4 +1,4 @@
-package com.NutriApp.NutriApp.dto;
+package com.NutriApp.NutriApp.modelo.dto;
 
 import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
 import com.NutriApp.NutriApp.modelo.enums.ObjetivoCaloricoTipo;

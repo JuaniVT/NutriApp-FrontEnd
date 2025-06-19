@@ -5,6 +5,8 @@ import org.hibernate.validator.internal.engine.resolver.JPATraversableResolver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SolicitudRespository extends JpaRepository<SolicitudAltaAlimento, Integer> {
 

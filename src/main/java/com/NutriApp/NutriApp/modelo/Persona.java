@@ -1,14 +1,11 @@
 package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.modelo.enums.Genero;
-import com.NutriApp.NutriApp.modelo.enums.GeneroConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.Tolerate;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 

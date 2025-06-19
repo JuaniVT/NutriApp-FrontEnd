@@ -1,9 +1,7 @@
 package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.dto.PerfilNutricionalDTO;
-import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.modelo.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.modelo.PerfilNutricional;
-import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.Genero;
 import com.NutriApp.NutriApp.repository.PerfilNutricionalRepository;

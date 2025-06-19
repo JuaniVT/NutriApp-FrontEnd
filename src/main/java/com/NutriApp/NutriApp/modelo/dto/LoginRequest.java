@@ -1,4 +1,4 @@
-package com.NutriApp.NutriApp.dto;
+package com.NutriApp.NutriApp.modelo.dto;
 
 import lombok.Data;
 // es un DTO usado para recibir los datos del usuario cuando quiere iniciar sesión (login).

@@ -1,6 +1,6 @@
 package com.NutriApp.NutriApp.Init;
 
-import com.NutriApp.NutriApp.dto.PerfilNutricionalDTO;
+import com.NutriApp.NutriApp.modelo.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.modelo.Authority;
 import com.NutriApp.NutriApp.modelo.PerfilNutricional;
 import com.NutriApp.NutriApp.modelo.Persona;

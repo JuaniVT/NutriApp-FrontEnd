@@ -1,4 +1,4 @@
-package com.NutriApp.NutriApp.dto;
+package com.NutriApp.NutriApp.modelo.dto;
 
 import lombok.Data;
 /*es el DTO que el backend le devuelve al cliente después de que el login fue exitoso.
