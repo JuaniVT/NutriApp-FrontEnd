@@ -71,7 +71,7 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         Authority authority = (Authority.builder()
-                .authority(Role.ROL_ADMIN)
+                .authority(Role.ROLE_ADMIN)
                 .usuario(usuario)
                 .build());
 
@@ -112,7 +112,7 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         Authority authority = (Authority.builder()
-                .authority(Role.ROL_ADMIN)
+                .authority(Role.ROLE_ADMIN)
                 .usuario(usuario)
                 .build());
 
@@ -155,7 +155,7 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         Authority authority = (Authority.builder()
-                .authority(Role.ROL_ADMIN)
+                .authority(Role.ROLE_ADMIN)
                 .usuario(usuario)
                 .build());
 
@@ -198,7 +198,7 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         Authority authority = (Authority.builder()
-                .authority(Role.ROL_ADMIN)
+                .authority(Role.ROLE_ADMIN)
                 .usuario(usuario)
                 .build());
 

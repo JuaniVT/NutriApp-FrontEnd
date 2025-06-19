@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.SqlReturnType;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
@@ -74,6 +77,11 @@ public class GlobalExceptionHandler{
     @ExceptionHandler
     public ResponseEntity<String> manejarMailException (SMTPAddressFailedException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El correo no se pudo mandar = " +ex.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarAccessDeniedException (AuthorizationDeniedException ex){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage() + " = permisos insuficientes");
     }
 
 

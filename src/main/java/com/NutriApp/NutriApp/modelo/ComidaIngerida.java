@@ -35,7 +35,7 @@ public class ComidaIngerida {
     private TipoComida tipoComida;
 
     @ManyToOne
-    @JoinColumn(name = "dia_id", nullable = false, unique = false)
+    @JoinColumn(name = "dia_id", nullable = false, unique = false, foreignKey = @ForeignKey(name = "fk_comidaIngerida_dia"))
     @JsonIgnore  // Para que no se arme ciclo infinito al hacer toString o JSON
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Dia dia;

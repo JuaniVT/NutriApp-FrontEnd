@@ -26,34 +26,34 @@ public class AuthorityService {
 
 
     @PreAuthorize("hasRole('ADMIN')")   //le agrego seguridad al service por las dudas
-    public void cambiaRol_A_ADMIN (int id) throws AuthorityInvalidaException{
-        Optional<Authority> optionalAuthority = authorityRepository.findById(id);
+    public void cambiaRol_A_ADMIN (String username) throws AuthorityInvalidaException{
+        Optional<Authority> optionalAuthority = authorityRepository.findByUsuarioUsername(username);
 
         if (optionalAuthority.isEmpty()){
-            throw new AuthorityInvalidaException("El authority no existe con el username = " +id);
+            throw new AuthorityInvalidaException("El authority no existe con el username = " +username);
         }
 
 
-        if (optionalAuthority.get().getAuthority().equals(Role.ROL_ADMIN)) {
+        if (optionalAuthority.get().getAuthority().equals(Role.ROLE_ADMIN)) {
             throw new AuthorityInvalidaException("El authority ya tiene el rol al cual desea cambiar");
         }
 
-        authorityRepository.cambiarRol_A_ADMIN(id);
+        authorityRepository.cambiarRol_A_ADMIN(username);
     }
 
     @PreAuthorize("hasRole('ADMIN')")   //le agrego seguridad al service por las dudas
-    public void cambiaRol_A_CLIENTE (int id) throws AuthorityInvalidaException{
-        Optional<Authority> optionalAuthority = authorityRepository.findById(id);
+    public void cambiaRol_A_CLIENTE (String username) throws AuthorityInvalidaException{
+        Optional<Authority> optionalAuthority = authorityRepository.findByUsuarioUsername(username);
 
         if (optionalAuthority.isEmpty()){
-            throw new AuthorityInvalidaException("El authority no existe con el username = " +id);
+            throw new AuthorityInvalidaException("El authority no existe con el username = " +username);
         }
 
 
-        if (optionalAuthority.get().getAuthority().equals(Role.ROL_CLIENT)) {
+        if (optionalAuthority.get().getAuthority().equals(Role.ROLE_CLIENT)) {
             throw new AuthorityInvalidaException("El authority ya tiene el rol al cual desea cambiar");
         }
 
-        authorityRepository.cambiarRol_A_CLIENTE(id);
+        authorityRepository.cambiarRol_A_CLIENTE(username);
     }
 }

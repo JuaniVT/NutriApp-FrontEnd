@@ -27,7 +27,7 @@ public class Authority {
     private Role authority;
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn (name = "username")
+    @JoinColumn (name = "username", unique = true, foreignKey = @ForeignKey(name = "fk_authority_usuario"))
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;

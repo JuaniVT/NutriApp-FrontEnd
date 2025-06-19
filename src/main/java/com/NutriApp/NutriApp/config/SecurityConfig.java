@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.config;
 
 import com.NutriApp.NutriApp.exceptions.Handlers.AccesDeniedExceptionHandler;
+import com.NutriApp.NutriApp.exceptions.Handlers.TokenInvalidoExceptionHandler;
 import com.NutriApp.NutriApp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,9 @@ public class SecurityConfig {
     @Autowired
     private AccesDeniedExceptionHandler accesDeniedExceptionHandler;  //atributo para manejar la exception de acceso denegado
 
+    @Autowired
+    private TokenInvalidoExceptionHandler tokenInvalidoExceptionHandler;
+
     // Configuración del filtro de seguridad para proteger rutas y validar JWT
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
@@ -63,9 +67,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
-                                .accessDeniedHandler(accesDeniedExceptionHandler)       //maneja la exception de acceso denegado aca
+                        .accessDeniedHandler(accesDeniedExceptionHandler)
+                        //maneja la exception de acceso denegado aca
                         //porque antes que llegue a globalExceptionHandler
                         //sea catchea antes entonces hay que manejarla aca
+
+                        .authenticationEntryPoint(tokenInvalidoExceptionHandler) //manejador para token faltante o invalido
                 )
 
                 .authenticationProvider(authenticationProvider(userDetailsService))

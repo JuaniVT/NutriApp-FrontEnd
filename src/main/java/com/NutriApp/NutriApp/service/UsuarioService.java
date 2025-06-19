@@ -8,12 +8,8 @@ import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.Role;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,7 +67,7 @@ public class UsuarioService implements UserDetailsService {
 
         Authority authority = Authority.builder()
 
-                .authority(Role.ROL_CLIENT)      //se setea por defecto en este metodo el rol de cliente
+                .authority(Role.ROLE_CLIENT)      //se setea por defecto en este metodo el rol de cliente
                 .usuario(usuario)
                 .build();
 

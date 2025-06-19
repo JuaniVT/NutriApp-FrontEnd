@@ -28,7 +28,7 @@ public class Dia {
     private LocalDateTime fecha;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false, unique = false)
+    @JoinColumn(name = "usuario_id", nullable = false, unique = false, foreignKey = @ForeignKey(name = "fk_dia_usuario"))
     @JsonIgnore  // Para que no se arme ciclo infinito al hacer toString o JSON
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;

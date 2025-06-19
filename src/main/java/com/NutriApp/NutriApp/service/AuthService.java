@@ -2,7 +2,6 @@ package com.NutriApp.NutriApp.service;
 
 import com.NutriApp.NutriApp.dto.LoginRequest;
 import com.NutriApp.NutriApp.dto.LoginResponse;
-import com.NutriApp.NutriApp.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.dto.RegistroUsuarioRequest;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
@@ -12,16 +11,11 @@ import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.Role;
 import com.NutriApp.NutriApp.repository.AuthorityRepository;
-import com.NutriApp.NutriApp.repository.PersonaRepository;
-import com.NutriApp.NutriApp.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -94,7 +88,7 @@ public class AuthService {
         usuario.setPersona(persona);
 
         Authority authority = Authority.builder()
-                .authority(Role.ROL_CLIENT)
+                .authority(Role.ROLE_CLIENT)
                 .usuario(usuario)
                 .build();
 

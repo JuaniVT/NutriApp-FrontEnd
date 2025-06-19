@@ -19,13 +19,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController // Define que esta clase manejará peticiones HTTP
 @RequestMapping("/auth") // El endpoint completo será /auth/login
@@ -42,6 +41,14 @@ public class AuthController {
     @PostMapping("/registro")
     public ResponseEntity<LoginResponse> registrarUsuario(@RequestBody RegistroUsuarioRequest request) {
         return ResponseEntity.ok(authService.registrarUsuario(request));
+    }
+
+    @GetMapping("/debug")
+    public ResponseEntity<String> verRoles() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authorities: " + auth.getAuthorities());
+
+        return ResponseEntity.ok("Mirá la consola");
     }
 
 }

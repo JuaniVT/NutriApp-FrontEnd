@@ -7,17 +7,21 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface AuthorityRepository extends JpaRepository <Authority, Integer> {
 
-    @Transactional
-    @Modifying      //hace falta poner estas dos anotaciones cuadno hacemos querys que no sean solo de lectura
-    @Query(value = "UPDATE authorities SET role = 'ROL_ADMIN' WHERE username = ?1", nativeQuery = true)
-    void cambiarRol_A_ADMIN (int id);
+    Optional<Authority> findByUsuarioUsername (String username);
 
     @Transactional
     @Modifying      //hace falta poner estas dos anotaciones cuadno hacemos querys que no sean solo de lectura
-    @Query(value = "UPDATE authorities SET role = 'ROL_CLIENT' WHERE username = ?1", nativeQuery = true)
-    void cambiarRol_A_CLIENTE (int id);
+    @Query(value = "UPDATE authorities SET authority = 'ROLE_ADMIN' WHERE username = ?1", nativeQuery = true)
+    void cambiarRol_A_ADMIN (String username);
+
+    @Transactional
+    @Modifying      //hace falta poner estas dos anotaciones cuadno hacemos querys que no sean solo de lectura
+    @Query(value = "UPDATE authorities SET authority = 'ROLE_CLIENT' WHERE username = ?1", nativeQuery = true)
+    void cambiarRol_A_CLIENTE (String username);
 
 }

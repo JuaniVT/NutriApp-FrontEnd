@@ -43,7 +43,7 @@ public class SolicitudAltaAlimento {
     private Double carbohidratos;
 
     @ManyToOne (cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_solicitud_usuario")/*anotacion para generar un nombre interno de la FK en la bdd*/)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
 
