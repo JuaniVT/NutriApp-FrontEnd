@@ -7,10 +7,12 @@ import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.repository.AlimentoIngresadoPorUsuarioRepository;
 import com.NutriApp.NutriApp.repository.SolicitudRespository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -77,6 +79,24 @@ public class SolicitudService {
                         return o1.getFecha().compareTo(o2.getFecha());
                     }
                 })
+                .limit(100)
+                .toList();
+    }
+
+    //filtra todas las solicitudes de una fecha en adelante
+    public List<SolicitudAltaAlimento> filtrarSolicitudesPorFecha (LocalDate fechaFiltrar) throws SolicitudInvalidaException{
+        if (solicitudRespository.count() == 0){
+            throw new SolicitudInvalidaException("No hay solicitudes cargadas");
+        }
+
+        return solicitudRespository.findAll().stream()
+                .sorted(new Comparator<SolicitudAltaAlimento>() {
+                    @Override
+                    public int compare(SolicitudAltaAlimento o1, SolicitudAltaAlimento o2) {
+                        return o1.getFecha().compareTo(o2.getFecha());
+                    }
+                })
+                .filter(x -> x.getFecha().toLocalDate().isAfter(fechaFiltrar))
                 .limit(100)
                 .toList();
     }

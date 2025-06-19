@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
 
@@ -82,6 +83,11 @@ public class GlobalExceptionHandler{
     @ExceptionHandler
     public ResponseEntity<String> manejarAccessDeniedException (AuthorizationDeniedException ex){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage() + " = permisos insuficientes");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarNoResourceFoundException (NoResourceFoundException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No existe la ruta especificada");
     }
 
 
