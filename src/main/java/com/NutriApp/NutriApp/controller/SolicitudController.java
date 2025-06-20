@@ -39,8 +39,15 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitudService.filtrarSolicitudesPorFecha(fechaFiltrar));
     }
 
+    @GetMapping ("/filtrarPorUsername")
+    public ResponseEntity<List<SolicitudAltaAlimento>> filtrarPorUsername (@RequestParam String username){
+        return ResponseEntity.ok(solicitudService.filtrarSolicitudesPorUsername(username));
+    }
+
     @GetMapping("/listarMisSolicitudes")
     public ResponseEntity<List<SolicitudAltaAlimento>> listarMisSolicitudes (){
         return ResponseEntity.ok(solicitudService.listarMisSolicitudes());
     }
+
+
 }

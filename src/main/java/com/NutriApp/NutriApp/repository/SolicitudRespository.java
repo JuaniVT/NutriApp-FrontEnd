@@ -13,4 +13,5 @@ public interface SolicitudRespository extends JpaRepository<SolicitudAltaAliment
     boolean existsByNombreComida (String nombreComida);
 
     List<SolicitudAltaAlimento> findAllByUsuarioUsername (String username);
+
 }

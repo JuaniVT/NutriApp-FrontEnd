@@ -101,6 +101,22 @@ public class SolicitudService {
                 .toList();
     }
 
+    public List<SolicitudAltaAlimento> filtrarSolicitudesPorUsername (String username) throws SolicitudInvalidaException{
+        if (solicitudRespository.count() == 0){
+            throw new SolicitudInvalidaException("No hay solicitudes cargadas");
+        }
+
+        return solicitudRespository.findAllByUsuarioUsername(username).stream()
+                .sorted(new Comparator<SolicitudAltaAlimento>() {
+                    @Override
+                    public int compare(SolicitudAltaAlimento o1, SolicitudAltaAlimento o2) {
+                        return o1.getFecha().compareTo(o2.getFecha());
+                    }
+                })
+                .limit(100)
+                .toList();
+    }
+
     public List<SolicitudAltaAlimento> listarMisSolicitudes () throws SolicitudInvalidaException{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authentication.getPrincipal();
