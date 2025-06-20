@@ -7,6 +7,8 @@ import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
 import jakarta.mail.SendFailedException;
 import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
 import org.springframework.http.HttpHeaders;
+import com.NutriApp.NutriApp.exceptions.*;
+import com.NutriApp.NutriApp.modelo.Dia;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +36,23 @@ public class GlobalExceptionHandler{
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(DiaInvalidoException.class)
+    public ResponseEntity<String> manejarPersonaInvalida(DiaInvalidoException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(UsuarioInvalidoException.class)
     public ResponseEntity<String> manejarUsuarioInvalido(UsuarioInvalidoException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(AuthorityInvalidaException.class)
     public ResponseEntity<String> manejarAuthorityInvalida(AuthorityInvalidaException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(ComidaIngeridaException.class)
+    public ResponseEntity<String> manejarAuthorityInvalida(ComidaIngeridaException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 

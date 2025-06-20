@@ -25,7 +25,7 @@ public class Dia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime fecha;
+    private LocalDate fecha;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false, unique = false)

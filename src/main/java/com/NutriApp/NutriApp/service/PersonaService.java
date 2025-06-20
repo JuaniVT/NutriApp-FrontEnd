@@ -1,9 +1,12 @@
 package com.NutriApp.NutriApp.service;
 
+import com.NutriApp.NutriApp.dto.PersonaDTO;
+import com.NutriApp.NutriApp.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.repository.PersonaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -57,5 +60,24 @@ public class PersonaService {
             throw new PersonaInvalidaException("La persona a ingresar ya se encuentra registrada");
         }
         personaRepository.save(persona);
+    }
+
+    @Transactional
+    public void actualizarDatosPersona (PersonaDTO personaDTO)
+    {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+        Persona persona1 = user.getPersona();
+        persona1.setNombre(personaDTO.getNombre());
+        persona1.setApellido(personaDTO.getApellido());
+        persona1.setDni(personaDTO.getDni());
+        persona1.setFechaNacimiento(personaDTO.getFechaNacimiento());
+        persona1.setTelefono(personaDTO.getTelefono());
+        persona1.setDireccion(personaDTO.getDireccion());
+        persona1.setGenero(personaDTO.getGenero());
+        persona1.setEmail(personaDTO.getEmail());
+
+        // Guardás en el repositorio
+        personaRepository.save(persona1);
     }
 }

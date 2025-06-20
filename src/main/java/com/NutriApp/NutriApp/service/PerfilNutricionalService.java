@@ -7,6 +7,7 @@ import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.Genero;
 import com.NutriApp.NutriApp.repository.PerfilNutricionalRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,5 +64,15 @@ public class PerfilNutricionalService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) auth.getPrincipal();
         return usuario.getPerfilNutricional();
+    }
+
+    @Transactional
+    public void actualizarPerfilNutricional(PerfilNutricionalDTO perfilDTO) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+        PerfilNutricional perfil = realizar_calculo_BMR(perfilDTO, user.getPersona().getGenero());
+        // Guardás el perfil
+        guardar(perfil);
     }
 }

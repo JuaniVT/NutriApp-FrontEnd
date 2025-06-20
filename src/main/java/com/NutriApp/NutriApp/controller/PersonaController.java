@@ -1,5 +1,7 @@
 package com.NutriApp.NutriApp.controller;
 
+import com.NutriApp.NutriApp.dto.PersonaDTO;
+import com.NutriApp.NutriApp.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
@@ -57,6 +59,13 @@ public class PersonaController {
     public ResponseEntity <Persona> mostrarPerfil () throws PersonaInvalidaException
     {
         return ResponseEntity.ok(personaService.obtenerMiPerfil());
+    }
+
+    @PostMapping("/modificarPersona")
+    public ResponseEntity <String> actualizarUsuario (@RequestBody PersonaDTO nuevo)
+    {
+        personaService.actualizarDatosPersona(nuevo);
+        return ResponseEntity.ok("Se actualizaron correctamente los cambios");
     }
 
 }

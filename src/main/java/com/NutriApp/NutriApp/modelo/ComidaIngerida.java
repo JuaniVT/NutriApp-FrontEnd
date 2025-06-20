@@ -34,6 +34,8 @@ public class ComidaIngerida {
 
     private TipoComida tipoComida;
 
+    private Long idComidaApi;
+
     @ManyToOne
     @JoinColumn(name = "dia_id", nullable = false, unique = false)
     @JsonIgnore  // Para que no se arme ciclo infinito al hacer toString o JSON
