@@ -1,9 +1,6 @@
 package com.NutriApp.NutriApp.exceptions.Handlers;
 
-import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
-import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
-import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
-import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
+import com.NutriApp.NutriApp.exceptions.*;
 import jakarta.mail.SendFailedException;
 import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
 import org.springframework.http.HttpHeaders;
@@ -96,6 +93,10 @@ public class GlobalExceptionHandler{
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se requiere el parametro = " +ex.getParameterName());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> manejarSolicitudInvalidaException (SolicitudInvalidaException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
 
 }

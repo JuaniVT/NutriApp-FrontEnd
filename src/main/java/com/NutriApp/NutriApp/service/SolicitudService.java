@@ -102,14 +102,10 @@ public class SolicitudService {
     }
 
     public List<SolicitudAltaAlimento> listarMisSolicitudes () throws SolicitudInvalidaException{
-        if (solicitudRespository.count() == 0){
-            throw new SolicitudInvalidaException("No tiene solicitudes cargadas");
-        }
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authentication.getPrincipal();
 
-        return solicitudRespository.findAllByUsuarioUsername(usuario.getUsername()).stream()
+        List<SolicitudAltaAlimento> list = solicitudRespository.findAllByUsuarioUsername(usuario.getUsername()).stream()
                 .sorted(new Comparator<SolicitudAltaAlimento>() {
                     @Override
                     public int compare(SolicitudAltaAlimento o1, SolicitudAltaAlimento o2) {
@@ -118,5 +114,11 @@ public class SolicitudService {
                 })
                 .limit(100)
                 .toList();
+
+        if (list.isEmpty()){
+            throw new SolicitudInvalidaException("Usted no tiene nignuna solicitud cargada en el sistema");
+        }
+
+        return list;
     }
 }
