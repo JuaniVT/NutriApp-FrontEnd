@@ -3,7 +3,9 @@ package com.NutriApp.NutriApp.service;
 import com.NutriApp.NutriApp.dto.ComidaIngeridaDTO;
 import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.dto.ModificarComidaIngeridaDTO;
+import com.NutriApp.NutriApp.exceptions.ComidaIngeridaException;
 import com.NutriApp.NutriApp.exceptions.DiaInvalidoException;
+import com.NutriApp.NutriApp.modelo.Comida;
 import com.NutriApp.NutriApp.modelo.ComidaIngerida;
 import com.NutriApp.NutriApp.modelo.Dia;
 import com.NutriApp.NutriApp.modelo.Usuario;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -51,7 +54,7 @@ public class ComidaIngeridaService {
         MacronutrienteDTO macronutrienteDTO = nutricionService.extraerMacronutrientes(jsonNode);
 
         if (macronutrienteDTO.getGramosPorPorcion() == null || macronutrienteDTO.getGramosPorPorcion() == 0) {
-            throw new IllegalArgumentException("El valor de gramosPorPorcion no puede ser nulo ni cero.");
+            throw new ComidaIngeridaException("El valor de gramosPorPorcion no puede ser nulo ni cero.");
         }
         comidaIngerida.setNombreComida(macronutrienteDTO.getNombreComida());
         comidaIngerida.setIdComidaApi(id);
@@ -65,7 +68,7 @@ public class ComidaIngeridaService {
     }
 
     //modificar algun alimento dentro de la base de datos
-    public boolean modificarComida(ModificarComidaIngeridaDTO dto) throws DiaInvalidoException, Exception {
+    public boolean modificarComida(ModificarComidaIngeridaDTO dto) throws Exception {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
         Optional<Dia> dia = diaService.obtenerDiaPorFecha(dto.getFecha(), user);
@@ -73,13 +76,13 @@ public class ComidaIngeridaService {
             throw new DiaInvalidoException("No hay un registro realizado en ese dia");
         }
         List<ComidaIngerida> comidasIngeridas = dia.get().getComidasIngeridas();
-        ComidaIngerida insertar;
+        ComidaIngerida modificar;
         for (int i = 0; i < comidasIngeridas.size(); i++) {
             if (comidasIngeridas.get(i).getId() == dto.getId()) {
-                insertar = comidasIngeridas.get(i);
-                insertar = convertir_comidaid(insertar, insertar.getIdComidaApi(), dto.getGramos());
-                insertar.setTipoComida(dto.getTipoComida());
-                guardar(insertar);
+                modificar = comidasIngeridas.get(i);
+                modificar = convertir_comidaid(modificar, modificar.getIdComidaApi(), dto.getGramos());
+                modificar.setTipoComida(dto.getTipoComida());
+                guardar(modificar);
                 return true;
             }
         }
@@ -97,4 +100,38 @@ public class ComidaIngeridaService {
         return comidaIngerida;
     }
 
+    public double verCaloriasConsumidasDeunDia(@RequestParam LocalDate fecha) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+
+        // Buscar el día correspondiente
+        Optional <Dia> diaEncontrado = diaService.obtenerDiaPorFecha(fecha, user);
+        if (diaEncontrado.isEmpty())
+        {
+            throw new DiaInvalidoException("No se encontro el dia registrado con fecha: " + fecha);
+        }
+
+        // Extraer la lista de comidas ingeridas
+        List<ComidaIngerida> comidas = diaEncontrado.get().getComidasIngeridas();
+
+        // Sumar las calorías de las comidas ingeridas
+        double totalCalorias = comidas.stream()
+                .mapToDouble(ComidaIngerida::getCalorias)
+                .sum();
+
+        return totalCalorias;
+    }
+
+    public ComidaIngerida buscarComidaIngerida(LocalDate fecha, long comidaId, TipoComida tipoComida) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+
+        return comidaIngeridaRepository.findByUserIdAndFechaAndComidaIdAndTipoComida(user.getPersona().getId(), fecha, comidaId, tipoComida)
+                .orElseThrow(() -> new ComidaIngeridaException("No se encontró una comida para el día con la fecha: " + fecha + " en el/la " + tipoComida));
+    }
+
+    public void eliminarComidaIngerida (LocalDate fecha, long comidaId, TipoComida tipoComida)
+    {
+        comidaIngeridaRepository.delete(buscarComidaIngerida(fecha, comidaId, tipoComida));
+    }
 }

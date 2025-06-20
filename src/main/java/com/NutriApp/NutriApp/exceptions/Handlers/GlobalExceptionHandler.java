@@ -28,13 +28,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(UsuarioInvalidoException.class)
     public ResponseEntity<String> manejarUsuarioInvalido(UsuarioInvalidoException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(AuthorityInvalidaException.class)
     public ResponseEntity<String> manejarAuthorityInvalida(AuthorityInvalidaException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(ComidaIngeridaException.class)
+    public ResponseEntity<String> manejarAuthorityInvalida(ComidaIngeridaException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 

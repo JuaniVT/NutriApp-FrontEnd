@@ -15,4 +15,6 @@ public interface DiaRepository extends JpaRepository<Dia, Long> {
     Optional<Dia> findByFechaAndUsuario(LocalDate fecha, Usuario usuario);
 
     List<Dia> findByUsuario(Usuario usuario);
+
+
 }

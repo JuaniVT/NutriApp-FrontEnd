@@ -29,7 +29,7 @@ import java.util.Optional;
 public class ComidaIngeridaController {
 
     private final ComidaIngeridaService comidaIngeridaService;
-
+    private final DiaService diaService;
 
     @PostMapping("/agregar")
     public void agregarComidaIngerida(@RequestParam Long idComida,
@@ -47,6 +47,21 @@ public class ComidaIngeridaController {
         else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo realizar la modificación.");
         }
+    }
+
+    @GetMapping("/calorias-dia")
+    public ResponseEntity<Double> verCaloriasConsumidasDeunDia(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+
+        double totalCalorias = comidaIngeridaService.verCaloriasConsumidasDeunDia(fecha);
+        return ResponseEntity.ok(totalCalorias);
+    }
+
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<String> eliminarComida(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha, long comidaId, TipoComida tipoComida) {
+        comidaIngeridaService.eliminarComidaIngerida(fecha, comidaId, tipoComida);
+        return ResponseEntity.ok("La comida se eliminado correctamente.");
     }
 }
 
