@@ -11,4 +11,6 @@ import java.util.List;
 public interface SolicitudRespository extends JpaRepository<SolicitudAltaAlimento, Integer> {
 
     boolean existsByNombreComida (String nombreComida);
+
+    List<SolicitudAltaAlimento> findAllByUsuarioUsername (String username);
 }

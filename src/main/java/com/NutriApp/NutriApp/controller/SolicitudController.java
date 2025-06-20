@@ -38,4 +38,9 @@ public class SolicitudController {
     public ResponseEntity<List<SolicitudAltaAlimento>> filtrarDedeUnaFecha (@RequestParam LocalDate fechaFiltrar){
         return ResponseEntity.ok(solicitudService.filtrarSolicitudesPorFecha(fechaFiltrar));
     }
+
+    @GetMapping("/listarMisSolicitudes")
+    public ResponseEntity<List<SolicitudAltaAlimento>> listarMisSolicitudes (){
+        return ResponseEntity.ok(solicitudService.listarMisSolicitudes());
+    }
 }
