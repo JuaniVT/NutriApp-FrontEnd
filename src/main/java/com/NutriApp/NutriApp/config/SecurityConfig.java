@@ -66,6 +66,8 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/solicitud/listarTodas").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrarPorFecha").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/filtrar/username").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/filtrar/nombreComida").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )

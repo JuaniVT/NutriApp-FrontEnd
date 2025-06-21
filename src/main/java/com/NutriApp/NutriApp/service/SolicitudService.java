@@ -117,6 +117,17 @@ public class SolicitudService {
                 .toList();
     }
 
+    public List<SolicitudAltaAlimento> filtrarPorNombrecomida (String nombreComida) throws SolicitudInvalidaException{
+        if (solicitudRespository.count() == 0){
+            throw new SolicitudInvalidaException("No hay solicitudes cargadas");
+        }
+
+        return solicitudRespository.findAllByNombreComida(nombreComida).stream()
+                .sorted(Comparator.comparing(SolicitudAltaAlimento::getFecha))    //ordena comparando por fecha
+                .limit(100)
+                .toList();
+    }
+
     public List<SolicitudAltaAlimento> listarMisSolicitudes () throws SolicitudInvalidaException{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authentication.getPrincipal();
@@ -136,5 +147,9 @@ public class SolicitudService {
         }
 
         return list;
+    }
+
+    public String elimiarMiSolicitud (int idSolicitudEliminar){
+
     }
 }

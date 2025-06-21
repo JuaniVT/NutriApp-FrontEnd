@@ -29,25 +29,32 @@ public class SolicitudController {
         return ResponseEntity.ok("Solicitud enviada con exito");
     }
 
-    @GetMapping("/listarTodas")
+    @GetMapping("/listar/todas")
     public ResponseEntity<List<SolicitudAltaAlimento>> listarTodas (){
         return ResponseEntity.ok(solicitudService.listarTodas());
     }
 
-    @GetMapping("/filtrarPorFecha")
+    @GetMapping("/filtrar/fecha")
     public ResponseEntity<List<SolicitudAltaAlimento>> filtrarDedeUnaFecha (@RequestParam LocalDate fechaFiltrar){
         return ResponseEntity.ok(solicitudService.filtrarSolicitudesPorFecha(fechaFiltrar));
     }
 
-    @GetMapping ("/filtrarPorUsername")
+    @GetMapping ("/filtrar/username")
     public ResponseEntity<List<SolicitudAltaAlimento>> filtrarPorUsername (@RequestParam String username){
         return ResponseEntity.ok(solicitudService.filtrarSolicitudesPorUsername(username));
     }
 
-    @GetMapping("/listarMisSolicitudes")
+    @GetMapping("/filtrar/nombreComida")
+    public ResponseEntity<List<SolicitudAltaAlimento>> filtrarPorNombreComida (@RequestParam String nombreComida){
+        return ResponseEntity.ok(solicitudService.filtrarPorNombrecomida(nombreComida));
+    }
+
+    @GetMapping("/listar/misSolicitudes")
     public ResponseEntity<List<SolicitudAltaAlimento>> listarMisSolicitudes (){
         return ResponseEntity.ok(solicitudService.listarMisSolicitudes());
     }
+
+
 
 
 }

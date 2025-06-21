@@ -14,4 +14,5 @@ public interface SolicitudRespository extends JpaRepository<SolicitudAltaAliment
 
     List<SolicitudAltaAlimento> findAllByUsuarioUsername (String username);
 
+    List<SolicitudAltaAlimento> findAllByNombreComida (String nombreComida);
 }
