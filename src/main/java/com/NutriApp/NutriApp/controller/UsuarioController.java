@@ -64,7 +64,7 @@ public class UsuarioController {
         if (eliminado) {
             return ResponseEntity.ok("Usuario eliminado correctamente.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el usuario con username: " + username);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario con username: " + username);
         }
     }
 
