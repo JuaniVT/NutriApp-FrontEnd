@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<AlimentoIngresadoPorUsuario, Integer> {
 
-    boolean existsByNombreComida (String nombreComida);
+    boolean existsByNombreComidaIgnoreCase(String nombreComida);
 }

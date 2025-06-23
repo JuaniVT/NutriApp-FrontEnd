@@ -11,7 +11,7 @@ public class AlimentoIngresadoPorUsuarioService {
     private AlimentoIngresadoPorUsuarioRepository alimentoRepository;
 
     public boolean existsByNombre (String nombre){
-        return alimentoRepository.existsByNombreComida(nombre);
+        return alimentoRepository.existsByNombreComidaIgnoreCase(nombre);
     }
 
 

@@ -41,11 +41,11 @@ public class SolicitudService {
 
     @Transactional
     public void insertar (SolicitudAltaAlimento solicitud) throws SolicitudInvalidaException{
-        if (alimentoIngresadoPorUsuarioRepository.existsByNombreComida(solicitud.getNombreComida())){
+        if (alimentoIngresadoPorUsuarioRepository.existsByNombreComidaIgnoreCase(solicitud.getNombreComida())){
             throw new SolicitudInvalidaException("El alimento ya existe con el nombre = " +solicitud.getNombreComida());
         }
 
-        if (solicitudRespository.existsByNombreComida(solicitud.getNombreComida())){
+        if (solicitudRespository.existsByNombreComidaIgnoreCase(solicitud.getNombreComida())){
             throw new SolicitudInvalidaException("La solicitud ya existe con el nombre = " +solicitud.getNombreComida());
         }
 
@@ -176,11 +176,11 @@ public class SolicitudService {
     @Transactional
     public String modificarMiSolicitud (String nombreComidaSolicitudModificar, SolicitudAltaAlimento solicitudNueva) throws SolicitudInvalidaException{
         //validaciones
-        if (alimentoIngresadoPorUsuarioRepository.existsByNombreComida(solicitudNueva.getNombreComida())){
+        if (alimentoIngresadoPorUsuarioRepository.existsByNombreComidaIgnoreCase(solicitudNueva.getNombreComida())){
             throw new SolicitudInvalidaException("El alimento ya existe con el nombre = " +solicitudNueva.getNombreComida());
         }
 
-        if (solicitudRespository.existsByNombreComida(solicitudNueva.getNombreComida())){
+        if (solicitudRespository.existsByNombreComidaIgnoreCase(solicitudNueva.getNombreComida())){
             throw new SolicitudInvalidaException("La solicitud ya existe con el nombre = " +solicitudNueva.getNombreComida());
         }
 

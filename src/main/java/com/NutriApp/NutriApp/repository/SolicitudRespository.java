@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface SolicitudRespository extends JpaRepository<SolicitudAltaAlimento, Integer> {
 
-    boolean existsByNombreComida (String nombreComida);
+    boolean existsByNombreComidaIgnoreCase(String nombreComida);
     List<SolicitudAltaAlimento> findAllByUsuarioUsername (String username);
     List<SolicitudAltaAlimento> findAllByNombreComidaIgnoreCase(String nombreComida);
     void deleteByUsuarioUsernameAndNombreComidaIgnoreCase(String username, String nombreComida);
