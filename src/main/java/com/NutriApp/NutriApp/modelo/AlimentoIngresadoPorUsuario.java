@@ -45,4 +45,32 @@ public class AlimentoIngresadoPorUsuario {
     @DecimalMin("0.0")
     private Double carbohidratos;
 
+
+    public boolean esValido(){
+        if (nombreComida == null){
+            return false;
+        }
+
+        if (porcion == null){
+            return false;
+        }
+
+        if (calorias == null){
+            return false;
+        }
+
+        if (proteinas == null){
+            return false;
+        }
+
+        if (grasas == null){
+            return false;
+        }
+
+        if (carbohidratos == null){
+            return false;
+        }
+
+        return true;
+    }
 }

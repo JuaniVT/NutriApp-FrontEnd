@@ -4,7 +4,7 @@ package com.NutriApp.NutriApp.service;
 import com.NutriApp.NutriApp.exceptions.SolicitudInvalidaException;
 import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
 import com.NutriApp.NutriApp.modelo.Usuario;
-import com.NutriApp.NutriApp.repository.AlimentoIngresadoPorUsuarioRepository;
+import com.NutriApp.NutriApp.modelo.dto.AlimentoBusquedaDTO;
 import com.NutriApp.NutriApp.repository.SolicitudRespository;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -26,7 +26,7 @@ public class SolicitudService {
     private SolicitudRespository solicitudRespository;
 
     @Autowired
-    private AlimentoIngresadoPorUsuarioRepository alimentoIngresadoPorUsuarioRepository;
+    private AlimentoIngresadoPorUsuarioService alimentoIngresadoPorUsuarioService;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -35,18 +35,21 @@ public class SolicitudService {
     private MailService mailService;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
-
+    private FoodDataService foodDataService;
 
 
     @Transactional
     public void insertar (SolicitudAltaAlimento solicitud) throws SolicitudInvalidaException{
-        if (alimentoIngresadoPorUsuarioRepository.existsByNombreComidaIgnoreCase(solicitud.getNombreComida())){
+        if (alimentoIngresadoPorUsuarioService.existsByNombre(solicitud.getNombreComida())){
             throw new SolicitudInvalidaException("El alimento ya existe con el nombre = " +solicitud.getNombreComida());
         }
 
         if (solicitudRespository.existsByNombreComidaIgnoreCase(solicitud.getNombreComida())){
             throw new SolicitudInvalidaException("La solicitud ya existe con el nombre = " +solicitud.getNombreComida());
+        }
+
+        if (existeEnLaAPI(solicitud.getNombreComida())){
+            throw new SolicitudInvalidaException("El alimento ya existe en la api con el nombre = " + solicitud.getNombreComida());
         }
 
         // Obtener el nombre de usuario desde el token (ya que está autenticado)
@@ -69,6 +72,26 @@ public class SolicitudService {
         mailService.enviarMail("zuriuruzuna6@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
         mailService.enviarMail("juanignaciovalletorres241104@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
         mailService.enviarMail("valen6sacchetta@gmail.com", "Solicitud de Alta de Comida", "Se solicito la alta de esta comida = " +solicitud);
+    }
+
+    //verifica que no se ecuentre en la api
+    private boolean existeEnLaAPI (String nombreComida) throws SolicitudInvalidaException{
+        try {
+            //obtenemos la lista de alimentos de la api en base a un nombre de alimento
+            List<AlimentoBusquedaDTO> alimentosAPI = foodDataService.buscarAlimentosPorNombre(nombreComida);
+
+            //recorremos la lista y nos fijamos si coincide el nombre
+            for (AlimentoBusquedaDTO alimento : alimentosAPI){
+                if (alimento.getDescripcion().trim().equalsIgnoreCase(nombreComida.trim())){    //el .trim() elimina los espacios al inicio y al final del string
+                    return true;
+                }
+            }
+
+        }catch (Exception e){
+            throw new SolicitudInvalidaException("No se pudo verificar con la API externa. Intente más tarde.");
+        }
+
+        return false;
     }
 
 
@@ -176,7 +199,7 @@ public class SolicitudService {
     @Transactional
     public String modificarMiSolicitud (String nombreComidaSolicitudModificar, SolicitudAltaAlimento solicitudNueva) throws SolicitudInvalidaException{
         //validaciones
-        if (alimentoIngresadoPorUsuarioRepository.existsByNombreComidaIgnoreCase(solicitudNueva.getNombreComida())){
+        if (alimentoIngresadoPorUsuarioService.existsByNombre(solicitudNueva.getNombreComida())){
             throw new SolicitudInvalidaException("El alimento ya existe con el nombre = " +solicitudNueva.getNombreComida());
         }
 
@@ -204,5 +227,24 @@ public class SolicitudService {
         //guardamos el objeto modificado
         solicitudRespository.save(solicitudVieja.get());  //el save tambien reemplaza todos los valores de un objeto si ya esta creado en la bdd
         return "Se modifico la solicitud con exito";
+    }
+
+    @Transactional
+    public String aceptarSolicitud (long idSolicitud) throws SolicitudInvalidaException{
+        //bucamos la solicitud
+        Optional<SolicitudAltaAlimento> solicitud = solicitudRespository.findById(idSolicitud);
+
+        //se comprueba que exista
+        if (solicitud.isEmpty()){
+            throw new SolicitudInvalidaException("No se ecnontro la solicitud con el id = " + idSolicitud);
+        }
+
+        //se inserta el alimento en la bdd
+        alimentoIngresadoPorUsuarioService.insertarBasandoseEnSolicitud(solicitud.get());
+
+        //se borra de la tabla la solicitud
+        solicitudRespository.deleteById(solicitud.get().getId());
+
+        return "Solicitud aceptada con exito y alimento ingresado correctamente";
     }
 }

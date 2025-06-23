@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<AlimentoIngresadoPorUsuario, Integer> {
 
     boolean existsByNombreComidaIgnoreCase(String nombreComida);
+    boolean existsById (long id);
 }

@@ -75,5 +75,9 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitudService.modificarMiSolicitud(nombreComidaModificar, solicitudNueva));
     }
 
+    @PostMapping ("/aceptar")
+    public ResponseEntity<String> acepatarSolicitud (@RequestParam long idSolicitud){
+        return ResponseEntity.ok(solicitudService.aceptarSolicitud(idSolicitud));
+    }
 
 }
