@@ -19,7 +19,7 @@ public class AlimentoIngresadoPorUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long id_comida;
 
     @NotBlank
     @Size(min = 2, max = 20)
@@ -27,7 +27,7 @@ public class AlimentoIngresadoPorUsuario {
 
     @NotNull
     @Positive
-    private Long porcion;
+    private Double gramosPorPorcion;
 
     @NotNull
     @DecimalMin("0.0")

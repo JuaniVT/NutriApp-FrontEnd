@@ -1,8 +1,12 @@
 package com.NutriApp.NutriApp.service;
 
+import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.repository.AlimentoIngresadoPorUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Service
 public class AlimentoIngresadoPorUsuarioService {
@@ -14,5 +18,8 @@ public class AlimentoIngresadoPorUsuarioService {
         return alimentoRepository.existsByNombreComida(nombre);
     }
 
-
+    public Optional<MacronutrienteDTO> obtenerMacronutrientes(String nombreComida, Long usuarioId) {
+        Optional <MacronutrienteDTO> dto = alimentoRepository.findMacronutrientesByNombreComidaAndId(nombreComida, usuarioId);
+        return dto;
+    }
 }

@@ -3,10 +3,17 @@ package com.NutriApp.NutriApp.service;
 
 import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@Data
 public class NutricionService {
+
+
+    private final FoodDataService foodDataService;
 
     public MacronutrienteDTO extraerMacronutrientes(JsonNode detalle) throws Exception {
         MacronutrienteDTO dto = new MacronutrienteDTO();
@@ -43,6 +50,31 @@ public class NutricionService {
         }
 
         return dto;
+    }
+
+    // metodo que combina la extraccion de elementos de la api
+    public Optional<MacronutrienteDTO> obtenerMacronutrientesPorId(Long fdcId) {
+        try {
+            Optional <JsonNode> optionalDetalle = foodDataService.obtenerDetallePorIdOptional(fdcId);
+            if (optionalDetalle.isEmpty()) {
+                return Optional.empty();
+            }
+
+            MacronutrienteDTO dto = extraerMacronutrientes(optionalDetalle.get());
+
+            if (dto.getCalorias() == null || dto.getProteinas() == null ||
+                    dto.getGrasas() == null || dto.getCarbohidratos() == null ||
+                    dto.getGramosPorPorcion() == null) {
+
+                return Optional.empty();
+            }
+
+            return Optional.of(dto);
+
+        } catch (Exception e) {
+            // Podés loguear si querés: log.error("Error al obtener macronutrientes por ID", e);
+            return Optional.empty();
+        }
     }
 
 }

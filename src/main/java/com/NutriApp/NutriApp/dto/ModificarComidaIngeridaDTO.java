@@ -14,7 +14,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ModificarComidaIngeridaDTO {
     private long id;
+    private String nombre;
     private double gramos;
     private TipoComida tipoComida;
+    private TipoComida tipoComidaNuevo;
     private LocalDate fecha;
 }

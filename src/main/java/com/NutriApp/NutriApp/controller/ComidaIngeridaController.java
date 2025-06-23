@@ -32,21 +32,19 @@ public class ComidaIngeridaController {
     private final DiaService diaService;
 
     @PostMapping("/agregar")
-    public void agregarComidaIngerida(@RequestParam Long idComida,
-                                      @RequestParam Double gramos,
-                                      @RequestParam TipoComida tipoComida,
-                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) throws Exception {
-        comidaIngeridaService.agregarComidaIngerida(idComida, gramos, tipoComida, fecha);
+    public ResponseEntity<String> agregarComidaIngerida(@RequestParam Long idComida,
+                                                        @RequestParam String nombre,
+                                                        @RequestParam Double gramos,
+                                                        @RequestParam TipoComida tipoComida,
+                                                        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) throws Exception {
+        comidaIngeridaService.agregarComidaIngerida(idComida, nombre, gramos, tipoComida, fecha);
+        return ResponseEntity.ok("Se cargo correctamnete el alimento " + nombre);
     }
+
     @PutMapping("/modificar")
-    public ResponseEntity<String> modificarComidaIngerida (@RequestBody ModificarComidaIngeridaDTO modificarComidaIngeridaDTO) throws Exception
-    {
-        if (comidaIngeridaService.modificarComida(modificarComidaIngeridaDTO)){
-            return ResponseEntity.ok("Se modifico correctamente la comida");
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo realizar la modificación.");
-        }
+    public ResponseEntity<String> modificarComidaIngerida(@RequestBody ModificarComidaIngeridaDTO modificarComidaIngeridaDTO) throws Exception {
+        comidaIngeridaService.modificarComida(modificarComidaIngeridaDTO);
+        return ResponseEntity.ok("Se modifico correctamente la comida");
     }
 
     @GetMapping("/calorias-dia")

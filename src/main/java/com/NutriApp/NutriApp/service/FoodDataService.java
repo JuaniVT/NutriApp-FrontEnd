@@ -15,6 +15,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FoodDataService {
@@ -56,4 +57,25 @@ public class FoodDataService {
 
         return new ObjectMapper().readTree(response.getBody());
     }
+
+    public Optional<JsonNode> obtenerDetallePorIdOptional(Long fdcId) {
+        try {
+            String url = "https://api.nal.usda.gov/fdc/v1/food/" + fdcId + "?api_key=" + apiKey;
+
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+
+            if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+                return Optional.empty();
+            }
+
+            JsonNode detalle = new ObjectMapper().readTree(response.getBody());
+            return Optional.of(detalle);
+
+        } catch (Exception e) {
+            // Podés loguear si querés: log.error("Error al obtener detalles del alimento con ID: " + fdcId, e);
+            return Optional.empty();
+        }
+    }
+
+
 }
