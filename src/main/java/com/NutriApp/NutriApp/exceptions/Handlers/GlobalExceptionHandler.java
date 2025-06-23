@@ -33,6 +33,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
+    @ExceptionHandler(UsuarioInexistenteException.class)
+    public ResponseEntity<String> manejarUsuarioInexstente(UsuarioInexistenteException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+
     @ExceptionHandler(AuthorityInvalidaException.class)
     public ResponseEntity<String> manejarAuthorityInvalida(AuthorityInvalidaException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());

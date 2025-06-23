@@ -34,9 +34,8 @@ public class ComidaIngeridaController {
     @PostMapping("/agregar")
     public void agregarComidaIngerida(@RequestParam Long idComida,
                                       @RequestParam Double gramos,
-                                      @RequestParam TipoComida tipoComida,
-                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) throws Exception {
-        comidaIngeridaService.agregarComidaIngerida(idComida, gramos, tipoComida, fecha);
+                                      @RequestParam TipoComida tipoComida) throws Exception {
+        comidaIngeridaService.agregarComidaIngerida(idComida, gramos, tipoComida);
     }
     @PutMapping("/modificar")
     public ResponseEntity<String> modificarComidaIngerida (@RequestBody ModificarComidaIngeridaDTO modificarComidaIngeridaDTO) throws Exception

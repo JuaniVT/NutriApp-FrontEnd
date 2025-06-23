@@ -33,16 +33,16 @@ public class ComidaIngeridaService {
     private final DiaService diaService;
 
     @Transactional
-    public void agregarComidaIngerida(long id_comida, double gramos, TipoComida tipo, LocalDate fecha) throws Exception {
+    public void agregarComidaIngerida(long id_comida, double gramos, TipoComida tipo ) throws Exception {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
 
         // Buscás el Día o lo creás si no existe
-        Dia dia = diaService.obtenerODiaOCrear(fecha, user);
+        Dia dia = diaService.obtenerODiaOCrear(user.getFechaActiva(), user);
 
         // Armás la comida
-        ComidaIngerida comida= new ComidaIngerida();
+        ComidaIngerida comida = new ComidaIngerida();
         comida = convertir_comidaid(comida, id_comida, gramos);
         comida.setTipoComida(tipo);
         comida.setDia(dia);
@@ -72,6 +72,7 @@ public class ComidaIngeridaService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
         Optional<Dia> dia = diaService.obtenerDiaPorFecha(dto.getFecha(), user);
+
         if (dia.isEmpty()) {
             throw new DiaInvalidoException("No hay un registro realizado en ese dia");
         }

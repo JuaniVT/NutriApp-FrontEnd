@@ -1,5 +1,6 @@
 package com.NutriApp.NutriApp.config;
 
+import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.service.JwtService;
 import com.NutriApp.NutriApp.service.UsuarioService;
 import jakarta.servlet.FilterChain;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.LocalDate;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
@@ -69,6 +72,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 // Establecemos el usuario autenticado en el contexto de Spring
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                // Logica para actualizar la fecha activa del usuario
+                Usuario usuario = userDetailsService.buscarPorEmail(userDetails.getUsername());
+                if (usuario != null) {
+                    LocalDate hoy = LocalDate.now();
+                    if (usuario.getFechaActiva() == null || !usuario.getFechaActiva().equals(hoy)) {
+                        usuario.setFechaActiva(hoy);
+                        userDetailsService.guardar(usuario);
+                    }
+                }
+
+
             }
         }
 

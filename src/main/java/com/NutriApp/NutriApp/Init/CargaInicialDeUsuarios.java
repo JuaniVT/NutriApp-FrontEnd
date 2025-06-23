@@ -88,6 +88,8 @@ public class CargaInicialDeUsuarios {
         usuario.setRole(authority);
         usuario.setPersona(persona);
 
+        usuario.setFechaActiva(LocalDate.now());
+
         return usuario;
     }
 

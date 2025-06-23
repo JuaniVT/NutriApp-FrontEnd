@@ -3,24 +3,23 @@ package com.NutriApp.NutriApp.service;
 import com.NutriApp.NutriApp.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.exceptions.UsuarioInexistenteException;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
 import com.NutriApp.NutriApp.modelo.Authority;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.Role;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +42,7 @@ public class UsuarioService implements UserDetailsService {
         } else {
             return false;
         }
+
     }
 
     public boolean existsByDni (String username){
@@ -51,6 +51,15 @@ public class UsuarioService implements UserDetailsService {
         }
         return false;
     }
+
+
+    public Usuario buscarPorEmail(String username){
+
+        return usuarioRepository.findById(username)
+                .orElseThrow(() -> new UsuarioInexistenteException("Usuario no encontrado con el email : " + username));
+
+    }
+
     // Crear nueva usuario
     public void guardar(Usuario user) {
 

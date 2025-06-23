@@ -41,6 +41,10 @@ public class NutricionService {
             JsonNode primeraPorcion = porciones.get(0); // podés ajustar si querés otro criterio
             dto.setGramosPorPorcion(primeraPorcion.path("gramWeight").asDouble());
         }
+        else{
+
+            dto.setGramosPorPorcion(100.0);
+        }
 
         return dto;
     }

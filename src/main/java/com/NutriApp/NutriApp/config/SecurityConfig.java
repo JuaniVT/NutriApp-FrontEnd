@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
+                        .requestMatchers("/comidas/agregar").authenticated()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
