@@ -20,6 +20,8 @@ public class ComidaIngerida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nombrePaquete;
+
     private String nombreComida;
 
     private Double calorias;

@@ -146,7 +146,7 @@ public class ComidaIngeridaService {
 
         // Sumar las calorías de las comidas ingeridas
         double totalCalorias = comidas.stream()
-                .mapToDouble(ComidaIngerida::getCalorias)
+                .mapToDouble(ComidaIngerida::getCantidad)
                 .sum();
 
         return totalCalorias;
