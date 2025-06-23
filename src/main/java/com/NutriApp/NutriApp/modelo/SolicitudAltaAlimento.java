@@ -48,9 +48,8 @@ public class SolicitudAltaAlimento {
 
     private LocalDateTime fecha;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_solicitud_usuario")/*anotacion para generar un nombre interno de la FK en la bdd*/)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Usuario usuario;
 

@@ -6,8 +6,14 @@ import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.repository.AlimentoIngresadoPorUsuarioRepository;
 import com.NutriApp.NutriApp.repository.SolicitudRespository;
+import com.NutriApp.NutriApp.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,6 +22,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class SolicitudService {
@@ -31,6 +39,9 @@ public class SolicitudService {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
 
 
@@ -149,7 +160,19 @@ public class SolicitudService {
         return list;
     }
 
-    public String elimiarMiSolicitud (int idSolicitudEliminar){
+    @Transactional
+    public String elimiarMiSolicitud (String nombreComidaSolicitudEliminar) throws SolicitudInvalidaException{  //busca en sus solicitudes y si encuentra el mismo nombre de comida (ignora las mayusculas o minusculas) lo elimina, sino tira exception
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuario = (Usuario) authentication.getPrincipal();      //obtengo el usuario logeado
 
+        if (solicitudRespository.existsByUsuarioUsernameAndNombreComidaIgnoreCase(usuario.getUsername(), nombreComidaSolicitudEliminar)){ //si el usuario logeado tiene esa solicitud
+
+            solicitudRespository.deleteByUsuarioUsernameAndNombreComidaIgnoreCase(usuario.getUsername(), nombreComidaSolicitudEliminar);  //se elimina la solicitud
+            return "Solicitud eliminada con exito";
+        }
+
+
+
+        throw new SolicitudInvalidaException("Usted no tiene ninguna solicitud cargada con el nombre de comida = " + nombreComidaSolicitudEliminar);    //tira exception porque ese usuaior no tiene esa solicitud
     }
 }

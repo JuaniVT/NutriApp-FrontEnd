@@ -62,6 +62,10 @@ public class Usuario implements UserDetails {
     @JsonIgnore
     private List<Dia> dias = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<SolicitudAltaAlimento> solicitudes = new ArrayList<>();
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getAuthority().toString()));

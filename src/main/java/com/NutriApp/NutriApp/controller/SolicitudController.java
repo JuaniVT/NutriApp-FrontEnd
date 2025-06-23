@@ -22,6 +22,7 @@ public class SolicitudController {
 
     private final SolicitudService solicitudService;
 
+    //cualquiera registrado
     @PostMapping("/insertar")
     public ResponseEntity<String> insertar (@RequestBody SolicitudAltaAlimento solicitudAltaAlimento) throws SolicitudInvalidaException {
         solicitudService.insertar(solicitudAltaAlimento);
@@ -29,32 +30,41 @@ public class SolicitudController {
         return ResponseEntity.ok("Solicitud enviada con exito");
     }
 
+    //solo admins
     @GetMapping("/listar/todas")
     public ResponseEntity<List<SolicitudAltaAlimento>> listarTodas (){
         return ResponseEntity.ok(solicitudService.listarTodas());
     }
 
+    //solo admins
     @GetMapping("/filtrar/fecha")
     public ResponseEntity<List<SolicitudAltaAlimento>> filtrarDedeUnaFecha (@RequestParam LocalDate fechaFiltrar){
         return ResponseEntity.ok(solicitudService.filtrarSolicitudesPorFecha(fechaFiltrar));
     }
 
+    //solo admins
     @GetMapping ("/filtrar/username")
     public ResponseEntity<List<SolicitudAltaAlimento>> filtrarPorUsername (@RequestParam String username){
         return ResponseEntity.ok(solicitudService.filtrarSolicitudesPorUsername(username));
     }
 
+    //solo admins
     @GetMapping("/filtrar/nombreComida")
     public ResponseEntity<List<SolicitudAltaAlimento>> filtrarPorNombreComida (@RequestParam String nombreComida){
         return ResponseEntity.ok(solicitudService.filtrarPorNombrecomida(nombreComida));
     }
 
+    //cualquiera que este registrado
     @GetMapping("/listar/misSolicitudes")
     public ResponseEntity<List<SolicitudAltaAlimento>> listarMisSolicitudes (){
         return ResponseEntity.ok(solicitudService.listarMisSolicitudes());
     }
 
-
+    //cualquiera que este registrado
+    @DeleteMapping ("/eliminar")
+    public ResponseEntity<String> eliminarMiSolicitud (@RequestParam String nombreComidaSolicitudEliminar){
+        return ResponseEntity.ok(solicitudService.elimiarMiSolicitud(nombreComidaSolicitudEliminar));
+    }
 
 
 }
