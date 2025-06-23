@@ -50,9 +50,9 @@ public class UsuarioController {
         boolean eliminado = usuarioService.eliminarCuentaActual();
 
         if (eliminado) {
-            return ResponseEntity.ok("Cuenta eliminada correctamente.");
+            return ResponseEntity.ok("Cuenta eliminada correctamente");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario");
         }
     }
     @DeleteMapping("/eliminar/{username}")
@@ -62,7 +62,7 @@ public class UsuarioController {
         boolean eliminado = usuarioService.eliminarCuentaPorUsername(username);
 
         if (eliminado) {
-            return ResponseEntity.ok("Usuario eliminado correctamente.");
+            return ResponseEntity.ok("Usuario eliminado correctamente");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario con username: " + username);
         }

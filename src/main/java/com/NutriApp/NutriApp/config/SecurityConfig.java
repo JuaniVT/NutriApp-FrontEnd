@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -29,22 +28,9 @@ import javax.sql.DataSource;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-
-    /* dejo comentado por si no tenemos acceso a la base de datos en algun momento
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("admin123"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin);
-    }*/
-
     @Autowired
-    private AccesDeniedExceptionHandler accesDeniedExceptionHandler;  //atributo para manejar la exception de acceso denegado
+    private AccesDeniedExceptionHandler accesDeniedExceptionHandler;
 
-    // Configuración del filtro de seguridad para proteger rutas y validar JWT
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtAuthFilter,
@@ -53,28 +39,24 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
+                        .requestMatchers("/api/usuario/registro").permitAll()
                         .requestMatchers("/api/persona/listar").permitAll()
                         .requestMatchers("api/alimentos/buscar").permitAll()
                         .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
                         .requestMatchers("/api/solicitud/insertar").permitAll()
+                        .requestMatchers("/usuario/eliminarCuenta").authenticated() // <--- acá el cambio
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
-                                .accessDeniedHandler(accesDeniedExceptionHandler)       //maneja la exception de acceso denegado aca
-                        //porque antes que llegue a globalExceptionHandler
-                        //sea catchea antes entonces hay que manejarla aca
+                        .accessDeniedHandler(accesDeniedExceptionHandler)
                 )
-
                 .authenticationProvider(authenticationProvider(userDetailsService))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
 
-    // Proveedor de autenticación que conecta al servicio de usuarios y al codificador
     @Bean
     public AuthenticationProvider authenticationProvider(UsuarioService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -83,27 +65,21 @@ public class SecurityConfig {
         return provider;
     }
 
-    // AuthenticationManager usando directamente el AuthenticationProvider
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
         return new ProviderManager(authenticationProvider);
     }
 
-    //Eleccion del tipo de passwordEncoder
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Por ejemplo, BCryptPasswordEncoder es una buena práctica
         return new BCryptPasswordEncoder();
     }
 
-
-    // nos permite manejar usuarios desde el codigo Java
     @Bean
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
     }
 
-    //herencia de roles
     @Bean
     public RoleHierarchy roleHierarchy() {
         var hierarchy = new RoleHierarchyImpl();
@@ -113,4 +89,3 @@ public class SecurityConfig {
         return hierarchy;
     }
 }
-
