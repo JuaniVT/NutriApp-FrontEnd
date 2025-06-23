@@ -45,12 +45,13 @@ public class UsuarioService implements UserDetailsService {
         }
     }
 
-    public boolean existsByDni (String username){
+    public boolean existsByDni(String username) {
         if (usuarioRepository.existsByUsername(username)) {
             return true;
         }
         return false;
     }
+
     // Crear nueva usuario
     public void guardar(Usuario user) {
 
@@ -98,8 +99,7 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizarDatosUsuario (UsuarioDTO usuario)
-    {
+    public void actualizarDatosUsuario(UsuarioDTO usuario) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
         user.setUsername(usuario.getUsername());
@@ -107,5 +107,29 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(user);
     }
 
+    // Eliminar cuenta por usuario
+    @Transactional
+    public boolean eliminarCuentaActual() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuario = (Usuario) auth.getPrincipal();
+
+        if (!usuarioRepository.existsByUsername(usuario.getUsername())) {
+            return false;
+        }
+
+        usuarioRepository.deleteById(usuario.getUsername());
+        return true;
+    }
+
+    @Transactional
+    public boolean eliminarCuentaPorUsername(String username) {
+        if (!usuarioRepository.existsByUsername(username)) {
+            return false;
+        }
+        usuarioRepository.deleteById(username);
+        return true;
+    }
 }
+
+
 

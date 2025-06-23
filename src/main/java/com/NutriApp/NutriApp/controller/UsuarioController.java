@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -43,6 +44,31 @@ public class UsuarioController {
         usuarioService.actualizarDatosUsuario(nuevo);
         return ResponseEntity.ok("Se actualizaron correctamente los cambios");
     }
+
+    @DeleteMapping("/eliminarCuenta")
+    public ResponseEntity<String> eliminarCuentaPropia() {
+        boolean eliminado = usuarioService.eliminarCuentaActual();
+
+        if (eliminado) {
+            return ResponseEntity.ok("Cuenta eliminada correctamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario.");
+        }
+    }
+    @DeleteMapping("/eliminar/{username}")
+// Solo admin puede acceder
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> eliminarCuentaPorAdmin(@PathVariable String username) {
+        boolean eliminado = usuarioService.eliminarCuentaPorUsername(username);
+
+        if (eliminado) {
+            return ResponseEntity.ok("Usuario eliminado correctamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el usuario con username: " + username);
+        }
+    }
+
+
 
 }
 
