@@ -9,11 +9,6 @@ import com.NutriApp.NutriApp.repository.SolicitudRespository;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 public class SolicitudService {
@@ -45,6 +39,7 @@ public class SolicitudService {
 
 
 
+    @Transactional
     public void insertar (SolicitudAltaAlimento solicitud) throws SolicitudInvalidaException{
         if (alimentoIngresadoPorUsuarioRepository.existsByNombreComida(solicitud.getNombreComida())){
             throw new SolicitudInvalidaException("El alimento ya existe con el nombre = " +solicitud.getNombreComida());
@@ -133,7 +128,7 @@ public class SolicitudService {
             throw new SolicitudInvalidaException("No hay solicitudes cargadas");
         }
 
-        return solicitudRespository.findAllByNombreComida(nombreComida).stream()
+        return solicitudRespository.findAllByNombreComidaIgnoreCase(nombreComida).stream()
                 .sorted(Comparator.comparing(SolicitudAltaAlimento::getFecha))    //ordena comparando por fecha
                 .limit(100)
                 .toList();
@@ -160,7 +155,7 @@ public class SolicitudService {
         return list;
     }
 
-    @Transactional
+    @Transactional  //notacion necesaria para todos los metodos que son delete remove y demas
     public String elimiarMiSolicitud (String nombreComidaSolicitudEliminar) throws SolicitudInvalidaException{  //busca en sus solicitudes y si encuentra el mismo nombre de comida (ignora las mayusculas o minusculas) lo elimina, sino tira exception
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) authentication.getPrincipal();      //obtengo el usuario logeado
@@ -174,5 +169,40 @@ public class SolicitudService {
 
 
         throw new SolicitudInvalidaException("Usted no tiene ninguna solicitud cargada con el nombre de comida = " + nombreComidaSolicitudEliminar);    //tira exception porque ese usuaior no tiene esa solicitud
+    }
+
+
+    //se fija en la solicitud que se quiere modificar y solo le setea los campos nuevos que vienen como entrada (no hace falta mandar todos los campos en la entrada)
+    @Transactional
+    public String modificarMiSolicitud (String nombreComidaSolicitudModificar, SolicitudAltaAlimento solicitudNueva) throws SolicitudInvalidaException{
+        //validaciones
+        if (alimentoIngresadoPorUsuarioRepository.existsByNombreComida(solicitudNueva.getNombreComida())){
+            throw new SolicitudInvalidaException("El alimento ya existe con el nombre = " +solicitudNueva.getNombreComida());
+        }
+
+        if (solicitudRespository.existsByNombreComida(solicitudNueva.getNombreComida())){
+            throw new SolicitudInvalidaException("La solicitud ya existe con el nombre = " +solicitudNueva.getNombreComida());
+        }
+
+
+        //obtenemos el usuario logeado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuario = (Usuario) authentication.getPrincipal();
+
+        //obtenemos la solicitud a la que se quiere actualizar los campos
+        Optional<SolicitudAltaAlimento> solicitudVieja = solicitudRespository.findByUsuarioUsernameAndNombreComidaIgnoreCase(usuario.getUsername(), nombreComidaSolicitudModificar);
+
+        //comprobamos que exista la solicitud a la que se quiere modificar
+        if (solicitudVieja.isEmpty()){
+            throw new SolicitudInvalidaException("Usted no tiene ninguna solicitud cargada con el nombre de comida = " + nombreComidaSolicitudModificar);
+        }
+
+        //seteos de los campos nuevos a la vieja solicitud
+        solicitudVieja.get().setearDatosDesdeNuevaSolicitud(solicitudNueva);  // se lo seteamos porque si viene nulo, cuando hacemos el save no nos va a dejar
+
+
+        //guardamos el objeto modificado
+        solicitudRespository.save(solicitudVieja.get());  //el save tambien reemplaza todos los valores de un objeto si ya esta creado en la bdd
+        return "Se modifico la solicitud con exito";
     }
 }

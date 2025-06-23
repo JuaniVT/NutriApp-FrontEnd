@@ -2,14 +2,17 @@ package com.NutriApp.NutriApp.controller;
 
 import com.NutriApp.NutriApp.exceptions.SolicitudInvalidaException;
 import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
+import com.NutriApp.NutriApp.modelo.ValidacionBasica;
 import com.NutriApp.NutriApp.service.SolicitudService;
 import jakarta.annotation.security.PermitAll;
+import jakarta.persistence.ValidationMode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -24,7 +27,7 @@ public class SolicitudController {
 
     //cualquiera registrado
     @PostMapping("/insertar")
-    public ResponseEntity<String> insertar (@RequestBody SolicitudAltaAlimento solicitudAltaAlimento) throws SolicitudInvalidaException {
+    public ResponseEntity<String> insertar (@RequestBody @Validated SolicitudAltaAlimento solicitudAltaAlimento) throws SolicitudInvalidaException {
         solicitudService.insertar(solicitudAltaAlimento);
 
         return ResponseEntity.ok("Solicitud enviada con exito");
@@ -64,6 +67,12 @@ public class SolicitudController {
     @DeleteMapping ("/eliminar")
     public ResponseEntity<String> eliminarMiSolicitud (@RequestParam String nombreComidaSolicitudEliminar){
         return ResponseEntity.ok(solicitudService.elimiarMiSolicitud(nombreComidaSolicitudEliminar));
+    }
+
+    //cualquiera que este registrado
+    @PutMapping("/modificar/miSolicitud")
+    public ResponseEntity<String> modificarMiSolicitud (String nombreComidaModificar, @RequestBody @Validated(ValidacionBasica.class) SolicitudAltaAlimento solicitudNueva){
+        return ResponseEntity.ok(solicitudService.modificarMiSolicitud(nombreComidaModificar, solicitudNueva));
     }
 
 

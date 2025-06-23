@@ -26,24 +26,24 @@ public class SolicitudAltaAlimento {
     @Size(min = 2, max = 20)
     private String nombreComida;
 
-    @NotNull
-    @Positive
-    private Long porcion;
+    @NotNull    // con esto creo un grupo de validaciones que cuando yo le meto un @Validated a un parametro de un objeto de esta clase,
+    @Positive(groups = ValidacionBasica.class)   // lo pongo para que me valide solo los campos del grupo que yo especifique porque en este caso necesito que no me valide
+    private Long porcion;                      // el nombre de comida
 
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double calorias;
 
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double proteinas;
 
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double grasas;
 
     @NotNull
-    @DecimalMin("0.0")
+    @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double carbohidratos;
 
     private LocalDateTime fecha;
@@ -71,5 +71,14 @@ public class SolicitudAltaAlimento {
                 ", fecha=" + fecha +
                 ", usuario=" + usuario.getUsername() +
                 '}';
+    }
+
+    public void setearDatosDesdeNuevaSolicitud(SolicitudAltaAlimento nueva) {
+        if (nueva.getNombreComida() != null) this.setNombreComida(nueva.getNombreComida());
+        if (nueva.getPorcion() != null) this.setPorcion(nueva.getPorcion());
+        if (nueva.getCalorias() != null) this.setCalorias(nueva.getCalorias());
+        if (nueva.getProteinas() != null) this.setProteinas(nueva.getProteinas());
+        if (nueva.getGrasas() != null) this.setGrasas(nueva.getGrasas());
+        if (nueva.getCarbohidratos() != null) this.setCarbohidratos(nueva.getCarbohidratos());
     }
 }

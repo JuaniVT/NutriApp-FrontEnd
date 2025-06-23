@@ -5,14 +5,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SolicitudRespository extends JpaRepository<SolicitudAltaAlimento, Integer> {
 
     boolean existsByNombreComida (String nombreComida);
     List<SolicitudAltaAlimento> findAllByUsuarioUsername (String username);
-    List<SolicitudAltaAlimento> findAllByNombreComida (String nombreComida);
+    List<SolicitudAltaAlimento> findAllByNombreComidaIgnoreCase(String nombreComida);
     void deleteByUsuarioUsernameAndNombreComidaIgnoreCase(String username, String nombreComida);
-    boolean existsByUsuarioUsernameAndNombreComidaIgnoreCase(String username, String nombreComida);//me elimino los usuarios, personas authorities y demas
+    boolean existsByUsuarioUsernameAndNombreComidaIgnoreCase(String username, String nombreComida);
+
+    Optional<SolicitudAltaAlimento> findByUsuarioUsernameAndNombreComidaIgnoreCase (String username, String nombreComida);
+
 
 }
