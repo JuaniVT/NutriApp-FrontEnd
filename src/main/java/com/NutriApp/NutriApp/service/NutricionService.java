@@ -1,7 +1,7 @@
 package com.NutriApp.NutriApp.service;
 
 
-import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
+import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.springframework.stereotype.Service;

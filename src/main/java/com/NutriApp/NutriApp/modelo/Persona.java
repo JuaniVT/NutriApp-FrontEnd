@@ -1,14 +1,12 @@
 package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.modelo.enums.Genero;
-import com.NutriApp.NutriApp.modelo.enums.GeneroConverter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.Tolerate;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -68,6 +66,11 @@ public class Persona {
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     @JsonIgnore
     private Usuario usuario;
+
+    @JsonProperty ("username")  //le estamos diciendo que cuando agararre un json de este objeto tambien tome este como atributo, ya que el usuario lo ignora con el @JsonIgnore
+    public String getUsername(){
+        return usuario.getUsername();
+    }
 
     @Tolerate   //esto es para que lombok me tome el contructor de persona personalizado
     public Persona(String nombre, String apellido, String dni, LocalDate fechaNacimiento, String telefono, String direccion, Genero genero, String email) {

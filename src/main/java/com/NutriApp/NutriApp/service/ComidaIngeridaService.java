@@ -1,8 +1,8 @@
 package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.dto.ComidaIngeridaDTO;
-import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
-import com.NutriApp.NutriApp.dto.ModificarComidaIngeridaDTO;
+import com.NutriApp.NutriApp.modelo.dto.ComidaIngeridaDTO;
+import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
+import com.NutriApp.NutriApp.modelo.dto.ModificarComidaIngeridaDTO;
 import com.NutriApp.NutriApp.exceptions.ComidaIngeridaException;
 import com.NutriApp.NutriApp.exceptions.DiaInvalidoException;
 import com.NutriApp.NutriApp.modelo.Comida;

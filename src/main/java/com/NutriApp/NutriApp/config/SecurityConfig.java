@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.config;
 
 import com.NutriApp.NutriApp.exceptions.Handlers.AccesDeniedExceptionHandler;
+import com.NutriApp.NutriApp.exceptions.Handlers.TokenInvalidoExceptionHandler;
 import com.NutriApp.NutriApp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -31,6 +33,10 @@ public class SecurityConfig {
     @Autowired
     private AccesDeniedExceptionHandler accesDeniedExceptionHandler;
 
+    @Autowired
+    private TokenInvalidoExceptionHandler tokenInvalidoExceptionHandler;
+
+    // Configuración del filtro de seguridad para proteger rutas y validar JWT
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtAuthFilter,
@@ -39,7 +45,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuario/registro").permitAll()
+                        .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
                         .requestMatchers("/api/persona/listar").permitAll()
                         .requestMatchers("api/alimentos/buscar").permitAll()
                         .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
@@ -47,16 +53,33 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
                         .requestMatchers("/api/solicitud/insertar").permitAll()
                         .requestMatchers("/usuario/eliminarCuenta").authenticated() // <--- acá el cambio
+
+                        //solicitudes
+                        .requestMatchers("/api/solicitud/listarTodas").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/filtrarPorFecha").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/filtrar/username").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/filtrar/nombreComida").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/aceptar").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/rechazar").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(accesDeniedExceptionHandler)
+                        //maneja la exception de acceso denegado aca
+                        //porque antes que llegue a globalExceptionHandler
+                        //sea catchea antes entonces hay que manejarla aca
+
+                        .authenticationEntryPoint(tokenInvalidoExceptionHandler) //manejador para token faltante o invalido
                 )
+
                 .authenticationProvider(authenticationProvider(userDetailsService))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+
     }
 
+    // Proveedor de autenticación que conecta al servicio de usuarios y al codificador
     @Bean
     public AuthenticationProvider authenticationProvider(UsuarioService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -65,21 +88,27 @@ public class SecurityConfig {
         return provider;
     }
 
+    // AuthenticationManager usando directamente el AuthenticationProvider
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
         return new ProviderManager(authenticationProvider);
     }
 
+    //Eleccion del tipo de passwordEncoder
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // Por ejemplo, BCryptPasswordEncoder es una buena práctica
         return new BCryptPasswordEncoder();
     }
 
+
+    // nos permite manejar usuarios desde el codigo Java
     @Bean
     public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
     }
 
+    //herencia de roles
     @Bean
     public RoleHierarchy roleHierarchy() {
         var hierarchy = new RoleHierarchyImpl();
@@ -89,3 +118,4 @@ public class SecurityConfig {
         return hierarchy;
     }
 }
+

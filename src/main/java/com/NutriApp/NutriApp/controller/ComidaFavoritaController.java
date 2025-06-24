@@ -1,8 +1,8 @@
 package com.NutriApp.NutriApp.controller;
 
-import com.NutriApp.NutriApp.dto.ComidaFavoritaDTO;
-import com.NutriApp.NutriApp.dto.ComidaIngeridaDTO;
-import com.NutriApp.NutriApp.dto.ModificarCantidadComidaFavoritaDTO;
+import com.NutriApp.NutriApp.modelo.dto.ComidaFavoritaDTO;
+import com.NutriApp.NutriApp.modelo.dto.ComidaIngeridaDTO;
+import com.NutriApp.NutriApp.modelo.dto.ModificarCantidadComidaFavoritaDTO;
 import com.NutriApp.NutriApp.modelo.ComidaFavorita;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.NutriApp.NutriApp.service.ComidaFavoritaService;

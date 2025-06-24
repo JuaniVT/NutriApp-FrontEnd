@@ -1,7 +1,7 @@
 package com.NutriApp.NutriApp.service;
 
 
-import com.NutriApp.NutriApp.dto.AlimentoBusquedaDTO;
+import com.NutriApp.NutriApp.modelo.dto.AlimentoBusquedaDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;

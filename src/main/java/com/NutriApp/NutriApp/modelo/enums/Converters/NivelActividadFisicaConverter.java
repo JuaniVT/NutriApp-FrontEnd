@@ -1,5 +1,6 @@
-package com.NutriApp.NutriApp.modelo.enums;
+package com.NutriApp.NutriApp.modelo.enums.Converters;
 
+import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

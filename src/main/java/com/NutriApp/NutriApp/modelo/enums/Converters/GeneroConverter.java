@@ -1,4 +1,5 @@
-package com.NutriApp.NutriApp.modelo.enums;
+package com.NutriApp.NutriApp.modelo.enums.Converters;
+import com.NutriApp.NutriApp.modelo.enums.Genero;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

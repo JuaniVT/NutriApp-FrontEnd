@@ -1,9 +1,6 @@
 package com.NutriApp.NutriApp.exceptions.Handlers;
 
-import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
-import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
-import com.NutriApp.NutriApp.exceptions.UsuarioExistente;
-import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
+import com.NutriApp.NutriApp.exceptions.*;
 import jakarta.mail.SendFailedException;
 import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
 import org.springframework.http.HttpHeaders;
@@ -13,13 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.SqlReturnType;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
@@ -93,6 +95,25 @@ public class GlobalExceptionHandler{
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El correo no se pudo mandar = " +ex.getMessage());
     }
 
+    @ExceptionHandler
+    public ResponseEntity<String> manejarAccessDeniedException (AuthorizationDeniedException ex){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage() + " = permisos insuficientes");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarNoResourceFoundException (NoResourceFoundException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No existe la ruta especificada");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarMissingServletRequestParameterException (MissingServletRequestParameterException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se requiere el parametro = " +ex.getParameterName());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarSolicitudInvalidaException (SolicitudInvalidaException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
 
 }

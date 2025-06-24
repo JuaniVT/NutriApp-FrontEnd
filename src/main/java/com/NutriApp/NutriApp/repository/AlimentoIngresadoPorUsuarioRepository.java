@@ -1,7 +1,7 @@
 package com.NutriApp.NutriApp.repository;
 
-import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.modelo.AlimentoIngresadoPorUsuario;
+import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<AlimentoIngresadoPorUsuario, Integer> {
+public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<AlimentoIngresadoPorUsuario, Long> {
 
     boolean existsByNombreComida (String nombreComida);
 
     @Query("""
-       SELECT new com.NutriApp.NutriApp.dto.MacronutrienteDTO(
+       SELECT new com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO(
            a.nombreComida,
-           a.id_comida,
+           a.id,
            a.calorias,
            a.proteinas,
            a.grasas,
@@ -25,7 +25,9 @@ public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<Ali
            a.gramosPorPorcion
        )
        FROM alimentoIngresadoPorUsuario a
-       WHERE a.nombreComida = :nombreComida AND a.id_comida = :id
+       WHERE a.nombreComida = :nombreComida AND a.id = :id
        """)
     Optional<MacronutrienteDTO> findMacronutrientesByNombreComidaAndId(@Param("nombreComida") String nombreComida, @Param("id") Long id);
+    boolean existsByNombreComidaIgnoreCase(String nombreComida);
+    boolean existsById (long id);
 }

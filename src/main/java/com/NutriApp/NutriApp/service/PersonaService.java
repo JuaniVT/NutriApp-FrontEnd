@@ -1,7 +1,7 @@
 package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.dto.PersonaDTO;
-import com.NutriApp.NutriApp.dto.UsuarioDTO;
+import com.NutriApp.NutriApp.modelo.dto.PersonaDTO;
+import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
@@ -79,5 +79,10 @@ public class PersonaService {
 
         // Guardás en el repositorio
         personaRepository.save(persona1);
+    }
+
+    public Persona obtenerPorUsername (String username) throws PersonaInvalidaException{
+        return personaRepository.findByUsuarioUsername(username).
+                orElseThrow(() -> new PersonaInvalidaException("Persona no encontrada con el username = " + username));
     }
 }

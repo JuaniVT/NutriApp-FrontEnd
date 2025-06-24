@@ -1,7 +1,6 @@
 package com.NutriApp.NutriApp.controller;
 
-import com.NutriApp.NutriApp.dto.ComidaIngeridaDTO;
-import com.NutriApp.NutriApp.dto.ModificarComidaIngeridaDTO;
+import com.NutriApp.NutriApp.modelo.dto.ModificarComidaIngeridaDTO;
 import com.NutriApp.NutriApp.exceptions.DiaInvalidoException;
 import com.NutriApp.NutriApp.modelo.ComidaIngerida;
 import com.NutriApp.NutriApp.modelo.Dia;

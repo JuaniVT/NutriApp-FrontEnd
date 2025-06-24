@@ -1,7 +1,7 @@
 package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.dto.MacronutrienteDTO;
-import com.NutriApp.NutriApp.dto.ModificarCantidadComidaFavoritaDTO;
+import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
+import com.NutriApp.NutriApp.modelo.dto.ModificarCantidadComidaFavoritaDTO;
 import com.NutriApp.NutriApp.exceptions.ComidaFavoritaException;
 import com.NutriApp.NutriApp.exceptions.ComidaIngeridaException;
 import com.NutriApp.NutriApp.modelo.ComidaFavorita;

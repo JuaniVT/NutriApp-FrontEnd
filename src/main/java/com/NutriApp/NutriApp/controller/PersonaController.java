@@ -1,7 +1,7 @@
 package com.NutriApp.NutriApp.controller;
 
-import com.NutriApp.NutriApp.dto.PersonaDTO;
-import com.NutriApp.NutriApp.dto.UsuarioDTO;
+import com.NutriApp.NutriApp.modelo.dto.PersonaDTO;
+import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;

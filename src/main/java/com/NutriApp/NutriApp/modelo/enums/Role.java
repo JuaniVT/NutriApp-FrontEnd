@@ -3,7 +3,7 @@ package com.NutriApp.NutriApp.modelo.enums;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    ROL_ADMIN("ADMIN"), ROL_CLIENT("CLIENT");
+    ROLE_ADMIN("ADMIN"), ROLE_CLIENT("CLIENT");
 
     private String rol;
 

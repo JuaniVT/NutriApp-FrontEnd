@@ -19,7 +19,7 @@ public class AlimentoIngresadoPorUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_comida;
+    private long id;
 
     @NotBlank
     @Size(min = 2, max = 20)
@@ -45,4 +45,32 @@ public class AlimentoIngresadoPorUsuario {
     @DecimalMin("0.0")
     private Double carbohidratos;
 
+
+    public boolean esValido(){
+        if (nombreComida == null){
+            return false;
+        }
+
+        if (gramosPorPorcion == null){
+            return false;
+        }
+
+        if (calorias == null){
+            return false;
+        }
+
+        if (proteinas == null){
+            return false;
+        }
+
+        if (grasas == null){
+            return false;
+        }
+
+        if (carbohidratos == null){
+            return false;
+        }
+
+        return true;
+    }
 }

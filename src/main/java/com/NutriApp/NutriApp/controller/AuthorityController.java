@@ -5,7 +5,6 @@ import com.NutriApp.NutriApp.service.AuthorityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,15 +19,15 @@ public class AuthorityController {
     private final AuthorityService authorityService;
 
     @PostMapping("/cambiar/admin")
-    public ResponseEntity<String> cambiarRolAdmin (@RequestParam int id) throws AuthorityInvalidaException {
-        authorityService.cambiaRol_A_ADMIN(id);
+    public ResponseEntity<String> cambiarRolAdmin (@RequestParam String username) throws AuthorityInvalidaException {
+        authorityService.cambiaRol_A_ADMIN(username);
 
         return ResponseEntity.ok("Se cambio el rol a ADMIN correctamente");
     }
 
     @PostMapping("/cambiar/cliente")
-    public ResponseEntity<String> cambiarRolCliente (@RequestParam int id) throws AuthorityInvalidaException {
-        authorityService.cambiaRol_A_CLIENTE(id);
+    public ResponseEntity<String> cambiarRolCliente (@RequestParam String username) throws AuthorityInvalidaException {
+        authorityService.cambiaRol_A_CLIENTE(username);
 
         return ResponseEntity.ok("Se cambio el rol a CLIENTE correctamente");
     }

@@ -3,6 +3,7 @@ package com.NutriApp.NutriApp.modelo;
 import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
 import com.NutriApp.NutriApp.modelo.enums.ObjetivoCaloricoTipo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -38,4 +39,9 @@ public class PerfilNutricional {
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     @JsonIgnore
     private Usuario usuario;
+
+    @JsonProperty ("username")  //le estamos diciendo que cuando agararre un json de este objeto tambien tome este como atributo, ya que el usuario lo ignora con el @JsonIgnore
+    public String getUsername(){
+        return usuario.getUsername();
+    }
 }

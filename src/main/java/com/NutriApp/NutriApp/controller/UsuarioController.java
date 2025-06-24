@@ -1,6 +1,6 @@
 package com.NutriApp.NutriApp.controller;
 
-import com.NutriApp.NutriApp.dto.UsuarioDTO;
+import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
@@ -58,10 +58,11 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario");
         }
     }
-    @DeleteMapping("/eliminar/{username}")
+    @DeleteMapping("/eliminar")
 // Solo admin puede acceder
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> eliminarCuentaPorAdmin(@PathVariable String username) {
+    public ResponseEntity<String> eliminarCuentaPorAdmin(@RequestParam String username) {
+        System.out.println("username = "+username);
         boolean eliminado = usuarioService.eliminarCuentaPorUsername(username);
 
         if (eliminado) {

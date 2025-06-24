@@ -1,16 +1,14 @@
 package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
 import com.NutriApp.NutriApp.modelo.Authority;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
+import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.modelo.enums.Role;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -55,7 +53,6 @@ public class UsuarioService implements UserDetailsService {
         }
         return false;
     }
-
     // Crear nueva usuario
     public void guardar(Usuario user) {
 
@@ -79,7 +76,7 @@ public class UsuarioService implements UserDetailsService {
 
         Authority authority = Authority.builder()
 
-                .authority(Role.ROL_CLIENT)      //se setea por defecto en este metodo el rol de cliente
+                .authority(Role.ROLE_CLIENT)      //se setea por defecto en este metodo el rol de cliente
                 .usuario(usuario)
                 .build();
 
@@ -136,7 +133,7 @@ public class UsuarioService implements UserDetailsService {
 
     public List<Map<String, Object>> listarClientes() {
         return usuarioRepository.findAll().stream()
-                .filter(usuario -> usuario.getRole().getAuthority().equals(Role.ROL_CLIENT))
+                .filter(usuario -> usuario.getRole().equals(Role.ROLE_CLIENT.toString()))
                 .map(usuario -> {
                     Map<String, Object> datos = new HashMap<>();
                     datos.put("username", usuario.getUsername());
@@ -149,7 +146,7 @@ public class UsuarioService implements UserDetailsService {
     }
     public List<Map<String, Object>> filtrarClientes(String filtro) {
         return usuarioRepository.findAll().stream()
-                .filter(usuario -> usuario.getRole().getAuthority().equals(Role.ROL_CLIENT))
+                .filter(usuario -> usuario.getRole().equals(Role.ROLE_CLIENT.toString()))
                 .filter(usuario ->
                         usuario.getUsername().contains(filtro) ||
                                 usuario.getPersona().getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
@@ -170,6 +167,4 @@ public class UsuarioService implements UserDetailsService {
 
 
 }
-
-
 
