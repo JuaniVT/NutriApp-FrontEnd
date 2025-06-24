@@ -58,4 +58,9 @@ public class PersonaService {
         }
         personaRepository.save(persona);
     }
+
+    public Persona obtenerPorUsername (String username) throws PersonaInvalidaException{
+        return personaRepository.findByUsuarioUsername(username).
+                orElseThrow(() -> new PersonaInvalidaException("Persona no encontrada con el username = " + username));
+    }
 }

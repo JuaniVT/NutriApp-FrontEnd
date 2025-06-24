@@ -2,12 +2,14 @@ package com.NutriApp.NutriApp.service;
 
 
 import com.NutriApp.NutriApp.exceptions.SolicitudInvalidaException;
+import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.dto.AlimentoBusquedaDTO;
 import com.NutriApp.NutriApp.repository.SolicitudRespository;
 import com.NutriApp.NutriApp.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
+import org.aspectj.weaver.patterns.PerObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +38,9 @@ public class SolicitudService {
 
     @Autowired
     private FoodDataService foodDataService;
+
+    @Autowired
+    private PersonaService personaService;
 
 
     @Transactional
@@ -245,6 +250,40 @@ public class SolicitudService {
         //se borra de la tabla la solicitud
         solicitudRespository.deleteById(solicitud.get().getId());
 
+        //se notifica al usuario que se acepto la solicitud
+        mailService.enviarMail(obtenerMail(solicitud.get().getUsername()),
+                "Aceptacion de solicitud",
+                "Su solicitud de alta de comida con el nombre '" + solicitud.get().getNombreComida() + "' fue aceptada");
+
         return "Solicitud aceptada con exito y alimento ingresado correctamente";
+    }
+
+    @Transactional
+    public String rechazarSolicitud (long idSolicitud) throws SolicitudInvalidaException{
+        //buscamos la solicitud
+        Optional<SolicitudAltaAlimento> solicitud = solicitudRespository.findById(idSolicitud);
+
+        //se comprueba que exista
+        if (solicitud.isEmpty()){
+            throw new SolicitudInvalidaException("No se encontro la solicitud con el id = " + idSolicitud);
+        }
+
+        //eliminamos la solicitud
+        solicitudRespository.deleteById(solicitud.get().getId());
+
+        //se notifica al usuario que se acepto la solicitud
+        mailService.enviarMail(obtenerMail(solicitud.get().getUsername()),
+                "Rechazo de solicitud",
+                "Su solicitud de alta de comida con el nombre '" + solicitud.get().getNombreComida() + "' fue rechazada");
+
+        return "Solicitud rechazada con exito";
+    }
+
+
+    //obtiene un mail en base a un username
+    private String obtenerMail (String username){
+        Persona persona = personaService.obtenerPorUsername(username);
+
+        return persona.getEmail();
     }
 }
