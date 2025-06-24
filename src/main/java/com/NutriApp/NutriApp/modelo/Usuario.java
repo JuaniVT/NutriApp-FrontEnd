@@ -54,6 +54,12 @@ public class Usuario implements UserDetails {
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     private List<Dia> dias = new ArrayList<>();
 
+    @OneToMany (mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    private List<ComidaFavorita> comidaFavoritas = new ArrayList<>();
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

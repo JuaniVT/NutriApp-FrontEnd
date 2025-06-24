@@ -25,7 +25,7 @@ public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<Ali
            a.gramosPorPorcion
        )
        FROM alimentoIngresadoPorUsuario a
-       WHERE a.nombreComida = :nombreComida AND a.id = :id
+       WHERE a.nombreComida = :nombreComida AND a.id_comida = :id
        """)
     Optional<MacronutrienteDTO> findMacronutrientesByNombreComidaAndId(@Param("nombreComida") String nombreComida, @Param("id") Long id);
 }

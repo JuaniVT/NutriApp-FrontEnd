@@ -46,7 +46,6 @@ public class ComidaIngeridaService {
         Optional<ComidaIngerida> comida1 = comidaIngeridaRepository.findByUserIdAndFechaAndComidaIdAndTipoComida(user.getPersona().getId(), fecha, id_comida, tipo);
 
         if (!comida1.isEmpty()) {
-
             modificarComida(new ModificarComidaIngeridaDTO(id_comida, nombre, (gramos + comida1.get().getCantidad()), comida1.get().getTipoComida(), tipo, fecha));
         } else {
             ComidaIngerida comida = new ComidaIngerida();
@@ -67,7 +66,7 @@ public class ComidaIngeridaService {
             optionalMacronutrienteDTO = nutricionService.obtenerMacronutrientesPorId(comida_id);
         }
 
-        if (!optionalMacronutrienteDTO.isEmpty()) {
+        if (!optionalMacronutrienteDTO.isEmpty() && optionalMacronutrienteDTO.get().getNombreComida().equals(nombre)) {
             dto = optionalMacronutrienteDTO.get();
         } else {
             throw new ComidaIngeridaException("No se encontro la comida con nombre: " + nombre);

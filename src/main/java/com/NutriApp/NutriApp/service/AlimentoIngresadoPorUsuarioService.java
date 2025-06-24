@@ -18,8 +18,8 @@ public class AlimentoIngresadoPorUsuarioService {
         return alimentoRepository.existsByNombreComida(nombre);
     }
 
-    public Optional<MacronutrienteDTO> obtenerMacronutrientes(String nombreComida, Long usuarioId) {
-        Optional <MacronutrienteDTO> dto = alimentoRepository.findMacronutrientesByNombreComidaAndId(nombreComida, usuarioId);
+    public Optional<MacronutrienteDTO> obtenerMacronutrientes(String nombreComida, Long id) {
+        Optional <MacronutrienteDTO> dto = alimentoRepository.findMacronutrientesByNombreComidaAndId(nombreComida, id);
         return dto;
     }
 }
