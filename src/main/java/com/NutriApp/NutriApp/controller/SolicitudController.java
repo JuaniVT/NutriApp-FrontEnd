@@ -75,11 +75,13 @@ public class SolicitudController {
         return ResponseEntity.ok(solicitudService.modificarMiSolicitud(nombreComidaModificar, solicitudNueva));
     }
 
+    //solo admins
     @PostMapping ("/aceptar")
     public ResponseEntity<String> aceptarSolicitud (@RequestParam long idSolicitud){
         return ResponseEntity.ok(solicitudService.aceptarSolicitud(idSolicitud));
     }
 
+    //solo admins
     @DeleteMapping ("/rechazar")
     public ResponseEntity<String> rechazarSolicitud (@RequestParam long idSolicitud){
         return ResponseEntity.ok(solicitudService.rechazarSolicitud(idSolicitud));

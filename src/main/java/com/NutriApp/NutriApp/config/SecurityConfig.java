@@ -64,10 +64,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
 
+                        //solicitudes
                         .requestMatchers("/api/solicitud/listarTodas").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrarPorFecha").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/username").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/nombreComida").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/aceptar").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/rechazar").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
