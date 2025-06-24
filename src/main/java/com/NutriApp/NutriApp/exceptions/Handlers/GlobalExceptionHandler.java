@@ -49,6 +49,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
+    @ExceptionHandler(ActividadFisicaInvalidaException.class)
+    public ResponseEntity<String> manejarActividadFisicaInvalida(ActividadFisicaInvalidaException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> manejarValidationException(MethodArgumentNotValidException exception) {
         StringBuilder mensaje = new StringBuilder("Errores de validación:\n");

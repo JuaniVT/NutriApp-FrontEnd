@@ -11,6 +11,7 @@ import com.NutriApp.NutriApp.service.ComidaIngeridaService;
 import com.NutriApp.NutriApp.service.DiaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,9 @@ public class ComidaIngeridaController {
     @PostMapping("/agregar")
     public void agregarComidaIngerida(@RequestParam Long idComida,
                                       @RequestParam Double gramos,
-                                      @RequestParam TipoComida tipoComida) throws Exception {
-        comidaIngeridaService.agregarComidaIngerida(idComida, gramos, tipoComida);
+                                      @RequestParam TipoComida tipoComida,
+                                        @RequestParam LocalDate fecha) throws Exception {
+        comidaIngeridaService.agregarComidaIngerida(idComida, gramos, tipoComida, fecha);
     }
     @PutMapping("/modificar")
     public ResponseEntity<String> modificarComidaIngerida (@RequestBody ModificarComidaIngeridaDTO modificarComidaIngeridaDTO) throws Exception

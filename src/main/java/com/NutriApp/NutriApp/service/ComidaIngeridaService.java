@@ -33,13 +33,13 @@ public class ComidaIngeridaService {
     private final DiaService diaService;
 
     @Transactional
-    public void agregarComidaIngerida(long id_comida, double gramos, TipoComida tipo ) throws Exception {
+    public void agregarComidaIngerida(long id_comida, double gramos, TipoComida tipo, LocalDate fecha ) throws Exception {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
 
         // Buscás el Día o lo creás si no existe
-        Dia dia = diaService.obtenerODiaOCrear(user.getFechaActiva(), user);
+        Dia dia = diaService.obtenerODiaOCrear(fecha, user);
 
         // Armás la comida
         ComidaIngerida comida = new ComidaIngerida();
