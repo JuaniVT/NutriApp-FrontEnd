@@ -19,7 +19,6 @@ public class ActividadFisicaDTO {
     private String tipoActividad;
 
     @NotNull(message = "La intensidad de la actividad es obligatoria.")
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "El tipo de actividad debe contener solo letras.")
     private NivelActividadFisica intensidad;
 
     @Positive(message = "La duración debe ser mayor a cero.")

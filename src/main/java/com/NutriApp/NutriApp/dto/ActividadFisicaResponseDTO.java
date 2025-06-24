@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ActividadFisicaResponseDTO {
+    private long id;
     private String tipoActividad;
     private NivelActividadFisica intensidad;
     private double duracionMin;

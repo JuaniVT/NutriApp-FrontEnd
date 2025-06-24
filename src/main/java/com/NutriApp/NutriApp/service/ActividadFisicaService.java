@@ -60,11 +60,43 @@ public void agregarActividadFsicaRealizada(String tipoActividad, NivelActividadF
     actividadFisica.setDuracionMin(duracionMin);
     actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
 
-    actividadFisicaRepository.save(actividadFisica);
+    guardar(actividadFisica);
 
 
 }
 
+
+    public void agregarActividadFsicaRealizadaEnUnDiaEspecifico(String tipoActividad, NivelActividadFisica intensidad,double duracionMin, LocalDate fecha){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+
+        Dia dia = diaService.obtenerODiaOCrear(fecha,user);
+
+
+        ActividadFisica actividadFisica;
+        switch (tipoActividad.toLowerCase()) {
+            case "correr":
+                actividadFisica = new Correr();
+                break;
+            case "gym":
+                actividadFisica = new Gym();
+                break;
+
+            default:
+
+                throw new ActividadFisicaInvalidaException("Tipo de actividad no reconocido : " + tipoActividad);
+        }
+
+        actividadFisica.setDia(dia);
+        actividadFisica.setIntensidad(intensidad);
+        actividadFisica.setDuracionMin(duracionMin);
+        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
+
+        actividadFisicaRepository.save(actividadFisica);
+
+
+    }
 
 public List<ActividadFisicaResponseDTO> obtenerTodas(){
     List<ActividadFisica> actividadFisicas = actividadFisicaRepository.findAll();
@@ -75,6 +107,7 @@ public List<ActividadFisicaResponseDTO> obtenerTodas(){
     // DTO para poder asignarle el usuario y el dia en el que se agrego la actividad
     return actividadFisicas.stream().map(actividad ->
             new ActividadFisicaResponseDTO(
+                    actividad.getId(),
                     actividad.getClass().getSimpleName().toLowerCase(), // tipoActividad
                     actividad.getIntensidad(),
                     actividad.getDuracionMin(),

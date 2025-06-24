@@ -36,7 +36,7 @@ public class ComidaIngeridaController {
     public void agregarComidaIngerida(@RequestParam Long idComida,
                                       @RequestParam Double gramos,
                                       @RequestParam TipoComida tipoComida,
-                                        @RequestParam LocalDate fecha) throws Exception {
+                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) throws Exception {
         comidaIngeridaService.agregarComidaIngerida(idComida, gramos, tipoComida, fecha);
     }
     @PutMapping("/modificar")

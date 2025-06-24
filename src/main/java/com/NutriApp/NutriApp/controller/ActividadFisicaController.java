@@ -35,6 +35,14 @@ public class ActividadFisicaController {
 
     }
 
+    @PostMapping("/agregar/diaEspecifico")
+    public ResponseEntity<String> agregarActividad(@RequestBody @Valid ActividadFisicaDTO actividadFisicaDTO, @RequestParam LocalDate fecha) {
+
+        actividadFisicaService.agregarActividadFsicaRealizadaEnUnDiaEspecifico(actividadFisicaDTO.getTipoActividad(), actividadFisicaDTO.getIntensidad(), actividadFisicaDTO.getDuracionMin(), fecha);
+        return ResponseEntity.ok("ActividadFisicaRealizada agregada con exito");
+
+    }
+
     @GetMapping("/listarActividades/sistema")
     public ResponseEntity<List<ActividadFisicaResponseDTO>> listarActividadesFisicas() {
         List<ActividadFisicaResponseDTO> actividadesFisicas = actividadFisicaService.obtenerTodas();
