@@ -23,6 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/usuario")
 @RequiredArgsConstructor
@@ -67,6 +70,19 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario con username: " + username);
         }
     }
+    @GetMapping("/listarClientes")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Map<String, Object>>> listarClientes() {
+        return ResponseEntity.ok(usuarioService.listarClientes());
+    }
+    @GetMapping("/filtrarClientes")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Map<String, Object>>> filtrarClientes(@RequestParam String filtro) {
+        return ResponseEntity.ok(usuarioService.filtrarClientes(filtro));
+    }
+
+
+
 
 
 

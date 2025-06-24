@@ -22,6 +22,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioService implements UserDetailsService {
@@ -129,6 +133,42 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.deleteById(username);
         return true;
     }
+
+    public List<Map<String, Object>> listarClientes() {
+        return usuarioRepository.findAll().stream()
+                .filter(usuario -> usuario.getRole().getAuthority().equals(Role.ROL_CLIENT))
+                .map(usuario -> {
+                    Map<String, Object> datos = new HashMap<>();
+                    datos.put("username", usuario.getUsername());
+                    datos.put("nombre", usuario.getPersona().getNombre());
+                    datos.put("apellido", usuario.getPersona().getApellido());
+                    datos.put("email", usuario.getPersona().getEmail());
+                    return datos;
+                })
+                .toList();
+    }
+    public List<Map<String, Object>> filtrarClientes(String filtro) {
+        return usuarioRepository.findAll().stream()
+                .filter(usuario -> usuario.getRole().getAuthority().equals(Role.ROL_CLIENT))
+                .filter(usuario ->
+                        usuario.getUsername().contains(filtro) ||
+                                usuario.getPersona().getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
+                                usuario.getPersona().getApellido().toLowerCase().contains(filtro.toLowerCase()) ||
+                                usuario.getPersona().getEmail().toLowerCase().contains(filtro.toLowerCase())
+                )
+                .map(usuario -> {
+                    Map<String, Object> datos = new HashMap<>();
+                    datos.put("username", usuario.getUsername());
+                    datos.put("nombre", usuario.getPersona().getNombre());
+                    datos.put("apellido", usuario.getPersona().getApellido());
+                    datos.put("email", usuario.getPersona().getEmail());
+                    return datos;
+                })
+                .toList();
+    }
+
+
+
 }
 
 
