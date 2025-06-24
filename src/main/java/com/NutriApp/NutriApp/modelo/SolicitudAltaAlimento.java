@@ -27,7 +27,7 @@ public class SolicitudAltaAlimento {
     private String nombreComida;
 
     @NotNull    // con esto creo un grupo de validaciones que cuando yo le meto un @Validated a un parametro de un objeto de esta clase,
-    @Positive(groups = ValidacionBasica.class)   // lo pongo para que me valide solo los campos del grupo que yo especifique porque en este caso necesito que no me valide
+    @PositiveOrZero(groups = ValidacionBasica.class)   // lo pongo para que me valide solo los campos del grupo que yo especifique porque en este caso necesito que no me valide
     private double porcion;                      // el nombre de comida
 
     @NotNull

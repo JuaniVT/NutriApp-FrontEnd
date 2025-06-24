@@ -30,6 +30,18 @@ import javax.sql.DataSource;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+
+    /* dejo comentado por si no tenemos acceso a la base de datos en algun momento
+    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails admin = User.withUsername("admin")
+                .password(passwordEncoder().encode("admin123"))
+                .roles("ADMIN")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin);
+    }*/
+
     @Autowired
     private AccesDeniedExceptionHandler accesDeniedExceptionHandler;
 
@@ -51,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
-                        .requestMatchers("/api/solicitud/insertar").permitAll()
+                        .requestMatchers("/comidas/agregar").authenticated()
                         .requestMatchers("/usuario/eliminarCuenta").authenticated() // <--- acá el cambio
 
                         //solicitudes

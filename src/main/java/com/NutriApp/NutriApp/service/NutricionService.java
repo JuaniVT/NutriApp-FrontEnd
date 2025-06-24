@@ -72,6 +72,7 @@ public class NutricionService {
 
         }
 
+
         // Devolvemos el objeto con todos los datos extraídos
         return dto;
     }

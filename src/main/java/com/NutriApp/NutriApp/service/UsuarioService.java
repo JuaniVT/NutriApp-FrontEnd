@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.service;
 
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.exceptions.UsuarioInexistenteException;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
 import com.NutriApp.NutriApp.modelo.Authority;
 import com.NutriApp.NutriApp.modelo.Persona;
@@ -12,9 +13,7 @@ import com.NutriApp.NutriApp.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,6 +52,15 @@ public class UsuarioService implements UserDetailsService {
         }
         return false;
     }
+
+
+    public Usuario buscarPorEmail(String username){
+
+        return usuarioRepository.findById(username)
+                .orElseThrow(() -> new UsuarioInexistenteException("Usuario no encontrado con el email : " + username));
+
+    }
+
     // Crear nueva usuario
     public void guardar(Usuario user) {
 
@@ -100,10 +108,9 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizarDatosUsuario(UsuarioDTO usuario) {
+    public void actualizarContraseñaUsuario(UsuarioDTO usuario) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
-        user.setUsername(usuario.getUsername());
         user.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioRepository.save(user);
     }

@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -71,6 +72,9 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<SolicitudAltaAlimento> solicitudes = new ArrayList<>();
+
+
+    private LocalDate fechaActiva = LocalDate.now();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Email;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -42,4 +43,7 @@ public class Dia {
     public String getUsername(){
         return usuario.getUsername();
     }
+
+    @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ActividadFisica> actividadesFisicasRealizadas = new ArrayList<>();
 }

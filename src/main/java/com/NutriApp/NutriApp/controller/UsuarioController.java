@@ -4,22 +4,12 @@ import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.AuthorityInvalidaException;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.UsuarioInvalidoException;
-import com.NutriApp.NutriApp.modelo.Authority;
-import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
-import com.NutriApp.NutriApp.modelo.enums.Role;
-import com.NutriApp.NutriApp.repository.AuthorityRepository;
-import com.NutriApp.NutriApp.repository.PersonaRepository;
-import com.NutriApp.NutriApp.repository.UsuarioRepository;
-import com.NutriApp.NutriApp.service.PersonaService;
 import com.NutriApp.NutriApp.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,10 +31,10 @@ public class UsuarioController {
         return ResponseEntity.ok("Usuario registrado correctamente como cliente");
     }
 
-    @PostMapping("/modificarUsuario")
+    @PostMapping("/modificarContraseña")
     public ResponseEntity <String> actualizarUsuario (@RequestBody UsuarioDTO nuevo)
     {
-        usuarioService.actualizarDatosUsuario(nuevo);
+        usuarioService.actualizarContraseñaUsuario(nuevo);
         return ResponseEntity.ok("Se actualizaron correctamente los cambios");
     }
 

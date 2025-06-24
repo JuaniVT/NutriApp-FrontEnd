@@ -10,6 +10,7 @@ import com.NutriApp.NutriApp.service.ComidaIngeridaService;
 import com.NutriApp.NutriApp.service.DiaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
