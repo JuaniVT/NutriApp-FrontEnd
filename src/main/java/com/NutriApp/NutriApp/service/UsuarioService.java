@@ -22,6 +22,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class UsuarioService implements UserDetailsService {
@@ -45,12 +49,13 @@ public class UsuarioService implements UserDetailsService {
         }
     }
 
-    public boolean existsByDni (String username){
+    public boolean existsByDni(String username) {
         if (usuarioRepository.existsByUsername(username)) {
             return true;
         }
         return false;
     }
+
     // Crear nueva usuario
     public void guardar(Usuario user) {
 
@@ -98,8 +103,7 @@ public class UsuarioService implements UserDetailsService {
     }
 
     @Transactional
-    public void actualizarDatosUsuario (UsuarioDTO usuario)
-    {
+    public void actualizarDatosUsuario(UsuarioDTO usuario) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
         user.setUsername(usuario.getUsername());
@@ -107,5 +111,65 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(user);
     }
 
+    // Eliminar cuenta por usuario
+    @Transactional
+    public boolean eliminarCuentaActual() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuario = (Usuario) auth.getPrincipal();
+
+        if (!usuarioRepository.existsByUsername(usuario.getUsername())) {
+            return false;
+        }
+
+        usuarioRepository.deleteById(usuario.getUsername());
+        return true;
+    }
+
+    @Transactional
+    public boolean eliminarCuentaPorUsername(String username) {
+        if (!usuarioRepository.existsByUsername(username)) {
+            return false;
+        }
+        usuarioRepository.deleteById(username);
+        return true;
+    }
+
+    public List<Map<String, Object>> listarClientes() {
+        return usuarioRepository.findAll().stream()
+                .filter(usuario -> usuario.getRole().getAuthority().equals(Role.ROL_CLIENT))
+                .map(usuario -> {
+                    Map<String, Object> datos = new HashMap<>();
+                    datos.put("username", usuario.getUsername());
+                    datos.put("nombre", usuario.getPersona().getNombre());
+                    datos.put("apellido", usuario.getPersona().getApellido());
+                    datos.put("email", usuario.getPersona().getEmail());
+                    return datos;
+                })
+                .toList();
+    }
+    public List<Map<String, Object>> filtrarClientes(String filtro) {
+        return usuarioRepository.findAll().stream()
+                .filter(usuario -> usuario.getRole().getAuthority().equals(Role.ROL_CLIENT))
+                .filter(usuario ->
+                        usuario.getUsername().contains(filtro) ||
+                                usuario.getPersona().getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
+                                usuario.getPersona().getApellido().toLowerCase().contains(filtro.toLowerCase()) ||
+                                usuario.getPersona().getEmail().toLowerCase().contains(filtro.toLowerCase())
+                )
+                .map(usuario -> {
+                    Map<String, Object> datos = new HashMap<>();
+                    datos.put("username", usuario.getUsername());
+                    datos.put("nombre", usuario.getPersona().getNombre());
+                    datos.put("apellido", usuario.getPersona().getApellido());
+                    datos.put("email", usuario.getPersona().getEmail());
+                    return datos;
+                })
+                .toList();
+    }
+
+
+
 }
+
+
 

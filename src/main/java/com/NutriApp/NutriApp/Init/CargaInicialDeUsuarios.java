@@ -46,7 +46,7 @@ public class CargaInicialDeUsuarios {
             usuarioRepository.save(usuarioJuani());
         }
 
-        if (!usuarioRepository.existsById("valentinssachetta")) {
+        if (!usuarioRepository.existsById("valentinsacchetta")) {
             usuarioRepository.save(usuarioValentin());
         }
     }
@@ -94,20 +94,20 @@ public class CargaInicialDeUsuarios {
     private Usuario usuarioValentin(){
 
         Usuario usuario = Usuario.builder()
-                .username("valentinssachetta")
+                .username("valentinsacchetta")
                 .password(passwordEncoder.encode("valentin"))
                 .enabled(true)
                 .build();
 
         Persona persona = (Persona.builder()
                 .nombre("valentin")
-                .apellido("ssachetta")
-                .dni("47057880")
-                .email("ekianuruzuna@gmail.com")
-                .fechaNacimiento(LocalDate.of(2005, 9, 4))
-                .telefono("2236826147")
+                .apellido("sacchetta")
+                .dni("45543487")
+                .email("valen6sacchetta@gmail.com")
+                .fechaNacimiento(LocalDate.of(2004, 2, 12))
+                .telefono("2235982283")
                 .genero(Genero.MASCULINO)
-                .direccion("Udine 1355")
+                .direccion("Puan 3449")
                 .usuario(usuario)
                 .build());
 

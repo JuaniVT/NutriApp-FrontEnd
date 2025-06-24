@@ -17,10 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/usuario")
@@ -43,6 +47,44 @@ public class UsuarioController {
         usuarioService.actualizarDatosUsuario(nuevo);
         return ResponseEntity.ok("Se actualizaron correctamente los cambios");
     }
+
+    @DeleteMapping("/eliminarCuenta")
+    public ResponseEntity<String> eliminarCuentaPropia() {
+        boolean eliminado = usuarioService.eliminarCuentaActual();
+
+        if (eliminado) {
+            return ResponseEntity.ok("Cuenta eliminada correctamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario");
+        }
+    }
+    @DeleteMapping("/eliminar/{username}")
+// Solo admin puede acceder
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> eliminarCuentaPorAdmin(@PathVariable String username) {
+        boolean eliminado = usuarioService.eliminarCuentaPorUsername(username);
+
+        if (eliminado) {
+            return ResponseEntity.ok("Usuario eliminado correctamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el usuario con username: " + username);
+        }
+    }
+    @GetMapping("/listarClientes")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Map<String, Object>>> listarClientes() {
+        return ResponseEntity.ok(usuarioService.listarClientes());
+    }
+    @GetMapping("/filtrarClientes")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Map<String, Object>>> filtrarClientes(@RequestParam String filtro) {
+        return ResponseEntity.ok(usuarioService.filtrarClientes(filtro));
+    }
+
+
+
+
+
 
 }
 

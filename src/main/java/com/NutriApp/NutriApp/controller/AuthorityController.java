@@ -32,4 +32,6 @@ public class AuthorityController {
 
         return ResponseEntity.ok("Se cambio el rol a CLIENTE correctamente");
     }
+
+
 }
