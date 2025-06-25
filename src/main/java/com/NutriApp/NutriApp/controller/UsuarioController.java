@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Validated
@@ -66,8 +67,15 @@ public class UsuarioController {
 
     @GetMapping("/listarClientes")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<Map<String, Object>>> listarClientes() {
-        return ResponseEntity.ok(usuarioService.listarClientes());
+    public ResponseEntity<?> listarClientes() {
+        List<Map<String, Object>> clientes = usuarioService.listarClientes();
+
+        if (clientes.isEmpty()) {
+            Map<String, String> respuesta = new HashMap<>();
+            respuesta.put("mensaje", "La lista de clientes está vacía");
+            return ResponseEntity.ok(respuesta);
+        }
+        return ResponseEntity.ok(clientes);
     }
 
     @GetMapping("/filtrarClientes")
