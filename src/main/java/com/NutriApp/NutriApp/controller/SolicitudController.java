@@ -28,7 +28,7 @@ public class SolicitudController {
 
     //cualquiera registrado
     @PostMapping("/insertar")
-    public ResponseEntity<String> insertar (@RequestBody @Validated({Builder.Default.class, ValidacionBasica.class}) SolicitudAltaAlimento solicitudAltaAlimento) throws Exception {
+    public ResponseEntity<String> insertar (@RequestBody @Validated SolicitudAltaAlimento solicitudAltaAlimento) throws Exception {
         solicitudService.insertar(solicitudAltaAlimento);
 
         return ResponseEntity.ok("Solicitud enviada con exito");
