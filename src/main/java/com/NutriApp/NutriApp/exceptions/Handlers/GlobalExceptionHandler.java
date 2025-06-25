@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.exceptions.Handlers;
 
 import com.NutriApp.NutriApp.exceptions.*;
 import jakarta.mail.SendFailedException;
+import jakarta.validation.ConstraintViolationException;
 import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
 import org.springframework.http.HttpHeaders;
 import com.NutriApp.NutriApp.exceptions.*;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
@@ -130,6 +132,22 @@ public class GlobalExceptionHandler{
     @ExceptionHandler
     public ResponseEntity<String> manejarAliemntoInvalidoException (AlimentoInvalidoException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> manejarConstraintViolationException(ConstraintViolationException ex) {
+        // Armamos un mensaje con todos los errores
+        String errores = ex.getConstraintViolations().stream()
+                .map(violation -> {
+                    String campo = violation.getPropertyPath().toString();
+                    String mensaje = violation.getMessage();
+                    return "• " + campo + ": " + mensaje;
+                })
+                .collect(Collectors.joining("\n"));
+
+        String mensajeFinal = "Error de validación:\n" + errores;
+
+        return ResponseEntity.badRequest().body(mensajeFinal);
     }
 
 
