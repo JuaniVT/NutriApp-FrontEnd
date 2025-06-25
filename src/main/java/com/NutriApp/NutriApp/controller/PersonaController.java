@@ -59,18 +59,12 @@ public class PersonaController {
     }
 
     @GetMapping("/mostrarMisDatos")
-    public ResponseEntity <Persona> mostrarPerfil () throws PersonaInvalidaException
-    {
+    public ResponseEntity<Persona> mostrarPerfil() throws PersonaInvalidaException {
         return ResponseEntity.ok(personaService.obtenerMiPerfil());
     }
 
-    @PutMapping("/modificarPersona")
-    public ResponseEntity <String> actualizarUsuario (@RequestBody PersonaDTO nuevo)
-    {
-        personaService.actualizarDatosPersona(nuevo);
-        return ResponseEntity.ok("Se actualizaron correctamente los cambios");
 
-    }
+
     @PutMapping("/actualizar-persona")
     public ResponseEntity<String> actualizarPersona(@RequestBody PersonaDTO personaDTO) {
         personaService.actualizarDatosPersona(personaDTO);

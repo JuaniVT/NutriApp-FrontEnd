@@ -20,10 +20,6 @@ public class ComidaIngeridaDTO {
 
     @NotBlank(message = "El nombre de la comida es obligatorio")
     @Size(min = 2, max = 100, message = "El nombre de la comida debe tener entre 2 y 100 caracteres")
-    @Pattern(
-            regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$",
-            message = "El nombre de la comida solo puede contener letras y espacios"
-    )
     private String nombreComida;
 
     @NotNull(message = "La cantidad es obligatoria")

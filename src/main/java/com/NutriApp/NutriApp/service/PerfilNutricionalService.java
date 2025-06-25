@@ -71,9 +71,10 @@ public class PerfilNutricionalService {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Usuario user = (Usuario) auth.getPrincipal();
             PerfilNutricional perfil = realizar_calculo_BMR(perfilDTO, user.getPersona().getGenero());
-            // Guardás el perfil
-            guardar(perfil);
+            user.setPerfilNutricional(perfil);
+            guardar(user.getPerfilNutricional());
         }
+
     }
 
 

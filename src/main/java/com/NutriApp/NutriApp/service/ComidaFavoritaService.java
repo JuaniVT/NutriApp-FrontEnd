@@ -80,7 +80,7 @@ public class ComidaFavoritaService {
         ComidaFavorita favorita = comidaFavoritaRepository.findByNombrePaqueteAndComidaIdAndUsuario(dto.getNombrePaquete(), dto.getIdComida(), usuario)
                 .orElseThrow(() -> new ComidaIngeridaException("No se encontró en el paquete: " + dto.getNombrePaquete() + " el aliemento con id: " + dto.getIdComida()));
 
-        favorita.setCantidad(favorita.getCantidad() + dto.getNuevaCantidad());
+        favorita.setCantidad( dto.getNuevaCantidad());
         comidaFavoritaRepository.save(favorita);
     }
 
