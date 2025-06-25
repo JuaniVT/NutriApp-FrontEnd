@@ -1,6 +1,8 @@
 package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.modelo.enums.Genero;
+import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.ObjetivoCaloricoTipo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -34,7 +36,7 @@ public class Persona {
     private String apellido;
 
     @NotBlank
-    @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 dígitos numéricos")
+    @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 digitos numericos")
     @Column(unique = true)
     private String dni;
 
@@ -55,24 +57,35 @@ public class Persona {
     @Email(message = "El email debe tener un formato válido y contener '@'")
     private String email;
 
-    // Es recomendable modelar las relaciones en ambos lados (bidireccionales) si se necesita
-    // acceder a ambas entidades desde el código, no solo desde la base de datos.
-    // Al usar JPA/Hibernate, modelar ambos lados permite navegar desde una entidad a otra,
-    // y mantener sincronizadas las asociaciones en memoria.
-    // El uso de 'mappedBy' indica que esta clase es de la que va a depender la otra clase relacionada.
-    // EL uso del cascade para que se maneje en cascada el con el cascade = TIPOCASCADE
-    // y el orphanRemoval (este es para el OnDeleteCascade de mysql)
+    private Double peso;
+
+    private Double altura;
+
+    private Integer edad;
+
+    @Enumerated(EnumType.STRING)
+    private NivelActividadFisica nivelActividadFisica;
+
+    @Enumerated(EnumType.STRING)
+    private ObjetivoCaloricoTipo objetivoCaloricoTipo;
+
+    private Double GEB;
+
+    private Double objetivoDiario;
+
+    private Double imb;
+
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    @ToString.Exclude
     @JsonIgnore
     private Usuario usuario;
 
-    @JsonProperty ("username")  //le estamos diciendo que cuando agararre un json de este objeto tambien tome este como atributo, ya que el usuario lo ignora con el @JsonIgnore
+    @JsonProperty("username")
     public String getUsername(){
-        return usuario.getUsername();
+        return usuario != null ? usuario.getUsername() : null;
     }
 
-    @Tolerate   //esto es para que lombok me tome el contructor de persona personalizado
+    @Tolerate
     public Persona(String nombre, String apellido, String dni, LocalDate fechaNacimiento, String telefono, String direccion, Genero genero, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -83,4 +96,5 @@ public class Persona {
         this.genero = genero;
         this.email = email;
     }
+
 }

@@ -109,6 +109,9 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public void actualizarContraseñaUsuario(UsuarioDTO usuario) {
+        if (usuario == null || usuario.getPassword() == null) {
+            throw new UsuarioInvalidoException("La nueva contraseña no puede ser nula");
+        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
         user.setPassword(passwordEncoder.encode(usuario.getPassword()));
@@ -131,6 +134,13 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public boolean eliminarCuentaPorUsername(String username) {
+        if (username == null || username.isBlank()) {
+            throw new UsuarioInvalidoException("El username no puede estar vacío");
+        }
+
+        if (!usuarioRepository.existsByUsername(username)) {
+            throw new UsuarioInexistenteException("Usuario no encontrado");
+        }
         if (!usuarioRepository.existsByUsername(username)) {
             return false;
         }
@@ -152,13 +162,19 @@ public class UsuarioService implements UserDetailsService {
                 .toList();
     }
     public List<Map<String, Object>> filtrarClientes(String filtro) {
+        if (filtro == null) {
+            filtro = "";
+        }
+        String filtroFinal = filtro.toLowerCase();
+
+        String finalFiltro = filtro;
         return usuarioRepository.findAll().stream()
                 .filter(usuario -> usuario.getRole().equals(Role.ROLE_CLIENT.toString()))
                 .filter(usuario ->
-                        usuario.getUsername().contains(filtro) ||
-                                usuario.getPersona().getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
-                                usuario.getPersona().getApellido().toLowerCase().contains(filtro.toLowerCase()) ||
-                                usuario.getPersona().getEmail().toLowerCase().contains(filtro.toLowerCase())
+                        usuario.getUsername().contains(finalFiltro) ||
+                                usuario.getPersona().getNombre().toLowerCase().contains(finalFiltro.toLowerCase()) ||
+                                usuario.getPersona().getApellido().toLowerCase().contains(finalFiltro.toLowerCase()) ||
+                                usuario.getPersona().getEmail().toLowerCase().contains(finalFiltro.toLowerCase())
                 )
                 .map(usuario -> {
                     Map<String, Object> datos = new HashMap<>();

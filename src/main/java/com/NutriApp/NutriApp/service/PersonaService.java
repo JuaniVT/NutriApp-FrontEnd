@@ -1,14 +1,14 @@
 package com.NutriApp.NutriApp.service;
 
-import com.NutriApp.NutriApp.modelo.dto.PersonaDTO;
-import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
+import com.NutriApp.NutriApp.modelo.PerfilNutricional;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
+import com.NutriApp.NutriApp.modelo.dto.PersonaDTO;
+import com.NutriApp.NutriApp.modelo.enums.Genero;
 import com.NutriApp.NutriApp.repository.PersonaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,7 @@ public class PersonaService {
     // Si existieran múltiples constructores, Spring no sabría cuál usar y se necesitaría
     // especificar la inyección de otra manera (por ejemplo, con @Autowired).
     private final PersonaRepository personaRepository;
+    private final PerfilNutricionalService perfilNutricionalService;
 
 
     public List<Persona> obtenerTodas() {
@@ -61,13 +62,25 @@ public class PersonaService {
         }
         personaRepository.save(persona);
     }
+    private double calcularIMB(Double peso, Double altura, Genero genero) {
+        if (peso == null || altura == null || altura == 0) {
+            return 0;
+        }
+        double imc = peso / (altura * altura);
+        return imc;
+    }
+
 
     @Transactional
-    public void actualizarDatosPersona (PersonaDTO personaDTO)
-    {
+    public void actualizarDatosPersona(PersonaDTO personaDTO) {
+        if (personaDTO == null) {
+            throw new PersonaInvalidaException("Los datos de la persona no pueden ser nulos");
+        }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
         Persona persona1 = user.getPersona();
+
         persona1.setNombre(personaDTO.getNombre());
         persona1.setApellido(personaDTO.getApellido());
         persona1.setDni(personaDTO.getDni());
@@ -77,9 +90,11 @@ public class PersonaService {
         persona1.setGenero(personaDTO.getGenero());
         persona1.setEmail(personaDTO.getEmail());
 
-        // Guardás en el repositorio
         personaRepository.save(persona1);
+        // Recalcular perfil nutricional si existe
     }
+
+
 
     public Persona obtenerPorUsername (String username) throws PersonaInvalidaException{
         return personaRepository.findByUsuarioUsername(username).

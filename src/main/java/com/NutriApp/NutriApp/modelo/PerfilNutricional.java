@@ -5,6 +5,8 @@ import com.NutriApp.NutriApp.modelo.enums.ObjetivoCaloricoTipo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -35,6 +37,8 @@ public class PerfilNutricional {
 
     private long edad;
 
+    private Double imb;
+
     @OneToOne(mappedBy = "perfilNutricional", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
     @JsonIgnore
@@ -44,4 +48,16 @@ public class PerfilNutricional {
     public String getUsername(){
         return usuario.getUsername();
     }
+
+    public void setImb(double imb) {
+        this.imb = imb;
+    }
+
+    public @NotBlank @Size(min = 3, max = 50) String getNombre() {
+        if (usuario != null && usuario.getPersona() != null) {
+            return usuario.getPersona().getNombre();
+        }
+        return "NULO";
+    }
+
 }
