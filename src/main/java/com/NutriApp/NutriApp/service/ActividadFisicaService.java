@@ -21,66 +21,75 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ActividadFisicaService
-{
+public class ActividadFisicaService {
 
-private final ActividadFisicaRepository actividadFisicaRepository;
-private final DiaService diaService;
+    private final ActividadFisicaRepository actividadFisicaRepository;
+    private final DiaService diaService;
 
 
-public void guardar (ActividadFisica actividadFisica){
+    public void guardar(ActividadFisica actividadFisica) {
 
-    actividadFisicaRepository.save(actividadFisica);
+        actividadFisicaRepository.save(actividadFisica);
 
-}
-
-public void agregarActividadFsicaRealizada(String tipoActividad, NivelActividadFisica intensidad,double duracionMin){
-
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Usuario user = (Usuario) auth.getPrincipal();
-
-    Dia dia = diaService.obtenerODiaOCrear(user.getFechaActiva(),user);
-
-    ActividadFisica actividadFisica;
-    switch (tipoActividad.toLowerCase()) {
-        case "correr":
-            actividadFisica = new Correr();
-            break;
-        case "gym":
-            actividadFisica = new Gym();
-            break;
-
-        default:
-
-            throw new ActividadFisicaInvalidaException("Tipo de actividad no reconocido : " + tipoActividad);
     }
 
-    actividadFisica.setDia(dia);
-    actividadFisica.setIntensidad(intensidad);
-    actividadFisica.setDuracionMin(duracionMin);
-    actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
+    public void eliminar(ActividadFisica actividadFisica){
+        actividadFisicaRepository.delete(actividadFisica);
+    }
 
-    guardar(actividadFisica);
-
-
-}
-
-
-    public void agregarActividadFsicaRealizadaEnUnDiaEspecifico(String tipoActividad, NivelActividadFisica intensidad,double duracionMin, LocalDate fecha){
+    public void agregarActividadFsicaRealizada(String tipoActividad, NivelActividadFisica intensidad, double duracionMin) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
 
-        Dia dia = diaService.obtenerODiaOCrear(fecha,user);
-
+        Dia dia = diaService.obtenerODiaOCrear(user.getFechaActiva(), user);
 
         ActividadFisica actividadFisica;
         switch (tipoActividad.toLowerCase()) {
             case "correr":
                 actividadFisica = new Correr();
+                actividadFisica.setTipoActividad("correr");
                 break;
             case "gym":
                 actividadFisica = new Gym();
+                actividadFisica.setTipoActividad("gym");
+                break;
+
+            default:
+
+                throw new ActividadFisicaInvalidaException("Tipo de actividad no reconocido : " + tipoActividad);
+        }
+
+        actividadFisica.setDia(dia);
+        actividadFisica.setIntensidad(intensidad);
+        actividadFisica.setDuracionMin(duracionMin);
+        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
+
+        guardar(actividadFisica);
+
+
+    }
+
+
+    public void agregarActividadFsicaRealizadaEnUnDiaEspecifico(String tipoActividad, NivelActividadFisica intensidad, double duracionMin, LocalDate fecha) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+
+        Dia dia = diaService.obtenerODiaOCrear(fecha, user);
+
+
+        agregarActividadFsicaRealizada(tipoActividad, intensidad, duracionMin);
+
+        ActividadFisica actividadFisica;
+        switch (tipoActividad.toLowerCase()) {
+            case "correr":
+                actividadFisica = new Correr();
+                actividadFisica.setTipoActividad("correr");
+                break;
+            case "gym":
+                actividadFisica = new Gym();
+                actividadFisica.setTipoActividad("gym");
                 break;
 
             default:
@@ -98,55 +107,134 @@ public void agregarActividadFsicaRealizada(String tipoActividad, NivelActividadF
 
     }
 
-public List<ActividadFisicaResponseDTO> obtenerTodas(){
-    List<ActividadFisica> actividadFisicas = actividadFisicaRepository.findAll();
-    if (actividadFisicas.isEmpty()){
-        throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas");
+    public List<ActividadFisicaResponseDTO> obtenerTodas() {
+        List<ActividadFisica> actividadFisicas = actividadFisicaRepository.findAll();
+        if (actividadFisicas.isEmpty()) {
+            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas");
+        }
+
+        // DTO para poder asignarle el usuario y el dia en el que se agrego la actividad
+        return actividadFisicas.stream().map(actividad ->
+                new ActividadFisicaResponseDTO(
+                        actividad.getId(),
+                        actividad.getClass().getSimpleName().toLowerCase(), // tipoActividad
+                        actividad.getIntensidad(),
+                        actividad.getDuracionMin(),
+                        actividad.getCaloriasGastadas(),
+                        actividad.getDia().getFecha(),                      // fecha
+                        actividad.getDia().getUsuario().getUsername()       // username
+                )
+        ).toList();
     }
 
-    // DTO para poder asignarle el usuario y el dia en el que se agrego la actividad
-    return actividadFisicas.stream().map(actividad ->
-            new ActividadFisicaResponseDTO(
-                    actividad.getId(),
-                    actividad.getClass().getSimpleName().toLowerCase(), // tipoActividad
-                    actividad.getIntensidad(),
-                    actividad.getDuracionMin(),
-                    actividad.getCaloriasGastadas(),
-                    actividad.getDia().getFecha(),                      // fecha
-                    actividad.getDia().getUsuario().getUsername()       // username
-            )
-    ).toList();
-}
 
+    public List<ActividadFisica> obtenerTodasPorDia(LocalDate fecha) {
 
-public List<ActividadFisica> obtenerTodasPorDia(LocalDate fecha){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
 
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Usuario user = (Usuario) auth.getPrincipal();
+        Dia dia = diaService.obtenerDiaPorFecha(fecha, user)
+                .orElseThrow(() -> new DiaInvalidoException("No se encontro el dia registrado con fecha: " + fecha));
 
-    Dia dia = diaService.obtenerDiaPorFecha(fecha, user)
-            .orElseThrow(() -> new DiaInvalidoException("No se encontro el dia registrado con fecha: " + fecha));
+        List<ActividadFisica> actividadFisicasRealizadas = actividadFisicaRepository.findActividadFisicasByDia(dia);
 
-    List<ActividadFisica> actividadFisicasRealizadas = actividadFisicaRepository.findActividadFisicasByDia(dia);
+        if (actividadFisicasRealizadas.isEmpty()) {
+            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia);
+        }
 
-    if (actividadFisicasRealizadas.isEmpty()){
-        throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia);
+        return actividadFisicasRealizadas;
     }
 
-    return actividadFisicasRealizadas;
-}
+    public Optional<ActividadFisica> obtenerActividadPorFechaEid(Dia dia, long id) {
+        return actividadFisicaRepository.findActividadFisicaByDiaAndId(dia, id);
+    }
+
+
+    public void elminarActividadFisica(LocalDate fecha, long idActividad) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+
+        Dia dia = diaService.obtenerDiaPorFecha(fecha, user)
+                .orElseThrow(() -> new DiaInvalidoException("No se encontro el dia registrado con fecha: " + fecha));
+
+        ActividadFisica actividadFisica = obtenerActividadPorFechaEid(dia, idActividad)
+                .orElseThrow(() -> new ActividadFisicaInvalidaException("No se encontro la actividad con id : " + idActividad));
+
+        eliminar(actividadFisica);
+
+
+    }
+
+    public List<ActividadFisica> obtenerActividadFisicaPorTipo(String tipo) {
+        return actividadFisicaRepository.findActividadFisicaByTipoActividad(tipo);
+    }
+
+    public List<ActividadFisica> filtrarActividadFisicasDelSistema(String tipoActividad) {
+
+
+        List<ActividadFisica> actividades = obtenerActividadFisicaPorTipo(tipoActividad);
+
+        if (actividades.isEmpty()) {
+            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas con el tipo : " + tipoActividad);
+        }
+
+        return actividades;
+
+    }
+
+    public List<ActividadFisica> filtrarActividadesFisicasRealizadas(LocalDate fecha, String tipoActividad) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+
+        Dia dia = diaService.obtenerDiaPorFecha(fecha, user)
+                .orElseThrow(() -> new DiaInvalidoException("No se encontro el dia registrado con fecha: " + fecha));
+
+        List<ActividadFisica> actividades = actividadFisicaRepository.findActividadFisicaByDiaAndTipoActividad(dia, tipoActividad);
+
+        if (actividades.isEmpty()) {
+            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia);
+        }
+
+        return actividades;
+
+    }
+
+
+    public void modificarActividadFisica(LocalDate fecha, long idActividad, String tipoActividad_modificar, NivelActividadFisica intensidad_modificar, double duracionMin_modificar) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+
+        Dia dia = diaService.obtenerDiaPorFecha(fecha, user)
+                .orElseThrow(() -> new DiaInvalidoException("No se encontro el dia registrado con fecha: " + fecha));
+
+        ActividadFisica actividadFisica = obtenerActividadPorFechaEid(dia, idActividad)
+                .orElseThrow(() -> new ActividadFisicaInvalidaException("No se encontro la actividad con id : " + idActividad));
+
+
+        // Solo permitimos modificar si el tipo es igual (opcional, para mayor seguridad)
+        if (!actividadFisica.getTipoActividad().equalsIgnoreCase(tipoActividad_modificar)) {
+            throw new ActividadFisicaInvalidaException("No se puede cambiar el tipo de actividad. Solo se permiten modificaciones sobre el mismo tipo.");
+        }
+
+
+        actividadFisica.setTipoActividad(tipoActividad_modificar.toLowerCase());
+        actividadFisica.setDia(dia);
+        actividadFisica.setIntensidad(intensidad_modificar);
+        actividadFisica.setDuracionMin(duracionMin_modificar);
+        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
+
+        guardar(actividadFisica); //  Guardo la nueva
+
+    }
+
 
 
     public List<String> obtenerTiposDisponibles() {
         return List.of("correr", "gym"); // mantenido manualmente por ahora
     }
-
-
-
-
-
-
-
 
 
 }

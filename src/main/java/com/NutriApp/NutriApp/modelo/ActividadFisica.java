@@ -22,11 +22,14 @@ public abstract class ActividadFisica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String tipoActividad;
+
     private NivelActividadFisica intensidad;
 
     private double duracionMin;
 
     private double caloriasGastadas;
+
 
     @ManyToOne
     @JoinColumn(name = "dia_id")
