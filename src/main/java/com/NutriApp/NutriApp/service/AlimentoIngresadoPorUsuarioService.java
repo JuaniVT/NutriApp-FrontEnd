@@ -4,13 +4,17 @@ package com.NutriApp.NutriApp.service;
 import com.NutriApp.NutriApp.exceptions.AlimetoIngreadoPorElUsuarioException;
 import com.NutriApp.NutriApp.modelo.AlimentoIngresadoPorUsuario;
 import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
+import com.NutriApp.NutriApp.modelo.dto.AlimentoBusquedaDTO;
 import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.repository.AlimentoIngresadoPorUsuarioRepository;
 import com.NutriApp.NutriApp.repository.SolicitudRespository;
 import jakarta.transaction.Transactional;
+import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,4 +58,45 @@ public class AlimentoIngresadoPorUsuarioService {
         Optional <MacronutrienteDTO> dto = alimentoRepository.findMacronutrientesByNombreComidaAndId(nombreComida, id);
         return dto;
     }
+
+    //lista todos los aliemntos de nuestra base de datos
+    @PreAuthorize("hasRole('ADMIN')")   //validacion extra por si las dudas
+    public List<AlimentoIngresadoPorUsuario> listarTodos () throws AlimetoIngreadoPorElUsuarioException{
+        //obtenemos todos los alimentos
+        List<AlimentoIngresadoPorUsuario> lista = alimentoRepository.findAll();
+
+        if (lista.isEmpty()){
+            throw new AlimetoIngreadoPorElUsuarioException("No hay ningun alimento cargado en la bdd");
+        }
+
+        return lista;
+    }
+
+    //filtra los alimentos de nuestra bdd buscando por matcheos
+    public List<AlimentoIngresadoPorUsuario> filtrarAlimentosPorNombreComida (String nombreComida) throws AlimetoIngreadoPorElUsuarioException{
+        //buscamos los que coincidan
+        Optional<List<AlimentoIngresadoPorUsuario>> lista = alimentoRepository.findAllByNombreComidaContainingIgnoreCase(nombreComida);
+
+        if (lista.isEmpty()){
+            throw new AlimetoIngreadoPorElUsuarioException("Alimento no encontrado con el nombre = " + nombreComida);
+        }
+
+        return lista.get();
+    }
+
+    //retorna una lista sin comprobrar que se encuentre el aliemtno porque este metodo se utiliza para unificar los alimentos de la api con los de nuestra BDD
+    public List<AlimentoIngresadoPorUsuario> filtrarAlimentosPorNombreComidaSinException (String nombreComida) {
+        //buscamos los que coincidan
+        Optional<List<AlimentoIngresadoPorUsuario>> lista = alimentoRepository.findAllByNombreComidaContainingIgnoreCase(nombreComida);
+
+        return lista.get();
+    }
+
+    //convierte la lista de alimentos de nuestra BDD a una lista de AliemntoBusquedaDTO para que sea igual que en la api
+    public List<AlimentoBusquedaDTO> convertirListaDTO (List<AlimentoIngresadoPorUsuario> alimentos){
+        return alimentos.stream()
+                .map(AlimentoBusquedaDTO::from)
+                .toList();
+    }
+
 }

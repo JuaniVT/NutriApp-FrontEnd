@@ -44,7 +44,7 @@ public class SolicitudService {
 
 
     @Transactional
-    public void insertar (SolicitudAltaAlimento solicitud) throws SolicitudInvalidaException{
+    public void insertar (SolicitudAltaAlimento solicitud) throws Exception{
         if (alimentoIngresadoPorUsuarioService.existsByNombre(solicitud.getNombreComida())){
             throw new SolicitudInvalidaException("El alimento ya existe con el nombre = " +solicitud.getNombreComida());
         }
@@ -80,20 +80,15 @@ public class SolicitudService {
     }
 
     //verifica que no se ecuentre en la api
-    private boolean existeEnLaAPI (String nombreComida) throws SolicitudInvalidaException{
-        try {
-            //obtenemos la lista de alimentos de la api en base a un nombre de alimento
-            List<AlimentoBusquedaDTO> alimentosAPI = foodDataService.buscarAlimentosPorNombre(nombreComida);
+    private boolean existeEnLaAPI (String nombreComida) throws Exception{
+        //obtenemos la lista de alimentos de la api en base a un nombre de alimento
+        List<AlimentoBusquedaDTO> alimentosAPI = foodDataService.buscarAlimentosPorNombreSinException(nombreComida);
 
-            //recorremos la lista y nos fijamos si coincide el nombre
-            for (AlimentoBusquedaDTO alimento : alimentosAPI){
-                if (alimento.getDescripcion().trim().equalsIgnoreCase(nombreComida.trim())){    //el .trim() elimina los espacios al inicio y al final del string
-                    return true;
-                }
+        //recorremos la lista y nos fijamos si coincide el nombre
+        for (AlimentoBusquedaDTO alimento : alimentosAPI){
+            if (alimento.getDescripcion().trim().equalsIgnoreCase(nombreComida.trim())){    //el .trim() elimina los espacios al inicio y al final del string
+                return true;
             }
-
-        }catch (Exception e){
-            throw new SolicitudInvalidaException("No se pudo verificar con la API externa. Intente más tarde.");
         }
 
         return false;

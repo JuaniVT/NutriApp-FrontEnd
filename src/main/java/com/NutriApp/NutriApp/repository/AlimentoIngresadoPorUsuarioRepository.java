@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -30,4 +31,6 @@ public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<Ali
     Optional<MacronutrienteDTO> findMacronutrientesByNombreComidaAndId(@Param("nombreComida") String nombreComida, @Param("id") Long id);
     boolean existsByNombreComidaIgnoreCase(String nombreComida);
     boolean existsById (long id);
+    Optional<List<AlimentoIngresadoPorUsuario>> findAllByNombreComidaContainingIgnoreCase (String nombreComida);
+
 }

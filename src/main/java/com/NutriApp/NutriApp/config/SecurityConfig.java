@@ -74,6 +74,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/solicitud/aceptar").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/rechazar").hasRole("ADMIN")
 
+                        //alimentos ingresados por el usuario
+                        .requestMatchers("api/alimentos-usuario/listarTodos").hasRole("ADMIN")
+                        .requestMatchers("api/alimentos-usuario/filtrar").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
