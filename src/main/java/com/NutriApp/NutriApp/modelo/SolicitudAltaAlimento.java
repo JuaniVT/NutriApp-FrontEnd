@@ -24,6 +24,7 @@ public class SolicitudAltaAlimento {
 
     @NotBlank
     @Size(min = 2, max = 20)
+    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$", message = "Solo se permiten letras y espacios")
     private String nombreComida;
 
     @NotNull    // con esto creo un grupo de validaciones que cuando yo le meto un @Validated a un parametro de un objeto de esta clase,

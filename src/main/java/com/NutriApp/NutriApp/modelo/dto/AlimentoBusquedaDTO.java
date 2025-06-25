@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.modelo.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import com.NutriApp.NutriApp.modelo.AlimentoIngresadoPorUsuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,10 @@ public class AlimentoBusquedaDTO {
     @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 
+
+    public static AlimentoBusquedaDTO from (AlimentoIngresadoPorUsuario alimento){
+        return new AlimentoBusquedaDTO(alimento.getId(), alimento.getNombreComida());
+    }
 
 
 }

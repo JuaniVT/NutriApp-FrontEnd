@@ -1,6 +1,8 @@
 package com.NutriApp.NutriApp.modelo;
 
 import com.NutriApp.NutriApp.modelo.enums.Genero;
+import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.ObjetivoCaloricoTipo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -35,6 +37,8 @@ public class Persona {
     @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$", message = "El apellido no debe contener números ni caracteres especiales")
     private String apellido;
 
+    @NotBlank
+    @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 digitos numericos")
     @NotBlank(message = "El DNI es obligatorio")
     @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 dígitos numéricos")
     @Column(unique = true)
@@ -70,16 +74,16 @@ public class Persona {
     // EL uso del cascade para que se maneje en cascada el con el cascade = TIPOCASCADE
     // y el orphanRemoval (este es para el OnDeleteCascade de mysql)
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude //esto hace falta para que no entre en un ciclo infinito cuando se llama al tostring
+    @ToString.Exclude
     @JsonIgnore
     private Usuario usuario;
 
-    @JsonProperty ("username")  //le estamos diciendo que cuando agararre un json de este objeto tambien tome este como atributo, ya que el usuario lo ignora con el @JsonIgnore
+    @JsonProperty("username")
     public String getUsername(){
-        return usuario.getUsername();
+        return usuario != null ? usuario.getUsername() : null;
     }
 
-    @Tolerate   //esto es para que lombok me tome el contructor de persona personalizado
+    @Tolerate
     public Persona(String nombre, String apellido, String dni, LocalDate fechaNacimiento, String telefono, String direccion, Genero genero, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -90,4 +94,5 @@ public class Persona {
         this.genero = genero;
         this.email = email;
     }
+
 }

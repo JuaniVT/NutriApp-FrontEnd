@@ -1,10 +1,12 @@
 package com.NutriApp.NutriApp.controller;
 
+import com.NutriApp.NutriApp.modelo.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.modelo.dto.PersonaDTO;
 import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
 import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
+import com.NutriApp.NutriApp.service.PerfilNutricionalService;
 import com.NutriApp.NutriApp.service.PersonaService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 @RequestMapping("/api/persona")
 @RequiredArgsConstructor
 public class PersonaController {
+    private final PerfilNutricionalService perfilNutricionalService;
 
 
     // No es necesario usar @Autowired para inyectar la instancia de PersonaService,
@@ -66,6 +69,19 @@ public class PersonaController {
     {
         personaService.actualizarDatosPersona(nuevo);
         return ResponseEntity.ok("Se actualizaron correctamente los cambios");
+
     }
+    @PutMapping("/actualizar-persona")
+    public ResponseEntity<String> actualizarPersona(@RequestBody PersonaDTO personaDTO) {
+        personaService.actualizarDatosPersona(personaDTO);
+        return ResponseEntity.ok("Datos de persona actualizados correctamente");
+    }
+
+    @PutMapping("/actualizar-perfil-nutricional")
+    public ResponseEntity<String> actualizarPerfilNutricional(@RequestBody PerfilNutricionalDTO perfilDTO) {
+        perfilNutricionalService.actualizarPerfilNutricional(perfilDTO);
+        return ResponseEntity.ok("Perfil nutricional actualizado correctamente");
+    }
+
 
 }

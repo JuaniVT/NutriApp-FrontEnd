@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.mail.SendFailedException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import org.eclipse.angus.mail.smtp.SMTPAddressFailedException;
 import org.springframework.http.HttpHeaders;
 import com.NutriApp.NutriApp.exceptions.*;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,6 +127,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<String> manejarSolicitudInvalidaException(SolicitudInvalidaException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> manejarAliemntoInvalidoException (AlimentoInvalidoException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

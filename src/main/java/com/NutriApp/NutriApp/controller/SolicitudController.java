@@ -6,6 +6,7 @@ import com.NutriApp.NutriApp.modelo.ValidacionBasica;
 import com.NutriApp.NutriApp.service.SolicitudService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.persistence.ValidationMode;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class SolicitudController {
 
     //cualquiera registrado
     @PostMapping("/insertar")
-    public ResponseEntity<String> insertar (@RequestBody @Validated SolicitudAltaAlimento solicitudAltaAlimento) throws SolicitudInvalidaException {
+    public ResponseEntity<String> insertar (@RequestBody @Validated({Builder.Default.class, ValidacionBasica.class}) SolicitudAltaAlimento solicitudAltaAlimento) throws Exception {
         solicitudService.insertar(solicitudAltaAlimento);
 
         return ResponseEntity.ok("Solicitud enviada con exito");
