@@ -107,6 +107,7 @@ public class UsuarioService implements UserDetailsService {
         usuarioRepository.save(usuario); //se guarda en la bdd
     }
 
+
     @Transactional
     public void actualizarContraseñaUsuario(UsuarioDTO usuario) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

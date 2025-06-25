@@ -17,7 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Validated
 @RestController
 @RequestMapping("/api/persona")
 @RequiredArgsConstructor
@@ -61,7 +61,7 @@ public class PersonaController {
         return ResponseEntity.ok(personaService.obtenerMiPerfil());
     }
 
-    @PostMapping("/modificarPersona")
+    @PutMapping("/modificarPersona")
     public ResponseEntity <String> actualizarUsuario (@RequestBody PersonaDTO nuevo)
     {
         personaService.actualizarDatosPersona(nuevo);

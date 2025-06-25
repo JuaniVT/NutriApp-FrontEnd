@@ -82,7 +82,7 @@ public class ComidaIngeridaService {
     }
 
     // Crear nuevo dia
-    public void guardar(com.NutriApp.NutriApp.modelo.ComidaIngerida comidaIngerida) {
+    public void guardar(ComidaIngerida comidaIngerida) {
 
         comidaIngeridaRepository.save(comidaIngerida);
     }

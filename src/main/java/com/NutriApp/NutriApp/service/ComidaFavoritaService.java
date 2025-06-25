@@ -1,5 +1,6 @@
 package com.NutriApp.NutriApp.service;
 
+import com.NutriApp.NutriApp.modelo.dto.ComidaFavoritaDTO;
 import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.modelo.dto.ModificarCantidadComidaFavoritaDTO;
 import com.NutriApp.NutriApp.exceptions.ComidaFavoritaException;
@@ -10,10 +11,12 @@ import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.NutriApp.NutriApp.repository.ComidaFavoritaRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,42 +31,42 @@ public class ComidaFavoritaService {
     private final AlimentoIngresadoPorUsuarioService alimentoIngresadoPorUsuarioService;
     private final ComidaIngeridaService comidaIngeridaService;
 
-    public void agregarComidaFavorita(String nombrePaquete, String nombreComida, long comidaId, double cantidad) {
+    public void agregarComidaFavorita(ComidaFavoritaDTO comidaFavoritaDTO) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario usuario = (Usuario) auth.getPrincipal();
 
         MacronutrienteDTO dto = new MacronutrienteDTO();
 
-        Optional<MacronutrienteDTO> optionalMacronutrienteDTO = alimentoIngresadoPorUsuarioService.obtenerMacronutrientes(nombreComida, comidaId);
+        Optional<MacronutrienteDTO> optionalMacronutrienteDTO = alimentoIngresadoPorUsuarioService.obtenerMacronutrientes(comidaFavoritaDTO.getNombreComida(), comidaFavoritaDTO.getComidaId());
 
         if (optionalMacronutrienteDTO.isEmpty()) {
-            optionalMacronutrienteDTO = nutricionService.obtenerMacronutrientesPorId(comidaId);
+            optionalMacronutrienteDTO = nutricionService.obtenerMacronutrientesPorId(comidaFavoritaDTO.getComidaId());
         }
 
-        if (!optionalMacronutrienteDTO.isEmpty() && optionalMacronutrienteDTO.get().getNombreComida().equals(nombreComida)) {
+        if (!optionalMacronutrienteDTO.isEmpty() && optionalMacronutrienteDTO.get().getNombreComida().equals(comidaFavoritaDTO.getNombreComida())) {
 
             boolean yaExiste = comidaFavoritaRepository.existsByNombrePaqueteAndComidaIdAndNombreComidaAndUsuario(
-                    nombrePaquete, comidaId, optionalMacronutrienteDTO.get().getNombreComida(), usuario
+                    comidaFavoritaDTO.getNombrePaquete(), comidaFavoritaDTO.getComidaId(), optionalMacronutrienteDTO.get().getNombreComida(), usuario
             );
 
             if (yaExiste) {
 
-                modificarCantidadComidaFavorita(new ModificarCantidadComidaFavoritaDTO(nombrePaquete, comidaId, cantidad));
+                modificarCantidadComidaFavorita(new ModificarCantidadComidaFavoritaDTO(comidaFavoritaDTO.getNombrePaquete(), comidaFavoritaDTO.getComidaId(), comidaFavoritaDTO.getCantidad()));
 
             } else {
                 ComidaFavorita favorita = new ComidaFavorita();
-                favorita.setNombrePaquete(nombrePaquete);
-                favorita.setNombreComida(nombreComida);
-                favorita.setComidaId(comidaId);
-                favorita.setCantidad(cantidad);
+                favorita.setNombrePaquete(comidaFavoritaDTO.getNombrePaquete());
+                favorita.setNombreComida(comidaFavoritaDTO.getNombreComida());
+                favorita.setComidaId(comidaFavoritaDTO.getComidaId());
+                favorita.setCantidad(comidaFavoritaDTO.getCantidad());
                 favorita.setUsuario(usuario);
 
                 comidaFavoritaRepository.save(favorita);
             }
 
         } else {
-            throw new ComidaIngeridaException("No se encontro la comida con nombre: " + nombreComida);
+            throw new ComidaIngeridaException("No se encontro la comida con nombre: " + comidaFavoritaDTO.getNombreComida());
         }
 
     }

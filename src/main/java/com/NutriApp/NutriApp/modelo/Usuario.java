@@ -4,6 +4,8 @@ import com.NutriApp.NutriApp.modelo.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -30,11 +32,25 @@ public class Usuario implements UserDetails {
 
     @Id
     @Column(length = 50)
+    @NotBlank(message = "El nombre de usuario es obligatorio")
+    @Size(min = 4, max = 50, message = "El nombre de usuario debe tener entre 4 y 50 caracteres")
+    @Pattern(regexp = ".*\\D.*", message = "El nombre de usuario no puede contener solo números")
+    @Pattern(regexp = ".*[a-zA-Z0-9].*", message = "El nombre de usuario debe contener al menos una letra o número")
+    @Pattern(regexp = "\\S+", message = "El nombre de usuario no debe contener espacios")
+    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "El nombre de usuario solo puede contener letras, números, puntos y guiones bajos")
+    @Pattern(regexp = "^(?![._])[a-zA-Z0-9._]+(?<![._])$", message = "El nombre de usuario no puede comenzar ni terminar con punto o guion bajo")
+    @Pattern(regexp = "^(?!.*[._]{2})[a-zA-Z0-9._]+$", message = "El nombre de usuario no puede contener caracteres especiales consecutivos")
     private String username;  // puede ser email
 
 
     @Size(min = 6, max = 64) //max = 64 porque cuando se encripta es muy larga
     @JsonIgnore
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-\\=\\[\\]{};':\"\\\\|,.<>/?]).+$",
+            message = "La contraseña debe contener al menos una letra, un número y un carácter especial"
+    )
     private String password;
 
     private boolean enabled; // este campo es obligatorio en tu tabla SQL

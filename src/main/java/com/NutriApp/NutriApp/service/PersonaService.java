@@ -1,5 +1,7 @@
 package com.NutriApp.NutriApp.service;
 
+import com.NutriApp.NutriApp.modelo.PerfilNutricional;
+import com.NutriApp.NutriApp.modelo.dto.PerfilNutricionalDTO;
 import com.NutriApp.NutriApp.modelo.dto.PersonaDTO;
 import com.NutriApp.NutriApp.modelo.dto.UsuarioDTO;
 import com.NutriApp.NutriApp.exceptions.PersonaInvalidaException;
@@ -27,6 +29,7 @@ public class PersonaService {
     // Si existieran múltiples constructores, Spring no sabría cuál usar y se necesitaría
     // especificar la inyección de otra manera (por ejemplo, con @Autowired).
     private final PersonaRepository personaRepository;
+    private final PerfilNutricionalService perfilNutricionalService;
 
 
     public List<Persona> obtenerTodas() {
@@ -62,11 +65,18 @@ public class PersonaService {
         personaRepository.save(persona);
     }
 
+// METODO QUE ACTUALIZA LOS DATOS DE LA PERSONA
     @Transactional
-    public void actualizarDatosPersona (PersonaDTO personaDTO)
-    {
+    public void actualizarDatosPersona(PersonaDTO personaDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
+
+        if (!personaDTO.getDni().equals(user.getPersona().getDni())) {
+            if (personaRepository.existsByDni(personaDTO.getDni())) {
+                throw new PersonaInvalidaException("El DNI ingresado ya pertenece a otro usuario");
+            }
+        }
+
         Persona persona1 = user.getPersona();
         persona1.setNombre(personaDTO.getNombre());
         persona1.setApellido(personaDTO.getApellido());
@@ -74,14 +84,15 @@ public class PersonaService {
         persona1.setFechaNacimiento(personaDTO.getFechaNacimiento());
         persona1.setTelefono(personaDTO.getTelefono());
         persona1.setDireccion(personaDTO.getDireccion());
-        persona1.setGenero(personaDTO.getGenero());
         persona1.setEmail(personaDTO.getEmail());
-
-        // Guardás en el repositorio
+        if (!personaDTO.getGenero().equals(persona1.getGenero())) {
+            user.setPerfilNutricional(perfilNutricionalService.realizar_calculo_BMR(new PerfilNutricionalDTO(user.getPerfilNutricional().getPeso(), user.getPerfilNutricional().getAltura(), user.getPerfilNutricional().getNivelActividadFisica(), user.getPerfilNutricional().getEdad(), user.getPerfilNutricional().getObjetivoCaloricoTipo()), personaDTO.getGenero()));
+        }
+        persona1.setGenero(personaDTO.getGenero());
         personaRepository.save(persona1);
     }
 
-    public Persona obtenerPorUsername (String username) throws PersonaInvalidaException{
+    public Persona obtenerPorUsername(String username) throws PersonaInvalidaException {
         return personaRepository.findByUsuarioUsername(username).
                 orElseThrow(() -> new PersonaInvalidaException("Persona no encontrada con el username = " + username));
     }

@@ -5,10 +5,11 @@ import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.service.FoodDataService;
 import com.NutriApp.NutriApp.service.NutricionService;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Validated
 @RestController
 @RequestMapping("/api/alimentos")
 public class AlimentoController {

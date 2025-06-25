@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.modelo.dto;
 
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,12 +12,27 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ComidaIngeridaDTO {
+
+
+    @NotNull(message = "El ID no puede ser nulo")
+    @Min(value = 1, message = "El ID debe ser mayor que cero")
+    private Long id;
+
+    @NotBlank(message = "El nombre de la comida es obligatorio")
+    @Size(min = 2, max = 100, message = "El nombre de la comida debe tener entre 2 y 100 caracteres")
+    @Pattern(
+            regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$",
+            message = "El nombre de la comida solo puede contener letras y espacios"
+    )
     private String nombreComida;
-    private Double calorias;
-    private Double proteinas;
-    private Double grasas;
-    private Double carbohidratos;
-    private Double cantidad;
+
+    @NotNull(message = "La cantidad es obligatoria")
+    @PositiveOrZero(message = "La cantidad no puede ser negativa")
+    private Double gramos;
+
+    @NotNull(message = "El tipo de comida es obligatorio")
     private TipoComida tipoComida;
-    private LocalDate fecha;  // la fecha del día
+
+    @NotNull(message = "La fecha es obligatoria")
+    private LocalDate fecha;
 }

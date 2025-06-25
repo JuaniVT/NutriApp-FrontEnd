@@ -3,6 +3,10 @@ package com.NutriApp.NutriApp.modelo;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,22 +24,34 @@ public class ComidaIngerida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombrePaquete;
-
+    @NotBlank(message = "El nombre de la comida es obligatorio")
     private String nombreComida;
 
+    @NotNull(message = "Las calorías son obligatorias")
+    @PositiveOrZero(message = "Las calorías no pueden ser negativas")
     private Double calorias;
 
+    @NotNull(message = "Las proteínas son obligatorias")
+    @PositiveOrZero(message = "Las proteínas no pueden ser negativas")
     private Double proteinas;
 
+    @NotNull(message = "Las grasas son obligatorias")
+    @PositiveOrZero(message = "Las grasas no pueden ser negativas")
     private Double grasas;
 
+    @NotNull(message = "Los carbohidratos son obligatorios")
+    @PositiveOrZero(message = "Los carbohidratos no pueden ser negativos")
     private Double carbohidratos;
 
+    @NotNull(message = "La cantidad es obligatoria")
+    @Positive(message = "La cantidad debe ser mayor a cero")
     private Double cantidad;  // cantidad de porciones
 
+    @NotNull(message = "El tipo de comida es obligatorio")
+    @Enumerated(EnumType.STRING)
     private TipoComida tipoComida;
 
+    @NotNull(message = "El ID de comida API es obligatorio")
     private Long idComidaApi;
 
     @ManyToOne

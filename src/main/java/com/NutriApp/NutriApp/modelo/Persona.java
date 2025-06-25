@@ -25,33 +25,40 @@ public class Persona {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank
-    @Size(min = 3, max = 50)
+    @NotBlank(message = "El nombre es obligatorio")
+    @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
+    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$", message = "El nombre no debe contener números ni caracteres especiales")
     private String nombre;
 
-    @NotBlank
-    @Size(min = 3, max = 50)
+    @NotBlank(message = "El apellido es obligatorio")
+    @Size(min = 3, max = 50, message = "El apellido debe tener entre 3 y 50 caracteres")
+    @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$", message = "El apellido no debe contener números ni caracteres especiales")
     private String apellido;
 
-    @NotBlank
+    @NotBlank(message = "El DNI es obligatorio")
     @Pattern(regexp = "\\d{8}", message = "El DNI debe tener exactamente 8 dígitos numéricos")
     @Column(unique = true)
     private String dni;
 
-    @NotNull
+    @NotNull(message = "La fecha de nacimiento es obligatoria")
     @Past(message = "La fecha de nacimiento debe ser en el pasado")
     private LocalDate fechaNacimiento;
 
-    @NotBlank
+    @NotBlank(message = "El teléfono es obligatorio")
+    @Pattern(regexp = "\\d{6,15}", message = "El teléfono debe contener entre 6 y 15 dígitos")
     private String telefono;
 
-    @NotBlank
+    @NotBlank(message = "La dirección es obligatoria")
+    @Pattern(
+            regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\s\\-ºª#.,]+$",
+            message = "La dirección debe contener letras y al menos un número"
+    )
     private String direccion;
 
-    @NotNull
+    @NotNull(message = "El género es obligatorio")
     private Genero genero;
 
-    @NotBlank
+    @NotBlank(message = "El email es obligatorio")
     @Email(message = "El email debe tener un formato válido y contener '@'")
     private String email;
 

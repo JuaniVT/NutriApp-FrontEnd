@@ -3,6 +3,8 @@ package com.NutriApp.NutriApp.modelo;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,12 +20,16 @@ public class ComidaFavorita {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
-    public String nombrePaquete;
+    @NotBlank(message = "El nombre del paquete es obligatorio")
+    private String nombrePaquete;
 
-    public String nombreComida;
+    @NotBlank(message = "El nombre de la comida es obligatorio")
+    private String nombreComida;
 
+    @Positive(message = "El ID de la comida debe ser positivo")
     private long comidaId;
 
+    @Positive(message = "La cantidad debe ser mayor a cero")
     private double cantidad;
 
     @ManyToOne

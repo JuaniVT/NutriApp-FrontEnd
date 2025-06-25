@@ -8,11 +8,12 @@ import com.NutriApp.NutriApp.service.ActividadFisicaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-
+@Validated
 @RestController
 @RequestMapping("/api/actividadesFisicas")
 @RequiredArgsConstructor

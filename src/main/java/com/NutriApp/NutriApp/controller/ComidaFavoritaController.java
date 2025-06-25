@@ -6,14 +6,16 @@ import com.NutriApp.NutriApp.modelo.dto.ModificarCantidadComidaFavoritaDTO;
 import com.NutriApp.NutriApp.modelo.ComidaFavorita;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.NutriApp.NutriApp.service.ComidaFavoritaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-
+@Validated
 @RestController
 @RequestMapping("/comidas-favoritas")
 @RequiredArgsConstructor
@@ -23,13 +25,9 @@ public class ComidaFavoritaController {
 
     // Agregar comida favorita o actualizar cantidad si ya existe
     @PostMapping("/agregar")
-    public ResponseEntity<String> agregarComidaFavorita(@RequestBody ComidaFavoritaDTO request) {
+    public ResponseEntity<String> agregarComidaFavorita(@Valid @RequestBody ComidaFavoritaDTO request) {
         try {
-            comidaFavoritaService.agregarComidaFavorita(
-                    request.getNombrePaquete(),
-                    request.getNombreComida(),
-                    request.getComidaId(),
-                    request.getCantidad()
+            comidaFavoritaService.agregarComidaFavorita(request
             );
             return ResponseEntity.ok("Comida favorita agregada/modificada correctamente.");
         } catch (Exception e) {
@@ -39,7 +37,7 @@ public class ComidaFavoritaController {
 
     // Modificar solo la cantidad
     @PutMapping("/modificar-cantidad")
-    public ResponseEntity<String> modificarCantidad(@RequestBody ModificarCantidadComidaFavoritaDTO dto) {
+    public ResponseEntity<String> modificarCantidad(@Valid @RequestBody ModificarCantidadComidaFavoritaDTO dto) {
         try {
             comidaFavoritaService.modificarCantidadComidaFavorita(dto);
             return ResponseEntity.ok("Cantidad modificada correctamente.");
