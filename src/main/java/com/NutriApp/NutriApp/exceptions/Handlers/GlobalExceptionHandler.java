@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.exceptions.Handlers;
 
 import com.NutriApp.NutriApp.exceptions.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.SendFailedException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
