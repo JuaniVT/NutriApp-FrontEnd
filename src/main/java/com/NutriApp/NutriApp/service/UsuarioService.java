@@ -188,6 +188,11 @@ public class UsuarioService implements UserDetailsService {
                 .toList();
     }
 
+    public Usuario obtenerUsuarioConDias(String username) {
+        return usuarioRepository.findByUsernameWithDias(username)
+                .orElseThrow(() -> new UsuarioInvalidoException("No se encontró el usuario con username: " + username));
+    }
+
 
 
 }
