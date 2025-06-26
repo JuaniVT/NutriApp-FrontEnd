@@ -119,10 +119,10 @@ public class CargaInicialDeUsuarios {
                 .build());
 
         PerfilNutricionalDTO perfilDTO = PerfilNutricionalDTO.builder()
-                .peso(70.0)
-                .altura(173.0)
+                .peso(82.0)
+                .altura(185.0)
                 .nivelActividadFisica(NivelActividadFisica.MODERADA)
-                .edad(19)
+                .edad(21)
                 .objetivoCaloricoTipo(ObjetivoCaloricoTipo.SUPERAVIT_LIGERO)
                 .build();
 

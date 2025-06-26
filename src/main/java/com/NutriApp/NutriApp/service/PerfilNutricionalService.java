@@ -66,15 +66,26 @@ public class PerfilNutricionalService {
 
     @Transactional
     public void actualizarPerfilNutricional(PerfilNutricionalDTO perfilDTO) {
-        {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+        PerfilNutricional perfilExistente = user.getPerfilNutricional();
 
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Usuario user = (Usuario) auth.getPrincipal();
-            PerfilNutricional perfil = realizar_calculo_BMR(perfilDTO, user.getPersona().getGenero());
-            user.setPerfilNutricional(perfil);
-            guardar(user.getPerfilNutricional());
+        if (perfilExistente != null) {
+            PerfilNutricional perfilActualizado = realizar_calculo_BMR(perfilDTO, user.getPersona().getGenero());
+            perfilExistente.setGEB(perfilActualizado.getGEB());
+            perfilExistente.setObjetivoDiario(perfilActualizado.getObjetivoDiario());
+            perfilExistente.setNivelActividadFisica(perfilActualizado.getNivelActividadFisica());
+            perfilExistente.setAltura(perfilActualizado.getAltura());
+            perfilExistente.setPeso(perfilActualizado.getPeso());
+            perfilExistente.setEdad(perfilActualizado.getEdad());
+            perfilExistente.setObjetivoCaloricoTipo(perfilActualizado.getObjetivoCaloricoTipo());
+
+            guardar(perfilExistente);
+        } else {
+            PerfilNutricional nuevoPerfil = realizar_calculo_BMR(perfilDTO, user.getPersona().getGenero());
+            user.setPerfilNutricional(nuevoPerfil);
+            guardar(nuevoPerfil);
         }
-
     }
 
 
