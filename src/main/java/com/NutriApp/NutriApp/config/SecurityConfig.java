@@ -67,7 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/usuario/eliminarCuenta").authenticated() // <--- acá el cambio
 
                         //solicitudes
-                        .requestMatchers("/api/solicitud/listarTodas").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/listar/todas").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrarPorFecha").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/username").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/nombreComida").hasRole("ADMIN")
