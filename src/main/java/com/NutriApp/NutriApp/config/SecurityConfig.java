@@ -60,7 +60,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
                         .requestMatchers("api/alimentos/buscar").permitAll()
                         .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
-                        .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
                         .requestMatchers("/comidas/agregar").authenticated()
                         .requestMatchers("/usuario/eliminarCuenta").authenticated() // <--- acá el cambio
@@ -70,6 +69,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/solicitud/filtrarPorFecha").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/username").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/nombreComida").hasRole("ADMIN")
+                        .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/aceptar").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/rechazar").hasRole("ADMIN")
 
