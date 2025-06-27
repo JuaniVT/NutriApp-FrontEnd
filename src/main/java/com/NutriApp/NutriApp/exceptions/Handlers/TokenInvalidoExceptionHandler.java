@@ -16,8 +16,18 @@ public class TokenInvalidoExceptionHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        final String expiredMessage = (String) request.getAttribute("expired");
+
+        System.out.println(expiredMessage);
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("No estás autenticado o el token es inválido");
+
+        if (expiredMessage != null){
+            response.getWriter().write("Token expirado = " + expiredMessage);
+        }else {
+            response.getWriter().write("No estás autenticado o el token es inválido");
+        }
+
     }
 }

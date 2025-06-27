@@ -81,6 +81,12 @@ public class UsuarioController {
     @GetMapping("/filtrarClientes")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Map<String, Object>>> filtrarClientes(@RequestParam String filtro) {
-        return ResponseEntity.ok(usuarioService.filtrarClientes(filtro));
+        List<Map<String, Object>> clientes = usuarioService.filtrarClientes(filtro);
+
+        if (clientes.isEmpty()){
+            throw new UsuarioInvalidoException("No hay usuarios registrados con el username = " + filtro);
+        }
+
+        return ResponseEntity.ok(clientes);
     }
 }

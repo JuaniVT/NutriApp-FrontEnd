@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.repository;
 
 import com.NutriApp.NutriApp.modelo.AlimentoIngresadoPorUsuario;
+import com.NutriApp.NutriApp.modelo.dto.AlimentoBusquedaDTO;
 import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,5 +33,7 @@ public interface AlimentoIngresadoPorUsuarioRepository extends JpaRepository<Ali
     boolean existsByNombreComidaIgnoreCase(String nombreComida);
     boolean existsById (long id);
     Optional<List<AlimentoIngresadoPorUsuario>> findAllByNombreComidaContainingIgnoreCase (String nombreComida);
-
+    Optional<AlimentoIngresadoPorUsuario> findByNombreComidaContainingIgnoreCase (String nombreComida);
+    Optional<AlimentoIngresadoPorUsuario> findByNombreComidaIgnoreCase (String nombreComida);
+//    void deleteBy
 }
