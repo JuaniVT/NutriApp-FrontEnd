@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.service;
 
 
+import com.NutriApp.NutriApp.exceptions.AlimentoInvalidoException;
 import com.NutriApp.NutriApp.exceptions.AlimetoIngreadoPorElUsuarioException;
 import com.NutriApp.NutriApp.modelo.AlimentoIngresadoPorUsuario;
 import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
@@ -98,5 +99,21 @@ public class AlimentoIngresadoPorUsuarioService {
                 .map(AlimentoBusquedaDTO::from)
                 .toList();
     }
+
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public String eliminarAlimento (String nombreComida) throws AlimetoIngreadoPorElUsuarioException{
+//
+//        //obtenemos el alimento
+//        Optional<AlimentoIngresadoPorUsuario> alimento = alimentoRepository.findByNombreComidaIgnoreCase(nombreComida);
+//
+//        //validamos
+//        if (alimento.isEmpty()){
+//            throw new AlimentoInvalidoException("No se encontro el alimento con el nombre = " + nombreComida);
+//        }
+//
+//        //borramos el alimento
+//        alimentoRepository.de
+//
+//    }
 
 }

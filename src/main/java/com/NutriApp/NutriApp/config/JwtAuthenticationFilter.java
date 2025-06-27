@@ -3,6 +3,7 @@ package com.NutriApp.NutriApp.config;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.service.JwtService;
 import com.NutriApp.NutriApp.service.UsuarioService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,46 +46,52 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Extraemos el token sin el prefijo "Bearer "
         String token = authHeader.substring(7);
 
-        // Obtenemos el nombre de usuario desde el token
-        String username = jwtService.extractUsername(token);
+        try {
+            // Obtenemos el nombre de usuario desde el token
+            String username = jwtService.extractUsername(token);
 
-        // Si obtenemos un username y no hay autenticación en contexto, validamos el token
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Si obtenemos un username y no hay autenticación en contexto, validamos el token
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            // Cargamos los datos del usuario desde base de datos
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                // Cargamos los datos del usuario desde base de datos
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            // Verificamos si el token es válido
-            if (jwtService.isTokenValid(token, userDetails)) {
+                // Verificamos si el token es válido
+                if (jwtService.isTokenValid(token, userDetails)) {
 
-                // Creamos el token de autenticación de Spring
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
+                    // Creamos el token de autenticación de Spring
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
 
-                // Cargamos información adicional del request
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                    // Cargamos información adicional del request
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
 
-                // Establecemos el usuario autenticado en el contexto de Spring
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    // Establecemos el usuario autenticado en el contexto de Spring
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                // Logica para actualizar la fecha activa del usuario
-                Usuario usuario = userDetailsService.buscarPorEmail(userDetails.getUsername());
-                if (usuario != null) {
-                    LocalDate hoy = LocalDate.now();
-                    if (usuario.getFechaActiva() == null || !usuario.getFechaActiva().equals(hoy)) {
-                        usuario.setFechaActiva(hoy);
-                        userDetailsService.guardar(usuario);
+                    // Logica para actualizar la fecha activa del usuario
+                    Usuario usuario = userDetailsService.buscarPorEmail(userDetails.getUsername());
+                    if (usuario != null) {
+                        LocalDate hoy = LocalDate.now();
+                        if (usuario.getFechaActiva() == null || !usuario.getFechaActiva().equals(hoy)) {
+                            usuario.setFechaActiva(hoy);
+                            userDetailsService.guardar(usuario);
+                        }
                     }
+
+
                 }
-
-
             }
+
+
+        }catch (ExpiredJwtException ex){
+            request.setAttribute("expired", ex.getMessage());
         }
 
         // Continuamos la cadena de filtros

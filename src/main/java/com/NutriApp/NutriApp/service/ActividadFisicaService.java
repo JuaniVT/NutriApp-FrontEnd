@@ -139,7 +139,7 @@ public class ActividadFisicaService {
         List<ActividadFisica> actividadFisicasRealizadas = actividadFisicaRepository.findActividadFisicasByDia(dia);
 
         if (actividadFisicasRealizadas.isEmpty()) {
-            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia);
+            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia.getFecha());
         }
 
         return actividadFisicasRealizadas;
@@ -194,7 +194,7 @@ public class ActividadFisicaService {
         List<ActividadFisica> actividades = actividadFisicaRepository.findActividadFisicaByDiaAndTipoActividad(dia, tipoActividad);
 
         if (actividades.isEmpty()) {
-            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia);
+            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia.getFecha() + ", con el tipo de actividad = " + tipoActividad);
         }
 
         return actividades;
