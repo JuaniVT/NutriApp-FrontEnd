@@ -72,7 +72,7 @@ public class SecurityConfig {
 
                         //solicitudes
                         .requestMatchers("/api/solicitud/listar/todas").hasRole("ADMIN")
-                        .requestMatchers("/api/solicitud/filtrarPorFecha").hasRole("ADMIN")
+                        .requestMatchers("/api/solicitud/filtrar/fecha").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/username").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrar/nombreComida").hasRole("ADMIN")
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")

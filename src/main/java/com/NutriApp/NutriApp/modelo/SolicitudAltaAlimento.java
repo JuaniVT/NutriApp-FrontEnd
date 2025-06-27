@@ -76,7 +76,7 @@ public class SolicitudAltaAlimento {
 
     public void setearDatosDesdeNuevaSolicitud(SolicitudAltaAlimento nueva) {
         if (nueva.getNombreComida() != null) this.setNombreComida(nueva.getNombreComida());
-        if (nueva.getPorcion() != 0.0) this.setPorcion(nueva.getPorcion());
+        if (nueva.getPorcion() != null) this.setPorcion(nueva.getPorcion());
         if (nueva.getCalorias() != null) this.setCalorias(nueva.getCalorias());
         if (nueva.getProteinas() != null) this.setProteinas(nueva.getProteinas());
         if (nueva.getGrasas() != null) this.setGrasas(nueva.getGrasas());

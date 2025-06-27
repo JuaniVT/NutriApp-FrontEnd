@@ -118,7 +118,8 @@ public class SolicitudService {
             throw new SolicitudInvalidaException("No hay solicitudes cargadas");
         }
 
-        return solicitudRespository.findAll().stream()
+
+        List<SolicitudAltaAlimento> solicitudes = solicitudRespository.findAll().stream()
                 .sorted(new Comparator<SolicitudAltaAlimento>() {
                     @Override
                     public int compare(SolicitudAltaAlimento o1, SolicitudAltaAlimento o2) {
@@ -128,6 +129,12 @@ public class SolicitudService {
                 .filter(x -> !x.getFecha().toLocalDate().isBefore(fechaFiltrar))    //filtra todo lo que no es antes de esa fecha
                 .limit(100)
                 .toList();
+
+        if (solicitudes.isEmpty()){
+            throw new SolicitudInvalidaException("No hay solicitudes cargadas para la fecha = " + fechaFiltrar);
+        }
+
+        return solicitudes;
     }
 
     public List<SolicitudAltaAlimento> filtrarSolicitudesPorUsername (String username) throws SolicitudInvalidaException{
@@ -135,7 +142,13 @@ public class SolicitudService {
             throw new SolicitudInvalidaException("No hay solicitudes cargadas");
         }
 
-        return solicitudRespository.findAllByUsuarioUsername(username).stream()
+        List<SolicitudAltaAlimento> solicitudes = solicitudRespository.findAllByUsuarioUsername(username);
+
+        if (solicitudes.isEmpty()){
+            throw new SolicitudInvalidaException("No hay solicitudes cargadas para el usuario = " + username);
+        }
+
+        return solicitudes.stream()
                 .sorted(new Comparator<SolicitudAltaAlimento>() {
                     @Override
                     public int compare(SolicitudAltaAlimento o1, SolicitudAltaAlimento o2) {
@@ -151,7 +164,13 @@ public class SolicitudService {
             throw new SolicitudInvalidaException("No hay solicitudes cargadas");
         }
 
-        return solicitudRespository.findAllByNombreComidaIgnoreCase(nombreComida).stream()
+        List<SolicitudAltaAlimento> solicitudes = solicitudRespository.findAllByNombreComidaIgnoreCase(nombreComida);
+
+        if (solicitudes.isEmpty()){
+            throw new SolicitudInvalidaException("No hay solicitudes cargadas con el nombre = " + nombreComida);
+        }
+
+        return solicitudes.stream()
                 .sorted(Comparator.comparing(SolicitudAltaAlimento::getFecha))    //ordena comparando por fecha
                 .limit(100)
                 .toList();
