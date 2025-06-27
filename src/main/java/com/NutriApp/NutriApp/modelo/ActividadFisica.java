@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.modelo;
 
 
 import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.TipoActividadFisica;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,16 +14,16 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "ActividadFisica")
-@Inheritance(strategy = InheritanceType.JOINED)
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class ActividadFisica {
+public class ActividadFisica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tipoActividad;
+    @Enumerated(EnumType.STRING)
+    private TipoActividadFisica tipoActividad;
 
     private NivelActividadFisica intensidad;
 
@@ -36,8 +37,9 @@ public abstract class ActividadFisica {
     @JsonIgnore
     private Dia dia;
 
-    public abstract double calcularCalorias(PerfilNutricional perfilNutricional);
-
+    public double calcularCaloriasGastadas(PerfilNutricional perfil) {
+        return tipoActividad.calcularCalorias(perfil.getPeso(), duracionMin);
+    }
 
 
 }

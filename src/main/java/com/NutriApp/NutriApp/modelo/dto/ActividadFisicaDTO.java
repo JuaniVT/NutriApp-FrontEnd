@@ -1,6 +1,7 @@
 package com.NutriApp.NutriApp.modelo.dto;
 
 import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.TipoActividadFisica;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,9 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ActividadFisicaDTO {
 
-    @NotBlank(message = "El tipo de actividad es obligatorio.")
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "El tipo de actividad debe contener solo letras.")
-    private String tipoActividad;
+    @NotNull(message = "El tipo de actividad es obligatorio.")
+    private TipoActividadFisica tipoActividad;
 
     @NotNull(message = "La intensidad de la actividad es obligatoria.")
     private NivelActividadFisica intensidad;

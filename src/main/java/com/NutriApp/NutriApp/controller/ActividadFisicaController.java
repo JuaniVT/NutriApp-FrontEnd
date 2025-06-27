@@ -4,6 +4,7 @@ import com.NutriApp.NutriApp.modelo.dto.ActividadFisicaDTO;
 import com.NutriApp.NutriApp.modelo.dto.ActividadFisicaResponseDTO;
 import com.NutriApp.NutriApp.exceptions.ActividadFisicaInvalidaException;
 import com.NutriApp.NutriApp.modelo.ActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.TipoActividadFisica;
 import com.NutriApp.NutriApp.service.ActividadFisicaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +74,7 @@ public ResponseEntity<String> elminarActividadFisica(@RequestParam LocalDate fec
 }
 
 @GetMapping("/filtrar")
-public ResponseEntity<List<ActividadFisica>> filtrarActividadFisicasDelSistema(@RequestParam String tipoActividad) throws ActividadFisicaInvalidaException  {
+public ResponseEntity<List<ActividadFisica>> filtrarActividadFisicasDelSistema(@RequestParam TipoActividadFisica tipoActividad) throws ActividadFisicaInvalidaException  {
 
     List<ActividadFisica> actividades = actividadFisicaService.filtrarActividadFisicasDelSistema(tipoActividad);
 
@@ -82,7 +83,7 @@ public ResponseEntity<List<ActividadFisica>> filtrarActividadFisicasDelSistema(@
 }
 
 @GetMapping("/filtrar/actividadesRealizadas")
-public ResponseEntity<List<ActividadFisica>> filtrarActividadesFisicasRealizadas(@RequestParam LocalDate fecha, @RequestParam String tipoActividad) throws ActividadFisicaInvalidaException  {
+public ResponseEntity<List<ActividadFisica>> filtrarActividadesFisicasRealizadas(@RequestParam LocalDate fecha, @RequestParam TipoActividadFisica tipoActividad) throws ActividadFisicaInvalidaException  {
 
     List<ActividadFisica> actividades = actividadFisicaService.filtrarActividadesFisicasRealizadas(fecha,tipoActividad);
 

@@ -4,11 +4,10 @@ import com.NutriApp.NutriApp.modelo.dto.ActividadFisicaResponseDTO;
 import com.NutriApp.NutriApp.exceptions.ActividadFisicaInvalidaException;
 import com.NutriApp.NutriApp.exceptions.DiaInvalidoException;
 import com.NutriApp.NutriApp.modelo.ActividadFisica;
-import com.NutriApp.NutriApp.modelo.ActividadesFisicas.Correr;
-import com.NutriApp.NutriApp.modelo.ActividadesFisicas.Gym;
 import com.NutriApp.NutriApp.modelo.Dia;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.TipoActividadFisica;
 import com.NutriApp.NutriApp.repository.ActividadFisicaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -16,8 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -37,33 +36,21 @@ public class ActividadFisicaService {
         actividadFisicaRepository.delete(actividadFisica);
     }
 
-    public void agregarActividadFsicaRealizada(String tipoActividad, NivelActividadFisica intensidad, double duracionMin) {
+
+
+    public void agregarActividadFsicaRealizada(TipoActividadFisica tipoActividad, NivelActividadFisica intensidad, double duracionMin) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
 
         Dia dia = diaService.obtenerODiaOCrear(user.getFechaActiva(), user);
 
-        ActividadFisica actividadFisica;
-        switch (tipoActividad.toLowerCase()) {
-            case "correr":
-                actividadFisica = new Correr();
-                actividadFisica.setTipoActividad("correr");
-                break;
-            case "gym":
-                actividadFisica = new Gym();
-                actividadFisica.setTipoActividad("gym");
-                break;
-
-            default:
-
-                throw new ActividadFisicaInvalidaException("Tipo de actividad no reconocido : " + tipoActividad);
-        }
-
+        ActividadFisica actividadFisica = new ActividadFisica();
+        actividadFisica.setTipoActividad(tipoActividad);
         actividadFisica.setDia(dia);
         actividadFisica.setIntensidad(intensidad);
         actividadFisica.setDuracionMin(duracionMin);
-        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
+        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCaloriasGastadas(user.getPerfilNutricional()));
 
         guardar(actividadFisica);
 
@@ -71,37 +58,19 @@ public class ActividadFisicaService {
     }
 
 
-    public void agregarActividadFsicaRealizadaEnUnDiaEspecifico(String tipoActividad, NivelActividadFisica intensidad, double duracionMin, LocalDate fecha) {
+    public void agregarActividadFsicaRealizadaEnUnDiaEspecifico(TipoActividadFisica tipoActividad, NivelActividadFisica intensidad, double duracionMin, LocalDate fecha) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
 
         Dia dia = diaService.obtenerODiaOCrear(fecha, user);
 
-
-        agregarActividadFsicaRealizada(tipoActividad, intensidad, duracionMin);
-
-        ActividadFisica actividadFisica;
-        switch (tipoActividad.toLowerCase()) {
-            case "correr":
-                actividadFisica = new Correr();
-                actividadFisica.setTipoActividad("correr");
-                break;
-            case "gym":
-                actividadFisica = new Gym();
-                actividadFisica.setTipoActividad("gym");
-                break;
-
-            default:
-
-                throw new ActividadFisicaInvalidaException("Tipo de actividad no reconocido : " + tipoActividad);
-        }
-
+        ActividadFisica actividadFisica = new ActividadFisica();
+        actividadFisica.setTipoActividad(tipoActividad);
         actividadFisica.setDia(dia);
         actividadFisica.setIntensidad(intensidad);
         actividadFisica.setDuracionMin(duracionMin);
-        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
-
+        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCaloriasGastadas(user.getPerfilNutricional()));
         actividadFisicaRepository.save(actividadFisica);
 
 
@@ -117,7 +86,7 @@ public class ActividadFisicaService {
         return actividadFisicas.stream().map(actividad ->
                 new ActividadFisicaResponseDTO(
                         actividad.getId(),
-                        actividad.getClass().getSimpleName().toLowerCase(), // tipoActividad
+                        actividad.getTipoActividad(), // tipoActividad
                         actividad.getIntensidad(),
                         actividad.getDuracionMin(),
                         actividad.getCaloriasGastadas(),
@@ -166,11 +135,11 @@ public class ActividadFisicaService {
 
     }
 
-    public List<ActividadFisica> obtenerActividadFisicaPorTipo(String tipo) {
+    public List<ActividadFisica> obtenerActividadFisicaPorTipo(TipoActividadFisica tipo) {
         return actividadFisicaRepository.findActividadFisicaByTipoActividad(tipo);
     }
 
-    public List<ActividadFisica> filtrarActividadFisicasDelSistema(String tipoActividad) {
+    public List<ActividadFisica> filtrarActividadFisicasDelSistema(TipoActividadFisica tipoActividad) {
 
 
         List<ActividadFisica> actividades = obtenerActividadFisicaPorTipo(tipoActividad);
@@ -183,7 +152,7 @@ public class ActividadFisicaService {
 
     }
 
-    public List<ActividadFisica> filtrarActividadesFisicasRealizadas(LocalDate fecha, String tipoActividad) {
+    public List<ActividadFisica> filtrarActividadesFisicasRealizadas(LocalDate fecha, TipoActividadFisica tipoActividad) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
@@ -194,7 +163,7 @@ public class ActividadFisicaService {
         List<ActividadFisica> actividades = actividadFisicaRepository.findActividadFisicaByDiaAndTipoActividad(dia, tipoActividad);
 
         if (actividades.isEmpty()) {
-            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas para el dia : " + dia);
+            throw new ActividadFisicaInvalidaException("No se encontraron actividades fisicas cargadas con el tipo : " + tipoActividad + "con la fecha : " + fecha);
         }
 
         return actividades;
@@ -202,7 +171,7 @@ public class ActividadFisicaService {
     }
 
 
-    public void modificarActividadFisica(LocalDate fecha, long idActividad, String tipoActividad_modificar, NivelActividadFisica intensidad_modificar, double duracionMin_modificar) {
+    public void modificarActividadFisica(LocalDate fecha, long idActividad, TipoActividadFisica tipoActividad_modificar, NivelActividadFisica intensidad_modificar, double duracionMin_modificar) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Usuario user = (Usuario) auth.getPrincipal();
@@ -215,17 +184,16 @@ public class ActividadFisicaService {
 
 
         // Solo permitimos modificar si el tipo es igual (opcional, para mayor seguridad)
-        if (!actividadFisica.getTipoActividad().equalsIgnoreCase(tipoActividad_modificar)) {
+        if (!actividadFisica.getTipoActividad().equals(tipoActividad_modificar)) {
             throw new ActividadFisicaInvalidaException("No se puede cambiar el tipo de actividad. Solo se permiten modificaciones sobre el mismo tipo.");
         }
 
 
-        actividadFisica.setTipoActividad(tipoActividad_modificar.toLowerCase());
+        actividadFisica.setTipoActividad(tipoActividad_modificar);
         actividadFisica.setDia(dia);
         actividadFisica.setIntensidad(intensidad_modificar);
         actividadFisica.setDuracionMin(duracionMin_modificar);
-        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCalorias(user.getPerfilNutricional()));
-
+        actividadFisica.setCaloriasGastadas(actividadFisica.calcularCaloriasGastadas(user.getPerfilNutricional()));
         guardar(actividadFisica); //  Guardo la nueva
 
     }
@@ -233,8 +201,10 @@ public class ActividadFisicaService {
 
 
     public List<String> obtenerTiposDisponibles() {
-        return List.of("correr", "gym"); // mantenido manualmente por ahora
+        return Arrays.stream(TipoActividadFisica.values())
+                .map(Enum::name)
+                .map(String::toLowerCase)
+                .toList();
     }
-
 
 }
