@@ -1,6 +1,8 @@
 package com.NutriApp.NutriApp.service;
 
 import com.NutriApp.NutriApp.exceptions.DiaInvalidoException;
+import com.NutriApp.NutriApp.modelo.ActividadFisica;
+import com.NutriApp.NutriApp.modelo.ComidaIngerida;
 import com.NutriApp.NutriApp.modelo.Dia;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.repository.DiaRepository;
@@ -80,6 +82,37 @@ public class DiaService {
 
     }
 
+    public void caloriasRestantesDia(LocalDate fecha) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+        double objetivoDiario = user.getPerfilNutricional().getObjetivoDiario();
+        Optional<Dia> dia = diaRepository.findByFechaAndUsuario(fecha, user);
+        if (dia.isEmpty()) {
+            throw new DiaInvalidoException("No existe un día cargado para ese usuario");
+        }
+
+        Dia diaActual = dia.get();
+
+        List<ActividadFisica> actividadesFisicas = diaActual.getActividadesFisicasRealizadas();
+        if (actividadesFisicas != null && !actividadesFisicas.isEmpty()) {
+
+            for (ActividadFisica actividad : actividadesFisicas) {
+                objetivoDiario += actividad.getCaloriasGastadas();
+            }
+        }
+
+        List<ComidaIngerida> comidasIngeridas = diaActual.getComidasIngeridas();
+        double caloriasConsumidas = 0;
+        if (comidasIngeridas != null && !comidasIngeridas.isEmpty()) {
+            for (ComidaIngerida comida : comidasIngeridas) {
+                caloriasConsumidas += comida.getCalorias();
+            }
+        }
+
+        diaActual.setCaloriasRestantes(objetivoDiario - caloriasConsumidas);
+
+        guardar(diaActual);
+    }
 
 }
 

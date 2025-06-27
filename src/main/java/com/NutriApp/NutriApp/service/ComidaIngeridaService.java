@@ -41,18 +41,28 @@ public class ComidaIngeridaService {
         // Buscás el Día o lo creás si no existe
         Dia dia = diaService.obtenerODiaOCrear(fecha, user);
 
-        // Armás la comida
-        Optional<ComidaIngerida> comida1 = comidaIngeridaRepository.findByUserIdAndFechaAndComidaIdAndTipoComida(user.getPersona().getId(), fecha, id_comida, tipo);
+        // Buscás si ya existe una comida igual ese día
+        Optional<ComidaIngerida> comidaExistente = comidaIngeridaRepository
+                .findByUserIdAndFechaAndComidaIdAndTipoComida(user.getPersona().getId(), fecha, id_comida, tipo);
 
-        if (!comida1.isEmpty()) {
-            modificarComida(new ModificarComidaIngeridaDTO(id_comida, nombre, (gramos + comida1.get().getCantidad()), comida1.get().getTipoComida(), tipo, fecha));
+        if (comidaExistente.isPresent()) {
+            modificarComida(new ModificarComidaIngeridaDTO(
+                    id_comida,
+                    nombre,
+                    gramos + comidaExistente.get().getCantidad(),
+                    comidaExistente.get().getTipoComida(),
+                    tipo,
+                    fecha
+            ));
         } else {
-            ComidaIngerida comida = new ComidaIngerida();
-            comida = convertir_comidaid(comida, nombre, id_comida, gramos);
+            ComidaIngerida comida = convertir_comidaid(new ComidaIngerida(), nombre, id_comida, gramos);
             comida.setTipoComida(tipo);
+            dia.getComidasIngeridas().add(comida);
             comida.setDia(dia);
             guardar(comida);
         }
+
+        diaService.caloriasRestantesDia(fecha);
     }
 
     public ComidaIngerida convertir_comidaid(ComidaIngerida comidaIngerida, String nombre, long comida_id, double gramos) throws Exception {
@@ -113,6 +123,7 @@ public class ComidaIngeridaService {
             modificar = convertir_comidaid(modificar, dto.getNombre(), modificar.getIdComidaApi(), (dto.getGramos()));
             guardar(modificar);
         }
+        diaService.caloriasRestantesDia(dia.get().getFecha());
     }
 
     // metodo que settea ciertos valores de la comida para modularizar codigo
@@ -168,36 +179,13 @@ public class ComidaIngeridaService {
     }
 
     public void eliminarComidaIngerida(LocalDate fecha, long comidaId, TipoComida tipoComida) {
-        comidaIngeridaRepository.delete(buscarComidaIngerida(fecha, comidaId, tipoComida));
+        ComidaIngerida comida = buscarComidaIngerida(fecha, comidaId, tipoComida);
+
+        Dia dia = comida.getDia();
+        dia.getComidasIngeridas().remove(comida);
+
+        comidaIngeridaRepository.delete(comida);  // esto lo elimina de la DB
+        diaService.caloriasRestantesDia(fecha);   // recalculás con la lista actualizada
     }
-
-    public double caloriasRestantesDia(LocalDate fecha) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Usuario user = (Usuario) auth.getPrincipal();
-        double objetivoDiario = 0;
-        Optional<Dia> dia = diaService.obtenerDiaPorFecha(fecha, user);
-        if (dia.isEmpty()) {
-            throw new DiaInvalidoException("No existe un dia cargado para ese usuario");
-        } else {
-            List<ActividadFisica> actividadFisicas = dia.get().getActividadesFisicasRealizadas();
-
-            if (!actividadFisicas.isEmpty()) {
-                objetivoDiario = user.getPerfilNutricional().getObjetivoDiario();
-                for (ActividadFisica actividadFisica : actividadFisicas) {
-                    objetivoDiario = objetivoDiario + actividadFisica.getCaloriasGastadas();
-                }
-            }
-            List<ComidaIngerida> comidaIngeridas = dia.get().getComidasIngeridas();
-
-            double caloriasConsumidas = 0;
-
-            for (ComidaIngerida comidaIngerida : comidaIngeridas) {
-                caloriasConsumidas = caloriasConsumidas + comidaIngerida.getCalorias();
-            }
-
-            return objetivoDiario - caloriasConsumidas;
-        }
-    }
-
 
 }
