@@ -47,6 +47,7 @@ public class ActividadFisicaService {
 
         ActividadFisica actividadFisica = new ActividadFisica();
         actividadFisica.setTipoActividad(tipoActividad);
+        dia.getActividadesFisicasRealizadas().add(actividadFisica);
         actividadFisica.setDia(dia);
         actividadFisica.setIntensidad(intensidad);
         actividadFisica.setDuracionMin(duracionMin);
@@ -54,6 +55,7 @@ public class ActividadFisicaService {
 
         guardar(actividadFisica);
 
+        diaService.caloriasRestantesDia(dia.getFecha());
 
     }
 
@@ -67,13 +69,16 @@ public class ActividadFisicaService {
 
         ActividadFisica actividadFisica = new ActividadFisica();
         actividadFisica.setTipoActividad(tipoActividad);
+        dia.getActividadesFisicasRealizadas().add(actividadFisica);
         actividadFisica.setDia(dia);
         actividadFisica.setIntensidad(intensidad);
         actividadFisica.setDuracionMin(duracionMin);
         actividadFisica.setCaloriasGastadas(actividadFisica.calcularCaloriasGastadas(user.getPerfilNutricional()));
-        actividadFisicaRepository.save(actividadFisica);
 
 
+        guardar(actividadFisica);
+
+        diaService.caloriasRestantesDia(dia.getFecha());
     }
 
     public List<ActividadFisicaResponseDTO> obtenerTodas() {
@@ -130,7 +135,10 @@ public class ActividadFisicaService {
         ActividadFisica actividadFisica = obtenerActividadPorFechaEid(dia, idActividad)
                 .orElseThrow(() -> new ActividadFisicaInvalidaException("No se encontro la actividad con id : " + idActividad));
 
+        dia.getActividadesFisicasRealizadas().remove(actividadFisica);
         eliminar(actividadFisica);
+
+        diaService.caloriasRestantesDia(dia.getFecha());
 
 
     }
@@ -190,11 +198,15 @@ public class ActividadFisicaService {
 
 
         actividadFisica.setTipoActividad(tipoActividad_modificar);
+        dia.getActividadesFisicasRealizadas().add(actividadFisica);
         actividadFisica.setDia(dia);
         actividadFisica.setIntensidad(intensidad_modificar);
         actividadFisica.setDuracionMin(duracionMin_modificar);
         actividadFisica.setCaloriasGastadas(actividadFisica.calcularCaloriasGastadas(user.getPerfilNutricional()));
+
         guardar(actividadFisica); //  Guardo la nueva
+
+        diaService.caloriasRestantesDia(dia.getFecha());
 
     }
 

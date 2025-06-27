@@ -35,8 +35,11 @@ public class Dia {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
 
+
+    private double caloriasRestantes;
+
     @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ComidaIngerida> comidasIngeridas;
+    private List<ComidaIngerida> comidasIngeridas = new ArrayList<>();
 
 
     @JsonProperty("username")  //le estamos diciendo que cuando agararre un json de este objeto tambien tome este como atributo, ya que el usuario lo ignora con el @JsonIgnore

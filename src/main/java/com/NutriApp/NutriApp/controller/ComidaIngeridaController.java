@@ -53,6 +53,8 @@ public class ComidaIngeridaController {
         double totalCalorias = comidaIngeridaService.verCaloriasConsumidasDeunDia(fecha);
         return ResponseEntity.ok(totalCalorias);
     }
+    
+    
 
     @DeleteMapping("/eliminar")
     public ResponseEntity<String> eliminarComida(
