@@ -22,28 +22,28 @@ public class SolicitudAltaAlimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
+    @NotBlank(groups = ValidacionCompleta.class)
     @Pattern(regexp = "^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$", message = "Solo se permiten letras y espacios", groups = ValidacionBasica.class)
     @Size(min = 2, max = 20, groups = ValidacionBasica.class)
     private String nombreComida;
 
-    @NotNull    // con esto creo un grupo de validaciones que cuando yo le meto un @Validated a un parametro de un objeto de esta clase,
+    @NotNull (groups = ValidacionCompleta.class)   // con esto creo un grupo de validaciones que cuando yo le meto un @Validated a un parametro de un objeto de esta clase,
     @PositiveOrZero(groups = ValidacionBasica.class)   // lo pongo para que me valide solo los campos del grupo que yo especifique porque en este caso necesito que no me valide
-    private double porcion;                      // el nombre de comida
+    private Double porcion;                      // el nombre de comida
 
-    @NotNull
+    @NotNull (groups = ValidacionCompleta.class)
     @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double calorias;
 
-    @NotNull
+    @NotNull(groups = ValidacionCompleta.class)
     @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double proteinas;
 
-    @NotNull
+    @NotNull(groups = ValidacionCompleta.class)
     @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double grasas;
 
-    @NotNull
+    @NotNull(groups = ValidacionCompleta.class)
     @DecimalMin(value = "0.0", groups = ValidacionBasica.class)
     private Double carbohidratos;
 

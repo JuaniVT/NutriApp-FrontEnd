@@ -43,6 +43,9 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MailService mailService;
+
     public LoginResponse login(@RequestBody LoginRequest request) {
 
         // Autenticamos al usuario con nombre y contraseña
@@ -110,6 +113,12 @@ public class AuthService {
         usuario.setPerfilNutricional(perfilNutricional);
 
         usuarioDetailsService.guardar(usuario);
+
+        //obtenemos los datos de la persona del usuario
+        personaService.obtenerPorUsername(usuario.getUsername());
+
+        //mandamos el mail con un aviso de creacion de cuenta
+        mailService.enviarMail(persona.getEmail(), "Creacion de cuenta", "Su cuenta = '" +usuario.getUsername()+ "' fue creada con exito");
 
 
         // Cargar UserDetails para generar token

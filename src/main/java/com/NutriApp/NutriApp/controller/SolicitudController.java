@@ -3,6 +3,7 @@ package com.NutriApp.NutriApp.controller;
 import com.NutriApp.NutriApp.exceptions.SolicitudInvalidaException;
 import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
 import com.NutriApp.NutriApp.modelo.ValidacionBasica;
+import com.NutriApp.NutriApp.modelo.ValidacionCompleta;
 import com.NutriApp.NutriApp.service.SolicitudService;
 import jakarta.annotation.security.PermitAll;
 import jakarta.persistence.ValidationMode;
@@ -28,7 +29,12 @@ public class SolicitudController {
 
     //cualquiera registrado
     @PostMapping("/insertar")
-    public ResponseEntity<String> insertar (@RequestBody @Validated SolicitudAltaAlimento solicitudAltaAlimento) throws Exception {
+    public ResponseEntity<String> insertar (@RequestBody @Validated(ValidacionCompleta.class) SolicitudAltaAlimento solicitudAltaAlimento) throws Exception {
+
+        if (solicitudAltaAlimento.getPorcion() == 0.0){
+            throw new IllegalArgumentException("El campo 'porcion' es obligatorio y no puede ser 0.0");
+        }
+
         solicitudService.insertar(solicitudAltaAlimento);
 
         return ResponseEntity.ok("Solicitud enviada con exito");
