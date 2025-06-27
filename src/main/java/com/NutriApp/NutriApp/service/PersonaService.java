@@ -17,7 +17,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 @Service
@@ -68,34 +72,66 @@ public class PersonaService {
     }
 
 // METODO QUE ACTUALIZA LOS DATOS DE LA PERSONA
-    @Transactional
-    public void actualizarDatosPersona(PersonaDTO personaDTO) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Usuario user = (Usuario) auth.getPrincipal();
+@Transactional
+public void actualizarDatosPersona(PersonaDTO personaDTO) {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Usuario user = (Usuario) auth.getPrincipal();
 
-        if (!personaDTO.getDni().equals(user.getPersona().getDni())) {
-            if (personaRepository.existsByDni(personaDTO.getDni())) {
-                throw new PersonaInvalidaException("El DNI ingresado ya pertenece a otro usuario");
-            }
-        }
+    Persona personaActual = user.getPersona();
 
-        Persona persona1 = user.getPersona();
-        persona1.setNombre(personaDTO.getNombre());
-        persona1.setApellido(personaDTO.getApellido());
-        persona1.setDni(personaDTO.getDni());
-        persona1.setFechaNacimiento(personaDTO.getFechaNacimiento());
-        persona1.setTelefono(personaDTO.getTelefono());
-        persona1.setDireccion(personaDTO.getDireccion());
-        persona1.setEmail(personaDTO.getEmail());
-        if (!personaDTO.getGenero().equals(persona1.getGenero())) {
-            user.setPerfilNutricional(perfilNutricionalService.realizar_calculo_BMR(new PerfilNutricionalDTO(user.getPerfilNutricional().getPeso(), user.getPerfilNutricional().getAltura(), user.getPerfilNutricional().getNivelActividadFisica(), user.getPerfilNutricional().getEdad(), user.getPerfilNutricional().getObjetivoCaloricoTipo()), personaDTO.getGenero()));
-        }
-        persona1.setGenero(personaDTO.getGenero());
-        personaRepository.save(persona1);
+    // Validaciones de unicidad con stream
+    Stream.of(
+                    new AbstractMap.SimpleEntry<>("DNI",
+                            !personaDTO.getDni().equals(personaActual.getDni()) && personaRepository.existsByDni(personaDTO.getDni())),
+                    new AbstractMap.SimpleEntry<>("EMAIL",
+                            !personaDTO.getEmail().equals(personaActual.getEmail()) && personaRepository.findByEmail(personaDTO.getEmail()).isPresent()),
+                    new AbstractMap.SimpleEntry<>("TELÉFONO",
+                            !personaDTO.getTelefono().equals(personaActual.getTelefono()) && personaRepository.findByTelefono(personaDTO.getTelefono()).isPresent())
+            ).filter(Map.Entry::getValue)
+            .findFirst()
+            .ifPresent(entry -> {
+                throw new PersonaInvalidaException("El " + entry.getKey() + " ingresado ya pertenece a otro usuario");
+            });
+
+    // Actualización de datos
+    personaActual.setNombre(personaDTO.getNombre());
+    personaActual.setApellido(personaDTO.getApellido());
+    personaActual.setDni(personaDTO.getDni());
+    personaActual.setFechaNacimiento(personaDTO.getFechaNacimiento());
+    personaActual.setTelefono(personaDTO.getTelefono());
+    personaActual.setDireccion(personaDTO.getDireccion());
+    personaActual.setEmail(personaDTO.getEmail());
+
+    // Si el género cambió, recalcular perfil nutricional
+    if (!personaDTO.getGenero().equals(personaActual.getGenero())) {
+        PerfilNutricionalDTO perfilDTO = new PerfilNutricionalDTO(
+                user.getPerfilNutricional().getPeso(),
+                user.getPerfilNutricional().getAltura(),
+                user.getPerfilNutricional().getNivelActividadFisica(),
+                user.getPerfilNutricional().getEdad(),
+                user.getPerfilNutricional().getObjetivoCaloricoTipo()
+        );
+        user.setPerfilNutricional(perfilNutricionalService.realizar_calculo_BMR(perfilDTO, personaDTO.getGenero()));
     }
+
+    personaActual.setGenero(personaDTO.getGenero());
+    personaRepository.save(personaActual);
+}
 
     public Persona obtenerPorUsername(String username) throws PersonaInvalidaException {
         return personaRepository.findByUsuarioUsername(username).
                 orElseThrow(() -> new PersonaInvalidaException("Persona no encontrada con el username = " + username));
+    }
+
+    public boolean existeOtraPersonaConDNI(String dni) {
+        return personaRepository.existsByDni(dni);
+    }
+
+    public boolean existeOtraPersonaConEmail(String email) {
+        return personaRepository.existsByEmail(email);
+    }
+
+    public boolean existeOtraPersonaConTelefono(String telefono) {
+        return personaRepository.existsByTelefono(telefono);
     }
 }

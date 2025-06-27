@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
 public class AuthService {
@@ -64,12 +67,19 @@ public class AuthService {
     public LoginResponse registrarUsuario(RegistroUsuarioRequest request) throws UsuarioExistente, PersonaInvalidaException {
 
         if (usuarioDetailsService.existsByUsername(request.getUsuario().getUsername())) {
-            throw new UsuarioExistente("El nombre de usaurio ya está en uso");
+            throw new UsuarioExistente("El nombre de usuario ya está en uso");
         }
 
-        if (personaService.existsByDni(request.getPersona().getDni())) {
-            throw new PersonaInvalidaException("La persona a ingresar ya se encuentra registrada");
-        }
+        // Validaciones de unicidad con stream
+        Stream.of(
+                        new AbstractMap.SimpleEntry<>("DNI", personaService.existeOtraPersonaConDNI(request.getPersona().getDni())),
+                        new AbstractMap.SimpleEntry<>("EMAIL", personaService.existeOtraPersonaConEmail(request.getPersona().getEmail())),
+                        new AbstractMap.SimpleEntry<>("TELÉFONO", personaService.existeOtraPersonaConTelefono(request.getPersona().getTelefono()))
+                ).filter(Map.Entry::getValue)
+                .findFirst()
+                .ifPresent(entry -> {
+                    throw new PersonaInvalidaException("El " + entry.getKey() + " ingresado ya pertenece a otro usuario");
+                });
 
         Persona persona = new Persona();
         persona.setNombre(request.getPersona().getNombre());

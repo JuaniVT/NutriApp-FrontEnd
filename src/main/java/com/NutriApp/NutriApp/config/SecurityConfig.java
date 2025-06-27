@@ -58,7 +58,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
-                        .requestMatchers("/api/persona/listar").permitAll()
                         .requestMatchers("api/alimentos/buscar").permitAll()
                         .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
@@ -77,7 +76,7 @@ public class SecurityConfig {
                         //alimentos ingresados por el usuario
                         .requestMatchers("api/alimentos-usuario/listarTodos").hasRole("ADMIN")
                         .requestMatchers("api/alimentos-usuario/filtrar").hasRole("ADMIN")
-
+                        .requestMatchers("/api/persona/listar").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception

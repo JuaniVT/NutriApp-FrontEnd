@@ -8,6 +8,7 @@ import com.NutriApp.NutriApp.modelo.Persona;
 import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.service.PerfilNutricionalService;
 import com.NutriApp.NutriApp.service.PersonaService;
+import jakarta.validation.Valid;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,16 +67,11 @@ public class PersonaController {
 
 
     @PutMapping("/actualizar-persona")
-    public ResponseEntity<String> actualizarPersona(@RequestBody PersonaDTO personaDTO) {
+    public ResponseEntity<String> actualizarPersona(@Valid @RequestBody PersonaDTO personaDTO) {
         personaService.actualizarDatosPersona(personaDTO);
         return ResponseEntity.ok("Datos de persona actualizados correctamente");
     }
 
-    @PutMapping("/actualizar-perfil-nutricional")
-    public ResponseEntity<String> actualizarPerfilNutricional(@RequestBody PerfilNutricionalDTO perfilDTO) {
-        perfilNutricionalService.actualizarPerfilNutricional(perfilDTO);
-        return ResponseEntity.ok("Perfil nutricional actualizado correctamente");
-    }
 
 
 }

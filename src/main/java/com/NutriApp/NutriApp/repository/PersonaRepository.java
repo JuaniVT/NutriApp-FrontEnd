@@ -14,5 +14,12 @@ public interface PersonaRepository extends JpaRepository <Persona, Integer> {
     //Y si la query es muy compleja se deberia de crear un DAO y delegarle el metodo
     Optional<Persona> findByUsuarioUsername (String username);
 
+    Optional<Persona> findByTelefono(String telefono);
 
+    Optional<Persona> findByEmail(String email);
+
+    Optional <Persona> findByDni(String dni);
+
+    boolean existsByTelefono(String telefono);
+    boolean existsByEmail(String email);
 }
