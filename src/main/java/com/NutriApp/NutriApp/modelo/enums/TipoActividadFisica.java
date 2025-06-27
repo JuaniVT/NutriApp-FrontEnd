@@ -36,6 +36,5 @@ public enum TipoActividadFisica {
         return met;
     }
 
-    
 
 }
