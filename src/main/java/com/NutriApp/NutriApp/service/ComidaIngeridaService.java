@@ -1,19 +1,18 @@
 package com.NutriApp.NutriApp.service;
 
+import com.NutriApp.NutriApp.exceptions.ActividadFisicaInvalidaException;
+import com.NutriApp.NutriApp.modelo.*;
 import com.NutriApp.NutriApp.modelo.dto.ComidaIngeridaDTO;
 import com.NutriApp.NutriApp.modelo.dto.MacronutrienteDTO;
 import com.NutriApp.NutriApp.modelo.dto.ModificarComidaIngeridaDTO;
 import com.NutriApp.NutriApp.exceptions.ComidaIngeridaException;
 import com.NutriApp.NutriApp.exceptions.DiaInvalidoException;
-import com.NutriApp.NutriApp.modelo.Comida;
-import com.NutriApp.NutriApp.modelo.ComidaIngerida;
-import com.NutriApp.NutriApp.modelo.Dia;
-import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.NutriApp.NutriApp.repository.ComidaIngeridaRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -104,15 +103,12 @@ public class ComidaIngeridaService {
                 modificar.setTipoComida(dto.getTipoComidaNuevo());
                 modificar = convertir_comidaid(modificar, dto.getNombre(), modificar.getIdComidaApi(), (dto.getGramos()));
                 guardar(modificar);
-            }
-            else
-            {
+            } else {
                 ComidaIngerida modificarFinal = convertir_comidaid(modificar2.get(), modificar2.get().getNombreComida(), modificar2.get().getIdComidaApi(), (modificar2.get().getCantidad() + dto.getGramos()));
                 comidaIngeridaRepository.delete(modificar);
                 guardar(modificarFinal);
             }
-        }else
-        {
+        } else {
             ComidaIngerida modificar = buscarComidaIngerida(dto.getFecha(), dto.getId(), dto.getTipoComida());
             modificar = convertir_comidaid(modificar, dto.getNombre(), modificar.getIdComidaApi(), (dto.getGramos()));
             guardar(modificar);
@@ -173,6 +169,34 @@ public class ComidaIngeridaService {
 
     public void eliminarComidaIngerida(LocalDate fecha, long comidaId, TipoComida tipoComida) {
         comidaIngeridaRepository.delete(buscarComidaIngerida(fecha, comidaId, tipoComida));
+    }
+
+    public double caloriasRestantesDia(LocalDate fecha) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario user = (Usuario) auth.getPrincipal();
+        double objetivoDiario = 0;
+        Optional<Dia> dia = diaService.obtenerDiaPorFecha(fecha, user);
+        if (dia.isEmpty()) {
+            throw new DiaInvalidoException("No existe un dia cargado para ese usuario");
+        } else {
+            List<ActividadFisica> actividadFisicas = dia.get().getActividadesFisicasRealizadas();
+
+            if (!actividadFisicas.isEmpty()) {
+                objetivoDiario = user.getPerfilNutricional().getObjetivoDiario();
+                for (ActividadFisica actividadFisica : actividadFisicas) {
+                    objetivoDiario = objetivoDiario + actividadFisica.getCaloriasGastadas();
+                }
+            }
+            List<ComidaIngerida> comidaIngeridas = dia.get().getComidasIngeridas();
+
+            double caloriasConsumidas = 0;
+
+            for (ComidaIngerida comidaIngerida : comidaIngeridas) {
+                caloriasConsumidas = caloriasConsumidas + comidaIngerida.getCalorias();
+            }
+
+            return objetivoDiario - caloriasConsumidas;
+        }
     }
 
 
