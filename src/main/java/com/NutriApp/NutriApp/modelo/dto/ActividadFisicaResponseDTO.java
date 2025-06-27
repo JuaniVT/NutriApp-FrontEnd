@@ -1,5 +1,6 @@
 package com.NutriApp.NutriApp.modelo.dto;
 import com.NutriApp.NutriApp.modelo.enums.NivelActividadFisica;
+import com.NutriApp.NutriApp.modelo.enums.TipoActividadFisica;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,8 +19,9 @@ public class ActividadFisicaResponseDTO {
     @Min(value = 1, message = "El id debe ser mayor o igual a 1")
     private long id;
 
-    @NotBlank(message = "El tipo de actividad es obligatorio")
-    private String tipoActividad;
+    @NotNull(message = "El tipo de actividad es obligatorio.")
+    private TipoActividadFisica tipoActividad;
+
 
     @NotNull(message = "La intensidad es obligatoria")
     private NivelActividadFisica intensidad;

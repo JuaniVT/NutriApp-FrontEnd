@@ -2,6 +2,7 @@ package com.NutriApp.NutriApp.repository;
 
 import com.NutriApp.NutriApp.modelo.ActividadFisica;
 import com.NutriApp.NutriApp.modelo.Dia;
+import com.NutriApp.NutriApp.modelo.enums.TipoActividadFisica;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +17,9 @@ public interface ActividadFisicaRepository extends JpaRepository <ActividadFisic
 
     Optional<ActividadFisica> findActividadFisicaByDiaAndId(Dia dia, long id);
 
-    List<ActividadFisica> findActividadFisicaByTipoActividad(String tipo);
+    List<ActividadFisica> findActividadFisicaByTipoActividad(TipoActividadFisica tipo);
 
-    List<ActividadFisica> findActividadFisicaByDiaAndTipoActividad(Dia dia,String tipo);
+    List<ActividadFisica> findActividadFisicaByDiaAndTipoActividad(Dia dia,TipoActividadFisica tipo);
 
 
 }
