@@ -57,14 +57,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
-                        .requestMatchers("/api/persona/listar").permitAll()
-                        .requestMatchers("api/alimentos/buscar").permitAll()
-                        .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
+                        .requestMatchers("/api/usuario/registro").hasRole("ADMIN") // <- Permitir acceso sin login
+                        .requestMatchers("/api/persona/listar").hasRole("ADMIN")
                         .requestMatchers("/api/persona/obtener").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
-                        .requestMatchers("/comidas/agregar").authenticated()
-                        .requestMatchers("/usuario/eliminarCuenta").authenticated() // <--- acá el cambio
 
                         //solicitudes
                         .requestMatchers("/api/solicitud/listar/todas").hasRole("ADMIN")

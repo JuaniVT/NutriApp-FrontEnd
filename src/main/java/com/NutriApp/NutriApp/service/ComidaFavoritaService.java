@@ -91,7 +91,7 @@ public class ComidaFavoritaService {
         Usuario usuario = (Usuario) auth.getPrincipal();
 
         ComidaFavorita favorita = comidaFavoritaRepository.findByNombrePaqueteAndComidaIdAndUsuario(paquete, idFavorita, usuario)
-                .orElseThrow(() -> new ComidaIngeridaException("No se encontró en el paquete: + " + paquete + " el aliemento con id: " + idFavorita));
+                .orElseThrow(() -> new ComidaIngeridaException("No se encontró en el paquete: " + paquete + " el aliemento con id: " + idFavorita));
 
 
         comidaFavoritaRepository.delete(favorita);
