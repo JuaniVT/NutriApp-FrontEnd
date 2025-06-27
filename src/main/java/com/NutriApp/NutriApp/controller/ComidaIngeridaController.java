@@ -9,6 +9,8 @@ import com.NutriApp.NutriApp.modelo.Usuario;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.NutriApp.NutriApp.service.ComidaIngeridaService;
 import com.NutriApp.NutriApp.service.DiaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +31,27 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/comidas")  // prefijo de la ruta
 @RequiredArgsConstructor
+@Tag(name = "Comidas Ingeridas", description = "Operaciones con las comidas ingeridas")
 public class ComidaIngeridaController {
 
     private final ComidaIngeridaService comidaIngeridaService;
     private final DiaService diaService;
 
+    @Operation(summary = "Agregar alimento ingerido.", description = "Agrega un alimento ingerido a la BDD.")
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarComidaIngerida(@Valid @RequestBody ComidaIngeridaDTO comidaIngeridaDTO) throws Exception {
         comidaIngeridaService.agregarComidaIngerida(comidaIngeridaDTO.getId(), comidaIngeridaDTO.getNombreComida(), comidaIngeridaDTO.getGramos(), comidaIngeridaDTO.getTipoComida(), comidaIngeridaDTO.getFecha());
         return ResponseEntity.ok("Se cargo correctamnete el alimento " + comidaIngeridaDTO.getNombreComida());
     }
 
+    @Operation(summary = "Modificar alimento ingerido.", description = "Modifica un alimento ingerido en la BDD.")
     @PutMapping("/modificar")
     public ResponseEntity<String> modificarComidaIngerida(@RequestBody ModificarComidaIngeridaDTO modificarComidaIngeridaDTO) throws Exception {
         comidaIngeridaService.modificarComida(modificarComidaIngeridaDTO);
         return ResponseEntity.ok("Se modifico correctamente la comida");
     }
 
+    @Operation(summary = "Ver calorias consumidas de un dia.", description = "Devuelve las calorias consumidas en un dia.")
     @GetMapping("/calorias-dia")
     public ResponseEntity<Double> verCaloriasConsumidasDeunDia(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
@@ -54,6 +60,7 @@ public class ComidaIngeridaController {
         return ResponseEntity.ok(totalCalorias);
     }
 
+    @Operation(summary = "Eliminar una comida ingerida.", description = "Elimina una comida ingerida en un dia.")
     @DeleteMapping("/eliminar")
     public ResponseEntity<String> eliminarComida(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha, long comidaId, TipoComida tipoComida) {

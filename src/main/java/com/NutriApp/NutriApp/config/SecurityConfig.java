@@ -62,6 +62,14 @@ public class SecurityConfig {
                         .requestMatchers("api/alimentos/detalle/{fdcId}").permitAll()
                         .requestMatchers("/auth/login", "/auth/registro").permitAll()
 
+                        //personas
+                        .requestMatchers("/api/persona/guardar").hasRole("ADMIN")
+                        .requestMatchers("/api/persona/listar").hasRole("ADMIN")
+
+                        //swagger
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        //http://localhost:8080/swagger-ui/index.html#/ -> direccion para entrar a la documentacion de swagger
+
                         //solicitudes
                         .requestMatchers("/api/solicitud/listar/todas").hasRole("ADMIN")
                         .requestMatchers("/api/solicitud/filtrarPorFecha").hasRole("ADMIN")
@@ -74,7 +82,7 @@ public class SecurityConfig {
                         //alimentos ingresados por el usuario
                         .requestMatchers("api/alimentos-usuario/listarTodos").hasRole("ADMIN")
                         .requestMatchers("api/alimentos-usuario/filtrar").hasRole("ADMIN")
-                        .requestMatchers("/api/persona/listar").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
