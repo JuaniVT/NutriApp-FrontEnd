@@ -6,6 +6,9 @@ import com.NutriApp.NutriApp.modelo.dto.ModificarCantidadComidaFavoritaDTO;
 import com.NutriApp.NutriApp.modelo.ComidaFavorita;
 import com.NutriApp.NutriApp.modelo.enums.TipoComida;
 import com.NutriApp.NutriApp.service.ComidaFavoritaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,11 +22,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/comidas-favoritas")
 @RequiredArgsConstructor
+@Tag(name = "Comidas Favoritas", description = "Operaciones con las comidas favoritas")
 public class ComidaFavoritaController {
 
     private final ComidaFavoritaService comidaFavoritaService;
 
     // Agregar comida favorita o actualizar cantidad si ya existe
+    @Operation(summary = "Agregar alimento a una comida favorita.", description = "Agrega un alimento a un paquete de comidas favoritas.")
     @PostMapping("/agregar")
     public ResponseEntity<String> agregarComidaFavorita(@Valid @RequestBody ComidaFavoritaDTO request) {
         try {
@@ -36,6 +41,7 @@ public class ComidaFavoritaController {
     }
 
     // Modificar solo la cantidad
+    @Operation(summary = "Modificar cantidad de un alimento de una comida favorita.", description = "Modifica la cantidad de un alimento de un paquete de comidas favoritas.")
     @PutMapping("/modificar-cantidad")
     public ResponseEntity<String> modificarCantidad(@Valid @RequestBody ModificarCantidadComidaFavoritaDTO dto) {
         try {
@@ -47,6 +53,7 @@ public class ComidaFavoritaController {
     }
 
     // Eliminar comida favorita por paquete y comidaId
+    @Operation(summary = "Eliminar alimento de una comida favorita.", description = "Elimina un alimento de un paquete de comidas favoritas.")
     @DeleteMapping("/eliminar")
     public ResponseEntity<String> eliminarComidaFavorita(@RequestParam String nombrePaquete,
                                                          @RequestParam long comidaId) {
@@ -58,6 +65,7 @@ public class ComidaFavoritaController {
         }
     }
 
+    @Operation(summary = "Listar alimentos de una comida favorita.", description = "Devuelve una lista de alimentos de un paquete de comidas favoritas.")
     @GetMapping("/listar")
     public ResponseEntity<?> listarPorPaquete(@RequestParam String nombrePaquete) {
         List<ComidaFavorita> favoritas = comidaFavoritaService.listarComidasFavoritasPorPaquete(nombrePaquete);
@@ -70,8 +78,11 @@ public class ComidaFavoritaController {
     }
 
     // Agregar paquete completo a comidas ingeridas (día)
+    @Operation(summary = "Agregar comida favorita a un dia.", description = "Agrega un un paquete de comidas favoritas a un dia especifico.")
     @PostMapping("/agregar-paquete-a-dia")
-    public ResponseEntity<String> agregarPaqueteADia(@RequestParam String nombrePaquete, @RequestParam TipoComida tipo, @RequestParam LocalDate dia) {
+    public ResponseEntity<String> agregarPaqueteADia(@Parameter(description = "Nombre Comida Favorita") @RequestParam String nombrePaquete,
+                                                     @Parameter(description = "Momento del dia") @RequestParam TipoComida tipo,
+                                                     @Parameter(description = "Fecha") @RequestParam LocalDate dia) {
         try {
             comidaFavoritaService.agregarComidaFavoritaaIngerida(
                     nombrePaquete,

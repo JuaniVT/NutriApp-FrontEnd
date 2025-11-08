@@ -4,6 +4,8 @@ import com.NutriApp.NutriApp.modelo.SolicitudAltaAlimento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,5 +20,6 @@ public interface SolicitudRespository extends JpaRepository<SolicitudAltaAliment
     boolean existsByUsuarioUsernameAndNombreComidaIgnoreCase(String username, String nombreComida);
     Optional<SolicitudAltaAlimento> findByUsuarioUsernameAndNombreComidaIgnoreCase (String username, String nombreComida);
     void deleteById (long id);
+    List<SolicitudAltaAlimento> findAllByFecha (LocalDateTime fecha);
 
 }

@@ -3,6 +3,8 @@ package com.NutriApp.NutriApp.controller;
 
 import com.NutriApp.NutriApp.modelo.Dia;
 import com.NutriApp.NutriApp.service.DiaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,11 +20,13 @@ import java.util.List;
 @RestController
 @RequestMapping("dias")
 @RequiredArgsConstructor
+@Tag(name = "Dia", description = "Calendario de las actividades realizadas y comidas ingeridas")
 public class DiaController {
 
 
     private final DiaService diaService;
 
+    @Operation(summary = "Ver dia.", description = "Devuelve un dia con las comidas ingeridas y actividades realizadas.")
     @GetMapping("/ver/completo")
     public ResponseEntity<Dia> verDiaCompleto(@RequestParam LocalDate fecha){
 
@@ -30,6 +34,7 @@ public class DiaController {
 
     }
 
+    @Operation(summary = "Ver dias.", description = "Devuelve una lista de dias con las comidas ingeridas y actividades realizadas.")
     @GetMapping("ver/todos")
     public ResponseEntity<List<Dia>> verHistorialDias(){
 
