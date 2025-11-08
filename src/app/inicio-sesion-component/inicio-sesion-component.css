@@ -1,0 +1,141 @@
+/* inicio-sesion-component.css */
+
+/* Contenedor general */
+.login-container {
+  width: 400px;
+  max-width: 90%;
+  margin: 50px auto;
+  padding: 40px 30px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #ff8c42, #ffc857); /* degradado de naranja a amarillo */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+/* Logo (si querés agregar la imagen arriba) */
+.login-container h2 {
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Grupos de inputs */
+.form-group {
+  text-align: left;
+}
+
+/* Labels */
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+/* Inputs invalidos */
+input.invalid {
+  border: 2px solid #ff4d4d;
+  background-color: #ffe5e5;
+  color: #333;
+}
+
+/* Focus en inputs */
+input:focus {
+  border: 2px solid #fff;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Mensajes de error */
+.error {
+  color: #ff4d4d;
+  margin-top: 5px;
+  font-size: 0.85rem;
+}
+
+/* Error del servidor */
+.server-error {
+  background-color: rgba(255, 77, 77, 0.8);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Botón */
+.btn-submit {
+  padding: 12px;
+  background-color: #ffffff;
+  color: #ff8c42;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #ffd166;
+  color: #333;
+}
+
+.btn-submit:disabled {
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Texto de ayuda */
+.help {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.help a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.help a:hover {
+  color: #333;
+}
+
+/* Adaptable a pantallas chicas */
+@media (max-width: 450px) {
+  .login-container {
+    padding: 30px 20px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    padding: 10px;
+  }
+
+  .btn-submit {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+}
