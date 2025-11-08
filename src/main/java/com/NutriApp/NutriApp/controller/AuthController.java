@@ -1,12 +1,15 @@
 package com.NutriApp.NutriApp.controller;
 
+import com.NutriApp.NutriApp.exceptions.UsuarioInexistenteException;
 import com.NutriApp.NutriApp.modelo.dto.LoginRequest;
 import com.NutriApp.NutriApp.modelo.dto.LoginResponse;
 import com.NutriApp.NutriApp.modelo.dto.RegistroUsuarioRequest;
 import com.NutriApp.NutriApp.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +23,19 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+        try {
+            LoginResponse res = authService.login(request);
+            return ResponseEntity.ok(res);
+        } catch (UsuarioInexistenteException | BadCredentialsException e) {
+            // Usuario o contraseña incorrectos
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            // Otro error inesperado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error interno del servidor");
+        }
     }
 
     @PostMapping("/registro")
