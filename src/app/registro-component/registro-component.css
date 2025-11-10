@@ -1,0 +1,230 @@
+/* === Contenedor principal === */
+.registro-container {
+  width: 750px;
+  max-width: 95%;
+  margin: 70px auto;
+  padding: 50px 60px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #ff8c42, #ffc857);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  text-align: center;
+}
+
+
+/* Título */
+.registro-container h2 {
+  margin-bottom: 25px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Secciones del formulario */
+.form-section {
+  text-align: left;
+  margin-bottom: 25px;
+  border-left: 4px solid #fff;
+  padding-left: 10px;
+}
+
+.form-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+input:focus {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* === Botón Registrar === */
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #ffd166, #ff8c42);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 15px rgba(255, 140, 66, 0.5);
+}
+
+/* ✨ Efecto brillante en el botón */
+.btn-submit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+}
+
+.btn-submit:hover::before {
+  left: 125%;
+}
+
+.btn-submit:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(255, 140, 66, 0.6);
+}
+
+/* Deshabilitado */
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* === Adaptable === */
+@media (max-width: 500px) {
+  .registro-container {
+    padding: 30px 20px;
+  }
+  .btn-submit {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
+
+/* === Select (menú desplegable) === */
+select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+  appearance: none; /* elimina el estilo del sistema */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%23ffffff' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 12px;
+}
+
+/* Hover y foco */
+select:hover,
+select:focus {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Opciones del select */
+option {
+  background-color: #ff8c42;
+  color: #fff;
+}
+
+/* === CAMPOS DE FECHA (calendario) === */
+input[type="date"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 10px;
+}
+
+/* color del icono del calendario (chrome, edge, etc) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* lo vuelve blanco */
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+/* efecto al pasar el mouse o enfocar */
+input[type="date"]:focus {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* === BOTÓN DE REGISTRO === */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #ffd166, #ff8c42);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 15px rgba(255, 140, 66, 0.5);
+}
+
+/* efecto brillante animado */
+button[type="submit"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+}
+
+button[type="submit"]:hover::before {
+  left: 125%;
+}
+
+button[type="submit"]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(255, 140, 66, 0.6);
+}
+
+/* deshabilitado */
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #d8d8d8, #aaaaaa);
+  box-shadow: none;
+}
+

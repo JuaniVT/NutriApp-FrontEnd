@@ -58,6 +58,11 @@ get password()
   }
 });
 }
+
+irRegistro()
+{
+  this.router.navigate(['/registro']);
+}
 }
 
 

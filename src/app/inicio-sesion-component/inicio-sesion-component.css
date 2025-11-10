@@ -110,17 +110,25 @@ input:focus {
 .help {
   margin-top: 20px;
   font-size: 0.9rem;
+  text-align: center;
+  color: #555;
 }
 
-.help a {
-  color: #fff;
+.link-btn {
+  background: none;
+  border: none;
+  color: #090c0a; /* Verde tipo NutriApp */
   font-weight: 700;
   text-decoration: underline;
+  cursor: pointer;
   transition: color 0.3s ease;
+  padding: 0;
+  margin-left: 5px;
 }
 
-.help a:hover {
-  color: #333;
+.link-btn:hover {
+  color: #155724;
+  text-decoration: none;
 }
 
 /* Adaptable a pantallas chicas */
