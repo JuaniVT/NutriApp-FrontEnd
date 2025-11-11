@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.sql.DataSource;
 
@@ -52,9 +53,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtAuthFilter,
+                                                   CorsConfigurationSource corsConfigurationSource,
                                                    UsuarioService userDetailsService) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
+
+                // Activamos CORS dentro de Spring Security y le mandamos el CorsConfig previamente configurado
+                // porque su propio filtro intercepta las solicitudes que llegan con headers
+                // especiales (headers, credenciales, etc), y si no lo configuramos acá,
+                // las peticiones desde Angular serán bloqueadas.
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/usuario/registro").permitAll() // <- Permitir acceso sin login
