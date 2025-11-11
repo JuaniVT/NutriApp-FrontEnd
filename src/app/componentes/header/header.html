@@ -1,0 +1,54 @@
+<nav class="cabecera">
+
+    <div class="izquierda">
+        <!-- <img src="Logo.png" alt="Logo Aplicacion" class="logoCabecera"> -->
+        <h1 class="logo-text" (click)="redirectHome()">NutriApp</h1>
+
+        <div class="conetendorBotonCabecera">
+            <a routerLink="" routerLinkActive="active" class="botonCabecera">Mi Calendario</a>
+        </div>
+        <div class="conetendorBotonCabecera">
+            <a routerLink="" routerLinkActive="active" class="botonCabecera">Agregar Comida</a>
+        </div>
+        <div class="conetendorBotonCabecera">
+            <a routerLink="" routerLinkActive="active" class="botonCabecera">hola</a>
+        </div>
+        <div class="conetendorBotonCabecera">
+            <a routerLink="" routerLinkActive="active" class="botonCabecera">hola</a>
+        </div>
+
+
+    </div>
+
+    <div class="medio">
+
+    </div>
+
+    <div class="derecha">
+        <!-- @if (isLogged()) {     //si esta logeado muestra cosas sino muestra otras
+             
+            }else {
+                <a routerLink="/login" routerLinkActive="active">Iniciar Sesion</a>
+        }  -->
+
+        
+        <div class="conetendorIconoCabecera">
+            <img src="" alt="dad" class="iconoPopeable">
+        </div>
+        
+        <div class="conetendorIconoCabecera">
+            <img src="" alt="da" class="iconoPopeable">
+        </div>
+
+        <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
+            <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
+        </div>
+        <div class="cajaPerfil" id="menuPerfil" popover="manual">            
+            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Perfil</a>
+            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">dad</a>
+            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">dad</a>
+            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Cerrar Sesion</a>
+        </div>
+    </div>
+
+</nav>
