@@ -172,5 +172,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("JSON inválido: " + ex.getMessage());
     }
 
+    //Devuelve un 401 cuando el token expiro
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<String> manejarTokenExpirado(ExpiredJwtException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED).body("El token ha expirado.");
+    }
 }
 
