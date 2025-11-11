@@ -41,6 +41,7 @@ public class ComidaFavoritaService {
         Optional<MacronutrienteDTO> optionalMacronutrienteDTO = alimentoIngresadoPorUsuarioService.obtenerMacronutrientes(comidaFavoritaDTO.getNombreComida(), comidaFavoritaDTO.getComidaId());
 
         if (optionalMacronutrienteDTO.isEmpty()) {
+
             optionalMacronutrienteDTO = nutricionService.obtenerMacronutrientesPorId(comidaFavoritaDTO.getComidaId());
         }
 
