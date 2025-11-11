@@ -37,7 +37,8 @@
 
 
 .logo-text {
-  font-family: "Satisfy", cursive;
+  font-family: sans-serif;
+  /* font-family: "Satisfy", cursive; */
   font-size: 3rem;
   font-weight: 700;
   letter-spacing: 3px;
