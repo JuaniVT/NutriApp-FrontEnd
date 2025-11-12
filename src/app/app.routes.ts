@@ -6,9 +6,9 @@ import { Home } from './home/home';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'app-home', pathMatch: 'full'},     //ruta por defecto
-    {path: "app-home", title: "Home", component: Home},
+    {path: "home", title: "Home", component: Home},
     {path: 'login', component: InicioSesionComponent},
-    {path: "app-mi-perfil", title: "Perfil" , component: MiPerfilComponente},
+    {path: "perfil", title: "Perfil" , component: MiPerfilComponente},
 
 
     // !!IMPORTANTE¡¡ -> esta ruta tiene que estar al final de todas ya que sino, desde este componente las que estan abajo no te redireccionan

@@ -25,30 +25,32 @@
     </div>
 
     <div class="derecha">
-        <!-- @if (isLogged()) {     //si esta logeado muestra cosas sino muestra otras
-             
-            }else {
-                <a routerLink="/login" routerLinkActive="active">Iniciar Sesion</a>
-        }  -->
+        @if (auth.isLoggedIn()) {
 
-        
-        <div class="conetendorIconoCabecera">
-            <img src="" alt="dad" class="iconoPopeable">
-        </div>
-        
-        <div class="conetendorIconoCabecera">
-            <img src="" alt="da" class="iconoPopeable">
-        </div>
+            <div class="conetendorIconoCabecera">
+                <img src="" alt="dad" class="iconoPopeable">
+            </div>
+            
+            <div class="conetendorIconoCabecera">
+                <img src="" alt="da" class="iconoPopeable">
+            </div>
+    
+            <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
+                <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
+            </div>
+            <div class="cajaPerfil" id="menuPerfil" popover="manual">            
+                <a routerLink="/perfil" class="botonDesplegablePerfil">Perfil</a>
+                <a routerLink="" class="botonDesplegablePerfil">dad</a>
+                <a routerLink="" class="botonDesplegablePerfil">dad</a>
+                <a routerLink="/login"  class="botonDesplegablePerfil" (click)="logOut()">Cerrar Sesion</a>
+            </div>
 
-        <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
-            <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
-        </div>
-        <div class="cajaPerfil" id="menuPerfil" popover="manual">            
-            <a routerLink="app-mi-perfil" routerLinkActive="active" class="botonDesplegablePerfil">Perfil</a>
-            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">dad</a>
-            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">dad</a>
-            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Cerrar Sesion</a>
-        </div>
+        }@else {
+            
+            <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
+        }
+        
+        
     </div>
 
 </nav>
