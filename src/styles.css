@@ -11,6 +11,8 @@
     --font-color-white-hover: rgb(255, 255, 255);
     --font-color-grey: rgb(184, 184, 184);
     --outline: oklch(36.98% .014 302.71);
+    --orange: #ff6600;
+    --yellow: #ffcc00;
 }
 
 body{

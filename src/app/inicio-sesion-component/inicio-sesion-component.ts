@@ -21,7 +21,7 @@ export class InicioSesionComponent implements OnInit{
     // Inicializamos el formulario con validaciones
     this.loginForm = new FormGroup({
       username: new FormControl('',[ Validators.required, Validators.minLength(4)]),
-      password: new FormControl('',[ Validators.required, Validators.minLength(6)])
+      password: new FormControl('',[ Validators.required, Validators.minLength(0)])
     });
   }
 

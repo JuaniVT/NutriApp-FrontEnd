@@ -1,0 +1,57 @@
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a, #333);
+  color: #fff;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 700;
+  color: #ff4b4b;
+  margin: 0;
+  animation: pulse 1.5s infinite;
+}
+
+.error-message {
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+.error-description {
+  font-size: 1rem;
+  color: #ccc;
+  margin: 10px 0 20px;
+  max-width: 400px;
+}
+
+.back-button {
+  text-decoration: none;
+  color: white;
+  background-color: #ff4b4b;
+  padding: 10px 20px;
+  border-radius: 30px;
+  transition: 0.3s ease;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #ff7373;
+  transform: scale(1.05);
+}
+
+/* animación sutil */
+@keyframes pulse {
+  0%, 100% {
+    text-shadow: 0 0 3px #ff4b4b, 0 0 10px #ff4b4b;
+  }
+  50% {
+    text-shadow: 0 0 7px #ff7373, 0 0 20px #ff7373;
+  }
+}

@@ -5,7 +5,7 @@ import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 
-//interceptor que ejecuta codigo antes de que una peticion HTTP salga al servidor y despues de recibir la resíesta (como una cadena de filtros)
+//interceptor que ejecuta codigo antes de que una peticion HTTP salga al servidor y despues de recibir la respuesta (como una cadena de filtros)
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
@@ -26,9 +26,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   //retornamos la peticion con el token agregado y manejamos si llegua a haber error de token expirado
   return next(modifiedReq).pipe(
     catchError((error) => {
-      if (error.status === 401) {         //si recibe un error de 401 (token expirado)
+      if (error.status === 401) {          //si recibe un error de 401 (token expirado)
         authService.clearToken();          //clerea el token en la memoria del navegador
-        alert("Sesion Expirada");          //mensja de alerta
+        alert("Sesion Expirada");          //mensaje de alerta
         router.navigateByUrl("/login");    //y redirecciona al login
       }
 
