@@ -19,8 +19,3 @@ body{
     background-color: var(--background-color);
 }
 
-header{
-    height: 15vh;
-    outline: 1px solid var(--outline);
-}
-
