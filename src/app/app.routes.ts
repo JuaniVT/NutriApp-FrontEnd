@@ -5,7 +5,7 @@ import { NotFound } from './not-found/not-found';
 import { Home } from './home/home';
 
 export const routes: Routes = [
-    {path: '', redirectTo: 'app-home', pathMatch: 'full'},     //ruta por defecto
+    {path: '', redirectTo: 'home', pathMatch: 'full'},     //ruta por defecto
     {path: "home", title: "Home", component: Home},
     {path: 'login', component: InicioSesionComponent},
     {path: "perfil", title: "Perfil" , component: MiPerfilComponente},

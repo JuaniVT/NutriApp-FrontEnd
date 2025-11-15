@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   margin: 0 30px 0 30px;
+  flex-shrink: 0;
 }
 
 .izquierda{
@@ -108,7 +109,7 @@ a{
   cursor: pointer;
 }
 
-.botonCabecera:active{
+.active{
   border-bottom: 2px solid var(--font-color-white-hover);
 }
 
