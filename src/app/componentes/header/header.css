@@ -1,0 +1,185 @@
+.cabecera{
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 30px 0 30px;
+  flex-shrink: 0;
+}
+
+.izquierda{
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.medio{
+  
+}
+
+.derecha{
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+
+/* LOGOS */
+.logoCabecera{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;  /* recorta la imagen para que no se deforme ya que es muy grande la imagen y le estamos modificando las dimensiones */
+  outline: 1px solid black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+.logo-text {
+  font-family: sans-serif;
+  /* font-family: "Satisfy", cursive; */
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  user-select: none;
+  padding-left: 5px;
+  margin-right: 40px;
+  cursor: pointer;
+
+  /* degradado simétrico (va y vuelve) para un loop */
+  background: linear-gradient(90deg,
+    #ff6600,
+    #ffcc00,
+    rgb(255, 237, 197),
+    #ff6600,
+    #ffcc00,
+    #ff6600
+  );
+  
+  background-size: 400% auto;     /* hace el fondo 4 veces más ancho */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: infiniteFlow 15s linear infinite;
+}
+
+/* movimiento continuo de izquierda a derecha sin cortes */
+@keyframes infiniteFlow {
+  from {
+    background-position: 0% center;
+  }
+  to {
+    background-position: 400% center;
+  }
+}
+
+
+
+/* BOTON CABECERA */
+.conetendorBotonCabecera{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+a{
+  text-decoration: none;
+}
+
+.botonCabecera{
+  height: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--font-color-grey);
+  transition: color 300ms ease;
+  font-family:'Times New Roman', Times, serif;
+}
+
+.botonCabecera:hover, .botonDesplegablePerfil:hover{
+  color: var(--font-color-white-hover);
+  cursor: pointer;
+}
+
+.active{
+  border-bottom: 2px solid var(--font-color-white-hover);
+}
+
+
+
+/* ICONO POPEABLE */
+.conetendorIconoCabecera{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.iconoPopeable{
+  anchor-name: --menu-icono;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.iconoPopeable:hover{
+
+}
+
+
+
+/* MENU QUE SE POPEA CON EL ICONO */
+#menuPerfil{
+  outline: 2px solid var(--outline);
+  background-color: var(--background-color);
+  font-family:Arial, Helvetica, sans-serif;
+
+  position: absolute;
+  position-anchor: --menu-icono;
+  position-area: bottom left;
+}
+
+#menuPerfil:popover-open{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.botonDesplegablePerfil{ 
+  color: var(--font-color-grey);
+  transition: color 300ms ease;
+  padding: 10px;
+}
+
+
+/* BOTON INICIAR SESION */
+#iniciarSesion{
+  text-align: center;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  color: black;
+  background: linear-gradient(75deg,
+    var(--orange),
+    var(--orange),
+    var(--yellow)
+  );
+  padding: 10px;
+  border-radius: 50rem;
+  box-shadow:  0 0 15px white;
+}
+
+#iniciarSesion:hover{
+  transform: scale(1.05);
+}
