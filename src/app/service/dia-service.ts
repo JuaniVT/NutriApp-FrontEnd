@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ComidaIngeridaSalidaDTO} from '../models/comida-ingerida-salida.dto';
+import { ComidaIngeridaSalidaDTO } from '../models/comida-ingerida-salida.dto';
 import { modificarComidaIngeridaDTO } from '../models/modificar-comida-ingerida-dto';
 import { AlimentoBusquedaDTO } from '../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../models/comidaingeridadto';

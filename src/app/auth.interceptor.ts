@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpInterceptorFn } from '@angular/common/http';
-import { AuthService } from './service/auth';
 import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from './service/auth';
 
 
 //interceptor que ejecuta codigo antes de que una peticion HTTP salga al servidor y despues de recibir la respuesta (como una cadena de filtros)
