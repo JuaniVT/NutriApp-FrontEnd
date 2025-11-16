@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ProfileService } from '../service/profile';
+import { ProfileService } from '../../service/profile';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({

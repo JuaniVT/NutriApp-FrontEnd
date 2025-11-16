@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../service/auth';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth';
 
 @Component({
   selector: 'app-inicio-sesion-component',

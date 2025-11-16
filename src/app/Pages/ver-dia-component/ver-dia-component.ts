@@ -6,6 +6,7 @@ import { ComidaIngeridaSalidaDTO } from '../../models/comida-ingerida-salida.dto
 import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { modificarComidaIngeridaDTO } from '../../models/modificar-comida-ingerida-dto';
 import { AgregarComidaComponent } from '../agregar-comida/agregar-comida';
+
 @Component({ selector: 'app-ver-dia-component', standalone: true, imports: [CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
 export class VerDiaComponent implements OnInit {
 

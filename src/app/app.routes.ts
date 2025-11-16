@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { InicioSesionComponent } from './inicio-sesion-component/inicio-sesion-component';
-import { MiPerfilComponente } from './mi-perfil-componente/mi-perfil-componente';
-import { NotFound } from './not-found/not-found';
-import { Home } from './home/home';
-import { RegistroComponent } from './registro-component/registro-component';
-import { VerDiaComponent } from './componentes/ver-dia-component/ver-dia-component';
+import { MiPerfilComponente } from './Paginas/mi-perfil-componente/mi-perfil-componente';
+import { NotFound } from './Paginas/not-found/not-found';
+import { Home } from './Paginas/home/home';
+import { RegistroComponent } from './Paginas/registro-component/registro-component';
+import { VerDiaComponent } from './Paginas/ver-dia-component/ver-dia-component';
+import { InicioSesionComponent } from './Paginas/inicio-sesion-component/inicio-sesion-component';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},     //ruta por defecto
