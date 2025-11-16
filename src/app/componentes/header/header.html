@@ -51,6 +51,17 @@
         }
         
         
+
+        <!-- DESPLEGABLE QUE SOLO SE MUESTRA EN CELULAR (CSS se encarga) -->
+            <div class="hamburger" id="hamburgerMenu" (click)="toggleMenu()">
+                <img src="iconos/desplegable-icon.png" alt="Menu">
+            </div>
+
+            <div class="menuMobile" id="menuMobile" popover="manual">
+                <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Mi Calendario</a>
+                <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Día de Hoy</a>
+                <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Agregar Comida</a>
+            </div>
     </div>
 
 </nav>

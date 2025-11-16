@@ -24,4 +24,9 @@ export class Header implements OnInit{
   logOut (){
     this.auth.clearToken();
   }
+
+  toggleMenu() {
+    const menu = document.getElementById("menuMobile") as any;
+    menu.togglePopover();
+  }
 }
