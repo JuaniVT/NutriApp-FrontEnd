@@ -1,0 +1,141 @@
+/* CONTENEDOR PRINCIPAL */
+.panel-agregar-comida {
+  width: 100%;
+  max-width: 500px; /* antes 420px, ahora un poco más ancho */
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+  border: 1px solid #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+}
+
+/* INPUT BUSCAR */
+.panel-agregar-comida input[type="text"] {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.panel-agregar-comida input[type="text"]:focus {
+  border-color: #ff8c42;
+  box-shadow: 0 0 4px rgba(255, 140, 66, 0.35);
+  outline: none;
+}
+
+/* LISTA DE ALIMENTOS */
+.panel-agregar-comida ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 230px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background-color: #fafafa;
+}
+
+.panel-agregar-comida li {
+  padding: 12px 15px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.panel-agregar-comida li:hover {
+  background: #ffe2c8;
+}
+
+.panel-agregar-comida li.seleccionado {
+  background: linear-gradient(90deg, #ff8c42, #ffc857);
+  color: white;
+  font-weight: 600;
+}
+
+/* PANEL DETALLE */
+.panel-detalle {
+  margin-top: 10px;
+  background-color: #fff9f3;
+  border-left: 4px solid #ff8c42;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(255, 140, 66, 0.15);
+}
+
+.panel-detalle p {
+  margin: 0 0 10px 0;
+  color: #444;
+  font-weight: 500;
+}
+
+/* LABELS */
+.panel-detalle label {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* INPUTS DEL DETALLE */
+.panel-detalle input,
+.panel-detalle select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 0.9rem;
+  background-color: #fff;
+  transition: all 0.25s ease;
+}
+
+.panel-detalle input:focus,
+.panel-detalle select:focus {
+  border-color: #ff8c42;
+  box-shadow: 0 0 4px rgba(255, 140, 66, 0.3);
+  outline: none;
+}
+
+/* BOTONES */
+.panel-detalle button {
+  margin-top: 18px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 15px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* BOTÓN AGREGAR */
+.panel-detalle button:first-of-type {
+  background: linear-gradient(90deg, #ff8c42, #ffc857);
+  color: white;
+}
+
+.panel-detalle button:first-of-type:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 10px rgba(255, 140, 66, 0.35);
+}
+
+/* BOTÓN CANCELAR */
+.panel-detalle button:last-of-type {
+  background: #eee;
+  color: #444;
+  margin-left: 10px;
+}
+
+.panel-detalle button:last-of-type:hover {
+  background: #e0e0e0;
+  transform: scale(1.03);
+}

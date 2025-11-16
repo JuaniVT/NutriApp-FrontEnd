@@ -21,7 +21,7 @@ export class InicioSesionComponent implements OnInit{
     // Inicializamos el formulario con validaciones
     this.loginForm = new FormGroup({
       username: new FormControl('',[ Validators.required, Validators.minLength(4)]),
-      password: new FormControl('',[ Validators.required, Validators.minLength(6)])
+      password: new FormControl('',[ Validators.required, Validators.minLength(0)])
     });
   }
 
@@ -47,6 +47,7 @@ get password()
   next: (res) => {
     this.authService.saveToken(res.token);
     alert("Login exitoso");
+    this.router.navigate(['/dia', '2025-11-11'])
     this.errorMessage = '';
   },
   error: (err) => {

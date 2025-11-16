@@ -1,0 +1,417 @@
+/* ======== ESTILO GENERAL ======== */
+.ver-dia-container {
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ======== RESUMEN DEL DÍA ======== */
+.resumen-dia {
+  width: 100%;
+  max-width: 700px;
+  background-color: #fff;
+  border-radius: 20px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-bottom: 25px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.resumen-dia h2 {
+  margin-bottom: 20px;
+  color: #ff8c42;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+/* ======== BARRAS DE PROGRESO ======== */
+.barras-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.barra-progreso {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+}
+
+.barra-progreso label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.barra {
+  width: 100%;
+  height: 12px;
+  background-color: #f0f0f0;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progreso {
+  height: 100%;
+  background: linear-gradient(90deg, #ff8c42, #ffc857);
+  border-radius: 12px 0 0 12px;
+  transition: width 0.5s ease;
+  min-width: 0%;
+  max-width: 100%;
+}
+
+.barra-progreso span {
+  font-size: 0.9rem;
+  color: #777;
+  align-self: flex-end;
+}
+
+/* ======== SECCIONES DE COMIDAS ======== */
+.comidas-section {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ======== CARDS DE COMIDA ======== */
+.comida-card {
+  background-color: #fff;
+  border-radius: 18px;
+  padding: 15px 20px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.comida-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.comida-card h3 {
+  color: #ff8c42;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* ======== LISTA DE ALIMENTOS ======== */
+.lista-alimentos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #f3f3f3;
+}
+
+.lista-alimentos li {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f7f7f7;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+/* ======== ENCABEZADO DE ALIMENTO ======== */
+.alimento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #ff8c42, #ffc857);
+  padding: 10px 15px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alimento-header:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(255, 140, 66, 0.25);
+}
+
+/* ======== DETALLES DESPLEGABLES ======== */
+.alimento-detalle {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+  background-color: #fff9f3;
+  border-left: 4px solid #ff8c42;
+  border-radius: 10px;
+  margin-top: 8px;
+  padding: 0 15px;
+}
+
+.alimento-detalle.mostrar {
+  max-height: 500px;
+  opacity: 1;
+  padding: 10px 15px;
+  animation: fadeIn 0.4s ease;
+}
+
+.alimento-detalle .info p {
+  margin: 3px 0;
+  color: #444;
+}
+
+/* ======== ACCIONES ======== */
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.acciones input[type="number"] {
+  width: 100%;
+  max-width: 120px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.acciones input[type="number"]:focus {
+  outline: none;
+  border-color: #ff8c42;
+  box-shadow: 0 0 4px rgba(255, 140, 66, 0.3);
+}
+
+.btn-actualizar {
+  background: linear-gradient(135deg, #42b883, #2ecc71);
+  color: white;
+  border: none;
+  margin-left: 10px;
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-actualizar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+}
+
+/* ======== BOTONES ======== */
+.btn-agregar {
+  background: linear-gradient(135deg, #ff8c42, #ffc857);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-agregar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(255, 140, 66, 0.3);
+}
+
+/* ======== ANIMACIÓN ======== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 600px) {
+  .resumen-dia h2 {
+    font-size: 1.4rem;
+  }
+
+  .barras-container {
+    gap: 16px;
+  }
+
+  .comida-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .btn-agregar {
+    width: 100%;
+  }
+}
+
+/* Mensaje de error más visible y estético */
+.error-mensaje {
+  color: #ff4d4f; /* rojo llamativo */
+  font-size: 0.85rem;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+/* Botón deshabilitado gris */
+.btn-actualizar:disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+  transform: none !important; /* evitar efectos hover */
+  box-shadow: none !important;
+}
+
+.eliminar
+{
+  background: linear-gradient(135deg, #d8471b, #eb3e09);
+  color: white;
+  border: none;
+  margin-left: 10px;
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.eliminar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(102, 30, 18, 0.3);
+}
+
+/* Fondo desenfocado */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+}
+
+/* Modal centrado */
+.modal-agregar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 450px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  z-index: 60;
+  animation: aparecer 0.25s ease-out;
+}
+
+/* Animación */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Estilos del modal */
+.modal-agregar h2 {
+  margin-bottom: 15px;
+  color: #ff8c42;
+  text-align: center;
+}
+
+.modal-agregar input,
+.modal-agregar select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.modal-agregar ul {
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.modal-agregar li {
+  padding: 10px;
+  border-radius: 10px;
+  background: #f0f0f0;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-agregar li:hover {
+  background: #ffe0c7;
+}
+
+.seleccionado {
+  background: linear-gradient(90deg, #ff8c42, #ffc857) !important;
+  color: white !important;
+}
+
+.panel-detalle {
+  padding-top: 10px;
+}
+
+.acciones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-agregar {
+  background: linear-gradient(135deg, #42b883, #2ecc71);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: linear-gradient(135deg, #d8471b, #eb3e09);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-agregar:hover,
+.btn-cancelar:hover {
+  transform: scale(1.05);
+}
+
+

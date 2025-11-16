@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+:root{
+    --font-color-white-hover: rgb(99, 99, 99);
+    --font-color-grey: rgb(184, 184, 184);
+    --outline: oklch(36.98% .014 302.71);
+}
+
+body{
+    background-color: var(--background-color);
+}
+
+header{
+    height: 15vh;
+    outline: 1px solid var(--outline);
+}
+

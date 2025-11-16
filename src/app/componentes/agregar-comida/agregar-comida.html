@@ -1,0 +1,41 @@
+<div class="panel-agregar-comida">
+        
+  <input type="text"
+         [(ngModel)]="filtro"
+         (input)="buscarAlimentos()"
+         placeholder="Buscar alimento...">
+
+  @if (alimentos.length > 0) {
+    <ul>
+      @for (alimento of alimentos; track alimento.fdcId) {
+        <li (click)="seleccionarAlimento(alimento)"
+            [class.seleccionado]="alimentoSeleccionado?.fdcId === alimento.fdcId">
+          {{ alimento.descripcion }}
+        </li>
+      }
+    </ul>
+  }
+
+  @if (alimentoSeleccionado) {
+    <div class="panel-detalle">
+
+      <p>Seleccionaste: {{ alimentoSeleccionado.descripcion }}</p>
+
+      <label>Gramos:</label>
+      <input type="number" [(ngModel)]="gramos">
+
+      <label>Tipo de comida:</label>
+      <select [(ngModel)]="tipoComida">
+        <option value="DESAYUNO">DESAYUNO</option>
+        <option value="ALMUERZO">ALMUERZO</option>
+        <option value="CENA">CENA</option>
+        <option value="SNACK">SNACK</option>
+      </select>
+
+      <button (click)="agregar()">Agregar</button>
+      <button (click)="cerrar.emit()">Cancelar</button>
+
+    </div>
+  }
+
+</div>

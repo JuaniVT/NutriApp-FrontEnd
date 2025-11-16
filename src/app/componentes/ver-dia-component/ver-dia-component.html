@@ -1,0 +1,117 @@
+<div class="ver-dia-container">
+
+  @if (cargando) {
+    <p style="margin-top: 40px;">Cargando día...</p>
+  } @else if (error) {
+    <p style="margin-top: 40px; color: red;">{{ error }}</p>
+  } @else if (dia) {
+
+    <header class="resumen-dia">
+      <h2>Fecha: {{fecha}}</h2>
+
+
+      <!-- Barra de progreso, igual que antes -->
+      <div class="barras-container">
+        <div class="barra-progreso">
+          <label>Calorías</label>
+          <div class="barra">
+            <div
+              class="progreso"
+              [style.width.%]="(dia.caloriasRestantes ? (100 - (dia.caloriasRestantes / calcularTotalCalorias() * 100)) : 0)"
+            ></div>
+          </div>
+          <span>
+            {{ calcularTotalCalorias() - dia.caloriasRestantes | number:'1.0-0' }}
+            / {{ calcularTotalCalorias() | number:'1.0-0' }} kcal
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======= COMIDAS ======= -->
+    <section class="comidas-section">
+      @for (tipo of types; track tipo) {
+        <div class="comida-card">
+          <div class="comida-header">
+            <h3>{{ tipo }}</h3>
+            <button class="btn-agregar" (click)="abrirAgregar(tipo)">+ Agregar</button>
+          </div>
+
+          <ul class="lista-alimentos">
+  @if (tieneComidas(tipo)) {
+    @for (comida of getComidasPorTipo(tipo); track comida.nombreComida) {
+
+      <li class="alimento-item">
+        <!-- Encabezado que actúa como botón -->
+        <div class="alimento-header" (click)="toggleDetalle(comida)">
+          <span>{{ comida.nombreComida}} ({{ comida.cantidad }} g)</span>
+          <small>{{ comida.calorias | number:'1.0-0' }} kcal</small>
+        </div>
+
+        <!-- Detalle desplegable -->
+        <div class="alimento-detalle" [class.mostrar]="comida.mostrar">
+          <div class="info">
+            <p><b>Proteínas:</b> {{ comida.proteinas | number:'1.2-2'}} g</p>
+            <p><b>Carbohidratos:</b> {{ comida.carbohidratos | number:'1.2-2'}} g</p>
+            <p><b>Grasas:</b> {{ comida.grasas | number:'1.2-2'}} g</p>
+          </div>
+
+          <div class="acciones">
+            <form [formGroup]="formModificarCantidad">
+            <label>Cantidad:</label>
+            <input type="number" formControlName="cantidad">
+            @if (cantidad.hasError('min')) 
+            {
+              <div class="error-mensaje">
+                <span>El campo cantidad no puede ser menor a 1</span>
+              </div>
+              
+            }@else 
+            {
+              @if(cantidad.hasError('required') && cantidad.touched)
+              {
+                <div class="error-mensaje">
+                <span>El campo cantidad no puede ser menor a 1</span>
+              </div>
+              }
+            }
+
+            <button (click)="actualizarComida(comida)" class="btn-actualizar" [disabled]="formModificarCantidad.invalid">Actualizar</button>
+            <button class="eliminar" (click)="onEliminarClick($event, comida)">Eliminar</button>
+            </form>
+            
+          </div>
+        </div>
+      </li>
+    }
+  } @else {
+    <li><small style="color:#aaa;">Sin registros</small></li>
+  }
+</ul>
+
+        </div>
+      }
+    </section>
+    <section class="actividades fisicas">
+      
+
+    </section>
+  }
+@if (mostrarAgregar) {
+
+  <div class="overlay" (click)="cerrarAgregar()"></div>
+
+  <div class="modal-agregar">
+    <app-agregar-comida
+      [tipoComida]="tipoSeleccionado"
+      [fecha]="fecha"
+      [attr.key]="modalKey"
+      (cerrar)="cerrarAgregar()"
+      (comidaAgregada)="cargarDia(fecha!); cerrarAgregar()">
+    </app-agregar-comida>
+  </div>
+
+}
+
+
+
