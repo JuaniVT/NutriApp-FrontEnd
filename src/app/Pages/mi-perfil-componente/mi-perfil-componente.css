@@ -1,3 +1,67 @@
-h2{
+.form-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* TITULO SECCIÓN */
+.section-title {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #acacac;
+}
+
+/* GRID GENERAL */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px 20px;
+}
+
+/* CAMPO */
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    color: #929292;
+}
+
+/* INPUTS */
+.field input,
+.field select {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    background-color: #fafafa;
+}
+
+.field input:focus,
+.field select:focus {
+    outline: none;
+    border-color: #888;
+}
+
+/* BOTÓN */
+.btn-actualizar {
+    margin-top: 30px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #4caf50;
     color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-actualizar:hover {
+    background-color: #43a047;
 }

@@ -1,15 +1,105 @@
-<div class="profileConteiner">
-    
-    <h2> {{personProfile()?.id}} </h2>
-    <h2> {{personProfile()?.nombre}} </h2>
-    <h2> {{personProfile()?.apellido}} </h2>
-    <h2> {{personProfile()?.dni}} </h2>
-    <h2> {{personProfile()?.fechaNacimiento}} </h2>
-    <h2> {{personProfile()?.telefono}} </h2>
-    <h2> {{personProfile()?.direccion}} </h2>
-    <h2> {{personProfile()?.genero}} </h2>
-    <h2> {{personProfile()?.username}} </h2>
+<div class="form-container">
 
+    <h2 class="section-title">Datos Personales</h2>
 
+    <div class="grid">
+        <div class="field">
+            <label>Nombre</label>
+            <input type="text" placeholder="Nombre">
+        </div>
 
+        <div class="field">
+            <label>Apellido</label>
+            <input type="text" placeholder="Apellido">
+        </div>
+
+        <div class="field">
+            <label>DNI</label>
+            <input type="text" placeholder="DNI">
+        </div>
+
+        <div class="field">
+            <label>Fecha de nacimiento</label>
+            <input type="date">
+        </div>
+
+        <div class="field">
+            <label>Teléfono</label>
+            <input type="text" placeholder="Teléfono">
+        </div>
+
+        <div class="field">
+            <label>Dirección</label>
+            <input type="text" placeholder="Dirección">
+        </div>
+
+        <div class="field">
+            <label>Género</label>
+            <select>
+                <option value="MASCULINO">Masculino</option>
+                <option value="FEMENINO">Femenino</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Email</label>
+            <input type="email" placeholder="Email">
+        </div>
+
+        <div class="field">
+            <label>Username</label>
+            <input type="text" placeholder="Usuario">
+        </div>
+    </div>
+
+    <h2 class="section-title">Perfil Nutricional</h2>
+
+    <div class="grid">
+        <div class="field">
+            <label>Peso (kg)</label>
+            <input type="number" placeholder="Peso">
+        </div>
+
+        <div class="field">
+            <label>Altura (cm)</label>
+            <input type="number" placeholder="Altura">
+        </div>
+
+        <div class="field">
+            <label>Nivel de actividad física</label>
+            <select>
+                <option>SEDENTARIO</option>
+                <option>LIGERO</option>
+                <option>MODERADO</option>
+                <option>ALTO</option>
+                <option>MUY_ALTO</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>GEB</label>
+            <input type="number" placeholder="Gasto Energético Basal">
+        </div>
+
+        <div class="field">
+            <label>Objetivo calórico</label>
+            <select>
+                <option>AUMENTAR</option>
+                <option>MANTENER</option>
+                <option>BAJAR</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Objetivo diario (kcal)</label>
+            <input type="number" placeholder="kcal">
+        </div>
+
+        <div class="field">
+            <label>Edad</label>
+            <input type="number" placeholder="Edad">
+        </div>
+    </div>
+
+    <button class="btn-actualizar">Actualizar</button>
 </div>
