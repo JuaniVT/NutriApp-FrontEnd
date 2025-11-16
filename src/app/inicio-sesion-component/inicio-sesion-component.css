@@ -4,7 +4,7 @@
 .login-container {
   width: 400px;
   max-width: 90%;
-  margin: 50px auto;
+  margin-top: 50px;
   padding: 40px 30px;
   border-radius: 15px;
   background: linear-gradient(135deg, #ff8c42, #ffc857); /* degradado de naranja a amarillo */

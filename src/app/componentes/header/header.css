@@ -1,9 +1,10 @@
 .cabecera{
   height: 100%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 30px 0 30px;
+  flex-shrink: 0;
 }
 
 .izquierda{
@@ -11,10 +12,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-}
-
-.medio{
-  
+  margin-left: 20px;
 }
 
 .derecha{
@@ -22,6 +20,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-right: 20px;
 }
 
 
@@ -108,7 +107,7 @@ a{
   cursor: pointer;
 }
 
-.botonCabecera:active{
+.active{
   border-bottom: 2px solid var(--font-color-white-hover);
 }
 
@@ -131,9 +130,6 @@ a{
   padding-right: 15px;
 }
 
-.iconoPopeable:hover{
-
-}
 
 
 
@@ -160,4 +156,90 @@ a{
   color: var(--font-color-grey);
   transition: color 300ms ease;
   padding: 10px;
+}
+
+
+/* BOTON INICIAR SESION */
+#iniciarSesion{
+  text-align: center;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  color: black;
+  background: linear-gradient(75deg,
+    var(--orange),
+    var(--orange),
+    var(--yellow)
+  );
+  padding: 10px;
+  border-radius: 50rem;
+  box-shadow:  0 0 15px white;
+}
+
+#iniciarSesion:hover{
+  transform: scale(1.05);
+}
+
+
+
+
+
+/* DESABILITAMOS EL DESPLEGABLE POR DEFECTO */
+.hamburger{
+  display: none;
+}
+
+/* CELULAR */
+@media (max-width: 768px) {
+
+  /* Ocultamos los botones de la izquierda */
+  .izquierda .conetendorBotonCabecera {
+    display: none;
+  }
+
+  /* Mostrar el botón hamburguesa */
+  .hamburger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 20px;
+    cursor: pointer;
+  }
+
+  .hamburger img {
+    width: 30px;
+    height: 30px;
+
+    anchor-name: --desplegable;
+  }
+
+  /* Menú desplegable móvil */
+  #menuMobile {
+    background-color: var(--background-color);
+    outline: 2px solid var(--outline);
+
+    position: absolute;
+    position-anchor: --desplegable;
+    position-area: bottom left;
+
+    border-radius: 8px;
+    padding: 10px 15px;
+  }
+
+  #menuMobile:popover-open {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+/* TABLLET */
+@media (max-width: 954px){
+  .botonCabecera{
+    padding: 5px;
+  }
+
+  .logo-text{
+    font-size: 2.2rem;
+  }
 }

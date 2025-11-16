@@ -10,14 +10,11 @@
     --font-color-white-hover: rgb(99, 99, 99);
     --font-color-grey: rgb(184, 184, 184);
     --outline: oklch(36.98% .014 302.71);
+    --orange: #ff6600;
+    --yellow: #ffcc00;
 }
 
 body{
     background-color: var(--background-color);
-}
-
-header{
-    height: 15vh;
-    outline: 1px solid var(--outline);
 }
 
