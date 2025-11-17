@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+
 import { DiaDTO, DiaService} from '../../service/dia-service';
 import { ComidaIngeridaSalidaDTO } from '../../models/comida-ingerida-salida.dto';
-import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
 import { modificarComidaIngeridaDTO } from '../../models/modificar-comida-ingerida-dto';
 import { AgregarComidaComponent } from '../agregar-comida/agregar-comida';
-
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ComidasFavoritasComponent } from '../comidas-favoritas/comidas-favoritas';
+import { PaqueteService } from '../../service/paquete-service';
+import { catchError, of } from 'rxjs';
+import { Paquete } from '../../models/paquete';
+import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 @Component({ selector: 'app-ver-dia-component', standalone: true, imports: [CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
 export class VerDiaComponent implements OnInit {
 
@@ -14,13 +19,18 @@ export class VerDiaComponent implements OnInit {
   protected fecha?: string;
   cargando = true;
   error?: string;
+  modalTab: 'buscar' | 'favoritos' = 'buscar';
   mostrarAgregar = false;
   modalKey = 0;
+ protected paquetes : Paquete [] = []
 tipoSeleccionado: 'DESAYUNO' | 'ALMUERZO' | 'CENA' | 'SNACK' = 'DESAYUNO';
 
 protected readonly types: Array<'DESAYUNO' | 'ALMUERZO' | 'CENA' | 'SNACK'> = 
   ['DESAYUNO', 'ALMUERZO', 'CENA', 'SNACK'];
   
+
+  @Output() cerrado = new EventEmitter<void>();
+    @Output() agregado = new EventEmitter<void>();
 
   protected formModificarCantidad = new FormGroup(
     {
@@ -34,7 +44,8 @@ protected readonly types: Array<'DESAYUNO' | 'ALMUERZO' | 'CENA' | 'SNACK'> =
 
   constructor(
     private route: ActivatedRoute,
-    private diaService: DiaService
+    private diaService: DiaService,
+    private comidaFavoritaService : PaqueteService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +54,7 @@ protected readonly types: Array<'DESAYUNO' | 'ALMUERZO' | 'CENA' | 'SNACK'> =
     if (this.fecha) {
       this.cargarDia(this.fecha);
     }
+
   }
 
   cargarDia(fecha: string) {
@@ -64,6 +76,9 @@ protected readonly types: Array<'DESAYUNO' | 'ALMUERZO' | 'CENA' | 'SNACK'> =
 abrirAgregar(tipo: 'DESAYUNO' | 'ALMUERZO' | 'CENA' | 'SNACK') {
    this.tipoSeleccionado = tipo;
   this.mostrarAgregar = false;
+
+  this.cargarComidasFavoritas();
+
   setTimeout(() => {
     this.modalKey++;        // fuerza a Angular a recrear el componente hijo
     this.mostrarAgregar = true;
@@ -145,5 +160,55 @@ eliminarComida(comida: ComidaIngeridaSalidaDTO) {
     error: (err) => console.error(err)
   });
 }
+
+cargarComidasFavoritas(): void {
+    this.comidaFavoritaService.getComidasFavoritasPorUsuario()
+      .pipe(
+        catchError(err => {
+          console.error(err);
+          alert('Error al cargar comidas favoritas');
+          return of([]);
+        })
+      )
+      .subscribe(respuesta => {
+        this.paquetes = [];
+        respuesta.forEach(fav => {
+          let elemento = this.paquetes.find(p => p.nombrePaquete === fav.nombrePaquete);
+          if (!elemento) {
+            elemento = { nombrePaquete: fav.nombrePaquete, alimentos: [] };
+            this.paquetes.push(elemento);
+          }
+          let alimento: AlimentoInPaquete = { id: fav.comidaId, nombre: fav.nombreComida, gramos: fav.cantidad };
+          elemento.alimentos.push(alimento);
+        });
+      });
+  }
+
+  // Agregar un favorito al día
+agregarFavorito(nombrePaquete: string) {
+  this.comidaFavoritaService.agregarPaqueteADia(nombrePaquete, this.tipoSeleccionado, this.fecha!)
+    .subscribe({
+      next: (res) => {
+        // Muestra un alert con el mensaje del backend
+        alert(res.mensaje || 'Paquete agregado correctamente.');
+        
+        this.agregado.emit();   // notifica al padre para recargar el día
+        this.cargarDia(this.fecha!);       
+        this.cerrarAgregar();
+      },
+      error: (err) => {
+        const mensajeError = err.error?.error || 'No se pudo agregar el paquete.';
+        alert(mensajeError);  // muestra un alert con el error
+        this.error = mensajeError;
+        console.error(err);
+      }
+    });
+}
+
+
+  cerrarModal() {
+    this.cerrado.emit();
+  }
+
 
 }

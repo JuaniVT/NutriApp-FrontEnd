@@ -5,6 +5,7 @@ import { MiPerfilComponente } from './pages/mi-perfil-componente/mi-perfil-compo
 import { RegistroComponent } from './pages/registro-component/registro-component';
 import { VerDiaComponent } from './pages/ver-dia-component/ver-dia-component';
 import { NotFound } from './pages/not-found/not-found';
+import { ComidasFavoritasComponent } from './pages/comidas-favoritas/comidas-favoritas';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},     //ruta por defecto
@@ -13,6 +14,8 @@ export const routes: Routes = [
     {path: "perfil", title: "Perfil" , component: MiPerfilComponente},
     {path: 'registro', component: RegistroComponent},
     {path: 'dia/:fecha', component: VerDiaComponent},
+    {path: 'favoritas', component: ComidasFavoritasComponent},
+
 
 
     // !!IMPORTANTE¡¡ -> esta ruta tiene que estar al final de todas ya que sino, desde este componente las que estan abajo no te redireccionan
