@@ -1,0 +1,350 @@
+/* ===========================================
+   CONTENEDOR PRINCIPAL - PANEL
+   =========================================== */
+.panel-agregar-comida {
+  width: 100%;
+  max-width: 540px;
+  background: #fff9f3;
+  padding: 32px 28px;
+  border-radius: 28px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  margin: 50px auto;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid #ffeedd;
+}
+
+/* TITULOS */
+.panel-agregar-comida h2,
+.panel-agregar-comida h3 {
+  margin: 0;
+  font-weight: 600;
+  color: #ff8c42;
+}
+
+/* BOTÓN CREAR PAQUETE */
+.panel-agregar-comida > button {
+  align-self: flex-start;
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.panel-agregar-comida > button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+}
+
+/* ===========================================
+   INPUT BUSCAR
+   =========================================== */
+.panel-agregar-comida input[type="text"] {
+  width: 100%;
+  border: 1px solid #ffd8b0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.panel-agregar-comida input[type="text"]:focus {
+  border-color: #ff8c42;
+  box-shadow: 0 0 8px rgba(255, 140, 66, 0.35);
+  outline: none;
+}
+
+/* ===========================================
+   LISTA DE ALIMENTOS
+   =========================================== */
+.panel-agregar-comida ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  border-radius: 16px;
+  background-color: #fffaf0;
+  border: 1px solid #ffeedd;
+}
+
+.panel-agregar-comida li {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f4e6d0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  margin: 2px 4px;
+}
+
+.panel-agregar-comida li:hover {
+  background: #ffe5b3;
+  transform: translateX(3px);
+}
+
+.panel-agregar-comida li.seleccionado {
+  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(255, 140, 66, 0.3);
+}
+
+/* ===========================================
+   PANEL DETALLE
+   =========================================== */
+.panel-detalle {
+  margin-top: 14px;
+  background-color: #fff9f3;
+  border-left: 5px solid #ff8c42;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* LABELS Y PARRAFOS */
+.panel-detalle label,
+.panel-detalle p {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  margin: 6px 0;
+}
+
+/* INPUTS DEL DETALLE */
+.panel-detalle input,
+.panel-detalle select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid #ffd8b0;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.panel-detalle input:focus,
+.panel-detalle select:focus {
+  border-color: #ff8c42;
+  box-shadow: 0 0 6px rgba(255, 140, 66, 0.3);
+  outline: none;
+}
+
+/* ===========================================
+   BOTONES DETALLE
+   =========================================== */
+.panel-detalle button {
+  padding: 12px 22px;
+  border-radius: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* BOTÓN AGREGAR */
+.panel-detalle button:first-of-type {
+  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  color: #fff;
+}
+
+.panel-detalle button:first-of-type:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.45);
+}
+
+/* BOTÓN CANCELAR */
+.panel-detalle button:last-of-type {
+  background: #fff9f3;
+  color: #444;
+  border: 2px solid #ff8c42;
+}
+
+.panel-detalle button:last-of-type:hover {
+  background: #ffeedd;
+  transform: scale(1.06);
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+}
+
+/* ===========================================
+   SCROLL PERSONALIZADO LISTA
+   =========================================== */
+.panel-agregar-comida ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+.panel-agregar-comida ul::-webkit-scrollbar-thumb {
+  background: #ffb347;
+  border-radius: 10px;
+}
+
+.panel-agregar-comida ul::-webkit-scrollbar-track {
+  background: #fffaf0;
+  border-radius: 10px;
+}
+
+
+/* ===========================================
+   ITEMS DE LA LISTA DE ALIMENTOS
+   =========================================== */
+.panel-agregar-comida .panel-paquete ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border-radius: 16px;
+  background-color: #fffaf0;
+  border: 1px solid #ffeedd;
+}
+
+.panel-agregar-comida .panel-paquete li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f4e6d0;
+  border-radius: 12px;
+  margin: 4px 2px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  background-color: #fff9f3;
+}
+
+.panel-agregar-comida .panel-paquete li:hover {
+  background-color: #ffe5b3;
+  transform: translateX(2px);
+}
+
+.panel-agregar-comida .panel-paquete li span {
+  font-weight: 500;
+  color: #444;
+}
+
+/* BOTÓN ELIMINAR DE LISTA */
+.panel-agregar-comida .panel-paquete li button {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 12px;
+  background: #ff8c42;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.25s ease, transform 0.15s ease;
+  box-shadow: 0 2px 6px rgba(255, 140, 66, 0.3);
+}
+
+.panel-agregar-comida .panel-paquete li button:hover {
+  background: #ffb347;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.4);
+}
+
+/* Input estilo actual */
+.panel-agregar-comida input[type="text"] {
+  width: 100%;
+  border: 1px solid #ffd8b0;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.panel-agregar-comida input[type="text"]:focus {
+  border-color: #ff8c42;
+  box-shadow: 0 0 8px rgba(255, 140, 66, 0.35);
+  outline: none;
+}
+
+.agregar-alimento {
+  align-self: flex-start;
+  padding: 8px 18px;
+  border-radius: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agregar-alimento:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+}
+
+/* Mensaje de error debajo del buscador */
+.mensaje-error {
+  color: #ff4c42;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 6px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background-color: #fff0eb;
+  border: 1px solid #ffb3a2;
+}
+
+/* Botón "Agregar Alimento" estilo +Nuevo Paquete */
+.agregar-alimento {
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.agregar-alimento:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+}
+
+/* Lista de resultados */
+.panel-agregar-comida ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border-radius: 16px;
+  background-color: #fffaf0;
+  border: 1px solid #ffeedd;
+}
+
+.panel-agregar-comida li {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f4e6d0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  margin: 2px 4px;
+}
+
+.panel-agregar-comida li:hover {
+  background: #ffe5b3;
+  transform: translateX(2px);
+}
+
+.panel-agregar-comida li.seleccionado {
+  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(255, 140, 66, 0.3);
+}

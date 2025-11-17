@@ -1,6 +1,5 @@
 /* ======== ESTILO GENERAL ======== */
 .ver-dia-container {
-  min-height: 100vh;
   padding: 20px;
   background-color: #ffffff;
   font-family: 'Poppins', sans-serif;
@@ -415,3 +414,137 @@
 }
 
 
+/* 🔹 Tabs dentro del modal */
+.modal-agregar .tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.modal-agregar .tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px 10px 0 0;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.modal-agregar .tabs button.active {
+  background: #ff8c42;
+  color: white;
+}
+
+.modal-agregar .tab-content {
+  overflow: hidden; /* evita que el hover se salga del área del modal */
+  padding-top: 10px; /* separa un poco del título de la pestaña */
+}
+
+/* 🔹 Lista de favoritos / paquetes */
+.favoritos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 🔹 Paquete completo como card */
+.paquete-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.paquete-card:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  border-color: #ff8c42;
+}
+
+.paquete-card.seleccionado {
+  border-color: #ff8c42;
+  background: #fff5e6;
+}
+
+/* 🔹 Título del paquete */
+.paquete-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ff8c42;
+}
+
+/* 🔹 Lista de alimentos dentro del paquete */
+.paquete-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.paquete-card ul li {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* 🔹 Botón de agregar paquete */
+.paquete-card .btn-agregar {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #42b883, #2ecc71);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.paquete-card .btn-agregar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+}
+
+/* 🔹 Scroll barra personalizada para tab */
+.modal-agregar .tab-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-agregar .tab-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.modal-agregar .tab-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.modal-agregar .tab-content::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* 🔹 Responsive */
+@media (max-width: 500px) {
+  .modal-agregar {
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  .paquete-card {
+    padding: 12px;
+  }
+
+  .paquete-card h3 {
+    font-size: 1rem;
+  }
+}

@@ -97,20 +97,72 @@
 
     </section>
   }
-@if (mostrarAgregar) {
-
+@if (mostrarAgregar)
+{
   <div class="overlay" (click)="cerrarAgregar()"></div>
 
   <div class="modal-agregar">
-    <app-agregar-comida
-      [tipoComida]="tipoSeleccionado"
-      [fecha]="fecha"
-      [attr.key]="modalKey"
-      (cerrar)="cerrarAgregar()"
-      (comidaAgregada)="cargarDia(fecha!); cerrarAgregar()">
-    </app-agregar-comida>
-  </div>
 
+    <!-- PESTAÑAS -->
+    <div class="tabs">
+      <button 
+        [class.active]="modalTab === 'buscar'" 
+        (click)="modalTab = 'buscar'">
+        Buscar alimento
+      </button>
+      <button 
+        [class.active]="modalTab === 'favoritos'" 
+        (click)="modalTab = 'favoritos'">
+        Favoritos
+      </button>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="tab-content">
+      
+      <!-- TAB BUSCAR -->
+      @if (modalTab === 'buscar')
+      {
+        <app-agregar-comida
+          [tipoComida]="tipoSeleccionado"
+          [fecha]="fecha"
+          [attr.key]="modalKey"
+          (cerrar)="cerrarAgregar()"
+          (comidaAgregada)="cargarDia(fecha!); cerrarAgregar()">
+        </app-agregar-comida>
+      }
+
+      <!-- TAB FAVORITOS -->
+      @if (modalTab === 'favoritos')
+      {
+        <div class="favoritos-lista">
+          @if (paquetes.length)
+          {
+            @for (paquete of paquetes; track paquete.nombrePaquete)
+            {
+              <div class="paquete-card">
+                <h3>{{ paquete.nombrePaquete }}</h3>
+                <ul>
+                  @for (alimento of paquete.alimentos; track alimento.id)
+                  {
+                    <li>{{ alimento.nombre }} - {{ alimento.gramos }} g</li>
+                  }
+                </ul>
+                <button class="btn-agregar" (click)="agregarFavorito(paquete.nombrePaquete)">
+                  Agregar al día
+                </button>
+              </div>
+            }
+          }
+          @else
+          {
+            <p>No hay comidas favoritas cargadas.</p>
+          }
+        </div>
+      }
+
+    </div>
+  </div>
 }
 
 

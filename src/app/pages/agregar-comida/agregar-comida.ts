@@ -4,7 +4,7 @@ import { DiaService } from '../../service/dia-service';
 import { AlimentoBusquedaDTO } from '../../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../../models/comidaingeridadto';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-agregar-comida',
