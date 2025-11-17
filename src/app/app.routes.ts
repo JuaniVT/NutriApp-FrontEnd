@@ -14,6 +14,7 @@ export const routes: Routes = [
     {path: "perfil", title: "Perfil" , component: MiPerfilComponente},
     {path: 'registro', component: RegistroComponent},
     {path: 'dia/:fecha', component: VerDiaComponent},
+    {path: 'dia', component: VerDiaComponent},
     {path: 'favoritas', component: ComidasFavoritasComponent},
 
 

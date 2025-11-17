@@ -1,5 +1,10 @@
 /* inicio-sesion-component.css */
-
+:host
+{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 /* Contenedor general */
 .login-container {
   width: 400px;
@@ -12,6 +17,7 @@
   color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
+  
 }
 
 /* Logo (si querés agregar la imagen arriba) */
