@@ -15,7 +15,7 @@
 }
 
 /* GRID GENERAL */
-.grid {
+.form {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px 20px;
@@ -25,17 +25,17 @@
 .field {
     display: flex;
     flex-direction: column;
+    border: none;
 }
 
-.field label {
+label {
     margin-bottom: 4px;
     font-size: 0.9rem;
     color: #929292;
 }
 
 /* INPUTS */
-.field input,
-.field select {
+input, select {
     padding: 8px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -43,25 +43,65 @@
     background-color: #fafafa;
 }
 
-.field input:focus,
-.field select:focus {
+input:focus, select:focus {
     outline: none;
     border-color: #888;
 }
 
+/* INPUTS DESABILITADOS A LA EDICION */
+.inputDisabled{
+    color: #414141;
+    user-select: none;
+    cursor: not-allowed;
+}
+
+
 /* BOTÓN */
-.btn-actualizar {
+.buttonConteiner{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    margin-top: 50px;
+}
+
+
+.btn{
     margin-top: 30px;
     padding: 12px 20px;
     font-size: 1rem;
     font-weight: bold;
-    background-color: #4caf50;
-    color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
 }
 
-.btn-actualizar:hover {
+#btn-actualizar{   
+    background-color: #39c240;
+}
+
+#btn-actualizar:hover {
     background-color: #43a047;
+}
+
+#btn-actualizar:disabled {
+    cursor: not-allowed;
+    background-color: #39c240;
+}
+
+
+
+#btn-borrar{
+    background-color: #d80303;
+}
+
+#btn-borrar:hover {
+    background-color: #a80101;
+}
+
+
+/* MENSAJE DE ERROR */
+.errorMessage{
+    color: red;
+    margin-top: 10px;
 }

@@ -32,21 +32,21 @@
     <div class="derecha">
         @if (auth.isLoggedIn()) {
 
-            <div class="conetendorIconoCabecera">
+            <!-- <div class="conetendorIconoCabecera">
                 <img src="" alt="dad" class="iconoPopeable">
             </div>
             
             <div class="conetendorIconoCabecera">
                 <img src="" alt="da" class="iconoPopeable">
-            </div>
+            </div> -->
     
             <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
                 <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
             </div>
             <div class="cajaPerfil" id="menuPerfil" popover="manual">            
                 <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
-                <a routerLink="" class="botonDesplegablePerfil">dad</a>
-                <a routerLink="" class="botonDesplegablePerfil">dad</a>
+                <!-- <a routerLink="" class="botonDesplegablePerfil">dad</a>
+                <a routerLink="" class="botonDesplegablePerfil">dad</a> -->
                 <a routerLink="/login"  class="botonDesplegablePerfil" (click)="logOut()">Cerrar Sesion</a>
             </div>
 

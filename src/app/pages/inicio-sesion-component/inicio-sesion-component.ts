@@ -51,7 +51,7 @@ get password()
     this.errorMessage = '';
   },
   error: (err) => {
-    if (err.status === 401) {
+    if (err.status === 400) {
       this.errorMessage = 'Usuario o contraseña incorrectos.';
     } else {
       this.errorMessage = 'Ocurrió un error en el servidor.';

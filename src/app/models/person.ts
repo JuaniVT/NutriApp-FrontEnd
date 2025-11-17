@@ -10,6 +10,5 @@ export interface Person {
     telefono: string,
     direccion: string,
     genero: Genero,      
-    email: string
-    username: string
+    email: string,
 }
