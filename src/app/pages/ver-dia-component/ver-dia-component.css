@@ -1,7 +1,6 @@
 /* ======== ESTILO GENERAL ======== */
 .ver-dia-container {
   min-height: 100vh;
-  padding: 20px;
   background-color: #ffffff;
   font-family: 'Poppins', sans-serif;
   color: #333;
@@ -9,6 +8,9 @@
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
+  padding: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* ======== RESUMEN DEL DÍA ======== */
@@ -33,6 +35,8 @@
 }
 
 /* Barra de navegacion semanal */
+
+
 
 .dia {
   width: 55px;
@@ -64,11 +68,15 @@
 
 }
 
-.titulo-semana{
-
-  padding: 10px;
-
+.titulo-semana {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff8c42;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  text-align: center;
 }
+
 
 .semana {
 
