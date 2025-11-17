@@ -12,6 +12,7 @@ import { AuthService } from '../../service/auth';
 export class Header implements OnInit{
   private readonly router = inject(Router)
   protected readonly auth = inject(AuthService);
+  fechaHoy = new Date().toISOString().split("T")[0];
   
   ngOnInit(): void {
 
@@ -29,4 +30,8 @@ export class Header implements OnInit{
     const menu = document.getElementById("menuMobile") as any;
     menu.togglePopover();
   }
+
+   
+
+
 }
