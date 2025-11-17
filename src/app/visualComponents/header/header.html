@@ -8,7 +8,8 @@
             <a routerLink="" routerLinkActive="active" class="botonCabecera">Mi Calendario</a>
         </div>
         <div class="conetendorBotonCabecera">
-            <a routerLink="" routerLinkActive="active" class="botonCabecera">Dia de Hoy</a>
+         <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active"> Día de Hoy</a>
+
         </div>
         <div class="conetendorBotonCabecera">
             <a routerLink="" routerLinkActive="active" class="botonCabecera">Agregar Comida</a>
@@ -19,9 +20,9 @@
 
 
 
-    
 
-        
+
+
 
     </div>
 
@@ -32,41 +33,41 @@
     <div class="derecha">
         @if (auth.isLoggedIn()) {
 
-            <div class="conetendorIconoCabecera">
-                <img src="" alt="dad" class="iconoPopeable">
-            </div>
-            
-            <div class="conetendorIconoCabecera">
-                <img src="" alt="da" class="iconoPopeable">
-            </div>
-    
-            <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
-                <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
-            </div>
-            <div class="cajaPerfil" id="menuPerfil" popover="manual">            
-                <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
-                <a routerLink="" class="botonDesplegablePerfil">dad</a>
-                <a routerLink="" class="botonDesplegablePerfil">dad</a>
-                <a routerLink="/login"  class="botonDesplegablePerfil" (click)="logOut()">Cerrar Sesion</a>
-            </div>
+        <div class="conetendorIconoCabecera">
+            <img src="" alt="dad" class="iconoPopeable">
+        </div>
+
+        <div class="conetendorIconoCabecera">
+            <img src="" alt="da" class="iconoPopeable">
+        </div>
+
+        <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
+            <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
+        </div>
+        <div class="cajaPerfil" id="menuPerfil" popover="manual">
+            <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
+            <a routerLink="" class="botonDesplegablePerfil">dad</a>
+            <a routerLink="" class="botonDesplegablePerfil">dad</a>
+            <a routerLink="/login" class="botonDesplegablePerfil" (click)="logOut()">Cerrar Sesion</a>
+        </div>
 
         }@else {
-            
-            <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
+
+        <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
         }
-        
-        
+
+
 
         <!-- DESPLEGABLE QUE SOLO SE MUESTRA EN CELULAR (CSS se encarga) -->
-            <div class="hamburger" id="hamburgerMenu" (click)="toggleMenu()">
-                <img src="iconos/desplegable-icon.png" alt="Menu">
-            </div>
+        <div class="hamburger" id="hamburgerMenu" (click)="toggleMenu()">
+            <img src="iconos/desplegable-icon.png" alt="Menu">
+        </div>
 
-            <div class="menuMobile" id="menuMobile" popover="manual">
-                <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Mi Calendario</a>
-                <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Día de Hoy</a>
-                <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Agregar Comida</a>
-            </div>
+        <div class="menuMobile" id="menuMobile" popover="manual">
+            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Mi Calendario</a>
+            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Día de Hoy</a>
+            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Agregar Comida</a>
+        </div>
     </div>
 
 </nav>
