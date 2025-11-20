@@ -1,0 +1,30 @@
+<div class="cotenedorPrincipal">
+
+    <h1>Solicitudes</h1>
+
+    @for (s of solicitudesList(); track $index) {
+
+        <div class="contenedorSolicitud">
+            
+            <div class="headerTarjeta">
+                <h2> {{s.nombreComida}} </h2>
+                
+                <div class="dad" (click)="bodyTarjeta.togglePopover()">
+                    <img src="iconos\arrow-down-icon.png" alt="Icono Desplegable" class="arrowDown">
+                </div>
+            </div>
+            
+            <div class="bodyTarjeta" #bodyTarjeta popover="manual">
+                <p> {{s.porcion}} </p>
+                <p> {{s.calorias}} </p>
+                <p> {{s.proteinas}} </p>
+                <p> {{s.carbohidratos}} </p>
+                <p> {{s.grasas}} </p>
+                <p> Fecha Solicitud {{s.fecha}} </p>
+            </div>
+            
+        </div>
+
+    }
+
+</div>

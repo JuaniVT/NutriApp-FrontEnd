@@ -1,0 +1,67 @@
+:host{
+    width: 70%;
+}
+
+.cotenedorPrincipal{
+    width: 100%;
+    margin-top: 50px;
+    background-color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 40px;
+}
+
+.contenedorSolicitud{
+    width: 40%;
+    background: linear-gradient(135deg,
+        var(--orange),
+        var(--yellow),
+        var(--orange)
+    );
+    outline: 1px solid black;
+    border-radius: 2rem;
+    box-shadow:  0 0 15px var(--yellow);
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.headerTarjeta{
+    width: 100%;
+    padding: 5px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bodyTarjeta{
+    width: 100%;
+    padding: 15px;
+
+    position: relative;
+    position-anchor: --desplegable;
+    position-area: bottom left;
+}
+
+.bodyTarjeta:popover-open{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+
+
+.arrowDown{
+    cursor: pointer;
+    anchor-name: --desplegable;
+}
