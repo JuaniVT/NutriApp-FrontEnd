@@ -10,6 +10,7 @@ export class ManejadorSemana {
     generarSemana(fechaReferencia: Date) {
         const semana: any[] = [];       //semana con 7 objetos que van a ser dias
         const inicio = new Date(fechaReferencia);
+        inicio.setHours(0, 0, 0, 0);  //normaliza a medianoche local
 
 
         const diaSemana = (inicio.getDay() + 6) % 7;
@@ -26,6 +27,7 @@ export class ManejadorSemana {
         for (let i = 0; i < 7; i++) {
             const fecha = new Date(inicio);
             fecha.setDate(inicio.getDate() + i);   // Ajusta fecha al día correcto sumando i días al inicio
+            fecha.setHours(0, 0, 0, 0); // normalizar cada fecha también
 
             semana.push({
                 fecha,
