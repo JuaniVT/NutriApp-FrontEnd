@@ -2,26 +2,71 @@
 
     <h1>Solicitudes</h1>
 
-    @for (s of solicitudesList(); track $index) {
+    @for (s of solicitudesList(); track $index; let indice = $index) {
 
         <div class="contenedorSolicitud">
             
-            <div class="headerTarjeta">
+                                            <!-- se manda el indice para que expanda ese elemento -->
+            <div class="headerSolicitud" (click)="toggleExpand(indice)" >
                 <h2> {{s.nombreComida}} </h2>
                 
-                <div class="dad" (click)="bodyTarjeta.togglePopover()">
-                    <img src="iconos\arrow-down-icon.png" alt="Icono Desplegable" class="arrowDown">
-                </div>
+                <img src="iconos\arrow-down-icon.png" 
+                alt="Icono Desplegable" class="arrowDown" 
+                [class.arrowUp]="expandedIndex==indice">   <!-- cuadno se cumple esa condicion (la tarjeta esta abierta) se aplica esa clase de css --> 
             </div>
             
-            <div class="bodyTarjeta" #bodyTarjeta popover="manual">
-                <p> {{s.porcion}} </p>
-                <p> {{s.calorias}} </p>
-                <p> {{s.proteinas}} </p>
-                <p> {{s.carbohidratos}} </p>
-                <p> {{s.grasas}} </p>
-                <p> Fecha Solicitud {{s.fecha}} </p>
-            </div>
+                                        <!-- si conincide el indice con el indiceDeExpansion se aplica la clase de css-->
+            <form class="contSolicitudForm" [class.contSolicitudFormTransition]="expandedIndex==indice">
+                <fieldset>
+                    <label for="porcion">Porcion: </label>
+                    <input type="number" id="porcion">
+                </fieldset>
+
+                <fieldset>
+                    <label for="calorias">Calorias: </label>
+                    <input type="number" id="calorias">
+                </fieldset>
+
+                <fieldset>
+                    <label for="proteinas">Proteinas: </label>
+                    <input type="number" id="proteinas">
+                </fieldset>
+
+                <fieldset>
+                    <label for="carbohidratos">Carbohidratos: </label>
+                    <input type="number" id="carbohidratos">
+                </fieldset>
+
+                <fieldset>
+                    <label for="grasas">Grasas: </label>
+                    <input type="number" id="grasas">
+                </fieldset>
+
+                <fieldset>
+                    <p>Fecha Solicitud: {{s.fecha}} </p>
+                </fieldset>
+
+                <div class="contendorBotones">
+
+                    @if (role() == "ROLE_ADMIN") {
+                        
+                        <div>
+                            <button class="botonSolicitud" id="botonAceptar">Aceptar</button>
+                            <button class="botonSolicitud" id="botonDenegar">Denegar</button>
+                            <button class="botonSolicitud" id="botonEditar">Editar</button>
+                        </div>
+
+                    }@else {
+
+                        <div>
+                            <button class="botonSolicitud" id="botonEditar">Editar</button>
+                            <button class="botonSolicitud" id="botonDenegar">Borrar</button>
+                        </div>
+
+                    }
+
+                </div>
+            </form>
             
         </div>
 

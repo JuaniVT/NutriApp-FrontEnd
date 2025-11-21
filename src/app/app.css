@@ -8,7 +8,7 @@
 app-header{
     height: 15vh;
     width: 100%;
-    outline: 1px solid var(--outline);
+    border-bottom: 1px solid var(--outline);
 }
 
 .scroll-conteiner{
