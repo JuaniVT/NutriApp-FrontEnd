@@ -111,7 +111,7 @@ export class ListarSolicitudes {
 
 
   handleAccept(index: number){
-    alert(this.formList().length);
+    
   }
 
   handleDeny(){
