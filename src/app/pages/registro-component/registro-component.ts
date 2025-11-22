@@ -86,6 +86,7 @@ export class RegistroComponent implements OnInit{
  onSubmit() {
   const datos = this.registroForm.value;
 
+  console.log(datos);
   this.client.register(datos).subscribe({
     next: (resp) => {
       alert('Cuenta creada correctamente');
@@ -266,8 +267,6 @@ ngOnInit(): void {
       }
     });
 
-    // (Opcional) bloquear email para que no lo modifiquen
-    this.registroForm.get('persona.email')?.disable();
 
     // (Opcional) generar username automático si no existe
     if (userData.email && !this.registroForm.get('usuario.username')?.value) {
