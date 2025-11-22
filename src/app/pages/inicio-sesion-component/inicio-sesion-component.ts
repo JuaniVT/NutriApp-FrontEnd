@@ -22,6 +22,7 @@ export class InicioSesionComponent implements OnInit{
   submitted = false;
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  fechaHoy = new Date().toLocaleDateString('en-CA');
 
    ngOnInit(): void {
     google.accounts.id.initialize(
@@ -60,7 +61,7 @@ get password()
   next: (res) => {
     this.authService.saveToken(res.token);
     alert("Login exitoso");
-    this.router.navigate(['/dia', '2025-11-11'])
+    this.router.navigate(['/dia', this.fechaHoy])
     this.errorMessage = '';
   },
   error: (err) => {

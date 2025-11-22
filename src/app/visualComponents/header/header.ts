@@ -12,8 +12,8 @@ import { AuthService } from '../../service/auth';
 export class Header implements OnInit{
   private readonly router = inject(Router)
   protected readonly auth = inject(AuthService);
-  fechaHoy = new Date().toISOString().split("T")[0];
-  
+  fechaHoy = new Date().toLocaleDateString('en-CA');
+
   ngOnInit(): void {
 
   }

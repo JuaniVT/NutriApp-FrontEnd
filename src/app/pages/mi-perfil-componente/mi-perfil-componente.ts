@@ -72,13 +72,13 @@ export class MiPerfilComponente {
         
         //actualizamos la persona
         this.profileClient.updatePersonProfile(this.personForm.getRawValue()).subscribe({
-          next: (p) => alert(p),
+          next: (p) => this.personForm.patchValue(p),
           error: (e) => alert(e)
         })
 
         //actualizamos el perfil nutricional
         this.profileClient.updateNutritionalProfile(this.nutritionalProfileForm.getRawValue()!).subscribe({
-          next: (n) => alert(n),
+          next: (n) => this.nutritionalProfileForm.patchValue(n),
           error: (e) => alert(e)
         })
       }

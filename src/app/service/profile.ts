@@ -18,7 +18,7 @@ export class ProfileService {
   }
 
   updatePersonProfile (person: Person){
-    return this.http.put(this.baseURL_Person + "/actualizar-persona", person, {responseType: "text"});
+    return this.http.put<Person>(this.baseURL_Person + "/actualizar-persona", person);
   }
 
 
@@ -29,6 +29,6 @@ export class ProfileService {
   }
 
   updateNutritionalProfile (nutritionalProfile: NutritionalProfile){
-    return this.http.put(this.baseURL_NutritionalProfile + "/actualizar", nutritionalProfile, {responseType: "text"});
+    return this.http.put<NutritionalProfile>(this.baseURL_NutritionalProfile + "/actualizar", nutritionalProfile);
   }
 }
