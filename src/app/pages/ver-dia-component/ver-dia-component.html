@@ -20,8 +20,8 @@
           </div>
         </div>
         <span>
-          {{ calcularTotalCalorias() - dia.caloriasRestantes | number:'1.0-0' }}
-          / {{ calcularTotalCalorias() | number:'1.0-0' }} kcal
+          {{  dia.caloriasRestantes | number:'1.0-0' }}
+          / {{  dia. caloriasRestantes + calcularTotalCalorias() | number:'1.0-0' }} kcal
         </span>
       </div>
     </div>

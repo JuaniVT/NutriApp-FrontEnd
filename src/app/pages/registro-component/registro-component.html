@@ -1,212 +1,537 @@
-<div class="registro-container">
-  <h2>Crear cuenta</h2>
+<form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="registro-container">
 
-  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" novalidate>
+  <!-- INTRO -->
+  <ng-container *ngIf="pasoPersona === 0">
+    <div formGroupName="perfilNutricional" class="intro-session">
+      <div class="intro-text">
+        <h2>¡Bienvenido a NutriApp, y gracias por elegirnos!</h2>
+        <p>
+          En los próximos pasos te vamos a pedir algunos datos personales para poder crear un
+          plan nutricional adaptado especialmente a tus necesidades.
+        </p>
+        <button type="button" (click)="siguientePasoPersona()">Siguiente</button>
+      </div>
+    </div>
+  </ng-container>
 
-    <!-- ===================== USUARIO ===================== -->
-    <section class="form-section" formGroupName="usuario">
-      <h3>Datos de Usuario</h3>
+  <!-- OBJETIVO -->
+  <ng-container *ngIf="pasoPersona === 1">
+    <div formGroupName="perfilNutricional" class="objetivo-session">
+      <div class="objetivos-container">
 
-      <!-- Username -->
-      <div class="form-group">
-        <label for="username">Nombre de usuario</label>
-        <input id="username" type="text" formControlName="username" placeholder="Tu nombre de usuario">
-        @if (usuario.get('username')?.touched) {
-          @if (usuario.get('username')?.hasError('required')) {
-            <small class="error">El nombre de usuario es obligatorio.</small>
-          } @else if (usuario.get('username')?.hasError('minlength')) {
-            <small class="error">Debe tener al menos 4 caracteres.</small>
-          } @else if (usuario.get('username')?.hasError('maxlength')) {
-            <small class="error">No puede superar los 50 caracteres.</small>
-          } @else if (usuario.get('username')?.hasError('pattern')) {
-            <small class="error">Solo letras, números, puntos o guiones bajos.</small>
+        <h2 class="titulo-objetivo">¿Cuál es tu Objetivo?</h2>
+        <p class="informativo">Elegí el objetivo que mejor se adapte a tu meta actual.</p>
+
+        <div class="objetivos-grid">
+          @for (item of objetivosInfo; track $index) {
+            <div 
+              class="objetivo-card"
+              [class.seleccionado]="registroForm.get('perfilNutricional.objetivoCaloricoTipo')?.value === item.key"
+              (click)="seleccionarObjetivo(item.key)"
+            >
+              <h3>{{ item.titulo }}</h3>
+              <p>{{ item.descripcion }}</p>
+            </div>
           }
-        }
-      </div>
+        </div>
 
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input id="password" type="password" formControlName="password" placeholder="Tu contraseña">
-        @if (usuario.get('password')?.touched) {
-          @if (usuario.get('password')?.hasError('required')) {
-            <small class="error">La contraseña es obligatoria.</small>
-          } @else if (usuario.get('password')?.hasError('minlength')) {
-            <small class="error">Debe tener al menos 6 caracteres.</small>
-          } @else if (usuario.get('password')?.hasError('pattern')) {
-            <small class="error">Debe incluir letras, números y un símbolo.</small>
+        <div class="buttons">
+          <button type="button" class="btn-next" (click)="pasoAnteriorPersona()">Volver</button>
+          <button 
+            type="button" 
+            class="btn-next"
+            [disabled]="!registroForm.get('perfilNutricional.objetivoCaloricoTipo')?.value"
+            (click)="siguientePasoPersona()"
+          >
+            Siguiente
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- ACTIVIDAD -->
+  <ng-container *ngIf="pasoPersona === 2">
+    <div formGroupName="perfilNutricional" class="actividad-session">
+      <div class="actividad-container">
+
+        <h2 class="titulo-objetivo">¿Cuál es tu nivel de actividad física?</h2>
+        <p class="informativo">Seleccioná el nivel que mejor refleje tu rutina diaria.</p>
+
+        <div class="objetivos-grid">
+          @for (item of nivelActividadInfo; track $index) {
+            <div 
+              class="objetivo-card"
+              [class.seleccionado]="registroForm.get('perfilNutricional.nivelActividadFisica')?.value === item.key"
+              (click)="seleccionarNivelActividad(item.key)"
+            >
+              <h3>{{ item.titulo }}</h3>
+              <p>{{ item.descripcion }}</p>
+            </div>
           }
-        }
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="btn-next" (click)="pasoAnteriorPersona()">Volver</button>
+          <button 
+            type="button" 
+            class="btn-next"
+            [disabled]="!registroForm.get('perfilNutricional.nivelActividadFisica')?.value"
+            (click)="siguientePasoPersona()"
+          >
+            Siguiente
+          </button>
+        </div>
+
       </div>
-    </section>
+    </div>
+  </ng-container>
 
-    <!-- ===================== PERSONA ===================== -->
-    <section class="form-section" formGroupName="persona">
-      <h3>Datos Personales</h3>
+  <!-- DATOS PERSONALES -->
+  <ng-container *ngIf="pasoPersona === 3">
+    <div class="contenedor-general">
 
-      <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input id="nombre" type="text" formControlName="nombre" placeholder="Tu nombre">
-        @if (persona.get('nombre')?.touched) {
-          @if (persona.get('nombre')?.hasError('required')) {
-            <small class="error">El nombre es obligatorio.</small>
-          } @else if (persona.get('nombre')?.hasError('minlength')) {
-            <small class="error">Debe tener al menos 3 letras.</small>
-          }
+      <h2 class="titulo-datos-personales-2">Sobre ti</h2>
+      <p class="informativo-datos-2">
+        Esta información nos ayudará a calcular tus calorías objetivo
+      </p>
+
+      <div class="datos-list-wrapper">
+
+        <div class="list-data-card">
+          <div class="card-icon-text">
+            <span class="card-icon card-icon-person"></span>
+            <span class="card-text">Sexo</span>
+          </div>
+          <div formGroupName="persona" class="card-action">
+            <select formControlName="genero" class="list-select-input">
+              <option value="" disabled selected>Seleccionar</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMENINO">Femenino</option>
+            </select>
+            <span class="action-arrow"></span>
+          </div>
+        </div>
+
+        <div class="list-data-card-input">
+          <div class="card-icon-text">
+            <span class="card-icon card-icon-age"></span>
+            <span class="card-text">Edad</span>
+          </div>
+          <div formGroupName="perfilNutricional" class="card-action">
+            <input type="number" formControlName="edad" placeholder="25" class="list-text-input" />
+            <span class="action-arrow"></span>
+          </div>
+        </div>
+        @if (edad?.touched && edad?.invalid) {
+          <span class="error-message-list">Edad debe ser entre 10 y 120</span>
         }
-      </div>
 
-      <div class="form-group">
-        <label for="apellido">Apellido</label>
-        <input id="apellido" type="text" formControlName="apellido" placeholder="Tu apellido">
-        @if (persona.get('apellido')?.touched) {
-          @if (persona.get('apellido')?.hasError('required')) {
-            <small class="error">El apellido es obligatorio.</small>
-          } @else if (persona.get('apellido')?.hasError('minlength')) {
-            <small class="error">Debe tener al menos 3 letras.</small>
-          }
-        }
-      </div>
+        <div class="list-data-card-input">
+          <div class="card-icon-text">
+            <span class="card-icon card-icon-height"></span>
+            <span class="card-text">Altura</span>
+          </div>
+          <div formGroupName="perfilNutricional" class="card-action">
+            <input type="number" formControlName="altura" placeholder="175 cm" class="list-text-input" />
+            <span class="action-arrow"></span>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="dni">DNI</label>
-        <input id="dni" type="text" formControlName="dni" placeholder="Ej: 12345678">
-        @if (persona.get('dni')?.touched) {
-          @if (persona.get('dni')?.hasError('required')) {
-            <small class="error">El DNI es obligatorio.</small>
-          } @else if (persona.get('dni')?.hasError('pattern')) {
-            <small class="error">Debe tener exactamente 8 dígitos.</small>
-          }
-        }
-      </div>
+        <div class="list-data-card-input">
+          <div class="card-icon-text">
+            <span class="card-icon card-icon-weight"></span>
+            <span class="card-text">Peso</span>
+          </div>
+          <div formGroupName="perfilNutricional" class="card-action">
+            <input type="number" formControlName="peso" placeholder="70 kg" class="list-text-input" />
+            <span class="action-arrow"></span>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="fechaNacimiento">Fecha de nacimiento</label>
-        <input id="fechaNacimiento" type="date" formControlName="fechaNacimiento">
-        @if (persona.get('fechaNacimiento')?.touched && persona.get('fechaNacimiento')?.hasError('required')) {
-          <small class="error">La fecha de nacimiento es obligatoria.</small>
-        }
-      </div>
-
-      <div class="form-group">
-        <label for="telefono">Teléfono</label>
-        <input id="telefono" type="text" formControlName="telefono" placeholder="Ej: 1122334455">
-        @if (persona.get('telefono')?.touched) {
-          @if (persona.get('telefono')?.hasError('required')) {
-            <small class="error">El teléfono es obligatorio.</small>
-          } @else if (persona.get('telefono')?.hasError('pattern')) {
-            <small class="error">Debe contener entre 7 y 15 dígitos.</small>
-          }
-        }
-      </div>
-
-      <div class="form-group">
-        <label for="direccion">Dirección</label>
-        <input id="direccion" type="text" formControlName="direccion" placeholder="Ej: Av. Siempre Viva 742">
-        @if (persona.get('direccion')?.touched && persona.get('direccion')?.hasError('required')) {
-          <small class="error">La dirección es obligatoria.</small>
-        }
-      </div>
-
-      <div class="form-group">
-        <label for="genero">Género</label>
-        <select id="genero" formControlName="genero">
-          <option value="" disabled selected>Selecciona tu género</option>
-          <option value="MASCULINO">Masculino</option>
-          <option value="FEMENINO">Femenino</option>
-        </select>
-        @if (persona.get('genero')?.touched && persona.get('genero')?.hasError('required')) {
-          <small class="error">Selecciona un género.</small>
-        }
       </div>
 
-      <div class="form-group">
-        <label for="email">Correo electrónico</label>
-        <input id="email" type="email" formControlName="email" placeholder="ejemplo@mail.com">
-        @if (persona.get('email')?.touched) {
-          @if (persona.get('email')?.hasError('required')) {
-            <small class="error">El correo es obligatorio.</small>
-          } @else if (persona.get('email')?.hasError('email')) {
-            <small class="error">Formato de correo inválido.</small>
-          }
-        }
-      </div>
-    </section>
-
-    <!-- ===================== PERFIL NUTRICIONAL ===================== -->
-    <section class="form-section" formGroupName="perfilNutricional">
-      <h3>Perfil Nutricional</h3>
-
-      <div class="form-group">
-        <label for="peso">Peso (kg)</label>
-        <input id="peso" type="number" formControlName="peso" placeholder="Ej: 70">
-        @if (perfilNutricional.get('peso')?.touched) {
-          @if (perfilNutricional.get('peso')?.hasError('required')) {
-            <small class="error">El peso es obligatorio.</small>
-          } @else if (perfilNutricional.get('peso')?.hasError('min') || perfilNutricional.get('peso')?.hasError('max')) {
-            <small class="error">Debe estar entre 1 y 500 kg.</small>
-          }
-        }
+      <div class="buttons-navigation">
+        <button type="button" class="btn-prev" (click)="pasoAnteriorPersona()">Volver</button>
+        <button 
+          type="button" 
+          class="btn-next"
+          [disabled]="edad?.invalid || altura?.invalid || genero?.invalid || peso?.invalid"
+          (click)="siguientePasoPersona()"
+        >
+          Siguiente
+        </button>
       </div>
 
-      <div class="form-group">
-        <label for="altura">Altura (cm)</label>
-        <input id="altura" type="number" formControlName="altura" placeholder="Ej: 175">
-        @if (perfilNutricional.get('altura')?.touched) {
-          @if (perfilNutricional.get('altura')?.hasError('required')) {
-            <small class="error">La altura es obligatoria.</small>
-          } @else if (perfilNutricional.get('altura')?.hasError('min') || perfilNutricional.get('altura')?.hasError('max')) {
-            <small class="error">Debe estar entre 50 y 300 cm.</small>
-          }
-        }
-      </div>
+    </div>
+  </ng-container>
+  <!-- DATOS PERSONALES -->
+<ng-container *ngIf="pasoPersona === 4">
+  <div class="contenedor-general">
 
-      <div class="form-group">
-        <label for="edad">Edad</label>
-        <input id="edad" type="number" formControlName="edad" placeholder="Ej: 25">
-        @if (perfilNutricional.get('edad')?.touched) {
-          @if (perfilNutricional.get('edad')?.hasError('required')) {
-            <small class="error">La edad es obligatoria.</small>
-          } @else if (perfilNutricional.get('edad')?.hasError('min') || perfilNutricional.get('edad')?.hasError('max')) {
-            <small class="error">Debe estar entre 1 y 130 años.</small>
-          }
-        }
-      </div>
+    <h2 class="titulo-datos-personales-2">Datos personales</h2>
+    <p class="informativo-datos-2">
+      Estos datos se usarán para crear tu perfil en NutriApp
+    </p>
 
-      <div class="form-group">
-        <label for="nivelActividadFisica">Nivel de Actividad Física</label>
-        <select id="nivelActividadFisica" formControlName="nivelActividadFisica">
-          <option value="" disabled selected>Selecciona tu nivel</option>
-          <option value="SEDENTARIO">Sedentario</option>
-          <option value="LIGERA">Ligero</option>
-          <option value="MODERADA">Moderado</option>
-          <option value="INTENSA">Intenso</option>
-          <option value="MUY_INTENSA">Muy intensa</option>
-        </select>
-        @if (perfilNutricional.get('nivelActividadFisica')?.touched && perfilNutricional.get('nivelActividadFisica')?.hasError('required')) {
-          <small class="error">Selecciona un nivel de actividad.</small>
-        }
-      </div>
+    <div class="datos-list-wrapper" formGroupName="persona">
 
-      <div class="form-group">
-        <label for="objetivoCaloricoTipo">Objetivo Calórico</label>
-        <select id="objetivoCaloricoTipo" formControlName="objetivoCaloricoTipo">
-          <option value="" disabled selected>Selecciona tu objetivo</option>
-          <option value="MANTENIMIENTO">MANTENIMIENTO</option>
-          <option value="DEFICIT_LIGERO">DEFICIT LIGERO</option>
-          <option value="DEFICIT_MODERADO">DEFICIT MODERADO</option>
-          <option value="SUPERAVIT_LIGERO">SUPERAVIT LIGERO</option>
-          <option value="SUPERAVIT_MODERADO">SUPERAVIT MODERADO</option>
-        </select>
-        @if (perfilNutricional.get('objetivoCaloricoTipo')?.touched && perfilNutricional.get('objetivoCaloricoTipo')?.hasError('required')) {
-          <small class="error">Selecciona un objetivo.</small>
-        }
+      <!-- NOMBRE -->
+      <div class="list-data-card-input">
+        <div class="card-icon-text">
+          <span class="card-icon card-icon-user"></span>
+          <span class="card-text">Nombre</span>
+        </div>
+        <div class="card-action">
+          <input type="text" formControlName="nombre" placeholder="Juan" class="list-text-input" />
+          <span class="action-arrow"></span>
+        </div>
       </div>
-    </section>
-
-    <!-- ===================== BOTÓN ===================== -->
-    <button type="submit" [disabled]="registroForm.invalid" class="submit-btn">
-      Crear cuenta
-    </button>
-  </form>
+      <div class="error-msg" *ngIf="registroForm.get('persona.nombre')?.touched && registroForm.get('persona.nombre')?.invalid">
+  <small *ngIf="registroForm.get('persona.nombre')?.errors?.['required']">
+    El nombre es obligatorio.
+  </small>
+  <small *ngIf="registroForm.get('persona.nombre')?.errors?.['minlength']">
+    Debe tener al menos 3 caracteres.
+  </small>
 </div>
+
+      <!-- APELLIDO -->
+      <div class="list-data-card-input">
+        <div class="card-icon-text">
+          <span class="card-icon card-icon-user"></span>
+          <span class="card-text">Apellido</span>
+        </div>
+        <div class="card-action">
+          <input type="text" formControlName="apellido" placeholder="Valle" class="list-text-input" />
+          <span class="action-arrow"></span>
+        </div>
+      </div>
+      <div class="error-msg" *ngIf="registroForm.get('persona.apellido')?.touched && registroForm.get('persona.apellido')?.invalid">
+  <small *ngIf="registroForm.get('persona.apellido')?.errors?.['required']">
+    El apellido es obligatorio.
+  </small>
+  <small *ngIf="registroForm.get('persona.apellido')?.errors?.['minlength']">
+    Debe tener al menos 3 caracteres.
+  </small>
+</div>
+
+      <!-- DNI -->
+      <div class="list-data-card-input">
+        <div class="card-icon-text">
+          <span class="card-icon card-icon-id"></span>
+          <span class="card-text">DNI</span>
+        </div>
+        <div class="card-action">
+          <input type="number" formControlName="dni" placeholder="12345678" class="list-text-input" />
+          <span class="action-arrow"></span>
+        </div>
+      </div>
+      <div class="error-msg" *ngIf="registroForm.get('persona.dni')?.touched && registroForm.get('persona.dni')?.invalid">
+  <small *ngIf="registroForm.get('persona.dni')?.errors?.['required']">
+    El DNI es obligatorio.
+  </small>
+  <small *ngIf="registroForm.get('persona.dni')?.errors?.['pattern']">
+    Debe tener exactamente 8 números.
+  </small>
+  <small *ngIf="registroForm.get('persona.dni')?.hasError('dniTaken')">
+  Este DNI ya está registrado.
+  </small>
+</div>
+
+      <!-- FECHA NACIMIENTO -->
+      <div class="list-data-card-input">
+        <div class="card-icon-text">
+          <span class="card-icon card-icon-birthday"></span>
+          <span class="card-text">Fecha de nacimiento</span>
+        </div>
+        <div class="card-action">
+          <input type="date" formControlName="fechaNacimiento" class="list-text-input" />
+          <span class="action-arrow"></span>
+        </div>
+      </div>
+      <div class="error-msg"
+     *ngIf="
+       registroForm.get('persona.fechaNacimiento')?.touched &&
+       registroForm.get('persona.fechaNacimiento')?.invalid
+     ">
+
+  <small *ngIf="registroForm.get('persona.fechaNacimiento')?.errors?.['required']">
+    La fecha de nacimiento es obligatoria.
+  </small>
+
+  <small *ngIf="registroForm.get('persona.fechaNacimiento')?.errors?.['futureDate']">
+    La fecha no puede ser futura.
+  </small>
+
+  <small *ngIf="registroForm.get('persona.fechaNacimiento')?.errors?.['fechaMinima2017']">
+    La fecha debe ser anterior al año 2017.
+  </small>
+
+</div>
+
+
+      <!-- TELEFONO -->
+      <div class="list-data-card-input">
+        <div class="card-icon-text">
+          <span class="card-icon card-icon-phone"></span>
+          <span class="card-text">Teléfono</span>
+        </div>
+        <div class="card-action">
+          <input type="text" formControlName="telefono" placeholder="1122334455" class="list-text-input" />
+          <span class="action-arrow"></span>
+        </div>
+      </div>
+      <div class="error-msg" *ngIf="registroForm.get('persona.telefono')?.touched && registroForm.get('persona.telefono')?.invalid">
+  <small *ngIf="registroForm.get('persona.telefono')?.errors?.['required']">
+    El número es obligatorio.
+  </small>
+  <small *ngIf="registroForm.get('persona.telefono')?.errors?.['pattern']">
+    Debe tener entre 7 y 15 números.
+  </small>
+  <small *ngIf="registroForm.get('persona.telefono')?.hasError('telefonoTaken')">
+  Este teléfono ya pertenece a un usuario.
+  </small>
+</div>
+
+      <!-- DIRECCIÓN -->
+      <div class="list-data-card-input">
+        <div class="card-icon-text">
+          <span class="card-icon card-icon-address"></span>
+          <span class="card-text">Dirección</span>
+        </div>
+        <div class="card-action">
+          <input type="text" formControlName="direccion" placeholder="Calle 123" class="list-text-input" />
+          <span class="action-arrow"></span>
+        </div>
+      </div>
+      <div class="error-msg" *ngIf="registroForm.get('persona.direccion')?.touched && registroForm.get('persona.direccion')?.invalid">
+  <small *ngIf="registroForm.get('persona.direccion')?.errors?.['required']">
+    La dirección es obligatoria.
+  </small>
+</div>
+
+      <!-- EMAIL -->
+      <div class="list-data-card-input">
+        <div class="card-icon-text">
+          <span class="card-icon card-icon-email"></span>
+          <span class="card-text">Email</span>
+        </div>
+        <div class="card-action">
+          <input type="email" formControlName="email" placeholder="correo@gmail.com" class="list-text-input" />
+          <span class="action-arrow"></span>
+        </div>
+      </div>
+      <div class="error-msg" *ngIf="registroForm.get('persona.email')?.touched && registroForm.get('persona.email')?.invalid">
+  <small *ngIf="registroForm.get('persona.email')?.errors?.['required']">
+    El email es obligatorio.
+  </small>
+  <small *ngIf="registroForm.get('persona.email')?.errors?.['email']">
+    El email no tiene un formato válido.
+  </small>
+  <small *ngIf="registroForm.get('persona.email')?.hasError('emailTaken')">
+  Este correo ya pertenece a otro usuario.
+  </small>
+</div>
+
+    </div>
+
+    <!-- BOTONES SIGUIENTE -->
+    <div class="buttons-navigation">
+      <button type="button" class="btn-prev" (click)="pasoAnteriorPersona()">Volver</button>
+
+      <button 
+        type="button" 
+        class="btn-next"
+        [disabled]="
+          registroForm.get('persona')?.invalid"
+        (click)="siguientePasoPersona()">
+        Siguiente
+      </button>
+    </div>
+
+  </div>
+</ng-container>
+<!-- === VERIFICACIÓN DE EMAIL === -->
+<ng-container *ngIf="pasoPersona === 5">
+
+  <div class="contenedor-general">
+
+    <h2 class="titulo-datos-personales-2">Verificación de Email</h2>
+    <p class="informativo-datos-2">
+      Necesitamos confirmar tu correo para continuar con el registro.
+    </p>
+
+    <!-- MENSAJE GLOBAL -->
+    <div class="mensaje-global" *ngIf="mensaje">
+      {{ mensaje }}
+    </div>
+
+    <!-- === 1) BOTÓN ENVIAR CÓDIGO === -->
+    <ng-container *ngIf="!codigoEnviado && !emailVerificado">
+
+      <button 
+        type="button" 
+        class="btn-next"
+        [disabled]="registroForm.get('persona.email')?.invalid || cargando"
+        (click)="enviarCodigoEmail()">
+
+        <span *ngIf="!cargando">Enviar código al correo</span>
+        <span *ngIf="cargando">Enviando...</span>
+
+      </button>
+
+    </ng-container>
+
+    <!-- === 2) INGRESAR CÓDIGO === -->
+    <ng-container *ngIf="codigoEnviado && !emailVerificado">
+
+      <div class="datos-list-wrapper">
+
+        <div class="list-data-card-input">
+          <div class="card-icon-text">
+            <span class="card-icon card-icon-id"></span>
+            <span class="card-text">Código recibido</span>
+          </div>
+
+          <div class="card-action">
+            <input 
+              type="text" 
+              maxlength="6"
+               [ngModelOptions]="{standalone: true}" 
+              [(ngModel)]="codigo"
+              placeholder="123456"
+              class="list-text-input"
+            />
+          </div>
+        </div>
+
+        <button 
+          type="button" 
+          class="btn-next"
+          [disabled]="cargando || !codigo"
+          (click)="verificarCodigo()">
+
+          <span *ngIf="!cargando">Verificar código</span>
+          <span *ngIf="cargando">Verificando...</span>
+
+        </button>
+
+      </div>
+
+    </ng-container>
+
+    <!-- === 3) EMAIL VERIFICADO === -->
+    <ng-container *ngIf="emailVerificado">
+      <div class="email-verificado-box">
+        ✔️ Tu correo fue verificado correctamente
+      </div>
+
+      <div class="buttons-continuar">
+        <button type="button" class="btn-next" (click)="siguientePasoPersona()">
+          Continuar
+        </button>
+      </div>
+    </ng-container>
+
+  </div>
+
+</ng-container>
+<!-- === USERNAME Y PASSWORD - PASO FINAL === -->
+
+<ng-container *ngIf="pasoPersona === 6">
+
+  <div class="contenedor-general">
+
+```
+<h2 class="titulo-datos-personales-2">¡Ya estás a un paso de completar tu registro!</h2>
+<p class="informativo-datos-2">
+  Crea tu nombre de usuario y contraseña para finalizar.
+</p>
+
+<div class="datos-list-wrapper" formGroupName="usuario">
+
+  <!-- USERNAME -->
+  <div class="list-data-card-input">
+    <div class="card-icon-text">
+      <span class="card-icon card-icon-user"></span>
+      <span class="card-text">Nombre de usuario</span>
+    </div>
+    <div class="card-action">
+      <input 
+        type="text" 
+        formControlName="username" 
+        placeholder="Ingresa tu usuario"
+        class="list-text-input"
+      />
+      <span class="action-arrow"></span>
+    </div>
+    <div class="error-msg" *ngIf="registroForm.get('usuario.username')?.touched && registroForm.get('usuario.username')?.invalid">
+      <small *ngIf="registroForm.get('usuario.username')?.errors?.['required']">
+        El usuario es obligatorio.
+      </small>
+      <small *ngIf="registroForm.get('usuario.username')?.errors?.['minlength']">
+        Mínimo 4 caracteres.
+      </small>
+      <small *ngIf="registroForm.get('usuario.username')?.errors?.['maxlength']">
+        Máximo 20 caracteres.
+      </small>
+      <small *ngIf="registroForm.get('usuario.username')?.errors?.['pattern']">
+        Solo letras, números, puntos, guiones bajos o medios.
+      </small>
+      <small *ngIf="registroForm.get('usuario.username')?.hasError('usernameTaken')">
+        Este nombre de usuario ya está en uso.
+      </small>
+    </div>
+    
+  </div>
+
+  <!-- PASSWORD -->
+  <div class="list-data-card-input">
+    <div class="card-icon-text">
+      <span class="card-icon card-icon-lock"></span>
+      <span class="card-text">Contraseña</span>
+    </div>
+    <div class="card-action">
+      <input 
+        type="password" 
+        formControlName="password" 
+        placeholder="Ingresa tu contraseña"
+        class="list-text-input"
+      />
+      <span class="action-arrow"></span>
+    </div>
+    <div class="error-msg" *ngIf="registroForm.get('usuario.password')?.touched && registroForm.get('usuario.password')?.invalid">
+      <small *ngIf="registroForm.get('usuario.password')?.errors?.['required']">
+        La contraseña es obligatoria.
+      </small>
+      <small *ngIf="registroForm.get('usuario.password')?.errors?.['minlength']">
+        Mínimo 6 caracteres.
+      </small>
+      <small *ngIf="registroForm.get('usuario.password')?.errors?.['pattern']">
+        Debe contener letras, números y un carácter especial.
+      </small>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTONES -->
+<div class="buttons-navigation">
+  <button type="button" class="btn-prev" (click)="pasoAnteriorPersona()">Volver</button>
+  <button 
+    type="submit" 
+    class="btn-next" 
+    [disabled]="registroForm.get('usuario')?.invalid"
+  >
+    Finalizar Registro
+  </button>
+</div>
+```
+
+  </div>
+
+</ng-container>
+
+</form>

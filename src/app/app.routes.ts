@@ -9,7 +9,7 @@
 
 
 export const routes: Routes = [
-    {path: '', redirectTo: 'home', pathMatch: 'full'},     //ruta por defecto
+    {path: '', redirectTo: 'registro', pathMatch: 'full'},     //ruta por defecto
     {path: "home", title: "Home", component: Home},
     {path: 'login', component: InicioSesionComponent},
     {path: "perfil", title: "Perfil" , component: MiPerfilComponente},
