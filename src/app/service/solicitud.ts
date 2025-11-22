@@ -56,7 +56,7 @@ export class SolicitudService {
 
   }
 
-  accept (idSolicitud: number){
+  accept (idSolicitud: string | number){
     return this.http.post(
       //url
       this.baseURL + "/aceptar", 

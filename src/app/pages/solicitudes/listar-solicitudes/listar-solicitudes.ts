@@ -112,6 +112,25 @@ export class ListarSolicitudes {
 
   handleAccept(index: number){
     
+    if(confirm("Seguro que desea aceptar la solicitud? ")){
+
+      //si el formulario no fue modificado
+      if(this.formList()[index].pristine){
+        alert("no fue modificado")
+  
+        //le pasamos el id de la solcitud que tiene el indice que se nos paso
+        this.solicitudService.accept(this.solicitudesList()[index].id!).subscribe({
+  
+                                    //elminamos uno elemento desde la posicion del index en las dos listas
+          next: (s) => {alert(s), this.solicitudesList().splice(index, 1), this.formList().splice(index, 1)},
+          error: (e) => alert(e)
+        })
+      }else{
+        alert("fue modificado")
+      }
+      
+    }
+
   }
 
   handleDeny(){
