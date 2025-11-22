@@ -13,6 +13,8 @@
     --outline: oklch(36.98% .014 302.71);
     --orange: #ff6600;
     --yellow: #ffcc00;
+    --orange-soft: #ff6600f1;
+    --yellow-soft: #ffcc00ee;
 }
 
 body{

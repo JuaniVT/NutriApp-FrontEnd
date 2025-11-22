@@ -15,31 +15,36 @@
                 [class.arrowUp]="expandedIndex==indice">   <!-- cuadno se cumple esa condicion (la tarjeta esta abierta) se aplica esa clase de css --> 
             </div>
             
-                                        <!-- si conincide el indice con el indiceDeExpansion se aplica la clase de css-->
-            <form class="contSolicitudForm" [class.contSolicitudFormTransition]="expandedIndex==indice">
+                        <!-- si conincide el indice con el indiceDeExpansion se aplica la clase de css-->   <!-- lo vinculamos con la lista de los formularios con la posicion del inidce de nuestro @for -->
+            <form class="contSolicitudForm" [class.contSolicitudFormTransition]="expandedIndex==indice"  [formGroup]="formList()[indice]">
+                <fieldset>
+                    <label for="nombre">Nombre: </label>
+                    <input type="text" id="nombre" formControlName="nombreComida">
+                </fieldset>
+                
                 <fieldset>
                     <label for="porcion">Porcion: </label>
-                    <input type="number" id="porcion">
+                    <input type="number" id="porcion" formControlName="porcion">
                 </fieldset>
 
                 <fieldset>
                     <label for="calorias">Calorias: </label>
-                    <input type="number" id="calorias">
+                    <input type="number" id="calorias" formControlName="calorias">
                 </fieldset>
 
                 <fieldset>
                     <label for="proteinas">Proteinas: </label>
-                    <input type="number" id="proteinas">
+                    <input type="number" id="proteinas" formControlName="proteinas">
                 </fieldset>
 
                 <fieldset>
                     <label for="carbohidratos">Carbohidratos: </label>
-                    <input type="number" id="carbohidratos">
+                    <input type="number" id="carbohidratos" formControlName="carbohidratos">
                 </fieldset>
 
                 <fieldset>
                     <label for="grasas">Grasas: </label>
-                    <input type="number" id="grasas">
+                    <input type="number" id="grasas" formControlName="grasas">
                 </fieldset>
 
                 <fieldset>
@@ -51,16 +56,15 @@
                     @if (role() == "ROLE_ADMIN") {
                         
                         <div>
-                            <button class="botonSolicitud" id="botonAceptar">Aceptar</button>
-                            <button class="botonSolicitud" id="botonDenegar">Denegar</button>
-                            <button class="botonSolicitud" id="botonEditar">Editar</button>
+                            <button class="botonSolicitud" id="botonAceptar" (click)="handleAccept(indice)">Aceptar</button>
+                            <button class="botonSolicitud" id="botonDenegar" (click)="handleDeny()">Denegar</button>
                         </div>
 
                     }@else {
 
                         <div>
-                            <button class="botonSolicitud" id="botonEditar">Editar</button>
-                            <button class="botonSolicitud" id="botonDenegar">Borrar</button>
+                            <button class="botonSolicitud" id="botonEditar" (click)="handleEdit()">Editar</button>
+                            <button class="botonSolicitud" id="botonDenegar" (click)="handleDelete()">Borrar</button>
                         </div>
 
                     }

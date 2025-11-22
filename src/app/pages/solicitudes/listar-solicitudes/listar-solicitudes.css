@@ -17,14 +17,11 @@
 
 .contenedorSolicitud{
     width: 40%;
-    background: linear-gradient(135deg,
-        var(--orange),
-        var(--yellow),
-        var(--orange)
-    );
+    background-color: var(--background-color);
+    
     outline: 1px solid black;
     border-radius: 1rem;
-    box-shadow:  0 0 15px var(--yellow);
+    box-shadow:  0 0 10px var(--yellow);
     
 
 
@@ -32,13 +29,18 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-
 }
 
 .headerSolicitud{
     width: 100%;
-    padding: 5px 0 5px 15px;
+    padding: 2px 0 2px 11px;
     cursor: pointer;
+    background: linear-gradient(135deg,
+        var(--orange-soft),
+        var(--yellow-soft),
+        var(--orange-soft)
+    );
+    border-radius: 1rem;
     
     display: flex;
     justify-content: space-between;
@@ -65,6 +67,8 @@
 /* FORMULARIO DE CONTENIDO DESPLEGABLE */
 .contSolicitudForm{
     width: 100%;
+    border-radius: 1rem;
+    padding-top: 10px;
 
     display: flex;
     flex-direction: column;
@@ -122,11 +126,50 @@ fieldset input{
     width: 100%;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+
+    padding: 10px;
 }
 
 .botonSolicitud{
-    
+    padding: 10px;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+
+    transition: 
+    transform 150ms ease 0s,
+    background-color 150ms ease 0s;
 }
 
+.botonSolicitud:hover{
+    transform: scale(1.05);
+}
+
+#botonAceptar{
+    background-color: rgb(1, 197, 1);
+}
+
+#botonAceptar:hover{
+    background-color: rgb(0, 167, 0);
+    box-shadow: 0 0 5px rgb(0, 167, 0);
+}
+
+#botonDenegar{
+    background-color: rgb(235, 0, 0);
+}
+
+#botonDenegar:hover{
+    background-color: rgb(205, 0, 0);
+    box-shadow: 0 0 5px rgb(205, 0, 0);
+}
+
+#botonEditar{
+    background-color: rgb(0, 0, 220);
+}
+
+#botonEditar:hover{
+    background-color: rgb(0, 0, 190);
+    box-shadow: 0 0 5px rgb(0, 0, 190);
+}

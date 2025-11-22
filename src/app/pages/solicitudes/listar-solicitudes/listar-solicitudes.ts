@@ -5,10 +5,11 @@ import { Solicitud } from '../../../models/solicitud';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Authority } from '../../../models/authority';
 import { identifierName } from '@angular/compiler';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'listar-solicitudes',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './listar-solicitudes.html',
   styleUrl: './listar-solicitudes.css',
 })
@@ -18,16 +19,20 @@ export class ListarSolicitudes {
   private readonly authService = inject(AuthService);
   private readonly solicitudService = inject(SolicitudService);
 
-  //SOLICITUDES LIST
+  //FORM BUILDER
+  private readonly fb = inject(FormBuilder);
+
+  //SOLICITUDES LIST y FORM LIST (las dos listas estan vinculadas asi cada solicitud tiene su formulario)
   protected readonly solicitudesList = signal<Solicitud[]>([]);
+  protected readonly formList = signal<FormGroup[]>([]);
 
   //ROLE
   private readonly authority = toSignal(this.authService.getRole());
   protected readonly role = computed(() => this.authority()?.authority);
 
   //INPUTS (para saber ver si se carga la lista de solicitudes de una forma u otra)
-  readonly systemSolicitudes = input<boolean>();  //input para saber si se listan todas las solicitudes del sistema
-  readonly mineSolicitudes = input<boolean>(true);  //input para saber si se listan las solicitudes que ingreso el usuario
+  readonly systemSolicitudes = input<boolean>(true);  //input para saber si se listan todas las solicitudes del sistema
+  readonly mineSolicitudes = input<boolean>();  //input para saber si se listan las solicitudes que ingreso el usuario
 
 
   //SIGNAL "MODE" (definimos esta signal para que sea en el effect que se lanzen las peticiones en el 
@@ -50,30 +55,102 @@ export class ListarSolicitudes {
 
 
   constructor() {
-
-
     effect(() => {
 
       //si el modo es de listar todas las solicitudes
       if (this.mode() == "ALL") {
 
         this.solicitudService.getAll().subscribe({
-          next: (s) => { this.solicitudesList.set(s), console.log(s) },
+          //cuando llegue la lista se la seteamos a la que maneja el html y contruimos un lista de
+          //formularios con el mismo indice que la lista de solicitudes y con la info de cada solicitud patcheada
+          next: (s) => {this.solicitudesList.set(s), this.buildFormsFromSolicitudes(s)},
           error: (e) => alert(e)
         });
 
         //sino, si el modo es para listar solo las mias 
       } else if (this.mode() == "MINE") {
-
+          //cuando llegue la lista se la seteamos a la que maneja el html y contruimos un lista de
+          //formularios con el mismo indice que la lista de solicitudes y con la info de cada solicitud patcheada
         this.solicitudService.getMine().subscribe({
-          next: (s) => this.solicitudesList.set(s),
+          
+          next: (s) => {this.solicitudesList.set(s), this.buildFormsFromSolicitudes(s)},
           error: (e) => alert(e)
         })
 
       }
-
     })
   }
+  
+
+  //metodo para setear nuestra lista de formularios que maneja el html, mapeando una lista de solicitudes
+  //asi convertimos esa lista en una lista de formularios con los indices de las dos listas enlazados
+  //y con toda la info de cada solicitud patcheada o mapeada
+  private buildFormsFromSolicitudes (solicitudes: Solicitud[]){
+    
+    //mapeamos la lista de solicitudes a una de formularios con los campos ya cargagados de los 
+    //atributos de cada solicitud para obtener su info (es como el patchValue pero asi lo hacemos mas directo)
+    const mapedForms = solicitudes.map((solicitud) => 
+      this.fb.nonNullable.group({
+        nombreComida: [solicitud.nombreComida, []], 
+        porcion: [solicitud.porcion, []], 
+        calorias: [solicitud.calorias, []], 
+        proteinas: [solicitud.proteinas, []], 
+        carbohidratos: [solicitud.carbohidratos, []], 
+        grasas: [solicitud.grasas, []]
+      })
+    ) 
+
+    //le seteamos la lista de formularios con los campos de las solicitudes a nuestro signal
+    //que tiene la lista de solicitudes que va a manejar el html
+    this.formList.set(mapedForms);
+
+  }
+
+  
+
+
+
+  handleAccept(index: number){
+    alert(this.formList().length);
+  }
+
+  handleDeny(){
+
+  }
+
+  handleEdit(){
+
+  }
+
+  handleDelete(){
+
+  }
+
+
+  //getters para las comprobaciones y mensajes de error en el fomulario
+  get nombreComida (){
+    return 
+  };
+
+  get porcion (){
+    return
+  };
+
+  get calorias (){
+    return
+  };
+
+  get proteinas (){
+    return
+  };
+
+  get carbohidratos (){
+    return
+  };
+
+  get fecha (){
+    return
+  };
 
 
 
