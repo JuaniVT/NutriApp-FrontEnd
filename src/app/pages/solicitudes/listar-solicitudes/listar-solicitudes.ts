@@ -199,8 +199,24 @@ export class ListarSolicitudes {
     }
   }
 
-  handleDelete(){
+  handleDelete(index: number){
+    if(confirm("Seguro que desea eliminar su solicitud: " + this.solicitudesList()[index].nombreComida)){
 
+      //si confirma bloqueamos la UI
+      this.isLoading.set(true);
+
+      this.solicitudService.deleteMine(this.solicitudesList()[index].nombreComida).subscribe({
+        next: (s) => {
+          //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
+          this.toggleExpand(index),
+          //elminamos uno elemento desde la posicion del index en las dos listas
+          this.solicitudesList().splice(index, 1), this.formList().splice(index, 1); 
+          //debloquemas la UI cuando el back retorne algo
+          this.isLoading.set(false);
+        },
+        error: (e) => {alert(e.message), this.isLoading.set(false)}
+      })
+    }
   }
 
 

@@ -21,8 +21,8 @@ export class SolicitudService {
   }
   
   deleteMine(foodName: string){
-    return this.http.delete<string>(this.baseURL + "/eliminar", 
-      {params: {nombreComidaSolicitudEliminar: foodName}});
+    return this.http.delete(this.baseURL + "/eliminar", 
+      {params: {nombreComidaSolicitudEliminar: foodName}, responseType: "text"});
   }
 
   modifydMine(foodNameModify: string, solicitudModified: Solicitud){
