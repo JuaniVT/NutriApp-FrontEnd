@@ -109,6 +109,11 @@ fieldset input{
     outline: 0.5px solid black;
     border-radius: 1rem;
     padding: 3px;
+
+}
+
+.errorMessage{
+    color: red;
 }
 
 
@@ -148,6 +153,8 @@ fieldset input{
     transform: scale(1.05);
 }
 
+
+/* ACEPTAR */
 #botonAceptar{
     background-color: rgb(1, 197, 1);
 }
@@ -157,6 +164,18 @@ fieldset input{
     box-shadow: 0 0 5px rgb(0, 167, 0);
 }
 
+#botonAceptar:disabled{
+    background-color: rgb(0, 127, 0);
+    cursor: not-allowed;
+}
+
+#botonAceptar:disabled:hover{
+    background-color: rgb(0, 127, 0);
+    box-shadow: 0 0 0 rgb(0, 127, 0);
+    transform: scale(1.0);
+}
+
+/* DENEGAR */
 #botonDenegar{
     background-color: rgb(235, 0, 0);
 }
@@ -166,6 +185,19 @@ fieldset input{
     box-shadow: 0 0 5px rgb(205, 0, 0);
 }
 
+#botonEditar:disabled{
+    background-color: rgb(0, 0, 150);
+    cursor: not-allowed;
+}
+
+#botonEditar:disabled:hover{
+    background-color: rgb(0, 0, 150);
+    box-shadow: 0 0 0 rgb(0, 0, 190);
+    transform: scale(1.0);
+}
+
+
+/* EDITAR */
 #botonEditar{
     background-color: rgb(0, 0, 220);
 }
@@ -174,6 +206,18 @@ fieldset input{
     background-color: rgb(0, 0, 190);
     box-shadow: 0 0 5px rgb(0, 0, 190);
 }
+
+#botonEditar:disabled{
+    background-color: rgb(0, 0, 150);
+    cursor: not-allowed;
+}
+
+#botonEditar:disabled:hover{
+    background-color: rgb(0, 0, 150);
+    box-shadow: 0 0 0 rgb(0, 0, 190);
+    transform: scale(1.0);
+}
+
 
 
 /* OVERLAY DE CARGANDO */

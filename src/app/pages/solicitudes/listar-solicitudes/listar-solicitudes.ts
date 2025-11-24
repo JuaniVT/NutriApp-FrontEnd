@@ -34,8 +34,8 @@ export class ListarSolicitudes {
   protected readonly role = computed(() => this.authority()?.authority);
 
   //INPUTS (para saber ver si se carga la lista de solicitudes de una forma u otra)
-  readonly systemSolicitudes = input<boolean>();  //input para saber si se listan todas las solicitudes del sistema
-  readonly mineSolicitudes = input<boolean>(true);  //input para saber si se listan las solicitudes que ingreso el usuario
+  readonly systemSolicitudes = input<boolean>(true);  //input para saber si se listan todas las solicitudes del sistema
+  readonly mineSolicitudes = input<boolean>();  //input para saber si se listan las solicitudes que ingreso el usuario
 
 
   //SIGNAL "MODE" (definimos esta signal para que sea en el effect que se lanzen las peticiones en el 
@@ -94,25 +94,49 @@ export class ListarSolicitudes {
     //atributos de cada solicitud para obtener su info (es como el patchValue pero asi lo hacemos mas directo)
     const mapedForms = solicitudes.map((solicitud) => 
       this.fb.nonNullable.group({
-        nombreComida: [solicitud.nombreComida, []], 
-        porcion: [solicitud.porcion, []], 
-        calorias: [solicitud.calorias, []], 
-        proteinas: [solicitud.proteinas, []], 
-        carbohidratos: [solicitud.carbohidratos, []], 
-        grasas: [solicitud.grasas, []]
+        nombreComida: [solicitud.nombreComida, [Validators.required, Validators.minLength(2), Validators.maxLength(20), Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$')]], 
+        porcion: [solicitud.porcion, [Validators.required, Validators.min(0)]], 
+        calorias: [solicitud.calorias, [Validators.required, Validators.min(0)]], 
+        proteinas: [solicitud.proteinas, [Validators.required, Validators.min(0)]], 
+        carbohidratos: [solicitud.carbohidratos, [Validators.required, Validators.min(0)]], 
+        grasas: [solicitud.grasas, [Validators.required, Validators.min(0)]]
       })
     ) 
 
     //le seteamos la lista de formularios con los campos de las solicitudes a nuestro signal
     //que tiene la lista de solicitudes que va a manejar el html
     this.formList.set(mapedForms);
-
+    
   }
-
   
+  //getters para las comprobaciones y mensajes de error en el fomulario
+  get nombreComida (){
+    return (index: number) => (this.formList()[index].controls["nombreComida"]);
+  };
+
+  get porcion (){
+    return (index: number) => (this.formList()[index].controls["porcion"]);
+  };
+
+  get calorias (){
+    return (index: number) => (this.formList()[index].controls["calorias"]);
+  };
+
+  get proteinas (){
+    return (index: number) => (this.formList()[index].controls["proteinas"]);
+  };
+
+  get carbohidratos (){
+    return (index: number) => (this.formList()[index].controls["carbohidratos"]);
+  };
+
+  get grasas (){
+    return (index: number) => (this.formList()[index].controls["grasas"]);
+  };
 
 
 
+  //HANDLERS de los botones
   handleAccept(index: number){
     
     if(confirm("Seguro que desea aceptar la solicitud? ")){
@@ -220,30 +244,6 @@ export class ListarSolicitudes {
   }
 
 
-  //getters para las comprobaciones y mensajes de error en el fomulario
-  get nombreComida (){
-    return (index: number) => (this.formList()[index].controls["nombreComida"]);
-  };
-
-  get porcion (){
-    return
-  };
-
-  get calorias (){
-    return
-  };
-
-  get proteinas (){
-    return
-  };
-
-  get carbohidratos (){
-    return
-  };
-
-  get fecha (){
-    return
-  };
 
 
 
