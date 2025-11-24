@@ -26,6 +26,9 @@ export class ListarSolicitudes {
   protected readonly solicitudesList = signal<Solicitud[]>([]);
   protected readonly formList = signal<FormGroup[]>([]);
 
+  //SEÑAL PARA COMPROBAR SI UNA SOLICITUD ESTA CARGANDO Y BLOQUERA EL UI
+  protected readonly isLoading = signal<boolean>(false);
+
   //ROLE
   private readonly authority = toSignal(this.authService.getRole());
   protected readonly role = computed(() => this.authority()?.authority);
@@ -114,6 +117,9 @@ export class ListarSolicitudes {
     
     if(confirm("Seguro que desea aceptar la solicitud? ")){
 
+      //seteamos isLoading para que se bloquee la UI y que espere a que se complete la peticion o retorne un error
+      this.isLoading.set(true);
+
       //si el formulario no fue modificado
       if(this.formList()[index].pristine){
         alert("no fue modificado")
@@ -121,12 +127,34 @@ export class ListarSolicitudes {
         //le pasamos el id de la solcitud que tiene el indice que se nos paso
         this.solicitudService.accept(this.solicitudesList()[index].id!).subscribe({
   
-                                    //elminamos uno elemento desde la posicion del index en las dos listas
-          next: (s) => {alert(s), this.solicitudesList().splice(index, 1), this.formList().splice(index, 1)},
-          error: (e) => alert(e)
+          next: (s) => {
+            console.log(s); 
+            //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
+            this.toggleExpand(index),
+            //elminamos uno elemento desde la posicion del index en las dos listas
+            this.solicitudesList().splice(index, 1), this.formList().splice(index, 1);
+            //debloquemas la UI cuando el back retorne algo
+            this.isLoading.set(false);
+          },
+          error: (e) => {alert("Hubo un error: " + e.message), this.isLoading.set(false)}
         })
       }else{
         alert("fue modificado")
+
+        //si el formulario fue modificado modificamos y aceptamos
+        this.solicitudService.modifyAndAccept(this.solicitudesList()[index].nombreComida, this.formList()[index].getRawValue()).subscribe({
+          
+          next: (s) => {
+            console.log(s); 
+            //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
+            this.toggleExpand(index),
+            //elminamos uno elemento desde la posicion del index en las dos listas
+            this.solicitudesList().splice(index, 1), this.formList().splice(index, 1); 
+            //debloquemas la UI cuando el back retorne algo
+            this.isLoading.set(false);
+          },
+          error: (e) => {alert("Hubo un error" + e.message), this.isLoading.set(false)}
+        })
       }
       
     }

@@ -56,6 +56,17 @@ export class SolicitudService {
 
   }
 
+  modifyAndAccept(solicitudFoodName: string, newSolicitud: Solicitud){
+    return this.http.put(
+      this.baseURL + "/modificarAndAceptar",
+      //recibe un body
+      newSolicitud,
+      //opciones
+      {params: {nombreComidaSolicitudModificar: solicitudFoodName}, responseType: "text"}
+    )
+
+  }
+
   accept (idSolicitud: string | number){
     return this.http.post(
       //url
@@ -63,10 +74,10 @@ export class SolicitudService {
       //le decimos que no recibe body y lo ponemos en null
       null,
       //opciones
-      {params: {idSolicitud: idSolicitud}, 
-      responseType: "text"}
+      {params: {idSolicitud: idSolicitud}, responseType: "text"}
 
     );
+
   }
 
   decline (isSolciudDecline: number){

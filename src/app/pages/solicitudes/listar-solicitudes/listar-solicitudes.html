@@ -76,4 +76,13 @@
 
     }
 
+
+    <!-- BLOQUEO DE UI CARGANDO -->
+    @if (isLoading()) {
+        <div class="overlay">
+            <div class="spinner"></div>
+            <p>Procesando solicitud...</p>
+        </div>
+    }
+
 </div>
