@@ -80,14 +80,13 @@ export class SolicitudService {
 
   }
 
-  decline (isSolciudDecline: number){
+  decline (isSolciudDecline: number | string){
     return this.http.delete(
       
       //url
       this.baseURL + "/rechazar",
       //opciones
-      {params: {idSolicitud: isSolciudDecline},
-      responseType: "text"}
+      {params: {idSolicitud: isSolciudDecline}, responseType: "text"}
 
     );
   }

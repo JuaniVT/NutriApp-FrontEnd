@@ -1,6 +1,6 @@
 <div class="cotenedorPrincipal">
 
-    <h1>Solicitudes</h1>
+    <h1> {{systemSolicitudes()? "Solicitudes del Sistema" : "Mis Solicitudes"}} </h1>
 
     @for (s of solicitudesList(); track $index; let indice = $index) {
 
@@ -53,17 +53,17 @@
 
                 <div class="contendorBotones">
 
-                    @if (role() == "ROLE_ADMIN") {
+                    @if (systemSolicitudes()) {
                         
                         <div>
                             <button class="botonSolicitud" id="botonAceptar" (click)="handleAccept(indice)">Aceptar</button>
-                            <button class="botonSolicitud" id="botonDenegar" (click)="handleDeny()">Denegar</button>
+                            <button class="botonSolicitud" id="botonDenegar" (click)="handleDeny(indice)">Denegar</button>
                         </div>
 
                     }@else {
 
                         <div>
-                            <button class="botonSolicitud" id="botonEditar" (click)="handleEdit()">Editar</button>
+                            <button class="botonSolicitud" id="botonEditar" (click)="handleEdit(indice)">Editar</button>
                             <button class="botonSolicitud" id="botonDenegar" (click)="handleDelete()">Borrar</button>
                         </div>
 
@@ -81,7 +81,7 @@
     @if (isLoading()) {
         <div class="overlay">
             <div class="spinner"></div>
-            <p>Procesando solicitud...</p>
+            <p>Cargando...</p>
         </div>
     }
 

@@ -34,8 +34,8 @@ export class ListarSolicitudes {
   protected readonly role = computed(() => this.authority()?.authority);
 
   //INPUTS (para saber ver si se carga la lista de solicitudes de una forma u otra)
-  readonly systemSolicitudes = input<boolean>(true);  //input para saber si se listan todas las solicitudes del sistema
-  readonly mineSolicitudes = input<boolean>();  //input para saber si se listan las solicitudes que ingreso el usuario
+  readonly systemSolicitudes = input<boolean>();  //input para saber si se listan todas las solicitudes del sistema
+  readonly mineSolicitudes = input<boolean>(true);  //input para saber si se listan las solicitudes que ingreso el usuario
 
 
   //SIGNAL "MODE" (definimos esta signal para que sea en el effect que se lanzen las peticiones en el 
@@ -67,7 +67,7 @@ export class ListarSolicitudes {
           //cuando llegue la lista se la seteamos a la que maneja el html y contruimos un lista de
           //formularios con el mismo indice que la lista de solicitudes y con la info de cada solicitud patcheada
           next: (s) => {this.solicitudesList.set(s), this.buildFormsFromSolicitudes(s)},
-          error: (e) => alert(e)
+          error: (e) => alert(e.message)
         });
 
         //sino, si el modo es para listar solo las mias 
@@ -77,7 +77,7 @@ export class ListarSolicitudes {
         this.solicitudService.getMine().subscribe({
           
           next: (s) => {this.solicitudesList.set(s), this.buildFormsFromSolicitudes(s)},
-          error: (e) => alert(e)
+          error: (e) => alert(e.message)
         })
 
       }
@@ -122,7 +122,6 @@ export class ListarSolicitudes {
 
       //si el formulario no fue modificado
       if(this.formList()[index].pristine){
-        alert("no fue modificado")
   
         //le pasamos el id de la solcitud que tiene el indice que se nos paso
         this.solicitudService.accept(this.solicitudesList()[index].id!).subscribe({
@@ -139,7 +138,6 @@ export class ListarSolicitudes {
           error: (e) => {alert("Hubo un error: " + e.message), this.isLoading.set(false)}
         })
       }else{
-        alert("fue modificado")
 
         //si el formulario fue modificado modificamos y aceptamos
         this.solicitudService.modifyAndAccept(this.solicitudesList()[index].nombreComida, this.formList()[index].getRawValue()).subscribe({
@@ -161,12 +159,44 @@ export class ListarSolicitudes {
 
   }
 
-  handleDeny(){
+  handleDeny(index: number){
+    if(confirm("Seguro que desea rechazar la solicitud: " + this.solicitudesList()[index].nombreComida+ "?")){
 
+      //si confirma bloqueamos la UI
+      this.isLoading.set(true);
+
+      this.solicitudService.decline(this.solicitudesList()[index].id!).subscribe({
+        next: (s) => {
+          //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
+          this.toggleExpand(index),
+          //elminamos uno elemento desde la posicion del index en las dos listas
+          this.solicitudesList().splice(index, 1), this.formList().splice(index, 1); 
+          //debloquemas la UI cuando el back retorne algo
+          this.isLoading.set(false);
+        },
+        error: (e) => {alert("Hubo un error: " + e.message), this.isLoading.set(false)}
+      })
+    }
   }
 
-  handleEdit(){
+  handleEdit(index: number){
+    if(confirm("Seguro que desea editar su solicitud: " + this.solicitudesList()[index].nombreComida)){
 
+      //si confirma bloqueamos la UI
+      this.isLoading.set(true);
+
+      this.solicitudService.modifydMine(this.solicitudesList()[index].nombreComida, this.formList()[index].getRawValue()).subscribe({
+        next: (s) => {
+          //patcheamos los campos con el objeto editado que devolvio el back
+          this.formList()[index].patchValue(s);
+          //actualizamos los campos de la solicitud en la lista asi se modifica el nombre en tiempo real
+          this.solicitudesList()[index] = s;
+          //desbloqueamos la UI
+          this.isLoading.set(false);
+        },
+        error: (e) => {alert(e.message), this.isLoading.set(false)}
+      })
+    }
   }
 
   handleDelete(){
@@ -176,7 +206,7 @@ export class ListarSolicitudes {
 
   //getters para las comprobaciones y mensajes de error en el fomulario
   get nombreComida (){
-    return 
+    return (index: number) => (this.formList()[index].controls["nombreComida"]);
   };
 
   get porcion (){
