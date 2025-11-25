@@ -10,12 +10,14 @@
     #FFEEDB 100%
   );
   font-family: "Outfit", sans-serif;
+  gap: 150px;
 }
 
 
 
 /* CONTENEDOR PRINCIPAL */
 .session {
+  margin-top: 130px;
   display: flex;
   flex-direction: row;
   height: 100%;
@@ -187,5 +189,80 @@ input.invalid {
 #google-btn {
   display: inline-block;
   margin-top: 10px;
+}
+
+/* SECCIÓN NOSOTROS */
+.nosotros-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 80px 40px;
+  background: linear-gradient(
+    180deg,
+    #FFF4E6 0%,
+    #FFEEDB 100%
+  );
+  text-align: center;
+  font-family: "Outfit", sans-serif;
+}
+
+/* TÍTULOS */
+.nosotros-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #0d0d0d;
+  margin-bottom: 10px;
+}
+
+.nosotros-subtitle {
+  font-size: 18px;
+  font-weight: 300;
+  color: #F4A259;
+  margin-bottom: 60px;
+}
+
+/* CONTENEDOR TARJETAS */
+.nosotros-cards {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* TARJETAS */
+.nosotros-card {
+  width: 320px;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(246, 196, 83, 0.25);
+  border: 1px solid #FFE4C0;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.nosotros-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(246, 196, 83, 0.35);
+}
+
+/* ICONOS */
+.nosotros-icon {
+  width: 70px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+}
+
+/* TEXTOS TARJETA */
+.nosotros-card h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #0d0d0d;
+}
+
+.nosotros-card p {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.55;
 }
 

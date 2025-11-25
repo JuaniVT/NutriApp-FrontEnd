@@ -21,7 +21,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
 @Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule ,CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
 export class VerDiaComponent implements OnInit, AfterViewInit {
 
-   @ViewChild('barraCurva') barraCurva!: ElementRef<SVGPathElement>;
+   @ViewChild('barraCurva', { static: false }) barraCurva!: ElementRef<SVGPathElement>;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
   protected manejadorSemana = inject(ManejadorSemana);
@@ -37,11 +37,15 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
   longitudPath: number = 0;
 
- @ViewChild('arcFill') arcFill!: ElementRef<SVGPathElement>;
+ @ViewChild('arcFill', { static: false }) arcFill!: ElementRef<SVGPathElement>;
 arcLength = 0;
 
 ngAfterViewInit() {
-  this.arcLength = this.arcFill.nativeElement.getTotalLength();
+  setTimeout(() => {
+    if (!this.arcFill) return;
+
+    this.arcLength = this.arcFill.nativeElement.getTotalLength();
+  });
 }
 
 getArcDash(): string {

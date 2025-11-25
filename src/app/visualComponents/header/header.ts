@@ -14,6 +14,14 @@ export class Header implements OnInit{
   protected readonly auth = inject(AuthService);
   fechaHoy = new Date().toLocaleDateString('en-CA');
 
+
+  irASeccion(id: string) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
   ngOnInit(): void {
 
   }

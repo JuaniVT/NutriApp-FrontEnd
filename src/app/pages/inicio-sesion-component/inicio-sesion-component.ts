@@ -102,7 +102,7 @@ handleCredentialResponse(response: any) {
       this.authService.saveToken(res.token); // asegurate que saveToken guarde en localStorage
 
       alert("Login con Google exitoso");
-      this.router.navigate(['/dia', '2025-11-11']);
+      this.router.navigate(['/dia', this.fechaHoy]);
     },
     error: (err) => {
       console.error("Error login Google:", err);
