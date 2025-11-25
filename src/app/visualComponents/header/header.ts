@@ -1,7 +1,8 @@
 import { InvokeFunctionExpr } from '@angular/compiler';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../service/auth';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,9 @@ import { AuthService } from '../../service/auth';
 export class Header implements OnInit{
   private readonly router = inject(Router)
   protected readonly auth = inject(AuthService);
+
+  //signal que depende de la signal del rol que se setea cuando el usuario se logea o se deslogea
+  protected readonly role = computed(() => this.auth.roleSignal());
   
   ngOnInit(): void {
 

@@ -6,6 +6,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Authority } from '../../../models/authority';
 import { identifierName } from '@angular/compiler';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { signalUpdateFn } from '@angular/core/primitives/signals';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'listar-solicitudes',
@@ -29,55 +32,54 @@ export class ListarSolicitudes {
   //SEÑAL PARA COMPROBAR SI UNA SOLICITUD ESTA CARGANDO Y BLOQUERA EL UI
   protected readonly isLoading = signal<boolean>(false);
 
-  //ROLE
-  private readonly authority = toSignal(this.authService.getRole());
-  protected readonly role = computed(() => this.authority()?.authority);
+  //ROLE (signal que depende de la signal que se setea cuando el usuario se logea o se deslogea)
+  protected readonly role = computed(() => this.authService.roleSignal());
 
-  //INPUTS (para saber ver si se carga la lista de solicitudes de una forma u otra)
-  readonly systemSolicitudes = input<boolean>(true);  //input para saber si se listan todas las solicitudes del sistema
-  readonly mineSolicitudes = input<boolean>();  //input para saber si se listan las solicitudes que ingreso el usuario
+  //ACTIVATED ROUTE
+  private readonly route = inject(ActivatedRoute);
 
-
-  //SIGNAL "MODE" (definimos esta signal para que sea en el effect que se lanzen las peticiones en el 
-  //backend y no se lanzen cada vez que se cambia el estado de algunas de estas señales, que era lo
-  //que pasaba antes al tener todas las comprobaciones y peticiones en el effect)
-  private readonly mode = computed(() => {
-
-    //si se quiere listar todas las solicitudes del sistema y es admin
-    if (this.systemSolicitudes() && this.role() == "ROLE_ADMIN") {
-      return "ALL"
-
-      //sino, si se quiere listar las solicitudes del usuario logeado  
-    } else if (this.mineSolicitudes()) {
-      return "MINE"
-
-    }
-
-    return "NONE";
-  })
+  //SIGNAL "MODE" (señal para obener el modo en el que se quiere listar las solcitudes. Se pasa un string
+  //en la ruta que puede ser "system", "mine" o null si no pasa nada. Este modo se pasa dependiendo de
+  //que boton toque el usuario)
+  protected readonly mode = toSignal(
+  this.route.paramMap.pipe(
+    map(params => params.get("mode"))
+  ),
+  { initialValue: this.route.snapshot.paramMap.get("mode") }
+);
 
 
   constructor() {
     effect(() => {
 
-      //si el modo es de listar todas las solicitudes
-      if (this.mode() == "ALL") {
+      //si el modo es de listar todas las solicitudes del sistema
+      if (this.mode() == "system") {
 
         this.solicitudService.getAll().subscribe({
           //cuando llegue la lista se la seteamos a la que maneja el html y contruimos un lista de
           //formularios con el mismo indice que la lista de solicitudes y con la info de cada solicitud patcheada
           next: (s) => {this.solicitudesList.set(s), this.buildFormsFromSolicitudes(s)},
-          error: (e) => alert(e.message)
+          
+          //si llegua un error significa que no hay solicitudes cargadas, entonces se vuelve a setear
+          //la lista vacia porque puede lleguar a ver fugas de memoria en la lista ya que el compoenente
+          //no se resetea y por lo tanto la lista tampoco, entonces puede lleguar a quedar cargada igual aunque no lo este
+          error: (e) => {alert(e.message), this.solicitudesList.set([])}  
         });
 
-        //sino, si el modo es para listar solo las mias 
-      } else if (this.mode() == "MINE") {
+        
+
+        //sino, si el modo es para listar solo las mias o no se pasa un modo en la ruta listamos solo las del usuario logeado
+      } else if (this.mode() == "mine" || this.mode() == null) {
           //cuando llegue la lista se la seteamos a la que maneja el html y contruimos un lista de
           //formularios con el mismo indice que la lista de solicitudes y con la info de cada solicitud patcheada
         this.solicitudService.getMine().subscribe({
           
           next: (s) => {this.solicitudesList.set(s), this.buildFormsFromSolicitudes(s)},
-          error: (e) => alert(e.message)
+          
+          //si llegua un error significa que no hay solicitudes cargadas, entonces se vuelve a setear
+          //la lista vacia porque puede lleguar a ver fugas de memoria en la lista ya que el compoenente
+          //no se resetea y por lo tanto la lista tampoco, entonces puede lleguar a quedar cargada igual aunque no lo este
+          error: (e) => {alert(e.message), this.solicitudesList.set([])}
         })
 
       }
