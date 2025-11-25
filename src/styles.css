@@ -15,6 +15,11 @@
     --yellow: #ffcc00;
     --orange-soft: #ff6600f1;
     --yellow-soft: #ffcc00ee;
+    --beige: linear-gradient(
+        180deg,
+        #FFF4E6 0%,
+        #FFEEDB 100%
+      );
 }
 
 body{

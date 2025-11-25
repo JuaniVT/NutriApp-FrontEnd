@@ -1,12 +1,14 @@
 :host{
     width: 70%;
+    
 }
 
 .cotenedorPrincipal{
     width: 100%;
     min-height: 75vh;
-    background-color: black;
-    color: var(--font-color-white-hover);
+    background-color: rgb(255, 246, 237);
+
+    color: black;
     padding: 30px 0 50px 0;
 
     display: flex;
@@ -26,15 +28,19 @@
 
 .iconoAgregar{
     cursor: pointer;
-    background-color: white;
     transform: scale(0.9);
+    transition: trasnform 200ms ease 0s;
+}
+
+.iconoAgregar:hover{
+    transform: scale(1.1);
 }
 
 
 
 .contenedorSolicitud{
     width: 40%;
-    background-color: var(--background-color);
+    background-color:#111;
     
     outline: 1px solid black;
     border-radius: 1rem;
@@ -86,6 +92,7 @@
     width: 100%;
     border-radius: 1rem;
     padding-top: 10px;
+    color: white;
 
     display: flex;
     flex-direction: column;
