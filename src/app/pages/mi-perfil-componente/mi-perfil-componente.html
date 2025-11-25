@@ -105,7 +105,7 @@
 
         <fieldset class="field">
             <label>Objetivo calórico</label>
-            <select>
+            <select formControlName="objetivoCaloricoTipo">
                 @for (o of tiposObjetivoCaloricoTipo; track $index) {
                     <option [value]="o"> {{o}} </option>
                 }
@@ -142,7 +142,7 @@
 
 
     <div class="buttonConteiner">
-        <button class="btn" id="btn-actualizar" [disabled]="personForm.pristine && nutritionalProfileForm.pristine" (click)="handleActualizar()">Actualizar</button>
+        <button class="btn" id="btn-actualizar" [disabled]="(personForm.pristine && nutritionalProfileForm.pristine) || (personForm.invalid || nutritionalProfileForm.invalid)" (click)="handleActualizar()">Actualizar</button>
         <button class="btn" id="btn-borrar" (click)="handleBorrarCuenta()">Borrar Cuenta</button>
     </div>
 </div>

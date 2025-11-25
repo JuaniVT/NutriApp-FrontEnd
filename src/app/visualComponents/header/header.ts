@@ -13,6 +13,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class Header implements OnInit{
   private readonly router = inject(Router)
   protected readonly auth = inject(AuthService);
+  fechaHoy = new Date().toLocaleDateString('en-CA');
+
 
   //signal que depende de la signal del rol que se setea cuando el usuario se logea o se deslogea
   protected readonly role = computed(() => this.auth.roleSignal());
@@ -33,4 +35,8 @@ export class Header implements OnInit{
     const menu = document.getElementById("menuMobile") as any;
     menu.togglePopover();
   }
+
+   
+
+
 }

@@ -1,0 +1,57 @@
+<div class="panel-agregar-comida">
+  <h2>Mis Paquetes de Comidas Favoritas</h2>
+  <button (click)="crearPaquete()">+ Nuevo Paquete</button>
+
+  @for (paquete of paquetes; track paquete.nombrePaquete) {
+    <div class="panel-paquete">
+      <h3>{{ paquete.nombrePaquete}}</h3>
+      <button class="agregar-alimento" (click)="abrirAgregarAlimento(paquete)">Agregar Alimento</button>
+
+      <ul>
+        @for (alimento of paquete.alimentos; track alimento.id) {
+          <li>
+            {{ alimento.nombre }} - {{ alimento.gramos }}g
+            <button (click)="eliminarAlimento(paquete, alimento)">Eliminar</button>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  @if (paqueteSeleccionado) {
+    <div class="panel-agregar-comida">
+      <h3>Agregar alimento a: {{ paqueteSeleccionado.nombrePaquete}}</h3>
+
+      <input type="text"
+             [(ngModel)]="filtro"
+             (input)="buscarAlimentos()"
+             placeholder="Buscar alimento...">
+
+      <!-- Mensaje de error si no hay resultados -->
+      @if (resultados.length === 0 && filtro.trim()) {
+        <p class="mensaje-error">No se encontraron alimentos.</p>
+      }
+
+      @if (resultados.length > 0) {
+        <ul>
+          @for (alimento of resultados; track alimento.fdcId) {
+            <li (click)="seleccionarAlimento(alimento)"
+                [class.seleccionado]="alimentoSeleccionado?.fdcId === alimento.fdcId">
+              {{ alimento.descripcion }}
+            </li>
+          }
+        </ul>
+      }
+
+      @if (alimentoSeleccionado) {
+        <div class="panel-detalle">
+          <label>Gramos:</label>
+          <input type="number" [(ngModel)]="gramos">
+
+          <button (click)="agregarAlPaquete()">Agregar</button>
+          <button (click)="cerrarModal()">Cancelar</button>
+        </div>
+      }
+    </div>
+  }
+</div>

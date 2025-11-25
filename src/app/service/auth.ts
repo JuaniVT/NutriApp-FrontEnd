@@ -1,6 +1,6 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Authority } from '../models/authority';
 
 @Injectable({
@@ -75,6 +75,33 @@ export class AuthService {
     
     return decoded.roles[0].authority;
   }
+
+
+   checkUsername(username: string): Observable<boolean> {
+    return this.http.get<any>(`${this.baseURL}/check-username?username=${username}`)
+      .pipe(map(resp => resp.disponible));
+  }
+
+  checkEmail(email: string): Observable<boolean> {
+    return this.http.get<any>(`${this.baseURL}/check-email?email=${email}`)
+      .pipe(map(resp => resp.disponible));
+  }
+
+  checkDni(dni: string): Observable<boolean> {
+    return this.http.get<any>(`${this.baseURL}/check-dni?dni=${dni}`)
+      .pipe(map(resp => resp.disponible));
+  }
+
+  checkTelefono(telefono: string): Observable<boolean> {
+    return this.http.get<any>(`${this.baseURL}/check-telefono?telefono=${telefono}`)
+      .pipe(map(resp => resp.disponible));
+  }
+
+  googleLogin(token: string): Observable<any> {
+  return this.http.post<any>(`${this.baseURL}/google`, {
+    token: token
+  });
+}
 
 }
 

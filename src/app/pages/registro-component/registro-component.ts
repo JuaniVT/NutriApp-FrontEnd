@@ -1,16 +1,51 @@
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../service/auth';
+import { EmailVerificationService } from '../../service/email-verification-service';
+import { CustomAsyncValidators } from '../../models/CustomAsyncValidators';
 
 @Component({
   selector: 'app-registro-component',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './registro-component.html',
   styleUrl: './registro-component.css',
 })
-export class RegistroComponent {
+export class RegistroComponent implements OnInit{
+
+ protected readonly client = inject(AuthService);
+  private router = inject(Router);
+ fechaHoy = new Date().toLocaleDateString('en-CA');
+
+  fechaMinima2017(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+
+  const fechaIngresada = new Date(control.value);
+  const fechaMinima = new Date('2017-01-01');
+  const hoy = new Date();
+  
+
+  // Normalizar fechas para evitar errores por horas
+  hoy.setHours(0,0,0,0);
+  fechaIngresada.setHours(0,0,0,0);
+
+  // ❌ No permitir fecha futura
+  if (fechaIngresada > hoy) {
+    return { fechaFutura: true };
+  }
+
+  // ❌ No permitir fecha igual o posterior a 2017
+  if (fechaIngresada >= fechaMinima) {
+    return { fechaMuyReciente: true };
+  }
+
+  return null;
+}
+
+
+
 
   protected registroForm = new FormGroup({
   usuario: new FormGroup({
@@ -19,7 +54,7 @@ export class RegistroComponent {
       Validators.minLength(4),
       Validators.maxLength(20), // coincide con el mensaje del HTML
       Validators.pattern('^[a-zA-Z0-9._-]+$') // permite guion medio también
-    ]),
+    ],   [CustomAsyncValidators.usernameExists(this.client)]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(6),
@@ -30,12 +65,12 @@ export class RegistroComponent {
   persona: new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
     apellido: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    dni: new FormControl('', [Validators.required, Validators.pattern('^\\d{8}$')]),
-    fechaNacimiento: new FormControl('', [Validators.required]),
-    telefono: new FormControl('', [Validators.required, Validators.pattern('^\\d{7,15}$')]),
+    dni: new FormControl('', [Validators.required, Validators.pattern('^\\d{8}$')],  [CustomAsyncValidators.dniExists(this.client)]),
+    fechaNacimiento: new FormControl('', [Validators.required, this.fechaMinima2017]),
+    telefono: new FormControl('', [Validators.required, Validators.pattern('^\\d{7,15}$')], [CustomAsyncValidators.telefonoExists(this.client)]),
     direccion: new FormControl('', [Validators.required]),
     genero: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email])
+    email: new FormControl('', [Validators.required, Validators.email], [CustomAsyncValidators.emailExists(this.client)])
   }),
 
   perfilNutricional: new FormGroup({
@@ -47,19 +82,20 @@ export class RegistroComponent {
   })
 });
 
-  protected readonly client = inject(AuthService);
-  private router = inject(Router);
-
-  onSubmit() {
+  
+ onSubmit() {
   const datos = this.registroForm.value;
 
+  console.log(datos);
   this.client.register(datos).subscribe({
     next: (resp) => {
       alert('Cuenta creada correctamente');
+      this.router.navigate(['/dia', this.fechaHoy]);
     },
     error: (err) => {
-      if (err.error && err.error.error) {
-        alert(err.error.error); // muestra "El nombre de usuario ya está en uso", etc.
+      // Revisamos si el backend envió un 'mensaje'
+      if (err.error && err.error.mensaje) {
+        alert(err.error.mensaje); // ahora sí mostrará "El nombre de usuario ya está en uso", etc.
       } else {
         alert('Ocurrió un error al registrarse.');
       }
@@ -67,17 +103,183 @@ export class RegistroComponent {
   });
 }
 
- // 🔹 GETTERS para acceder más fácil desde el HTML
-  get usuario() {
-    return this.registroForm.get('usuario') as FormGroup;
+
+
+ pasoPersona: number = 0;
+
+siguientePasoPersona() {
+  this.pasoPersona++;
+}
+
+pasoAnteriorPersona() {
+  this.pasoPersona--;
+}
+
+//RELACIONADO A LA SESSION DEL OBJETIVO CALORICO
+protected objetivosInfo = [
+  {
+    key: "MANTENIMIENTO",
+    titulo: "Mantenimiento",
+    descripcion: "Mantener tu peso actual con un equilibrio ideal."
+  },
+  {
+    key: "DEFICIT_LIGERO",
+    titulo: "Déficit Ligero",
+    descripcion: "Bajar de peso de forma suave y constante."
+  },
+  {
+    key: "DEFICIT_MODERADO",
+    titulo: "Déficit Moderado",
+    descripcion: "Pérdida de peso más rápida pero controlada."
+  },
+  {
+    key: "SUPERAVIT_LIGERO",
+    titulo: "Súperavit Ligero",
+    descripcion: "Subir de peso o masa muscular de forma gradual."
+  },
+  {
+    key: "SUPERAVIT_MODERADO",
+    titulo: "Súperavit Moderado",
+    descripcion: "Aumentar masa muscular más agresivamente."
+  }
+];
+
+seleccionarObjetivo(valor: string) {
+  this.registroForm.controls.perfilNutricional.controls.objetivoCaloricoTipo.setValue(valor);
+}
+
+//RELACIONADO A LA SESSION DEL NIVEL DE ACTIVIDAD
+
+seleccionarNivelActividad(valor: string) {
+  this.registroForm
+    .get("perfilNutricional.nivelActividadFisica")
+    ?.setValue(valor);
+}
+
+protected nivelActividadInfo = [
+  {
+    key: "SEDENTARIO",
+    titulo: "Sedentario",
+    descripcion: "Poco o ningún ejercicio diario."
+  },
+  {
+    key: "LIGERA",
+    titulo: "Ligera",
+    descripcion: "Actividad física ligera 1-3 veces por semana."
+  },
+  {
+    key: "MODERADA",
+    titulo: "Moderada",
+    descripcion: "Ejercicio moderado 3-5 veces por semana."
+  },
+  {
+    key: "INTENSA",
+    titulo: "Intensa",
+    descripcion: "Entrenamientos intensos 6-7 veces por semana."
+  },
+  {
+    key: "MUY_INTENSA",
+    titulo: "Muy Intensa",
+    descripcion: "Actividad física extrema o 2 entrenamientos al día."
+  }
+];
+
+// Persona
+get nombre() { return this.registroForm.get('persona.nombre'); }
+get apellido() { return this.registroForm.get('persona.apellido'); }
+get genero() { return this.registroForm.get('persona.genero'); }
+get email() { return this.registroForm.get('persona.email'); }
+
+// Perfil nutricional
+get peso() { return this.registroForm.get('perfilNutricional.peso'); }
+get altura() { return this.registroForm.get('perfilNutricional.altura'); }
+get edad() { return this.registroForm.get('perfilNutricional.edad'); }
+
+emailVerificado: boolean = false;
+codigoEnviado: boolean = false;
+mensaje: string = "";
+codigo: string = "";
+cargando: boolean = false;
+
+constructor(private emailService: EmailVerificationService) {}
+
+enviarCodigoEmail() {
+  const email = this.registroForm.get('persona.email')?.value;
+
+  if (!email) {
+    this.mensaje = "Ingresa un email válido.";
+    return;
   }
 
-  get persona() {
-    return this.registroForm.get('persona') as FormGroup;
-  }
+  this.cargando = true;
+  this.mensaje = "";
 
-  get perfilNutricional() {
-    return this.registroForm.get('perfilNutricional') as FormGroup;
+  this.emailService.enviarCodigo(email).subscribe({
+    next: () => {
+      this.codigoEnviado = true;
+      this.cargando = false;
+      this.mensaje = "Código enviado a tu correo 📩";
+    },
+    error: () => {
+      this.cargando = false;
+      this.mensaje = "Error al enviar el código. Intenta más tarde.";
+    }
+  });
+}
+
+verificarCodigo() {
+  const email = this.registroForm.get('persona.email')?.value;
+
+  if (!this.codigo) {
+    this.mensaje = "Ingresa el código recibido.";
+    return;
   }
+  console.log(email, this.codigo)
+  this.cargando = true;
+  this.mensaje = "";
+
+  this.emailService.verificarCodigo(email!, this.codigo).subscribe({
+next: (res: any) => {
+this.cargando = false;
+if (res.exito) {
+this.emailVerificado = true;
+this.mensaje = "Correo verificado correctamente ✔️";
+} else {
+this.mensaje = "Código incorrecto o expirado ❌";
+}
+},
+error: () => {
+// Esto ahora solo se dispara si hay un fallo real de conexión
+this.cargando = false;
+this.mensaje = "Error al verificar el correo ❌";
+}
+});
+}
+
+ngOnInit(): void {
+  const userData = history.state['googleUser'];
+
+  if (userData) {
+    // Autocompleta nombre y email
+    this.registroForm.patchValue({
+      persona: {
+        nombre: userData.name || '',
+        email: userData.email || ''
+      }
+    });
+
+
+    // (Opcional) generar username automático si no existe
+    if (userData.email && !this.registroForm.get('usuario.username')?.value) {
+      const sugerido = userData.email.split('@')[0]
+        .replace(/[^a-zA-Z0-9._]/g, '')
+        .substring(0, 20);
+
+      this.registroForm.get('usuario.username')?.setValue(sugerido);
+    }
+  }
+}
+
+
 
 }
