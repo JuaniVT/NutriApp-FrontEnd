@@ -6,7 +6,7 @@
     import { VerDiaComponent } from './pages/ver-dia-component/ver-dia-component';
     import { NotFound } from './pages/not-found/not-found';
     import { ComidasFavoritasComponent } from './pages/comidas-favoritas/comidas-favoritas';
-
+    import { ListarSolicitudes } from './pages/solicitudes/listar-solicitudes/listar-solicitudes';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'registro', pathMatch: 'full'},     //ruta por defecto
@@ -16,7 +16,7 @@ export const routes: Routes = [
     {path: 'registro', component: RegistroComponent},
     {path: 'dia/:fecha', component: VerDiaComponent},
     {path: 'favoritas', component: ComidasFavoritasComponent},
-
+    {path: "listar-solicitudes/:mode", component: ListarSolicitudes},
 
         // !!IMPORTANTE¡¡ -> esta ruta tiene que estar al final de todas ya que sino, desde este componente las que estan abajo no te redireccionan
         {path: "**", title: "Not Found 404", component: NotFound}      //ruta de 404 (pagina no encontrada)

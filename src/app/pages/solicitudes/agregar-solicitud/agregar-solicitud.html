@@ -1,0 +1,81 @@
+<!-- Fondo oscuro difuminado -->
+<div class="modal-backdrop"></div>
+
+<div class="modal-container">
+
+    <h2 class="modal-title">Agregar Solicitud</h2>
+
+    <form [formGroup]="form" class="modal-form">
+
+        <label>Nombre:</label>
+        <input type="text" formControlName="nombreComida" formControlName="nombreComida" placeholder="Ingrese un nombre">
+        @if (nombreComida.dirty) {
+            @if (nombreComida.hasError("required")) {
+                <span class="errorMessage">Es requerido</span>
+            }@else if (nombreComida.hasError("minlength")) {
+                <span class="errorMessage">El minimo es de 2 letras</span>   
+            }@else if (nombreComida.hasError("maxlength")) {
+                <span class="errorMessage">El maximo es de 20 letras</span>   
+            }@else if (nombreComida.hasError("pattern")) {
+                <span class="errorMessage">Solo pueden ser letras</span>   
+            }
+        }
+
+        <label>Porción (g):</label>
+        <input type="number" formControlName="porcion" formControlName="porcion">
+        @if (porcion.dirty) {
+            @if (porcion.hasError("required")) {
+                <span class="errorMessage">Es requerido</span>
+            }@else if (porcion.hasError("min")) {
+                <span class="errorMessage">El valor no puede ser negativo ni 0</span>   
+            }
+        }
+
+        <label>Calorías:</label>
+        <input type="number" formControlName="calorias" formControlName="calorias">
+        @if (calorias.dirty) {
+            @if (calorias.hasError("required")) {
+                <span class="errorMessage">Es requerido</span>
+            }@else if (calorias.hasError("min")) {
+                <span class="errorMessage">El valor no puede ser negativo</span>   
+            }
+        }
+
+        <label>Proteínas:</label>
+        <input type="number" formControlName="proteinas" formControlName="proteinas">
+        @if (proteinas.dirty) {
+            @if (proteinas.hasError("required")) {
+                <span class="errorMessage">Es requerido</span>
+            }@else if (proteinas.hasError("min")) {
+                <span class="errorMessage">El valor no puede ser negativo</span>   
+            }
+        }
+
+        <label>Carbohidratos:</label>
+        <input type="number" formControlName="carbohidratos" formControlName="carbohidratos">
+        @if (carbohidratos.dirty) {
+            @if (carbohidratos.hasError("required")) {
+                <span class="errorMessage">Es requerido</span>
+            }@else if (carbohidratos.hasError("min")) {
+                <span class="errorMessage">El valor no puede ser negativo</span>   
+            }
+        }
+
+        <label>Grasas:</label>
+        <input type="number" formControlName="grasas" formControlName="grasas">
+        @if (grasas.dirty) {
+            @if (grasas.hasError("required")) {
+                <span class="errorMessage">Es requerido</span>
+            }@else if (grasas.hasError("min")) {
+                <span class="errorMessage">El valor no puede ser negativo</span>   
+            }
+        }
+
+        <div class="botones">
+            <button class="btn-aceptar" type="submit" (click)="handleAdd()" [disabled]="form.invalid">Agregar</button>
+            <button class="btn-denegar" type="button" (click)="handleCancel()">Cancelar</button>
+        </div>
+
+    </form>
+
+</div>

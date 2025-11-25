@@ -17,12 +17,12 @@ import { AuthService } from '../../service/auth';
 })
 export class MiPerfilComponente {
 
-  private readonly profileClient = inject(ProfileService);
-  private readonly userClient = inject(UserService);
-  private readonly authClient = inject(AuthService)
+  private readonly profileService = inject(ProfileService);
+  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService)
   private readonly router = inject(Router);
-  protected readonly personProfile = toSignal(this.profileClient.getPersonProfile());
-  protected readonly nutritionalProfilePerson = toSignal(this.profileClient.getNutritionalProfile())
+  protected readonly personProfile = toSignal(this.profileService.getPersonProfile());
+  protected readonly nutritionalProfilePerson = toSignal(this.profileService.getNutritionalProfile())
   
 
 
@@ -71,13 +71,13 @@ export class MiPerfilComponente {
       if(this.personForm.valid && this.nutritionalProfileForm.valid){
         
         //actualizamos la persona
-        this.profileClient.updatePersonProfile(this.personForm.getRawValue()).subscribe({
+        this.profileService.updatePersonProfile(this.personForm.getRawValue()).subscribe({
           next: (p) => this.personForm.patchValue(p),
           error: (e) => alert(e)
         })
 
         //actualizamos el perfil nutricional
-        this.profileClient.updateNutritionalProfile(this.nutritionalProfileForm.getRawValue()!).subscribe({
+        this.profileService.updateNutritionalProfile(this.nutritionalProfileForm.getRawValue()!).subscribe({
           next: (n) => this.nutritionalProfileForm.patchValue(n),
           error: (e) => alert(e)
         })
@@ -87,8 +87,8 @@ export class MiPerfilComponente {
 
   handleBorrarCuenta(){
     if(confirm("Seguro que desea eliminar su cuenta?")){
-      this.userClient.deleteAccount().subscribe({
-        next: (r) => {alert(r), this.authClient.clearToken(), this.router.navigateByUrl("/home")},
+      this.userService.deleteAccount().subscribe({
+        next: (r) => {alert(r), this.authService.clearToken(), this.router.navigateByUrl("/home")},
         error: (e) => alert("Hubo un error")
       })
     }

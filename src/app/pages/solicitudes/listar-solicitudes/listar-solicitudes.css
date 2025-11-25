@@ -1,0 +1,266 @@
+:host{
+    width: 70%;
+}
+
+.cotenedorPrincipal{
+    width: 100%;
+    min-height: 75vh;
+    background-color: black;
+    color: var(--font-color-white-hover);
+    padding: 30px 0 50px 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 40px;
+}
+
+
+.tituloConteiner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.iconoAgregar{
+    cursor: pointer;
+    background-color: white;
+    transform: scale(0.9);
+}
+
+
+
+.contenedorSolicitud{
+    width: 40%;
+    background-color: var(--background-color);
+    
+    outline: 1px solid black;
+    border-radius: 1rem;
+    box-shadow:  0 0 10px var(--yellow);
+    
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.headerSolicitud{
+    width: 100%;
+    padding: 2px 0 2px 11px;
+    cursor: pointer;
+    background: linear-gradient(135deg,
+        var(--orange-soft),
+        var(--yellow-soft),
+        var(--orange-soft)
+    );
+    border-radius: 1rem;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+
+.arrowDown{
+    padding: 5px 15px 5px 15px;
+
+    transition-property: transform;
+    transition-duration: 400ms;
+    transition-timing-function: ease-out;
+    transition-delay: 0s;
+}
+
+.arrowUp{
+    transform: rotate(180deg);
+}
+
+
+/* FORMULARIO DE CONTENIDO DESPLEGABLE */
+.contSolicitudForm{
+    width: 100%;
+    border-radius: 1rem;
+    padding-top: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    
+    /* esta cerrado */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;  /* MUY IMPORTANTE para que no ocupe espacio el contenido estando invisible */
+
+    transition: 
+    opacity 300ms ease-in 0s,
+    max-height 500ms ease 0s;
+}
+
+.contSolicitudFormTransition{
+    max-height: 500px;
+    opacity: 1;
+}
+
+.contSolicitudForm > fieldset{
+    border: none;
+    padding-left: 20px;
+    padding-top: 2px;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+}
+
+fieldset input{
+    width: 30%;
+    border: none;
+    outline: 0.5px solid black;
+    border-radius: 1rem;
+    padding: 3px;
+
+}
+
+.errorMessage{
+    color: red;
+}
+
+
+/* BOTONES */
+.contendorBotones{
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.contendorBotones div{
+    width: 100%;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    padding: 10px;
+}
+
+.botonSolicitud{
+    padding: 10px;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+
+    transition: 
+    transform 150ms ease 0s,
+    background-color 150ms ease 0s;
+}
+
+.botonSolicitud:hover{
+    transform: scale(1.05);
+}
+
+
+/* ACEPTAR */
+#botonAceptar{
+    background-color: rgb(1, 197, 1);
+}
+
+#botonAceptar:hover{
+    background-color: rgb(0, 167, 0);
+    box-shadow: 0 0 5px rgb(0, 167, 0);
+}
+
+#botonAceptar:disabled{
+    background-color: rgb(0, 127, 0);
+    cursor: not-allowed;
+}
+
+#botonAceptar:disabled:hover{
+    background-color: rgb(0, 127, 0);
+    box-shadow: 0 0 0 rgb(0, 127, 0);
+    transform: scale(1.0);
+}
+
+/* DENEGAR */
+#botonDenegar{
+    background-color: rgb(235, 0, 0);
+}
+
+#botonDenegar:hover{
+    background-color: rgb(205, 0, 0);
+    box-shadow: 0 0 5px rgb(205, 0, 0);
+}
+
+#botonEditar:disabled{
+    background-color: rgb(0, 0, 150);
+    cursor: not-allowed;
+}
+
+#botonEditar:disabled:hover{
+    background-color: rgb(0, 0, 150);
+    box-shadow: 0 0 0 rgb(0, 0, 190);
+    transform: scale(1.0);
+}
+
+
+/* EDITAR */
+#botonEditar{
+    background-color: rgb(0, 0, 220);
+}
+
+#botonEditar:hover{
+    background-color: rgb(0, 0, 190);
+    box-shadow: 0 0 5px rgb(0, 0, 190);
+}
+
+#botonEditar:disabled{
+    background-color: rgb(0, 0, 150);
+    cursor: not-allowed;
+}
+
+#botonEditar:disabled:hover{
+    background-color: rgb(0, 0, 150);
+    box-shadow: 0 0 0 rgb(0, 0, 190);
+    transform: scale(1.0);
+}
+
+
+
+/* OVERLAY DE CARGANDO */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  color: white;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ddd;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
