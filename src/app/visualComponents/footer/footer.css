@@ -1,3 +1,79 @@
-:host{
+footer {
+    width: 100%;
+    padding: 2.5rem 3rem;
+
+    background: #ffffff;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    font-family: inherit;
+
+    /* Sombra SUPER suave (como el formulario de login) */
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.03);
+}
+
+/* BLOQUE PRINCIPAL */
+.contenido-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Branding */
+.footer-eslogan h3 {
+    font-size: 1.6rem;
+    color: #ff8b2c;
+    letter-spacing: 0.5px;
     margin: 0;
+}
+
+.footer-eslogan p {
+    font-size: 1.2rem;
+    color: #b6b6b6;
+    margin-top: 0.3rem;
+}
+
+/* LINKS */
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.footer-links a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    text-decoration: none;
+    color: #ff8b2c;
+
+    font-size: 1.15rem;
+    transition: 0.25s ease;
+    padding: 0.4rem 0.8rem;
+    border-radius: 10px;
+}
+
+.footer-links a img {
+    width: 20px;
+    height: 20px;
+}
+
+.footer-links a:hover {
+    background: rgba(255, 165, 90, 0.12);
+    transform: translateY(-2px);
+}
+
+/* PARTE INFERIOR */
+.footer-bottom {
+    text-align: center;
+    color: #a8a8a8;
+    font-size: 1.1rem;
+
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
