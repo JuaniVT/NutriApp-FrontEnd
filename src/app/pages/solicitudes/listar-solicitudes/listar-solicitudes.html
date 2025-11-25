@@ -1,9 +1,15 @@
 <div class="cotenedorPrincipal">
 
     @if (mode() == "system") {
-        <h1>Solicitudes del Sistema</h1>
+        <div class="tituloConteiner">
+            <h1>Solicitudes del Sistema</h1>
+            <img src="iconos/add-icon.png" alt="Icono Agregar" (click)="openAdding()" class="iconoAgregar">
+        </div>
     }@else{
-        <h1>Mis Solicitudes</h1>
+        <div class="tituloConteiner">
+            <h1>Mis Solicitudes</h1>
+            <img src="iconos/add-icon.png" alt="Icono Agregar" (click)="openAdding()" class="iconoAgregar">
+        </div>
     }
 
     @if (solicitudesList().length > 0) {
@@ -46,7 +52,7 @@
                             @if (porcion(indice).hasError("required")) {
                                 <span class="errorMessage">Es requerido</span>
                             }@else if (porcion(indice).hasError("min")) {
-                             <span class="errorMessage">El valor no puede sernegativo</span>   
+                             <span class="errorMessage">El valor no puede ser negativo</span>   
                             }
                         }
                     </fieldset>
@@ -58,7 +64,7 @@
                             @if (calorias(indice).hasError("required")) {
                                 <span class="errorMessage">Es requerido</span>
                             }@else if (calorias(indice).hasError("min")) {
-                             <span class="errorMessage">El valor no puede sernegativo</span>   
+                             <span class="errorMessage">El valor no puede ser negativo</span>   
                             }
                         }
                     </fieldset>
@@ -70,7 +76,7 @@
                             @if (proteinas(indice).hasError("required")) {
                                 <span class="errorMessage">Es requerido</span>
                             }@else if (proteinas(indice).hasError("min")) {
-                             <span class="errorMessage">El valor no puede sernegativo</span>   
+                             <span class="errorMessage">El valor no puede ser negativo</span>   
                             }
                         }
                     </fieldset>
@@ -82,7 +88,7 @@
                             @if (carbohidratos(indice).hasError("required")) {
                                 <span class="errorMessage">Es requerido</span>
                             }@else if (carbohidratos(indice).hasError("min")) {
-                             <span class="errorMessage">El valor no puede sernegativo</span>   
+                             <span class="errorMessage">El valor no puede ser negativo</span>   
                             }
                         }
                     </fieldset>
@@ -94,7 +100,7 @@
                             @if (grasas(indice).hasError("required")) {
                                 <span class="errorMessage">Es requerido</span>
                             }@else if (grasas(indice).hasError("min")) {
-                             <span class="errorMessage">El valor no puede sernegativo</span>   
+                             <span class="errorMessage">El valor no puede ser negativo</span>   
                             }
                         }
                     </fieldset>
@@ -142,4 +148,9 @@
         </div>
     }
 
+
+    <!-- VENATA MODAL PARA AGREGAR SOLICITUD -->
+     @if (isAdding()) {
+        <app-agregar-solicitud (isAdding)="closeAdding($event)" (solicitudAgregada)="addSolicitud($event)"></app-agregar-solicitud>
+     }
 </div>

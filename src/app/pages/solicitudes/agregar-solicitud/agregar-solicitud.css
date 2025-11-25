@@ -1,0 +1,125 @@
+/* Fondo oscuro */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+    z-index: 900;
+}
+
+/* Contenedor principal */
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    background: #111;
+    padding: 25px;
+    border-radius: 15px;
+    color: white;
+
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    z-index: 999;
+
+    display: flex;
+    flex-direction: column;
+    
+    animation: pop 0.25s ease-out;
+}
+
+@keyframes pop {
+    from {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Título */
+.modal-title {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+/* Inputs */
+.modal-form label {
+    margin-top: 10px;
+    font-weight: bold;
+    display: block;
+}
+
+.modal-form input {
+    width: 100%;
+    padding: 7px;
+    border-radius: 20px;
+    border: none;
+    margin-top: 3px;
+    margin-bottom: 5px;
+
+    background: white;
+    color: black;
+    font-size: 15px;
+}
+
+/* Contenedor de botones */
+.botones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Botón verde */
+.btn-aceptar {
+    background: #0f0;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    color: black;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-aceptar:hover{
+    background-color: rgb(0, 167, 0);
+    box-shadow: 0 0 5px rgb(0, 167, 0);
+}
+
+.btn-aceptar:disabled{
+    background-color: rgb(0, 127, 0);
+    cursor: not-allowed;
+}
+
+.btn-aceptar:disabled:hover{
+    background-color: rgb(0, 127, 0);
+    box-shadow: 0 0 0 rgb(0, 127, 0);
+    transform: scale(1.0);
+}
+
+/* Botón rojo */
+.btn-denegar {
+    background: #f00;
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-denegar:hover {
+    background: #c00;
+}
+
+.errorMessage{
+    color: red;
+}

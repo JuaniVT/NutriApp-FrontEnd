@@ -16,6 +16,22 @@
     gap: 40px;
 }
 
+
+.tituloConteiner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.iconoAgregar{
+    cursor: pointer;
+    background-color: white;
+    transform: scale(0.9);
+}
+
+
+
 .contenedorSolicitud{
     width: 40%;
     background-color: var(--background-color);

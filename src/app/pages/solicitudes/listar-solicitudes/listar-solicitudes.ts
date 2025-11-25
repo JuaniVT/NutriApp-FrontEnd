@@ -9,10 +9,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { signalUpdateFn } from '@angular/core/primitives/signals';
 import { map } from 'rxjs';
+import { AgregarSolicitud } from '../agregar-solicitud/agregar-solicitud';
 
 @Component({
   selector: 'listar-solicitudes',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, AgregarSolicitud],
   templateUrl: './listar-solicitudes.html',
   styleUrl: './listar-solicitudes.css',
 })
@@ -246,6 +247,25 @@ export class ListarSolicitudes {
   }
 
 
+
+
+  //logica para popear el componente de agregar una solicitud
+  protected readonly isAdding = signal<boolean>(false);
+
+  openAdding(){
+    this.isAdding.set(true)
+  }
+
+  closeAdding(b: boolean){
+    this.isAdding.set(b)
+  }
+
+  addSolicitud(solicitud: Solicitud){
+    //agregamos la nueva solicitud
+    this.solicitudesList().push(solicitud);
+    //volvemos a consruir los formularios a partir de la lista de solicitudes
+    this.buildFormsFromSolicitudes(this.solicitudesList());
+  }
 
 
 
