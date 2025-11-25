@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { AfterViewInit, ElementRef, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
@@ -16,10 +16,12 @@ import { catchError, of } from 'rxjs';
 import { Paquete } from '../../models/paquete';
 import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 import { FechaLocalService } from './FechaLocalService';
+import { NgxGaugeModule } from 'ngx-gauge';
 
-@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
-export class VerDiaComponent implements OnInit {
+@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule ,CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
+export class VerDiaComponent implements OnInit, AfterViewInit {
 
+   @ViewChild('barraCurva') barraCurva!: ElementRef<SVGPathElement>;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
   protected manejadorSemana = inject(ManejadorSemana);
@@ -33,6 +35,44 @@ export class VerDiaComponent implements OnInit {
   protected diaActualSeleccionado = this.route.snapshot.paramMap.get('fecha')!; // el dia que se pinta azul cuando esta seleccionado
   protected fechaReferenciaSemana = this.fecha; // fecha independiente de el dia actual para no cambiar el titulo de la fecha cuando se navega por las semanas
 
+  longitudPath: number = 0;
+
+ @ViewChild('arcFill') arcFill!: ElementRef<SVGPathElement>;
+arcLength = 0;
+
+ngAfterViewInit() {
+  this.arcLength = this.arcFill.nativeElement.getTotalLength();
+}
+
+getArcDash(): string {
+  const totalCalorias = this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
+  const caloriasConsumidas = this.calcularTotalCalorias();
+  const porcentaje = caloriasConsumidas / totalCalorias;
+  return `${this.arcLength * porcentaje} ${this.arcLength}`;
+}
+
+  get consumidas() {
+  return this.calcularTotalCalorias();
+}
+
+get total() {
+  return this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
+}
+
+get porcentaje() {
+  return (this.consumidas / this.total) * 100;
+}
+
+// Convierte el progreso en un stroke visible
+getStrokeDash(): string {
+  const total = this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
+  if (total === 0) return "0 300";
+
+  const progreso = this.calcularTotalCalorias() / total;
+  const largoTotal = 300; // largo del path aproximado
+
+  return `${largoTotal * progreso} ${largoTotal}`;
+}
 
   cargando = true;
   error?: string;
@@ -139,7 +179,7 @@ export class VerDiaComponent implements OnInit {
       year: "numeric"
     };
 
-    // Ej: "martes, 14 nov 2025"
+    
     let formateada = fecha.toLocaleDateString("es-ES", opciones); // pasa la fecha a una cadena formateada de acuerdo a la region y el idioma que se pase junto a las opciones
 
 
@@ -303,10 +343,78 @@ export class VerDiaComponent implements OnInit {
       });
   }
 
+  getTotalesPorTipo(tipo: string) {
+  const comidas = this.getComidasPorTipo(tipo);
+
+  let totalCalorias = 0;
+  let totalProteinas = 0;
+  let totalCarbohidratos = 0;
+  let totalGrasas = 0;
+
+  comidas.forEach(c => {
+    totalCalorias += c.calorias;
+    totalProteinas += c.proteinas;
+    totalCarbohidratos += c.carbohidratos;
+    totalGrasas += c.grasas;
+  });
+
+  return {
+    calorias: totalCalorias,
+    proteinas: totalProteinas,
+    carbohidratos: totalCarbohidratos,
+    grasas: totalGrasas
+  };
+}
+
+getTotalesDelDia() {
+  
+  let totales = {
+    calorias: 0,
+    proteinas: 0,
+    carbohidratos: 0,
+    grasas: 0
+  };
+
+  this.types.forEach(tipo => {
+    const t = this.getTotalesPorTipo(tipo);
+    totales.calorias += t.calorias;
+    totales.proteinas += t.proteinas;
+    totales.carbohidratos += t.carbohidratos;
+    totales.grasas += t.grasas;
+  });
+
+  return totales;
+}
+
 
   cerrarModal() {
     this.cerrado.emit();
   }
 
+  // === PIE CHART PARA CADA ALIMENTO === //
+
+getTotalMacros(comida: any) {
+  return comida.proteinas + comida.carbohidratos + comida.grasas;
+}
+
+getPorcentajeCarbos(comida: any) {
+  const total = this.getTotalMacros(comida);
+  if (total === 0) return 0;
+  return (comida.carbohidratos / total) * 100;
+}
+
+getPorcentajeProte(comida: any) {
+  const total = this.getTotalMacros(comida);
+  if (total === 0) return 0;
+  return (comida.proteinas / total) * 100;
+}
+
+getPorcentajeGrasas(comida: any) {
+  const total = this.getTotalMacros(comida);
+  if (total === 0) return 0;
+  return (comida.grasas / total) * 100;
+}
 
 }
+
+

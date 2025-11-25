@@ -17,7 +17,7 @@ export class RegistroComponent implements OnInit{
 
  protected readonly client = inject(AuthService);
   private router = inject(Router);
-
+ fechaHoy = new Date().toLocaleDateString('en-CA');
 
   fechaMinima2017(control: AbstractControl): ValidationErrors | null {
   if (!control.value) return null;
@@ -90,6 +90,7 @@ export class RegistroComponent implements OnInit{
   this.client.register(datos).subscribe({
     next: (resp) => {
       alert('Cuenta creada correctamente');
+      this.router.navigate(['/dia', this.fechaHoy]);
     },
     error: (err) => {
       // Revisamos si el backend envió un 'mensaje'

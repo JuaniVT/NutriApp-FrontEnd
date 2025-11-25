@@ -7,25 +7,63 @@
   } @else if (dia) {
 
   <header class="resumen-dia">
-    <h2>{{formatearFechaCorta(fecha)}}</h2>
+  <h2>{{ formatearFechaCorta(fecha) }}</h2>
+
+  <div class="progress-wrapper">
+  <svg viewBox="0 0 120 60" class="progress-arc">
+    <defs>
+      <linearGradient id="arc-gradient" x1="0" x2="1">
+        <stop offset="0%" stop-color="#ff7b54"/>
+        <stop offset="50%" stop-color="#ffb86c"/>
+        <stop offset="100%" stop-color="#ff3f3f"/>
+      </linearGradient>
+    </defs>
+
+    <!-- Fondo del arco -->
+    <path
+      class="arc-bg"
+      d="M10 50 A50 50 0 0 1 110 50"
+    />
+
+    <!-- Arco de progreso -->
+    <path
+      #arcFill
+      class="arc-fill"
+      [attr.stroke-dasharray]="getArcDash()"
+      d="M10 50 A50 50 0 0 1 110 50"
+    />
+  </svg>
+
+  <!-- Número de calorías -->
+  <div class="arc-number">
+    {{ calcularTotalCalorias() | number:'1.0-0' }}
+    /
+    {{ calcularTotalCalorias() + dia.caloriasRestantes | number:'1.0-0' }} kcal
+  </div>
+</div>
+
+<div class="macros-resumen">
+  <div class="macro">
+    <span class="macro-label">Proteínas</span>
+    <span class="macro-value">{{ getTotalesDelDia().proteinas | number:'1.0-0' }} g</span>
+  </div>
+
+  <div class="macro">
+    <span class="macro-label">Carbos</span>
+    <span class="macro-value">{{ getTotalesDelDia().carbohidratos | number:'1.0-0' }} g</span>
+  </div>
+
+  <div class="macro">
+    <span class="macro-label">Grasas</span>
+    <span class="macro-value">{{ getTotalesDelDia().grasas | number:'1.0-0' }} g</span>
+  </div>
+</div>
 
 
-    <!-- Barra de progreso, igual que antes -->
-    <div class="barras-container">
-      <div class="barra-progreso">
-        <label>Calorías</label>
-        <div class="barra">
-          <div class="progreso"
-            [style.width.%]="(dia.caloriasRestantes ? (100 - (dia.caloriasRestantes / calcularTotalCalorias() * 100)) : 0)">
-          </div>
-        </div>
-        <span>
-          {{  dia.caloriasRestantes | number:'1.0-0' }}
-          / {{  dia. caloriasRestantes + calcularTotalCalorias() | number:'1.0-0' }} kcal
-        </span>
-      </div>
-    </div>
-  </header>
+
+</header>
+
+
 
   <!-- barra de navegacion semanal -->
 
@@ -74,11 +112,20 @@
   <section class="comidas-section">
     @for (tipo of types; track tipo) {
     <div class="comida-card">
+    
       <div class="comida-header">
+        <div class="contenedor-calorias-tipo">
         <h3>{{ tipo }}</h3>
+  <div class="totales-tipo">
+  <p>{{ getTotalesPorTipo(tipo).calorias | number:'1.0-0' }} kcal | </p>
+  <p> {{ getTotalesPorTipo(tipo).proteinas | number:'1.1-2' }} P | </p>
+  <p> {{ getTotalesPorTipo(tipo).carbohidratos | number:'1.1-2' }} C | </p>
+  <p> {{ getTotalesPorTipo(tipo).grasas | number:'1.1-2' }} G</p>
+</div>
+    </div>
+      
         <button class="btn-agregar" (click)="abrirAgregar(tipoSeleccionado)">+ Agregar</button>
       </div>
-
       <ul class="lista-alimentos">
         @if (tieneComidas(tipo)) {
         @for (comida of getComidasPorTipo(tipo); track comida.nombreComida) {
@@ -92,39 +139,55 @@
 
           <!-- Detalle desplegable -->
           <div class="alimento-detalle" [class.mostrar]="comida.mostrar">
-            <div class="info">
-              <p><b>Proteínas:</b> {{ comida.proteinas | number:'1.2-2'}} g</p>
-              <p><b>Carbohidratos:</b> {{ comida.carbohidratos | number:'1.2-2'}} g</p>
-              <p><b>Grasas:</b> {{ comida.grasas | number:'1.2-2'}} g</p>
-            </div>
+  <div class="info-macro-cards">
+  <div class="macro-card macro-orange">
+    <span class="macro-label">Proteínas</span>
+    <span class="macro-value">{{ comida.proteinas | number:'1.2-2' }} g</span>
+  </div>
 
-            <div class="acciones">
-              <form [formGroup]="formModificarCantidad">
-                <label>Cantidad:</label>
-                <input type="number" formControlName="cantidad">
-                @if (cantidad.hasError('min'))
-                {
-                <div class="error-mensaje">
-                  <span>El campo cantidad no puede ser menor a 1</span>
-                </div>
+  <div class="macro-card macro-orange">
+    <span class="macro-label">Carbohidratos</span>
+    <span class="macro-value">{{ comida.carbohidratos | number:'1.2-2' }} g</span>
+  </div>
 
-                }@else
-                {
-                @if(cantidad.hasError('required') && cantidad.touched)
-                {
-                <div class="error-mensaje">
-                  <span>El campo cantidad no puede ser menor a 1</span>
-                </div>
-                }
-                }
+  <div class="macro-card macro-orange">
+    <span class="macro-label">Grasas</span>
+    <span class="macro-value">{{ comida.grasas | number:'1.2-2' }} g</span>
+  </div>
+</div>
 
-                <button (click)="actualizarComida(comida)" class="btn-actualizar"
-                  [disabled]="formModificarCantidad.invalid">Actualizar</button>
-                <button class="eliminar" (click)="onEliminarClick($event, comida)">Eliminar</button>
-              </form>
 
-            </div>
+  <div class="acciones">
+    <form [formGroup]="formModificarCantidad">
+      <label>Cantidad:</label>
+      <input type="number" formControlName="cantidad">
+
+      @if (cantidad.hasError('min')) {
+        <div class="error-mensaje">
+          <span>El campo cantidad no puede ser menor a 1</span>
+        </div>
+      } @else {
+        @if (cantidad.hasError('required') && cantidad.touched) {
+          <div class="error-mensaje">
+            <span>El campo cantidad no puede ser menor a 1</span>
           </div>
+        }
+      }
+
+      <button (click)="actualizarComida(comida)" 
+              class="btn-actualizar"
+              [disabled]="formModificarCantidad.invalid">
+        Actualizar
+      </button>
+
+      <button class="eliminar" 
+              (click)="onEliminarClick($event, comida)">
+        Eliminar
+      </button>
+    </form>
+  </div>
+</div>
+
         </li>
         }
         } @else {
