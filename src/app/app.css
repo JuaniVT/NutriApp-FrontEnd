@@ -22,7 +22,6 @@ app-header {
 /* MAIN hace scroll natural */
 main {
     flex-grow: 1;
-    width: 100%;
 }
 
 /* FOOTER se ubica al final del documento, NO fijo */

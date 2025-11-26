@@ -49,17 +49,17 @@
             </div>
             <div class="cajaPerfil" id="menuPerfil" popover="manual">            
                 <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
-                <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Mis Solicitudes</a>
                 
                 @if (role() == "ROLE_ADMIN") {
                     <a routerLink="/listar-solicitudes/system" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Solicitudes del Sistema</a>
+                }@else {
+                    <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Mis Solicitudes</a>
                 }
                 <a routerLink="/login"  class="botonDesplegablePerfil" onclick="menuPerfil.togglePopover()" (click)="logOut()">Cerrar Sesion</a>
             </div>
 
         }@else {
-
-        <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
+            <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
         }
 
 
