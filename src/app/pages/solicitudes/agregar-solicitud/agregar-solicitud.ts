@@ -1,12 +1,13 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { SolicitudService } from '../../../service/solicitud';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { config } from 'rxjs';
 import { Solicitud } from '../../../models/solicitud';
+import { Loading } from '../../../visualComponents/loading/loading';
 
 @Component({
   selector: 'app-agregar-solicitud',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, Loading],
   templateUrl: './agregar-solicitud.html',
   styleUrl: './agregar-solicitud.css',
 })
@@ -19,6 +20,9 @@ export class AgregarSolicitud {
 
   //output para agregar la solcitud en la lista de solicitudes
   readonly solicitudAgregada = output<Solicitud>(); 
+
+  //signal para bloquer la UI cuando carga una peticion
+  protected readonly isLoading = signal<boolean>(false);
 
   protected readonly form = new FormBuilder().nonNullable.group({
     nombreComida: ["", [Validators.required, Validators.minLength(2), Validators.maxLength(20), Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$')]], 
@@ -57,10 +61,20 @@ export class AgregarSolicitud {
 
   handleAdd(){
     if(confirm("Seguro que desea agregar la solicitud: ")){
+
+      //bloqueamo la UI
+      this.isLoading.set(true);
+
       this.solicitudService.insert(this.form.getRawValue()).subscribe({
-        //emitimos el output con la solicitud asi se agrega a la lista dinamicamente y cerramos la ventana modal
-        next: (s) => {this.solicitudAgregada.emit(this.form.getRawValue()),   this.handleCancel()},
-        error: (e) => {alert(e.message)}
+        next: (s) => {
+          //emitimos el output con la solicitud asi se agrega a la lista dinamicamente
+          this.solicitudAgregada.emit(this.form.getRawValue());
+          //cerramos la ventana modal
+          this.handleCancel();
+          //desbloquemos la UI
+          this.isLoading.set(false);
+        },
+        error: (e) => {alert(e.message), this.isLoading.set(false)}
       })    
     }
   }

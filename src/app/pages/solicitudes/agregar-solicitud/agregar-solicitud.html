@@ -79,3 +79,9 @@
     </form>
 
 </div>
+
+    
+<!-- si esta cargando bloqueamos la UI -->
+@if (isLoading()) {
+    <app-loading></app-loading>
+}

@@ -1,12 +1,14 @@
 :host{
   display: flex;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .cabecera{
   height: 100%;
   width: 100%;
   outline: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.03);
 
 
   display: flex;
@@ -29,17 +31,6 @@
   justify-content: flex-start;
   align-items: center;
   margin-right: 20px;
-}
-
-
-/* LOGOS */
-.logoCabecera{
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  object-fit: cover;  /* recorta la imagen para que no se deforme ya que es muy grande la imagen y le estamos modificando las dimensiones */
-  outline: 1px solid black;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -279,5 +270,33 @@ a{
 
   .logo-text{
     font-size: 2.2rem;
+  }
+}
+
+
+@media (max-width: 400px) {
+  .logo-text{
+    font-size: large;
+  }
+
+  .derecha{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #iniciarSesion{
+    font-size: small;
+    padding: 7px;
+  }
+}
+
+@media (max-width: 300px) {
+  #iniciarSesion{
+    font-size: smaller;
+  }
+
+  .logo-text{
+    display: none;
   }
 }
