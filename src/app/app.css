@@ -28,13 +28,10 @@ main {
 /* FOOTER se ubica al final del documento, NO fijo */
 app-footer {
     width: 100%;
-    height: 10vh;
-    padding: 1rem 0;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    border-top: 1px solid var(--outline);
     font-size: 1.3rem;
 }

@@ -117,7 +117,7 @@ a{
 }
 
 .active{
-  border-bottom: 2px solid var(--font-color-white-hover);
+  border-bottom: 2px solid black;
 }
 
 

@@ -10,10 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 import { signalUpdateFn } from '@angular/core/primitives/signals';
 import { map } from 'rxjs';
 import { AgregarSolicitud } from '../agregar-solicitud/agregar-solicitud';
+import { Loading } from '../../../visualComponents/loading/loading';
 
 @Component({
   selector: 'listar-solicitudes',
-  imports: [ReactiveFormsModule, AgregarSolicitud],
+  imports: [ReactiveFormsModule, AgregarSolicitud, Loading],
   templateUrl: './listar-solicitudes.html',
   styleUrl: './listar-solicitudes.css',
 })
