@@ -6,6 +6,9 @@
 .cabecera{
   height: 100%;
   width: 100%;
+  outline: 1px solid rgba(0, 0, 0, 0.05);
+
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -114,7 +117,7 @@ a{
 }
 
 .active{
-  border-bottom: 2px solid var(--font-color-white-hover);
+  border-bottom: 2px solid black;
 }
 
 

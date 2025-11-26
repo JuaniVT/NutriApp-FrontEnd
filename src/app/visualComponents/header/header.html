@@ -6,16 +6,16 @@
 
     @if (auth.isLoggedIn()) {
         
-        <div class="conetendorBotonCabecera">
+        <!-- <div class="conetendorBotonCabecera">
             <a routerLink="" routerLinkActive="active" class="botonCabecera">Mi Calendario</a>
-        </div>
+        </div> -->
 
         <div class="conetendorBotonCabecera">
             <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active">Día de Hoy</a>
         </div>
 
         <div class="conetendorBotonCabecera">
-            <a routerLink="" routerLinkActive="active" class="botonCabecera">Agregar Comida</a>
+            <a routerLink="/favoritas" routerLinkActive="active" class="botonCabecera">Agregar Comida Favorita</a>
         </div>
 
     }@else {

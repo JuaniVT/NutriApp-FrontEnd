@@ -115,7 +115,6 @@ getStrokeDash(): string {
   }
 
 
-
   cargarDia(fecha: string) {
     this.diaService.verDiaCompleto(fecha).subscribe({
       next: (data) => {
@@ -133,9 +132,7 @@ getStrokeDash(): string {
   }
 
   cargarSemana() {
-
-
-
+    
     const fechaDate = this.manejadorFechas.toLocalDate(this.fechaReferenciaSemana); // crea fecha en TZ local a medianoche local
     this.semana = this.manejadorSemana.generarSemana(fechaDate);
 
