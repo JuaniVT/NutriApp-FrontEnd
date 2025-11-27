@@ -20,6 +20,98 @@ import { Loading } from '../../../visualComponents/loading/loading';
 })
 export class ListarSolicitudes {
 
+  /*
+ * Componente: ListarSolicitudes
+ * ------------------------------------------------------------
+ * Maneja la visualización, expansión, edición, aceptación,
+ * rechazo y eliminación de solicitudes de alimentos.
+ *
+ *
+ * ============================
+ * 1. RECEPCIÓN DEL "MODE"
+ * ============================
+ * El componente recibe un parámetro de ruta "mode":
+ *   - "system" → lista todas las solicitudes.
+ *   - "mine" o null → lista solo las del usuario logueado.
+ *
+ * Se transforma en una signal con toSignal(), permitiendo que la UI
+ * reaccione automáticamente si la ruta cambia.
+ *
+ *
+ * ============================
+ * 2. CARGA DE SOLICITUDES
+ * ============================
+ * Un effect() escucha cambios en mode().
+ *   - "system": solicitudService.getAll()
+ *   - "mine"/null: solicitudService.getMine()
+ *
+ * Cuando llegan los datos:
+ *   • Se setea solicitudesList
+ *   • Se generan los formularios con buildFormsFromSolicitudes()
+ *
+ * Si ocurre un error se limpia la lista para evitar inconsistencias.
+ *
+ *
+ * ============================
+ * 3. GENERACIÓN DE FORMULARIOS
+ * ============================
+ * Cada solicitud tiene un FormGroup asociado.  
+ * buildFormsFromSolicitudes():
+ *   - Mapea Solicitud[] → FormGroup[]
+ *   - Setea formList
+ *
+ * Esto permite editar cada tarjeta sin mezclar estados.
+ *
+ *
+ * ============================
+ * 4. EXPANSIÓN DE TARJETAS
+ * ============================
+ * expandedIndex controla qué tarjeta está abierta.
+ *
+ * toggleExpand(index):
+ *   - Abre si ninguna está abierta
+ *   - Cierra la anterior y abre otra si se cambia
+ *   - Cierra si se hace click en la misma
+ *
+ *
+ * ============================
+ * 5. LOADING GLOBAL
+ * ============================
+ * isLoading bloquea la UI durante operaciones como aceptar, editar
+ * o eliminar. Al terminar cualquier petición se vuelve a false.
+ *
+ *
+ * ============================
+ * 6. BOTONES Y ACCIONES
+ * ============================
+ * - handleAccept(index)
+ *      Acepta la solicitud; si el formulario fue modificado,
+ *      primero se edita y luego se acepta.
+ *
+ * - handleDeny(index)
+ *      Rechaza y elimina una solicitud del sistema.
+ *
+ * - handleEdit(index)
+ *      Edita una solicitud propia y actualiza el formulario
+ *      con patchValue().
+ *
+ * - handleDelete(index)
+ *      Elimina una solicitud del usuario.
+ *
+ *
+ * ============================
+ * 7. POP-UP "AGREGAR SOLICITUD"
+ * ============================
+ * isAdding controla si el modal está visible.
+ *
+ * addSolicitud():
+ *    • Inserta la nueva solicitud
+ *    • Regenera todos los formularios
+ *
+ * Garantiza sincronización total entre UI y datos.
+  */
+
+
   //SERVICES
   private readonly authService = inject(AuthService);
   private readonly solicitudService = inject(SolicitudService);
