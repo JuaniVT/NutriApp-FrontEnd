@@ -10,6 +10,7 @@ export class AuthService {
   private baseURL = 'http://localhost:8080/auth';
   protected readonly http = inject(HttpClient);
 
+
   //signal que se usa para obtener el rol en base al token y poder hacer comprobaciones en tiempo real 
   //ya que cuando se guarda el token y se elmina (logeo y deslogeo) se modifica el estado de esta señal
   readonly roleSignal = signal<string | null>(null);  

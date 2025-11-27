@@ -1,3 +1,8 @@
+:host
+{
+  background-color: #faf4e8;
+}
+
 /* ======== ESTILO GENERAL ======== */
 .ver-dia-container {
   min-height: 100vh;
@@ -1004,4 +1009,32 @@
     flex-direction: column;
     gap: 12px;
   }
+}
+
+/* Fondo semitransparente */
+.overlay {
+  position: fixed;      /* fijo respecto a la ventana */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5); /* semi-transparente */
+  backdrop-filter: blur(5px);  /* desenfoque del fondo */
+  z-index: 1000;       /* que esté por encima de todo */
+}
+
+/* Ventana modal */
+.modal-agregar {
+  position: fixed;       /* fijo sobre el viewport */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* centrado perfecto */
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  z-index: 1001;        /* encima del overlay */
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
 }
