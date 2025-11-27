@@ -210,6 +210,184 @@
 .objetivo-card.seleccionado p {
   color: #8e6a46;
 }
+/* ==========================
+   RESPONSIVE GENERAL MEJORADO CON MÁS PADDING
+========================== */
+/* ==========================
+   RESPONSIVE GENERAL CON MÁS ESPACIO
+========================== */
+
+/* Tablets grandes / pantallas medianas */
+@media (max-width: 1137px) and (max-height: 647px),
+       (max-width: 1024px) {
+  
+  .intro-text {
+    padding: 5rem; /* mucho más espacio */
+  }
+
+  .intro-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-text p {
+    font-size: 1.25rem;
+    max-width: 95%;
+    margin-bottom: 2rem;
+  }
+
+  .intro-text button {
+    padding: 1.3rem 3rem;
+    font-size: 1.1rem;
+  }
+
+  .objetivos-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem; /* más espacio entre tarjetas */
+  }
+
+  .objetivo-card {
+    flex: 1 1 45%;
+    min-width: 240px;
+    padding: 3.5rem 4rem; /* más padding dentro de la tarjeta */
+  }
+
+  .btn-next {
+    padding: 1.2rem 2.8rem;
+    font-size: 1.15rem;
+  }
+}
+
+/* Tablets pequeñas / móviles grandes */
+@media (max-width: 768px) {
+  .intro-text {
+    padding: 3.5rem;
+  }
+
+  .intro-text h2 {
+    font-size: 2.3rem;
+  }
+
+  .intro-text p {
+    font-size: 1.15rem;
+  }
+
+  .intro-text button {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  .objetivos-grid {
+    flex-direction: column;
+    gap: 1.8rem;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+  .objetivo-card {
+    width: 100%;
+    padding: 3rem 3.5rem;
+  }
+
+  .objetivo-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .objetivo-card p {
+    font-size: 1rem;
+  }
+
+  .btn-next {
+    padding: 1.1rem 2.5rem;
+    font-size: 1.05rem;
+  }
+}
+
+/* Móviles medianos */
+@media (max-width: 576px) {
+  .intro-text {
+    padding: 2.5rem;
+  }
+
+  .intro-text h2 {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .intro-text p {
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .intro-text button {
+    padding: 1rem 2.2rem;
+    font-size: 1rem;
+  }
+
+  .objetivo-card {
+    padding: 2.5rem 3rem;
+  }
+
+  .objetivo-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .objetivo-card p {
+    font-size: 0.95rem;
+  }
+
+  .btn-next {
+    padding: 1rem 2.2rem;
+    font-size: 1rem;
+  }
+}
+
+/* Móviles pequeños / extra pequeños */
+@media (max-width: 480px) {
+  .intro-text {
+    padding: 2rem;
+  }
+
+  .intro-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .intro-text p {
+    font-size: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .intro-text button {
+    padding: 0.95rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  .objetivo-card {
+    padding: 2rem 2.5rem;
+  }
+
+  .objetivo-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .objetivo-card p {
+    font-size: 0.9rem;
+  }
+
+  .btn-next {
+    padding: 0.95rem 2rem;
+    font-size: 0.95rem;
+  }
+}
+
+
+
+
 
 
 /* BOTÓN SIGUIENTE */

@@ -1,5 +1,4 @@
     import { Routes } from '@angular/router';
-    import { Home } from './pages/home/home';
     import { InicioSesionComponent } from './pages/inicio-sesion-component/inicio-sesion-component';
     import { MiPerfilComponente } from './pages/mi-perfil-componente/mi-perfil-componente';
     import { RegistroComponent } from './pages/registro-component/registro-component';
@@ -10,7 +9,6 @@
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},     //ruta por defecto
-    {path: "home", title: "Home", component: Home},
     {path: 'login', component: InicioSesionComponent},
     {path: "perfil", title: "Perfil" , component: MiPerfilComponente},
     {path: 'registro', component: RegistroComponent},

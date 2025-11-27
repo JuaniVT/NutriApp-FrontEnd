@@ -17,11 +17,19 @@ import { Paquete } from '../../models/paquete';
 import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 import { FechaLocalService } from './FechaLocalService';
 import { NgxGaugeModule } from 'ngx-gauge';
+import { ArcElement, Chart, ChartDataset, registerables, Tooltip } from 'chart.js';
+Chart.register(...registerables);
+
+Chart.register(ArcElement, Tooltip);
 
 @Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule ,CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
 export class VerDiaComponent implements OnInit, AfterViewInit {
 
-   @ViewChild('barraCurva', { static: false }) barraCurva!: ElementRef<SVGPathElement>;
+  @ViewChild('arcFill', { static: false }) arcFill!: ElementRef<SVGPathElement>;
+  arcLength = 0;
+  @ViewChild('miChart', { static: false }) miChart!: ElementRef<HTMLCanvasElement>;
+
+  progressChart?: Chart;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
   protected manejadorSemana = inject(ManejadorSemana);
@@ -37,23 +45,59 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
   longitudPath: number = 0;
 
- @ViewChild('arcFill', { static: false }) arcFill!: ElementRef<SVGPathElement>;
-arcLength = 0;
 
 ngAfterViewInit() {
   setTimeout(() => {
     if (!this.arcFill) return;
 
     this.arcLength = this.arcFill.nativeElement.getTotalLength();
+    this.actualizarProgreso();
   });
 }
 
-getArcDash(): string {
-  const totalCalorias = this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
-  const caloriasConsumidas = this.calcularTotalCalorias();
-  const porcentaje = caloriasConsumidas / totalCalorias;
-  return `${this.arcLength * porcentaje} ${this.arcLength}`;
+renderProgressChart() {
+  if (!this.miChart || !this.dia) return;
+
+  const total = this.calcularTotalCalorias() + this.dia.caloriasRestantes;
+  const consumidas = this.calcularTotalCalorias();
+
+  // Si ya existe, destruimos el chart anterior
+  if (this.progressChart) {
+    this.progressChart.destroy();
+  }
+
+  this.progressChart = new Chart(this.miChart.nativeElement, {
+    type: 'doughnut',
+    data: {
+      labels: ['Consumidas', 'Restantes'],
+      datasets: [{
+        data: [consumidas, this.dia.caloriasRestantes],
+        backgroundColor: ['#ff6f61', '#ffe066'], // colores cálidos
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: '75%',
+      responsive: true,
+      animation: {
+        animateRotate: true,
+        duration: 1000
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.label}: ${context.raw} kcal`;
+            }
+          }
+        },
+        legend: { display: false }
+      }
+    }
+  });
 }
+
+
 
   get consumidas() {
   return this.calcularTotalCalorias();
@@ -116,20 +160,38 @@ getStrokeDash(): string {
 
 
   cargarDia(fecha: string) {
-    this.diaService.verDiaCompleto(fecha).subscribe({
-      next: (data) => {
-        // 🔹 Inicializar el campo 'mostrar' en cada comida
-        data.comidasIngeridas.forEach(c => c.mostrar = false);
+  this.diaService.verDiaCompleto(fecha).subscribe({
+    next: (data) => {
+      // Inicializamos el campo 'mostrar' en cada comida
+      data.comidasIngeridas.forEach(c => c.mostrar = false);
 
-        this.dia = data;
-        this.cargando = false;
-      },
-      error: () => {
-        this.error = 'No se encontró el día seleccionado.';
-        this.cargando = false;
-      }
-    });
-  }
+      // Guardamos el día cargado
+      this.dia = data;
+      this.cargando = false;
+
+      // Actualizamos la barra de progreso SVG
+      this.actualizarProgreso();
+    },
+    error: () => {
+      this.error = 'No se encontró el día seleccionado.';
+      this.cargando = false;
+    }
+  });
+}
+
+actualizarProgreso() {
+  if (!this.arcFill || !this.dia) return;
+
+  const total = this.calcularTotalCalorias() + this.dia.caloriasRestantes;
+  if (total === 0) return;
+
+  const consumidas = this.calcularTotalCalorias();
+  const porcentaje = consumidas / total;
+
+  const dash = this.arcLength * porcentaje;
+  this.arcFill.nativeElement.setAttribute('stroke-dasharray', `${dash} ${this.arcLength}`);
+}
+
 
   cargarSemana() {
     
@@ -261,6 +323,11 @@ getStrokeDash(): string {
 
   toggleDetalle(comida: any) {
     comida.mostrar = !comida.mostrar;
+
+     if (comida.mostrar) {
+    // creamos el gráfico cuando se abre el detalle
+    setTimeout(() => this.renderChart(comida), 50);
+  }
   }
 
   actualizarComida(comida: ComidaIngeridaSalidaDTO) {
@@ -416,6 +483,51 @@ getPorcentajeGrasas(comida: any) {
   return (comida.grasas / total) * 100;
 }
 
+chartsMap = new Map<number, Chart>(); // para evitar gráficos duplicados
+
+
+renderChart(comida: any) {
+  const canvasId = `chart-${comida.id}`;
+  const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+
+  if (!canvas) return;
+
+  // si ya existe un gráfico para ese alimento → destruirlo
+  if (this.chartsMap.has(comida.id)) {
+    this.chartsMap.get(comida.id)?.destroy();
+  }
+
+  const chart = new Chart(canvas, {
+    type: 'pie',
+    data: {
+      labels: ['Proteínas', 'Carbohidratos', 'Grasas'],
+      datasets: [{
+        data: [
+          comida.proteinas,
+          comida.carbohidratos,
+          comida.grasas
+        ],
+        backgroundColor: [
+          '#FFB74D',  // naranja premium
+          '#81D4FA',  // celeste moderno
+          '#FF8A80'   // coral suave
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: { size: 12 }
+          }
+        }
+      }
+    }
+  });
+
+  this.chartsMap.set(comida.id, chart);
 }
 
-
+}
