@@ -194,38 +194,9 @@ input.invalid {
 }
 
 #google-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px; /* espacio entre icono y texto */
-  padding: 12px 24px;
-  background: #ffffff;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #555555;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  transition: all 0.25s ease;
+  display: inline-block;
+  margin-top: 10px;
 }
-
-#google-btn:hover {
-  background: #f8f8f8;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  transform: translateY(-2px);
-  border-color: #d1d1d1;
-}
-
-#google-btn img {
-  width: 20px; /* tamaño del icono de Google */
-  height: 20px;
-}
-
-#google-btn span {
-  font-family: "Outfit", sans-serif;
-}
-
 
 /* SECCIÓN NOSOTROS */
 .nosotros-section {
@@ -304,208 +275,170 @@ input.invalid {
   line-height: 1.55;
 }
 
+/* ===================== */
+/*    RESPONSIVE BASE    */
+/* ===================== */
 
-@media (max-width: 1040px){
-  .session{
-    flex-direction: column;
-    gap: 100px;
-  }
-}
-
-/* ==========================
-   RESPONSIVE GENERAL
-========================== */
-
-/* GRANDES / DESKTOP */
-@media (min-width: 1041px) {
+/* Tablets horizontales o pantallas medianas */
+@media (max-width: 1130px) {
   .session {
-    flex-direction: row;
-    justify-content: space-evenly;
-    gap: 150px;
-    padding: 0 40px;
-  }
-
-  .hero {
-    width: 50%;
-    gap: 30px;
-  }
-
-  .login-container {
-    padding: 40px 45px;
-  }
-
-  .nosotros-section {
-    padding: 80px 40px;
-  }
-
-  .nosotros-card {
-    width: 320px;
-    padding: 30px;
-  }
-}
-
-/* Tablets grandes / pantallas medianas */
-@media (max-width: 1040px) {
-  .session {
-    flex-direction: column;
-    align-items: center;
+    margin-top: 100px;
+    padding: 0 20px;
     gap: 80px;
-    padding: 0 30px;
   }
 
   .hero {
-    width: 80%;
+    width: 60%;
     justify-content: center;
+    text-align: center;
   }
 
-  .login-container {
-    padding: 35px 35px;
-    max-width: 340px;
+  .bienvenido {
+    font-size: 30px;
+  }
+
+  .bienvenido-text {
+    font-size: 18px;
   }
 
   .hero-logo {
     width: 100px;
   }
 
-  .bienvenido {
-    font-size: 1.8rem;
-  }
-
-  .bienvenido-text {
-    font-size: 20px;
-  }
-
-  .nosotros-section {
-    padding: 60px 30px;
-  }
-
-  .nosotros-card {
-    width: 280px;
-    padding: 25px;
+  .login-container {
+    padding: 30px;
   }
 }
 
-/* Tablets pequeñas / móviles grandes */
-@media (max-width: 768px) {
+/* Tablets verticales y pantallas medianas delgadas */
+@media (max-width: 900px) {
+  .session {
+    flex-direction: column;
+    margin-top: 80px;
+    text-align: center;
+  }
+
   .hero {
     width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
+    justify-content: center;
   }
 
   .hero-logo {
     width: 90px;
   }
 
-  .bienvenido {
-    font-size: 1.6rem;
-    text-align: center;
+  .texto {
+    align-items: center;
   }
 
-  .bienvenido-text {
-    font-size: 18px;
-    text-align: center;
-  }
-
-  .login-container {
-    width: 90%;
-    padding: 30px 25px;
-  }
-
-  .nosotros-section {
-    padding: 50px 25px;
-  }
-
-  .nosotros-cards {
-    gap: 25px;
-  }
-
-  .nosotros-card {
-    width: 260px;
-    padding: 20px;
+  .logins {
+    width: 100%;
+    max-width: 360px;
   }
 }
 
-/* Móviles medianos */
-@media (max-width: 576px) {
+/* Celulares grandes */
+@media (max-width: 650px) {
+  :host {
+    gap: 100px;
+  }
+
+  .session {
+    padding: 0 15px;
+    gap: 60px;
+  }
+
+  .bienvenido {
+    font-size: 26px;
+  }
+
+  .bienvenido-text {
+    font-size: 17px;
+  }
+
   .hero-logo {
     width: 80px;
   }
 
-  .bienvenido {
-    font-size: 1.4rem;
-  }
-
-  .bienvenido-text {
-    font-size: 16px;
-  }
-
   .login-container {
-    padding: 25px 20px;
+    padding: 28px;
+    border-radius: 18px;
   }
 
-  .nosotros-section {
-    padding: 40px 20px;
+  .nosotros-title {
+    font-size: 34px;
   }
 
-  .nosotros-cards {
-    gap: 20px;
+  .nosotros-subtitle {
+    font-size: 16px;
+    margin-bottom: 40px;
   }
 
   .nosotros-card {
-    width: 100%;
-    max-width: 260px;
-    padding: 18px;
-  }
-
-  .nosotros-card h3 {
-    font-size: 20px;
-  }
-
-  .nosotros-card p {
-    font-size: 14px;
+    width: 90%;
+    max-width: 320px;
   }
 }
 
-/* Móviles pequeños / extra pequeños */
-@media (max-width: 480px) {
+/* Celulares chicos */
+@media (max-width: 430px) {
+  .session {
+    gap: 40px;
+    margin-top: 60px;
+  }
+
+  .hero {
+    gap: 15px;
+  }
+
+  .bienvenido {
+    font-size: 22px;
+  }
+
+  .bienvenido-text {
+    font-size: 15px;
+  }
+
   .hero-logo {
     width: 70px;
   }
 
-  .bienvenido {
-    font-size: 1.2rem;
+  .login-container {
+    padding: 24px;
   }
 
-  .bienvenido-text {
+  input {
+    padding: 10px 12px;
     font-size: 14px;
   }
 
-  .login-container {
-    width: 95%;
-    padding: 20px 15px;
+  .btn-submit {
+    padding: 11px;
+    font-size: 15px;
   }
 
-  .nosotros-section {
-    padding: 30px 15px;
-  }
-
-  .nosotros-cards {
-    flex-direction: column;
-    gap: 15px;
+  .nosotros-title {
+    font-size: 28px;
   }
 
   .nosotros-card {
-    width: 100%;
-    padding: 15px;
-  }
-
-  .nosotros-card h3 {
-    font-size: 18px;
-  }
-
-  .nosotros-card p {
-    font-size: 13px;
+    padding: 22px;
   }
 }
+
+/* Pantallas con poca altura (celus en horizontal, notebooks chicos) */
+@media (max-height: 650px) {
+  .session {
+    margin-top: 40px;
+  }
+
+  .hero-logo {
+    width: 70px;
+  }
+
+  .login-container {
+    padding: 25px;
+  }
+}
+
+
