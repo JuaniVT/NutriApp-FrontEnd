@@ -6,7 +6,7 @@
 .cotenedorPrincipal{
     width: 100%;
     min-height: 75vh;
-    background-color: rgb(255, 246, 237);
+    background-color: var(--white-soft);
 
     color: black;
     padding: 30px 0 50px 0;
