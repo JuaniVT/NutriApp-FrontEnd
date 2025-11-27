@@ -9,7 +9,7 @@
     import { ListarSolicitudes } from './pages/solicitudes/listar-solicitudes/listar-solicitudes';
 
 export const routes: Routes = [
-    {path: '', redirectTo: 'registro', pathMatch: 'full'},     //ruta por defecto
+    {path: '', redirectTo: 'login', pathMatch: 'full'},     //ruta por defecto
     {path: "home", title: "Home", component: Home},
     {path: 'login', component: InicioSesionComponent},
     {path: "perfil", title: "Perfil" , component: MiPerfilComponente},
