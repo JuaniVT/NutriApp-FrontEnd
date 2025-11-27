@@ -1,13 +1,33 @@
-<h1 id="title">Titulo</h1>
+<h1 class="title">Alimentos Ingresados</h1>
 
-<div class="mainConteiner">    
-    <div class="searchConteiner">
-        <img src="iconos\search-icon.png" alt="Search Icon">
-        <input type="text" name="Serch Bar" id="searchBar">
+<div class="mainContainer">
+
+    <div class="searchContainer">
+        <img src="iconos/search-icon.png" alt="Search Icon">
+        <input type="text" placeholder="Buscar alimento...">
     </div>
 
-    <div class="cardsConteiner">
-        <h2>da</h2>
-        
+    <div class="cardsContainer">
+        @for (a of alimentosFiltrados(); track $index) {
+            <div class="card">
+                
+                <h2>{{ a.nombreComida }}</h2>
+
+                <div class="info">
+                    <span>Porción: {{ a.gramosPorPorcion }}</span> 
+                    <span>Calorías: {{ a.calorias }}</span> 
+                    <span>Proteínas: {{ a.proteinas }}</span> 
+                    <span>Carbohidratos: {{ a.carbohidratos }}</span> 
+                    <span>Grasas: {{ a.grasas }}</span> 
+                </div>
+
+                <div class="butonsConteinter">
+                    <button class="boton" id="btn-editar" type="button">Editar</button>
+                    <button class="boton" id="btn-borrar" type="button">Borrar</button>
+                </div>
+            </div>
+        }
     </div>
+
 </div>
+

@@ -208,17 +208,6 @@ fieldset input{
     box-shadow: 0 0 5px rgb(205, 0, 0);
 }
 
-#botonEditar:disabled{
-    background-color: rgb(0, 0, 150);
-    cursor: not-allowed;
-}
-
-#botonEditar:disabled:hover{
-    background-color: rgb(0, 0, 150);
-    box-shadow: 0 0 0 rgb(0, 0, 190);
-    transform: scale(1.0);
-}
-
 
 /* EDITAR */
 #botonEditar{

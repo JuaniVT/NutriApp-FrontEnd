@@ -13,7 +13,7 @@ export class SolicitudService {
   
   //USERS
   insert(solicitud: Solicitud){
-    return this.http.post(this.baseURL + "/insertar", solicitud, {responseType: "text"});
+    return this.http.post<Solicitud>(this.baseURL + "/insertar", solicitud);
   }
   
   getMine(){

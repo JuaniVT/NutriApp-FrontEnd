@@ -68,7 +68,7 @@ export class AgregarSolicitud {
       this.solicitudService.insert(this.form.getRawValue()).subscribe({
         next: (s) => {
           //emitimos el output con la solicitud asi se agrega a la lista dinamicamente
-          this.solicitudAgregada.emit(this.form.getRawValue());
+          this.solicitudAgregada.emit(s);
           //cerramos la ventana modal
           this.handleCancel();
           //desbloquemos la UI
