@@ -1,60 +1,175 @@
 <<<<<<< HEAD
-# NutriApp-
-este es el repositorio enfocado en el frontend propio de NutriApp
-=======
-# NutriAppFrontend
+<h1 align="center">NutriApp — Frontend</h1>
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
 
-## Development server
+NutriApp es una aplicación web moderna enfocada en la gestión de alimentación diaria, visualización de información nutricional, registro de actividades físicas y seguimiento del bienestar del usuario.
+Está desarrollada en Angular, con un enfoque modular, responsive y orientado a la experiencia de usuario.
 
-To start a local development server, run:
+NutriApp-Frontend forma parte del ecosistema completo de NutriApp, conectado a servicios externos de nutrición y un backend construido en Spring Boot.
+      
+##   -Características principales      
 
-```bash
+NutriApp ofrece:  
+
+Interfaz moderna, limpia y responsiva
+
+Gestión diaria de comidas y valores nutricionales
+
+Conexión con APIs externas (FatSecret, FoodData Central, etc.)
+
+Registro y seguimiento de actividades físicas
+
+Calendario mensual/semanal interactivo
+
+Dashboard nutricional dinámico
+
+Login tradicional y con Google
+
+Sistema de roles y rutas protegidas
+
+Animaciones suaves, UX cuidada y performance optimizada
+
+
+  ## -Tecnologías y componentes
+
+NutriApp-Frontend está construido con un stack moderno:
+
+Angular 20+
+
+TypeScript
+
+RxJS
+
+Angular Router
+
+Angular Signals
+
+HTML5 / CSS3 (Responsive)
+
+Google Fonts / Material Icons
+
+Integración con APIs REST
+
+
+ ## -Instalación
+
+Para instalar NutriApp-Frontend desde el repositorio:
+
+git clone https://github.com/JuaniVT/NutriApp-Frontend.git
+cd NutriApp-Frontend
+npm install
+
+
+ ## -Ejecutar la aplicación
+
+Iniciar el servidor de desarrollo:
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+Luego abrir:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+http://localhost:4200/
 
-```bash
-ng generate component component-name
-```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+La aplicación se recarga automáticamente ante cualquier cambio.
 
-```bash
-ng generate --help
-```
 
-## Building
+ ## -Build de producción
 
-To build the project run:
+Para generar los artefactos optimizados:
 
-```bash
-ng build
-```
+ng build --configuration production
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+Los archivos se generan en dist/.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-```bash
-ng test
-```
+ ## -Pruebas
 
-## Running end-to-end tests
+Ejecutar tests unitarios:
 
-For end-to-end (e2e) testing, run:
 
-```bash
+  ng test
+
+
+Ejecutar pruebas E2E (si están configuradas):
+
 ng e2e
-```
+
+  
+##  -Integración con el Backend
+
+NutriApp-Frontend se conecta a un backend desarrollado en Spring Boot, utilizando:
+
+Interceptores para autenticación con token
+
+Servicios centralizados HTTP
+
+Modelo nutrido de DTOs
+
+Google Identity Services para login social
+
+  
+##  📁 Estructura del proyecto
+src/
+ ├── app/
+ │    ├── components/
+ │    ├── pages/
+ │    ├── services/
+ │    ├── guards/
+ │    └── utils/
+ ├── assets/
+ ├── environments/
+ └── index.html
+
+  
+ ## -Guía para contribuir
+
+Si querés contribuir a NutriApp, seguí estas pautas:
+
+Realizá un fork del repositorio.
+
+Creá una rama para tu feature:
+
+git checkout -b feature/nueva-funcionalidad
+
+
+Hacé commit y push.
+
+Abrí un Pull Request detallando la mejora.
+
+NutriApp se adhiere a buenas prácticas de desarrollo open-source: claridad, documentación y revisiones cuidadosas.
+
+  
+ ## 👥 Autores y colaboradores
+
+Equipo de desarrollo:
+
+Zuri Uruzuna – Calendario, UI/UX, diseño responsive
+
+Juan Ignacio – Autenticación, módulos core, gráficos
+
+Ekian – Solicitudes, perfil, mejoras visuales
+
+Otros colaboradores
+
+  
+ ## -Recursos adicionales
+
+Documentación oficial de Angular
+
+Guía de Angular CLI
+
+Documentación APIs nutricionales
+
+Blog y material del equipo
+
+  
+##  📄 Licencia
+
+NutriApp-Frontend se distribuye bajo la licencia que defina el equipo.
+(Agregar MIT, GPL, Apache 2.0, etc., según corresponda.)
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
