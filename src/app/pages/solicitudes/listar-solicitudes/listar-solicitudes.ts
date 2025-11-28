@@ -20,7 +20,7 @@ import { Loading } from '../../../visualComponents/loading/loading';
 })
 export class ListarSolicitudes {
 
-  /*
+/*  COMENTARIOS SOBRE LA FUNCIONALIDAD DEL COMPONENTE
  * Componente: ListarSolicitudes
  * ------------------------------------------------------------
  * Maneja la visualización, expansión, edición, aceptación,

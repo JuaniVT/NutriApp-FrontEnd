@@ -44,23 +44,21 @@
             <div class="conetendorIconoCabecera">
                 <img src="" alt="da" class="iconoPopeable">
             </div> -->
-
-        <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
-            <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
-        </div>
-        <div class="cajaPerfil" id="menuPerfil" popover="manual">
-            <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
-
-            @if (role() == "ROLE_ADMIN") {
-            <a routerLink="/listar-solicitudes/system" onclick="menuPerfil.togglePopover()"
-                class="botonDesplegablePerfil">Solicitudes del Sistema</a>
-            }@else {
-            <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()"
-                class="botonDesplegablePerfil">Mis Solicitudes</a>
-            }
-            <a routerLink="/login" class="botonDesplegablePerfil" onclick="menuPerfil.togglePopover()"
-                (click)="logOut()">Cerrar Sesion</a>
-        </div>
+    
+            <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
+                <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
+            </div>
+            <div class="cajaPerfil" id="menuPerfil" popover="manual">            
+                <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
+                
+                @if (role() == "ROLE_ADMIN") {
+                    <a routerLink="/listar-solicitudes/system" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Solicitudes del Sistema</a>
+                    <a routerLink="/alimentos-bdd" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Alimentos del Sistema</a>
+                }@else {
+                    <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Mis Solicitudes</a>
+                }
+                <a routerLink="/login"  class="botonDesplegablePerfil" onclick="menuPerfil.togglePopover()" (click)="logOut()">Cerrar Sesion</a>
+            </div>
 
         }@else {
         <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
@@ -78,16 +76,16 @@
             @if (auth.isLoggedIn()) {
 
             <div class="conetendorBotonCabecera">
-                <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active">Mi
+                <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active" onclick="menuMobile.togglePopover()">Mi
                     Calendario</a>
             </div>
 
             <div class="conetendorBotonCabecera">
-                <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active">Día de Hoy</a>
+                <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active" onclick="menuMobile.togglePopover()">Día de Hoy</a>
             </div>
 
             <div class="conetendorBotonCabecera">
-                <a routerLink="/favoritas" routerLinkActive="active" class="botonCabecera">Agregar Comida Favorita</a>
+                <a routerLink="/favoritas" routerLinkActive="active" class="botonCabecera" onclick="menuMobile.togglePopover()">Agregar Comida Favorita</a>
             </div>
 
             }@else {

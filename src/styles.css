@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
 }
 
 :root{
@@ -17,9 +16,10 @@
     --yellow-soft: #ffcc00ee;
     --beige: linear-gradient(
         180deg,
-        #FFF4E6 0%,
-        #FFEEDB 100%
+        #fff7ee 0%,
+        #fdf0e1 100%
       );
+    --white-soft: rgba(224, 219, 255, 0.295);
 }
 
 body{

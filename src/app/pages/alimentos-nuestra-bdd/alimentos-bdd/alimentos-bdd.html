@@ -1,0 +1,54 @@
+<div class="titleConteiner">
+    <h1 class="title">Nuestros Alimentos</h1>
+    <img src="iconos/add-icon.png" alt="Icono Agregar" (click)="openAdding()" class="iconoAgregar">
+</div>
+
+
+<div class="mainContainer">
+
+    <div class="searchContainer">
+        <img src="iconos/search-icon.png" alt="Search Icon" (click)="buscar(busqueda.value)">
+                            <!-- con # estamos referenciando al elemento en el DOOM pero manejado por angular--> 
+        <input type="text" placeholder="Buscar alimento..." #busqueda> 
+    </div>
+
+    @if (notFound()) {
+        <span class="errorMessage">No se encontro ningun alimento con: {{busqueda.value}} </span>
+    }
+
+    <div class="cardsContainer">
+        @for (a of alimentosFiltrados();track $index; let indice = $index) {
+            <div class="card">
+                
+                <h2>{{ a.nombreComida }}</h2>
+
+                <div class="info">
+                    <span>Porción: {{ a.gramosPorPorcion }}</span> 
+                    <span>Calorías: {{ a.calorias }}</span> 
+                    <span>Proteínas: {{ a.proteinas }}</span> 
+                    <span>Carbohidratos: {{ a.carbohidratos }}</span> 
+                    <span>Grasas: {{ a.grasas }}</span> 
+                </div>
+
+                <div class="butonsConteinter">
+                    <button class="boton" id="btn-editar" type="button" (click)="openEdit(indice)">Editar</button>
+                    <button class="boton" id="btn-borrar" type="button" (click)="handleDelete(indice)">Borrar</button>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+
+@if (isLoading()) {
+    <app-loading></app-loading>
+}
+
+@if (isAdding()) {
+    <app-agregar-alimentos-bdd (isOpen)="isAdding.set($event)" [isAdding]="isAdding()" (comidaOutput)="addFood($event)"></app-agregar-alimentos-bdd>
+}
+
+@if (isEditing()) {
+    <app-agregar-alimentos-bdd (isOpen)="isEditing.set($event)" [isEditing]="isEditing()" [comidaInput]="comidaEditando()" (comidaOutput)="editFood($event)"></app-agregar-alimentos-bdd>
+}

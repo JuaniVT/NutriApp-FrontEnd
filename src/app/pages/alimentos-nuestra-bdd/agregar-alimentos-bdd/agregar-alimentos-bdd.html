@@ -3,7 +3,12 @@
 
 <div class="modal-container">
 
-    <h2 class="modal-title">Agregar Solicitud</h2>
+    @if (isAdding()) {
+        <h2 class="modal-title">Agregar Alimento</h2>
+    }@else if (isEditing()) {
+        <h2 class="modal-title">Editar Alimento</h2>
+    }
+
 
     <form [formGroup]="form" class="modal-form">
 
@@ -22,14 +27,14 @@
         }
 
         <label>Porción (g):</label>
-        <input type="number" formControlName="porcion" formControlName="porcion">
-        @if (porcion.dirty) {
-            @if (porcion.hasError("required")) {
+        <input type="number" formControlName="gramosPorPorcion">
+        @if (gramosPorPorcion.dirty) {
+            @if (gramosPorPorcion.hasError("required")) {
                 <span class="errorMessage">Es requerido</span>
-            }@else if (porcion.hasError("min")) {
+            }@else if (gramosPorPorcion.hasError("min")) {
                 <span class="errorMessage">El valor no puede ser negativo ni 0</span>   
-            }@else if (porcion.hasError("max")) {
-                <span class="errorMessage">El maximo es de 20 letras</span>   
+            }@else if (gramosPorPorcion.hasError("max")) {
+                <span class="errorMessage">El maximo es de 5</span>   
             }
         }
 
@@ -41,7 +46,7 @@
             }@else if (calorias.hasError("min")) {
                 <span class="errorMessage">El valor no puede ser negativo</span>   
             }@else if (calorias.hasError("max")) {
-                <span class="errorMessage">El maximo es de 20 letras</span>   
+                <span class="errorMessage">El maximo es de 5</span>   
             }
         }
 
@@ -53,7 +58,7 @@
             }@else if (proteinas.hasError("min")) {
                 <span class="errorMessage">El valor no puede ser negativo</span>   
             }@else if (proteinas.hasError("max")) {
-                <span class="errorMessage">El maximo es de 20 letras</span>   
+                <span class="errorMessage">El maximo es de 5</span>   
             }
         }
 
@@ -65,7 +70,7 @@
             }@else if (carbohidratos.hasError("min")) {
                 <span class="errorMessage">El valor no puede ser negativo</span>   
             }@else if (carbohidratos.hasError("max")) {
-                <span class="errorMessage">El maximo es de 20 letras</span>   
+                <span class="errorMessage">El maximo es de 5</span>   
             }
         }
 
@@ -77,12 +82,18 @@
             }@else if (grasas.hasError("min")) {
                 <span class="errorMessage">El valor no puede ser negativo</span>   
             }@else if (grasas.hasError("max")) {
-                <span class="errorMessage">El maximo es de 20 letras</span>   
+                <span class="errorMessage">El maximo es de 5</span>   
             }
         }
 
         <div class="botones">
-            <button class="btn-aceptar" type="submit" (click)="handleAdd()" [disabled]="form.invalid">Agregar</button>
+            
+            @if (isAdding()) {
+                <button class="btn-aceptar" type="submit" (click)="handleAdd()" [disabled]="form.invalid">Agregar</button>
+            }@else if (isEditing()) {
+                <button class="btn-editar" type="submit" (click)="handleEdit()" [disabled]="form.invalid || form.pristine">Editar</button>
+            }
+
             <button class="btn-denegar" type="button" (click)="handleCancel()">Cancelar</button>
         </div>
 
