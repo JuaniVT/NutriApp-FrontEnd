@@ -52,6 +52,7 @@
                 
                 @if (role() == "ROLE_ADMIN") {
                     <a routerLink="/listar-solicitudes/system" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Solicitudes del Sistema</a>
+                    <a routerLink="/alimentos-bdd" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Alimentos del Sistema</a>
                 }@else {
                     <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Mis Solicitudes</a>
                 }

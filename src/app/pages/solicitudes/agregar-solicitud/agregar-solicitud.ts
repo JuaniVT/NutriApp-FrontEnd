@@ -26,11 +26,11 @@ export class AgregarSolicitud {
 
   protected readonly form = new FormBuilder().nonNullable.group({
     nombreComida: ["", [Validators.required, Validators.minLength(2), Validators.maxLength(20), Validators.pattern('^[A-Za-zÁÉÍÓÚáéíóúñÑ\\s]+$')]], 
-    porcion: [0, [Validators.required, Validators.min(1)]], 
-    calorias: [0, [Validators.required, Validators.min(0)]], 
-    proteinas: [0, [Validators.required, Validators.min(0)]], 
-    carbohidratos: [0, [Validators.required, Validators.min(0)]], 
-    grasas: [0, [Validators.required, Validators.min(0)]],
+    porcion: [0, [Validators.required, Validators.min(1), Validators.max(99999)]], 
+    calorias: [0, [Validators.required, Validators.min(0), Validators.max(99999)]], 
+    proteinas: [0, [Validators.required, Validators.min(0), Validators.max(99999)]], 
+    carbohidratos: [0, [Validators.required, Validators.min(0), Validators.max(99999)]], 
+    grasas: [0, [Validators.required, Validators.min(0), Validators.max(99999)]],
     fecha: [new Date().toISOString().slice(0, 19)]
   })
 

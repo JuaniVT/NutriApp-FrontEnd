@@ -10,12 +10,31 @@
     padding: 40px 0;
 }
 
+.titleConteiner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;    
+
+    margin-bottom: 50px;
+}
+
 /* TITULO */
 .title {
     font-size: 2.4rem;
     font-weight: 700;
     color: #3b3b73;
-    margin-bottom: 50px;
+}
+
+.iconoAgregar{
+    transform: scale(0.9);
+    cursor: pointer;
+
+    transition: transform 200ms ease 0s;
+}
+
+.iconoAgregar:hover{
+    transform: scale(1.0);
 }
 
 /* CONTENEDOR PRINCIPAL */
@@ -25,13 +44,12 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 100px;
 }
 
 /*  BARRA DE BÚSQUEDA  */
 .searchContainer {
     width: 40%;
-    min-width: 250px;
+    max-width: 250px;
 
     display: flex;
     align-items: center;
@@ -47,6 +65,7 @@
 .searchContainer img {
     width: 22px;
     opacity: 0.7;
+    cursor: pointer;
 }
 
 .searchContainer input {
@@ -56,9 +75,15 @@
     font-size: 1rem;
 }
 
+.errorMessage{
+    margin-top: 10px;
+    color: red;   
+}
+
 /* CARDS CONTAINER */
 .cardsContainer {
     width: 100%;
+    margin-top: 100px;
 
     display: flex;
     flex-wrap: wrap;
@@ -70,7 +95,7 @@
 
 /* CARD */
 .card {
-    min-width: 220px;
+    width: 220px;
     min-height: 170px;
 
     background: white;
@@ -81,6 +106,7 @@
     flex-direction: column;
     justify-content: flex-start;
     gap: 10px;
+    flex-grow: 0;
 
     box-shadow: 0 3px 10px rgba(0,0,0,0.12);
     transition: 0.2s ease;
@@ -93,8 +119,13 @@
 
 .card h2 {
     font-size: 1.3rem;
-    margin: 0;
     color: #3b3b73;
+
+    /* para nombres largos */
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -192,5 +223,4 @@
     opacity: 0.9;
     box-shadow: 0 0 5px rgb(205, 0, 0);
 }
-
 

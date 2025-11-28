@@ -7,7 +7,7 @@
     import { NotFound } from './pages/not-found/not-found';
     import { ComidasFavoritasComponent } from './pages/comidas-favoritas/comidas-favoritas';
     import { ListarSolicitudes } from './pages/solicitudes/listar-solicitudes/listar-solicitudes';
-import { AlimentosBDD } from './pages/alimentos-bdd/alimentos-bdd';
+import { AlimentosBDD } from './pages/alimentos-nuestra-bdd/alimentos-bdd/alimentos-bdd';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},     //ruta por defecto
