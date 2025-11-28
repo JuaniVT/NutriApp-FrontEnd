@@ -4,8 +4,18 @@ import { Injectable } from '@angular/core';
 
 export class FechaLocalService {
 
+    // Transforma un date normal a un local
+    toLocal(date: Date): Date {
+        const y = date.getFullYear();
+        const m = date.getMonth();
+        const d = date.getDate();
+        const local = new Date(y, m, d);
+        local.setHours(0, 0, 0, 0);
+        return local;
+    }
 
-    // Transforma una date a una date Local
+
+    // Transforma un string de date a una date Local
     toLocalDate(iso: string): Date {
         const [y, m, d] = iso.split('-').map(Number);
         const fecha = new Date(y, m - 1, d);

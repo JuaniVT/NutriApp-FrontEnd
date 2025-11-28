@@ -7,6 +7,7 @@
     import { ComidasFavoritasComponent } from './pages/comidas-favoritas/comidas-favoritas';
     import { ListarSolicitudes } from './pages/solicitudes/listar-solicitudes/listar-solicitudes';
 import { authGuard } from './guards/auth-guard';
+import { Calendario } from './pages/calendario/calendario';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},     //ruta por defecto
@@ -16,7 +17,8 @@ export const routes: Routes = [
     {path: 'dia/:fecha', component: VerDiaComponent, canActivate: [authGuard]},
     {path: 'favoritas', component: ComidasFavoritasComponent, canActivate: [authGuard]},
     {path: "listar-solicitudes/:mode", component: ListarSolicitudes, canActivate: [authGuard]},
-
+    {path: 'calendario/:fecha', component: Calendario, canActivate: [authGuard]},
+    
         // !!IMPORTANTE¡¡ -> esta ruta tiene que estar al final de todas ya que sino, desde este componente las que estan abajo no te redireccionan
         {path: "**", title: "Not Found 404", component: NotFound}      //ruta de 404 (pagina no encontrada)
     ];

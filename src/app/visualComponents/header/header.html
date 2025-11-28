@@ -2,13 +2,13 @@
 
     <div class="izquierda">
 
-    <h1 class="logo-text" (click)="redirectHome()">NutriApp</h1>
+        <h1 class="logo-text" (click)="redirectHome()">NutriApp</h1>
 
-    @if (auth.isLoggedIn()) {
-        
-        <!-- <div class="conetendorBotonCabecera">
-            <a routerLink="" routerLinkActive="active" class="botonCabecera">Mi Calendario</a>
-        </div> -->
+        @if (auth.isLoggedIn()) {
+
+        <div class="conetendorBotonCabecera">
+            <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active">Mi Calendario</a>
+        </div>
 
         <div class="conetendorBotonCabecera">
             <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active">Día de Hoy</a>
@@ -18,15 +18,15 @@
             <a routerLink="/favoritas" routerLinkActive="active" class="botonCabecera">Agregar Comida Favorita</a>
         </div>
 
-    }@else {
+        }@else {
 
-      <div class="conetendorBotonCabecera">
-        <a class="botonCabecera especial-login" (click)="irASeccion('nosotros-section')">
-  Nosotros
-</a>
-      </div> 
-    }
-</div>
+        <div class="conetendorBotonCabecera">
+            <a class="botonCabecera especial-login" (click)="irASeccion('nosotros-section')">
+                Nosotros
+            </a>
+        </div>
+        }
+    </div>
 
 
     <div class="medio">
@@ -36,30 +36,33 @@
     <div class="derecha">
         @if (auth.isLoggedIn()) {
 
-            <!-- <div class="conetendorIconoCabecera">
+        <!-- <div class="conetendorIconoCabecera">
                 <img src="" alt="dad" class="iconoPopeable">
             </div>
             
             <div class="conetendorIconoCabecera">
                 <img src="" alt="da" class="iconoPopeable">
             </div> -->
-    
-            <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
-                <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
-            </div>
-            <div class="cajaPerfil" id="menuPerfil" popover="manual">            
-                <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
-                
-                @if (role() == "ROLE_ADMIN") {
-                    <a routerLink="/listar-solicitudes/system" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Solicitudes del Sistema</a>
-                }@else {
-                    <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Mis Solicitudes</a>
-                }
-                <a routerLink="/login"  class="botonDesplegablePerfil" onclick="menuPerfil.togglePopover()" (click)="logOut()">Cerrar Sesion</a>
-            </div>
+
+        <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
+            <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
+        </div>
+        <div class="cajaPerfil" id="menuPerfil" popover="manual">
+            <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
+
+            @if (role() == "ROLE_ADMIN") {
+            <a routerLink="/listar-solicitudes/system" onclick="menuPerfil.togglePopover()"
+                class="botonDesplegablePerfil">Solicitudes del Sistema</a>
+            }@else {
+            <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()"
+                class="botonDesplegablePerfil">Mis Solicitudes</a>
+            }
+            <a routerLink="/login" class="botonDesplegablePerfil" onclick="menuPerfil.togglePopover()"
+                (click)="logOut()">Cerrar Sesion</a>
+        </div>
 
         }@else {
-            <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
+        <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
         }
 
 

@@ -1,0 +1,32 @@
+<div class="calendario-mes">
+
+    <div class="header-mes">
+
+        <button (click)="cambiarMes(-1)">&#8249;</button>
+
+
+        <h2>{{nombreMes}}</h2>
+
+        <button (click)="cambiarMes(1)">&#8250;</button>
+
+    </div>
+
+    <div class="dias">
+
+        @for (dia of diasMes; track dia.fecha) {
+
+        <!--se le aplica clases css dinamicamente para luego modificar su vista segun la condicion -->
+        <div class="dia" [class.hoy]="dia.esHoy" (click)="irAlDia(dia.fecha)">
+
+            <span class="nombre">{{ dia.numero }}</span>
+            <span class="fecha">{{ dia.fecha }}</span>
+
+        </div>
+
+        }
+
+
+    </div>
+
+
+</div>

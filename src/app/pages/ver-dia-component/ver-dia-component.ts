@@ -15,7 +15,7 @@ import { PaqueteService } from '../../service/paquete-service';
 import { catchError, of } from 'rxjs';
 import { Paquete } from '../../models/paquete';
 import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
-import { FechaLocalService } from './FechaLocalService';
+import { FechaLocalService } from '../../service/FechaLocalService';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { ArcElement, Chart, ChartDataset, registerables, Tooltip } from 'chart.js';
 Chart.register(...registerables);
@@ -228,6 +228,7 @@ actualizarProgreso() {
 
     this.fechaReferenciaSemana = nueva.toISOString().split("T")[0];
     this.cargarSemana();
+    
   }
 
 

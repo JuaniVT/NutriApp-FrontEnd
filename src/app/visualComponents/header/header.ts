@@ -11,6 +11,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
   styleUrl: './header.css',
 })
 export class Header implements OnInit{
+  
   private readonly router = inject(Router)
   protected readonly auth = inject(AuthService);
   fechaHoy = new Date().toLocaleDateString('en-CA');
