@@ -1,5 +1,4 @@
-:host
-{
+:host {
   background-color: #faf4e8;
 }
 
@@ -20,7 +19,6 @@
 
 /* Barra de navegación semanal */
 .dia {
-  border-radius: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -29,7 +27,13 @@
   cursor: pointer;
   transition: 0.2s;
   width: 100%;
-  height: 70px;
+  height: 5rem;
+  padding: 1rem;
+  min-width: 60px;
+  border-radius: 12px;
+  align-items: center;
+
+  
 }
 
 .dia:hover {
@@ -38,19 +42,26 @@
 
 .semana-container {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
-  border: 2px solid black;
-  border-radius: 10px;
+  gap: 1rem;
   width: 100%;
-  margin-bottom: 20px;
-  overflow-x: auto; /* permite scroll horizontal en móviles */
+
+  background: #ffffff;
+  padding: 1rem;
+  border: 2px solid black;
+  border-radius: 18px;
+  margin-bottom: 2rem;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  overflow: hidden;        /* <- evita que el hover expanda el contenedor */
+  position: relative;
 }
 
 .semana-container::-webkit-scrollbar {
   height: 6px;
 }
+
 .semana-container::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 3px;
@@ -66,18 +77,70 @@
 
 .semana {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
   gap: 20px;
-  padding: 10px;
-  width: 100%;
+  padding: 0.5rem;
+  overflow-x: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+  -webkit-overflow-scrolling: touch; /* más suave en iOS */
+ 
 }
 
-.boton-navegacion {
-  padding: 3px;
-  margin: 0 6px;
+.semana::-webkit-scrollbar {
+  height: 6px;
 }
+
+.semana::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.nav-semanal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  gap: 1rem;
+  width: 100%;
+
+
+}
+
+.btn-nav {
+  width: 44px;
+  height: 44px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  color: #1976d2;
+  font-size: 1.6rem;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: transform 0.25s ease, background 0.25s ease;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.12);
+
+  flex-shrink: 0;             /* <- evita que desaparezcan en pantallas chicas */
+  transform-origin: center;   /* <- zoom centrado */
+  will-change: transform;
+}
+
+.btn-nav:hover {
+  transform: scale(1.1);   /* <- YA NO EXPANDE EL CONTENEDOR */
+  background: #eaf3ff;
+}
+
+.btn-nav:active {
+  transform: scale(0.92);
+}
+
 
 .num-dia {
   font-size: 1.3rem;
@@ -544,8 +607,10 @@
 }
 
 .modal-agregar .tab-content {
-  overflow: hidden; /* evita que el hover se salga del área del modal */
-  padding-top: 10px; /* separa un poco del título de la pestaña */
+  overflow: hidden;
+  /* evita que el hover se salga del área del modal */
+  padding-top: 10px;
+  /* separa un poco del título de la pestaña */
 }
 
 /* 🔹 Lista de favoritos / paquetes */
@@ -560,7 +625,7 @@
   background: #fff;
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -570,7 +635,7 @@
 }
 
 .paquete-card:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
   border-color: #ff8c42;
 }
@@ -664,12 +729,12 @@
   padding: 15px, 12px, 15px, 0px;
 
 }
+
 .totales-tipo h3 {
   margin-bottom: 8px;
 }
 
-.contenedor-calorias-tipo
-{
+.contenedor-calorias-tipo {
   display: flex;
   flex-direction: column;
 }
@@ -736,12 +801,13 @@
 #entrada {
   width: auto;
   padding: 12px 14px;
-  border: none;   
-  margin-left: 10px;            /* SIN BORDES COMO PEDISTE */
+  border: none;
+  margin-left: 10px;
+  /* SIN BORDES COMO PEDISTE */
   border-radius: 14px;
   background: #f3f5f8;
   font-size: 15px;
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.08);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.08);
   transition: background .25s ease, box-shadow .25s ease;
 }
 
@@ -816,7 +882,7 @@
   background: #fff;
   border-radius: 14px;
   padding: 18px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid #ffe2c6;
   transition: transform .2s ease, box-shadow .2s ease;
 }
@@ -824,7 +890,7 @@
 /* Hover premium */
 .macro-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(255,153,51,0.18);
+  box-shadow: 0 6px 20px rgba(255, 153, 51, 0.18);
 }
 
 /* Estética naranja NutriApp */
@@ -895,13 +961,14 @@
 }
 
 .grafico-macros canvas {
-  width: 220px !important;   /* 🔥 más chico */
-  height: 220px !important;  /* 🔥 más chico */
+  width: 220px !important;
+  /* 🔥 más chico */
+  height: 220px !important;
+  /* 🔥 más chico */
 }
 
 
-.macros
-{
+.macros {
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -910,8 +977,7 @@
   justify-content: space-between;
 }
 
-.container-graficos-acciones
-{
+.container-graficos-acciones {
   display: flex;
 }
 
@@ -950,7 +1016,7 @@
   border: 1px solid #ffdab1;
   border-radius: 12px;
   padding: 12px 0;
-  box-shadow: inset 0 2px 6px rgba(255,140,66,0.15);
+  box-shadow: inset 0 2px 6px rgba(255, 140, 66, 0.15);
 }
 
 /* Contenedor de macros */
@@ -966,14 +1032,14 @@
   border-radius: 12px;
   padding: 12px 15px;
   text-align: center;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
   border-left: 6px solid #ff8c42;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .macro:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(255,140,66,0.18);
+  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.18);
 }
 
 .macro-label {
@@ -1009,32 +1075,120 @@
     flex-direction: column;
     gap: 12px;
   }
+
+ .semana-container {
+    padding: 0.6rem;
+    gap: 0.6rem;
+  }
+
+  .btn-nav {
+    width: 38px;
+    height: 38px;
+    font-size: 1.4rem;
+  }
+
+  .dia {
+    min-width: 52px;
+    height: 52px;
+    padding: 0.4rem;
+  }
+
+  .nombre {
+    font-size: 1rem;
+  }
+
+  .fecha {
+    font-size: 0.7rem;
+  }
 }
+
+@media (max-width: 420px) {
+
+  /* Aún más pequeño */
+  .btn-nav {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+  }
+
+  .dia {
+     min-width: 46px;
+    height: 46px;
+  }
+
+  .semana {
+    gap: 10px;
+     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .semana-container {
+    padding: 0.4rem;
+    gap: 0.4rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 350px) {
+
+  .semana-container {
+    padding: 0.3rem;
+  }
+
+  .btn-nav {
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+  }
+
+  .dia {
+    min-width: 42px;
+    height: 42px;
+  }
+
+  .num-dia {
+    font-size: 0.9rem;
+  }
+}
+
 
 /* Fondo semitransparente */
 .overlay {
-  position: fixed;      /* fijo respecto a la ventana */
+  position: fixed;
+  /* fijo respecto a la ventana */
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.5); /* semi-transparente */
-  backdrop-filter: blur(5px);  /* desenfoque del fondo */
-  z-index: 1000;       /* que esté por encima de todo */
+  background: rgba(0, 0, 0, 0.5);
+  /* semi-transparente */
+  backdrop-filter: blur(5px);
+  /* desenfoque del fondo */
+  z-index: 1000;
+  /* que esté por encima de todo */
 }
 
 /* Ventana modal */
 .modal-agregar {
-  position: fixed;       /* fijo sobre el viewport */
+  position: fixed;
+  /* fijo sobre el viewport */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* centrado perfecto */
+  transform: translate(-50%, -50%);
+  /* centrado perfecto */
   background: #fff;
   padding: 2rem;
   border-radius: 8px;
-  z-index: 1001;        /* encima del overlay */
+  z-index: 1001;
+  /* encima del overlay */
   max-width: 600px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
 }
+

@@ -11,22 +11,36 @@
 
     </div>
 
-    <div class="dias">
+    <!-- header de la semana -->
+  <div class="week-header">
+      <div>LUN</div>
+      <div>MAR</div>
+      <div>MIÉ</div>
+      <div>JUE</div>
+      <div>VIE</div>
+      <div>SÁB</div>
+      <div>DOM</div>
+  </div>
 
-        @for (dia of diasMes; track dia.fecha) {
+  <div class="dias">
 
-        <!--se le aplica clases css dinamicamente para luego modificar su vista segun la condicion -->
-        <div class="dia" [class.hoy]="dia.esHoy" (click)="irAlDia(dia.fecha)">
+       @for (dia of diasMes; track $index) {
 
-            <span class="nombre">{{ dia.numero }}</span>
-            <span class="fecha">{{ dia.fecha }}</span>
+          <div class="dia"
+              [class.hoy]="dia.esHoy"
+              [class.futuro]="dia.esFuturo"
+              [class.vacio]="dia.vacio"
+              (click)="!dia.vacio && irAlDia(dia.fecha)">
 
-        </div>
+              @if (!dia.vacio) {
+                  <span>{{ dia.numero }}</span>
+                  <span>{{ dia.nombre }}</span>
+              }
+          </div>
 
-        }
+      }
 
-
-    </div>
+  </div>
 
 
 </div>

@@ -38,13 +38,26 @@ export class Calendario {
     this.nombreMes = fecha.toLocaleDateString('es-ES', {
       month: 'long',
       year: 'numeric'
-    }).toUpperCase();
+    });
+
+    this.nombreMes = this.nombreMes.charAt(0).toUpperCase() + this.nombreMes.slice(1); // primera letra del mes en mayusuculas
 
     this.diasMes = this.manejadorMeses.generarDiasDelMes(local);
 
   }
 
   cambiarMes(numeroMes: number) {
+
+
+    const contenedor = document.querySelector('.dias');
+
+    if (contenedor instanceof HTMLElement) {
+      contenedor.classList.remove('animando');
+      void contenedor.offsetWidth;
+      contenedor.classList.add('animando');
+    }
+
+
 
     const nuevoMes = this.manejadorFechas.toLocal(new Date(this.fechaHoy.getFullYear(), this.fechaHoy.getMonth() + numeroMes, 1));
 
@@ -67,8 +80,12 @@ export class Calendario {
 
     const diaLocal = this.manejadorFechas.toLocalDate(diaIso);
 
-     // Bloquear días futuros
-    if (diaLocal > this.fechaHoy) {
+    const hoyReal = this.manejadorFechas.toLocalDate(
+      this.manejadorFechas.toIsoDate(new Date())
+    );
+
+    // Bloquear días futuros
+    if (diaLocal > hoyReal) {
       return;
     }
 

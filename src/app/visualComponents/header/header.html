@@ -7,7 +7,8 @@
         @if (auth.isLoggedIn()) {
 
         <div class="conetendorBotonCabecera">
-            <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active">Mi Calendario</a>
+            <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active">Mi
+                Calendario</a>
         </div>
 
         <div class="conetendorBotonCabecera">
@@ -73,9 +74,31 @@
         </div>
 
         <div class="menuMobile" id="menuMobile" popover="manual">
-            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Mi Calendario</a>
-            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Día de Hoy</a>
-            <a routerLink="" routerLinkActive="active" class="botonDesplegablePerfil">Agregar Comida</a>
+
+            @if (auth.isLoggedIn()) {
+
+            <div class="conetendorBotonCabecera">
+                <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active">Mi
+                    Calendario</a>
+            </div>
+
+            <div class="conetendorBotonCabecera">
+                <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active">Día de Hoy</a>
+            </div>
+
+            <div class="conetendorBotonCabecera">
+                <a routerLink="/favoritas" routerLinkActive="active" class="botonCabecera">Agregar Comida Favorita</a>
+            </div>
+
+            }@else {
+
+            <div class="conetendorBotonCabecera">
+                <a class="botonCabecera especial-login" (click)="irASeccion('nosotros-section')">
+                    Nosotros
+                </a>
+            </div>
+            }
+
         </div>
     </div>
 

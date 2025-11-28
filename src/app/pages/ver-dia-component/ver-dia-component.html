@@ -7,35 +7,35 @@
   } @else if (dia) {
 
   <header class="resumen-dia">
-  <h2>{{ formatearFechaCorta(fecha) }}</h2>
-  
-  <!-- Número de calorías -->
-  <div class="arc-number">
-    {{ calcularTotalCalorias() | number:'1.0-0' }}
-    /
-    {{ calcularTotalCalorias() + dia.caloriasRestantes | number:'1.0-0' }} kcal
-  </div>
+    <h2>{{ formatearFechaCorta(fecha) }}</h2>
 
-<div class="macros-resumen">
-  <div class="macro">
-    <span class="macro-label">Proteínas</span>
-    <span class="macro-value">{{ getTotalesDelDia().proteinas | number:'1.0-0' }} g</span>
-  </div>
+    <!-- Número de calorías -->
+    <div class="arc-number">
+      {{ calcularTotalCalorias() | number:'1.0-0' }}
+      /
+      {{ calcularTotalCalorias() + dia.caloriasRestantes | number:'1.0-0' }} kcal
+    </div>
 
-  <div class="macro">
-    <span class="macro-label">Carbos</span>
-    <span class="macro-value">{{ getTotalesDelDia().carbohidratos | number:'1.0-0' }} g</span>
-  </div>
+    <div class="macros-resumen">
+      <div class="macro">
+        <span class="macro-label">Proteínas</span>
+        <span class="macro-value">{{ getTotalesDelDia().proteinas | number:'1.0-0' }} g</span>
+      </div>
 
-  <div class="macro">
-    <span class="macro-label">Grasas</span>
-    <span class="macro-value">{{ getTotalesDelDia().grasas | number:'1.0-0' }} g</span>
-  </div>
-</div>
+      <div class="macro">
+        <span class="macro-label">Carbos</span>
+        <span class="macro-value">{{ getTotalesDelDia().carbohidratos | number:'1.0-0' }} g</span>
+      </div>
+
+      <div class="macro">
+        <span class="macro-label">Grasas</span>
+        <span class="macro-value">{{ getTotalesDelDia().grasas | number:'1.0-0' }} g</span>
+      </div>
+    </div>
 
 
 
-</header>
+  </header>
 
 
 
@@ -47,11 +47,7 @@
   <div class="semana-container">
 
 
-    <button class="boton-navegacion" (click)="cambiarSemana(-7)">
-
-      ‹
-
-    </button>
+    <button class="btn-nav" (click)="cambiarSemana(-7)">&#8249;</button>
 
 
     <div class="semana">
@@ -72,11 +68,7 @@
     </div>
 
 
-    <button class="boton-navegacion" (click)="cambiarSemana(7)">
-
-      ›
-
-    </button>
+    <button class="btn-nav" (click)="cambiarSemana(7)">&#8250;</button>
 
   </div>
 
@@ -86,18 +78,18 @@
   <section class="comidas-section">
     @for (tipo of types; track tipo) {
     <div class="comida-card">
-    
+
       <div class="comida-header">
         <div class="contenedor-calorias-tipo">
-        <h3>{{ tipo }}</h3>
-  <div class="totales-tipo">
-  <p>{{ getTotalesPorTipo(tipo).calorias | number:'1.0-0' }} kcal | </p>
-  <p> {{ getTotalesPorTipo(tipo).proteinas | number:'1.1-2' }} P | </p>
-  <p> {{ getTotalesPorTipo(tipo).carbohidratos | number:'1.1-2' }} C | </p>
-  <p> {{ getTotalesPorTipo(tipo).grasas | number:'1.1-2' }} G</p>
-</div>
-    </div>
-      
+          <h3>{{ tipo }}</h3>
+          <div class="totales-tipo">
+            <p>{{ getTotalesPorTipo(tipo).calorias | number:'1.0-0' }} kcal | </p>
+            <p> {{ getTotalesPorTipo(tipo).proteinas | number:'1.1-2' }} P | </p>
+            <p> {{ getTotalesPorTipo(tipo).carbohidratos | number:'1.1-2' }} C | </p>
+            <p> {{ getTotalesPorTipo(tipo).grasas | number:'1.1-2' }} G</p>
+          </div>
+        </div>
+
         <button class="btn-agregar" (click)="abrirAgregar(tipo)">+ Agregar</button>
       </div>
       <ul class="lista-alimentos">
@@ -112,62 +104,60 @@
           </div>
 
           <!-- Detalle desplegable -->
-        
-  <div class="alimento-detalle" [class.mostrar]="comida.mostrar">
-  <div class="info-macro-cards">
-    <div class="macros">
-      <div class="macro-card macro-orange">
-    <span class="macro-label">Proteínas</span>
-    <span class="macro-value">{{ comida.proteinas | number:'1.2-2' }} g</span>
-  </div>
 
-  <div class="macro-card macro-orange">
-    <span class="macro-label">Carbohidratos</span>
-    <span class="macro-value">{{ comida.carbohidratos | number:'1.2-2' }} g</span>
-  </div>
+          <div class="alimento-detalle" [class.mostrar]="comida.mostrar">
+            <div class="info-macro-cards">
+              <div class="macros">
+                <div class="macro-card macro-orange">
+                  <span class="macro-label">Proteínas</span>
+                  <span class="macro-value">{{ comida.proteinas | number:'1.2-2' }} g</span>
+                </div>
 
-  <div class="macro-card macro-orange">
-    <span class="macro-label">Grasas</span>
-    <span class="macro-value">{{ comida.grasas | number:'1.2-2' }} g</span>
-  </div>
-    </div>
-</div>
+                <div class="macro-card macro-orange">
+                  <span class="macro-label">Carbohidratos</span>
+                  <span class="macro-value">{{ comida.carbohidratos | number:'1.2-2' }} g</span>
+                </div>
 
-<div class="container-graficos-acciones">
-  <div class="acciones">
-    <form [formGroup]="formModificarCantidad">
-      <label>Cantidad:</label>
-      <input id= "entrada" type="number" formControlName="cantidad">
+                <div class="macro-card macro-orange">
+                  <span class="macro-label">Grasas</span>
+                  <span class="macro-value">{{ comida.grasas | number:'1.2-2' }} g</span>
+                </div>
+              </div>
+            </div>
 
-      @if (cantidad.hasError('min')) {
-        <div class="error-mensaje">
-          <span>El campo cantidad no puede ser menor a 1</span>
-        </div>
-      } @else {
-        @if (cantidad.hasError('required') && cantidad.touched) {
-          <div class="error-mensaje">
-            <span>El campo cantidad no puede ser menor a 1</span>
+            <div class="container-graficos-acciones">
+              <div class="acciones">
+                <form [formGroup]="formModificarCantidad">
+                  <label>Cantidad:</label>
+                  <input id="entrada" type="number" formControlName="cantidad">
+
+                  @if (cantidad.hasError('min')) {
+                  <div class="error-mensaje">
+                    <span>El campo cantidad no puede ser menor a 1</span>
+                  </div>
+                  } @else {
+                  @if (cantidad.hasError('required') && cantidad.touched) {
+                  <div class="error-mensaje">
+                    <span>El campo cantidad no puede ser menor a 1</span>
+                  </div>
+                  }
+                  }
+
+                  <button (click)="actualizarComida(comida)" class="btn-actualizar"
+                    [disabled]="formModificarCantidad.invalid">
+                    Actualizar
+                  </button>
+
+                  <button class="eliminar" (click)="onEliminarClick($event, comida)">
+                    Eliminar
+                  </button>
+                </form>
+              </div>
+              <div class="grafico-macros">
+                <canvas id="chart-{{ comida.id }}"></canvas>
+              </div>
+            </div>
           </div>
-        }
-      }
-
-      <button (click)="actualizarComida(comida)" 
-              class="btn-actualizar"
-              [disabled]="formModificarCantidad.invalid">
-        Actualizar
-      </button>
-
-      <button class="eliminar" 
-              (click)="onEliminarClick($event, comida)">
-        Eliminar
-      </button>
-    </form>
-  </div>
-  <div class="grafico-macros">
-  <canvas id="chart-{{ comida.id }}"></canvas>
-  </div>
-</div>
-</div>
         </li>
         }
         } @else {

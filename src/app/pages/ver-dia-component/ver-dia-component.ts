@@ -22,7 +22,7 @@ Chart.register(...registerables);
 
 Chart.register(ArcElement, Tooltip);
 
-@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule ,CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
+@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule, CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
 export class VerDiaComponent implements OnInit, AfterViewInit {
 
   @ViewChild('arcFill', { static: false }) arcFill!: ElementRef<SVGPathElement>;
@@ -46,81 +46,81 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   longitudPath: number = 0;
 
 
-ngAfterViewInit() {
-  setTimeout(() => {
-    if (!this.arcFill) return;
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (!this.arcFill) return;
 
-    this.arcLength = this.arcFill.nativeElement.getTotalLength();
-    this.actualizarProgreso();
-  });
-}
-
-renderProgressChart() {
-  if (!this.miChart || !this.dia) return;
-
-  const total = this.calcularTotalCalorias() + this.dia.caloriasRestantes;
-  const consumidas = this.calcularTotalCalorias();
-
-  // Si ya existe, destruimos el chart anterior
-  if (this.progressChart) {
-    this.progressChart.destroy();
+      this.arcLength = this.arcFill.nativeElement.getTotalLength();
+      this.actualizarProgreso();
+    });
   }
 
-  this.progressChart = new Chart(this.miChart.nativeElement, {
-    type: 'doughnut',
-    data: {
-      labels: ['Consumidas', 'Restantes'],
-      datasets: [{
-        data: [consumidas, this.dia.caloriasRestantes],
-        backgroundColor: ['#ff6f61', '#ffe066'], // colores cálidos
-        borderWidth: 0
-      }]
-    },
-    options: {
-      cutout: '75%',
-      responsive: true,
-      animation: {
-        animateRotate: true,
-        duration: 1000
-      },
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return `${context.label}: ${context.raw} kcal`;
-            }
-          }
-        },
-        legend: { display: false }
-      }
+  renderProgressChart() {
+    if (!this.miChart || !this.dia) return;
+
+    const total = this.calcularTotalCalorias() + this.dia.caloriasRestantes;
+    const consumidas = this.calcularTotalCalorias();
+
+    // Si ya existe, destruimos el chart anterior
+    if (this.progressChart) {
+      this.progressChart.destroy();
     }
-  });
-}
+
+    this.progressChart = new Chart(this.miChart.nativeElement, {
+      type: 'doughnut',
+      data: {
+        labels: ['Consumidas', 'Restantes'],
+        datasets: [{
+          data: [consumidas, this.dia.caloriasRestantes],
+          backgroundColor: ['#ff6f61', '#ffe066'], // colores cálidos
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '75%',
+        responsive: true,
+        animation: {
+          animateRotate: true,
+          duration: 1000
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return `${context.label}: ${context.raw} kcal`;
+              }
+            }
+          },
+          legend: { display: false }
+        }
+      }
+    });
+  }
 
 
 
   get consumidas() {
-  return this.calcularTotalCalorias();
-}
+    return this.calcularTotalCalorias();
+  }
 
-get total() {
-  return this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
-}
+  get total() {
+    return this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
+  }
 
-get porcentaje() {
-  return (this.consumidas / this.total) * 100;
-}
+  get porcentaje() {
+    return (this.consumidas / this.total) * 100;
+  }
 
-// Convierte el progreso en un stroke visible
-getStrokeDash(): string {
-  const total = this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
-  if (total === 0) return "0 300";
+  // Convierte el progreso en un stroke visible
+  getStrokeDash(): string {
+    const total = this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
+    if (total === 0) return "0 300";
 
-  const progreso = this.calcularTotalCalorias() / total;
-  const largoTotal = 300; // largo del path aproximado
+    const progreso = this.calcularTotalCalorias() / total;
+    const largoTotal = 300; // largo del path aproximado
 
-  return `${largoTotal * progreso} ${largoTotal}`;
-}
+    return `${largoTotal * progreso} ${largoTotal}`;
+  }
 
   cargando = true;
   error?: string;
@@ -160,41 +160,41 @@ getStrokeDash(): string {
 
 
   cargarDia(fecha: string) {
-  this.diaService.verDiaCompleto(fecha).subscribe({
-    next: (data) => {
-      // Inicializamos el campo 'mostrar' en cada comida
-      data.comidasIngeridas.forEach(c => c.mostrar = false);
+    this.diaService.verDiaCompleto(fecha).subscribe({
+      next: (data) => {
+        // Inicializamos el campo 'mostrar' en cada comida
+        data.comidasIngeridas.forEach(c => c.mostrar = false);
 
-      // Guardamos el día cargado
-      this.dia = data;
-      this.cargando = false;
+        // Guardamos el día cargado
+        this.dia = data;
+        this.cargando = false;
 
-      // Actualizamos la barra de progreso SVG
-      this.actualizarProgreso();
-    },
-    error: () => {
-      this.error = 'No se encontró el día seleccionado.';
-      this.cargando = false;
-    }
-  });
-}
+        // Actualizamos la barra de progreso SVG
+        this.actualizarProgreso();
+      },
+      error: () => {
+        this.error = 'No se encontró el día seleccionado.';
+        this.cargando = false;
+      }
+    });
+  }
 
-actualizarProgreso() {
-  if (!this.arcFill || !this.dia) return;
+  actualizarProgreso() {
+    if (!this.arcFill || !this.dia) return;
 
-  const total = this.calcularTotalCalorias() + this.dia.caloriasRestantes;
-  if (total === 0) return;
+    const total = this.calcularTotalCalorias() + this.dia.caloriasRestantes;
+    if (total === 0) return;
 
-  const consumidas = this.calcularTotalCalorias();
-  const porcentaje = consumidas / total;
+    const consumidas = this.calcularTotalCalorias();
+    const porcentaje = consumidas / total;
 
-  const dash = this.arcLength * porcentaje;
-  this.arcFill.nativeElement.setAttribute('stroke-dasharray', `${dash} ${this.arcLength}`);
-}
+    const dash = this.arcLength * porcentaje;
+    this.arcFill.nativeElement.setAttribute('stroke-dasharray', `${dash} ${this.arcLength}`);
+  }
 
 
   cargarSemana() {
-    
+
     const fechaDate = this.manejadorFechas.toLocalDate(this.fechaReferenciaSemana); // crea fecha en TZ local a medianoche local
     this.semana = this.manejadorSemana.generarSemana(fechaDate);
 
@@ -208,13 +208,15 @@ actualizarProgreso() {
     // actualizás la referencia de semana para que
     // se centre alrededor del día que tocaste
     this.fechaReferenciaSemana = fechaIso;
-    
+
     this.cargarSemana();
   }
 
 
   cambiarSemana(dias: number) {
     if (!this.fecha) return;
+
+    const limiteMaximoDiasAtras = 60; // 2 meses aprox
 
     const nueva = this.manejadorFechas.toLocalDate(this.fechaReferenciaSemana);
     nueva.setDate(nueva.getDate() + dias);
@@ -226,9 +228,18 @@ actualizarProgreso() {
     const inicioNuevaSemana = this.manejadorSemana.generarSemana(nueva)[0].fecha;
     if (inicioNuevaSemana > hoy) return; // No avanzar al futuro
 
+    // bloquear dos meses para atras
+    const limiteAtras = this.manejadorFechas.toLocal(new Date(hoy));
+    limiteAtras.setDate(hoy.getDate() - limiteMaximoDiasAtras);
+
+    if (nueva < limiteAtras) {
+      alert("Para ver días más antiguos usá el calendario 🙂");
+      return;
+    } 
+
     this.fechaReferenciaSemana = nueva.toISOString().split("T")[0];
     this.cargarSemana();
-    
+
   }
 
 
@@ -243,7 +254,7 @@ actualizarProgreso() {
       year: "numeric"
     };
 
-    
+
     let formateada = fecha.toLocaleDateString("es-ES", opciones); // pasa la fecha a una cadena formateada de acuerdo a la region y el idioma que se pase junto a las opciones
 
 
@@ -325,10 +336,10 @@ actualizarProgreso() {
   toggleDetalle(comida: any) {
     comida.mostrar = !comida.mostrar;
 
-     if (comida.mostrar) {
-    // creamos el gráfico cuando se abre el detalle
-    setTimeout(() => this.renderChart(comida), 50);
-  }
+    if (comida.mostrar) {
+      // creamos el gráfico cuando se abre el detalle
+      setTimeout(() => this.renderChart(comida), 50);
+    }
   }
 
   actualizarComida(comida: ComidaIngeridaSalidaDTO) {
@@ -413,47 +424,47 @@ actualizarProgreso() {
   }
 
   getTotalesPorTipo(tipo: string) {
-  const comidas = this.getComidasPorTipo(tipo);
+    const comidas = this.getComidasPorTipo(tipo);
 
-  let totalCalorias = 0;
-  let totalProteinas = 0;
-  let totalCarbohidratos = 0;
-  let totalGrasas = 0;
+    let totalCalorias = 0;
+    let totalProteinas = 0;
+    let totalCarbohidratos = 0;
+    let totalGrasas = 0;
 
-  comidas.forEach(c => {
-    totalCalorias += c.calorias;
-    totalProteinas += c.proteinas;
-    totalCarbohidratos += c.carbohidratos;
-    totalGrasas += c.grasas;
-  });
+    comidas.forEach(c => {
+      totalCalorias += c.calorias;
+      totalProteinas += c.proteinas;
+      totalCarbohidratos += c.carbohidratos;
+      totalGrasas += c.grasas;
+    });
 
-  return {
-    calorias: totalCalorias,
-    proteinas: totalProteinas,
-    carbohidratos: totalCarbohidratos,
-    grasas: totalGrasas
-  };
-}
+    return {
+      calorias: totalCalorias,
+      proteinas: totalProteinas,
+      carbohidratos: totalCarbohidratos,
+      grasas: totalGrasas
+    };
+  }
 
-getTotalesDelDia() {
-  
-  let totales = {
-    calorias: 0,
-    proteinas: 0,
-    carbohidratos: 0,
-    grasas: 0
-  };
+  getTotalesDelDia() {
 
-  this.types.forEach(tipo => {
-    const t = this.getTotalesPorTipo(tipo);
-    totales.calorias += t.calorias;
-    totales.proteinas += t.proteinas;
-    totales.carbohidratos += t.carbohidratos;
-    totales.grasas += t.grasas;
-  });
+    let totales = {
+      calorias: 0,
+      proteinas: 0,
+      carbohidratos: 0,
+      grasas: 0
+    };
 
-  return totales;
-}
+    this.types.forEach(tipo => {
+      const t = this.getTotalesPorTipo(tipo);
+      totales.calorias += t.calorias;
+      totales.proteinas += t.proteinas;
+      totales.carbohidratos += t.carbohidratos;
+      totales.grasas += t.grasas;
+    });
+
+    return totales;
+  }
 
 
   cerrarModal() {
@@ -462,73 +473,73 @@ getTotalesDelDia() {
 
   // === PIE CHART PARA CADA ALIMENTO === //
 
-getTotalMacros(comida: any) {
-  return comida.proteinas + comida.carbohidratos + comida.grasas;
-}
-
-getPorcentajeCarbos(comida: any) {
-  const total = this.getTotalMacros(comida);
-  if (total === 0) return 0;
-  return (comida.carbohidratos / total) * 100;
-}
-
-getPorcentajeProte(comida: any) {
-  const total = this.getTotalMacros(comida);
-  if (total === 0) return 0;
-  return (comida.proteinas / total) * 100;
-}
-
-getPorcentajeGrasas(comida: any) {
-  const total = this.getTotalMacros(comida);
-  if (total === 0) return 0;
-  return (comida.grasas / total) * 100;
-}
-
-chartsMap = new Map<number, Chart>(); // para evitar gráficos duplicados
-
-
-renderChart(comida: any) {
-  const canvasId = `chart-${comida.id}`;
-  const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
-
-  if (!canvas) return;
-
-  // si ya existe un gráfico para ese alimento → destruirlo
-  if (this.chartsMap.has(comida.id)) {
-    this.chartsMap.get(comida.id)?.destroy();
+  getTotalMacros(comida: any) {
+    return comida.proteinas + comida.carbohidratos + comida.grasas;
   }
 
-  const chart = new Chart(canvas, {
-    type: 'pie',
-    data: {
-      labels: ['Proteínas', 'Carbohidratos', 'Grasas'],
-      datasets: [{
-        data: [
-          comida.proteinas,
-          comida.carbohidratos,
-          comida.grasas
-        ],
-        backgroundColor: [
-          '#FFB74D',  // naranja premium
-          '#81D4FA',  // celeste moderno
-          '#FF8A80'   // coral suave
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            font: { size: 12 }
+  getPorcentajeCarbos(comida: any) {
+    const total = this.getTotalMacros(comida);
+    if (total === 0) return 0;
+    return (comida.carbohidratos / total) * 100;
+  }
+
+  getPorcentajeProte(comida: any) {
+    const total = this.getTotalMacros(comida);
+    if (total === 0) return 0;
+    return (comida.proteinas / total) * 100;
+  }
+
+  getPorcentajeGrasas(comida: any) {
+    const total = this.getTotalMacros(comida);
+    if (total === 0) return 0;
+    return (comida.grasas / total) * 100;
+  }
+
+  chartsMap = new Map<number, Chart>(); // para evitar gráficos duplicados
+
+
+  renderChart(comida: any) {
+    const canvasId = `chart-${comida.id}`;
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+
+    if (!canvas) return;
+
+    // si ya existe un gráfico para ese alimento → destruirlo
+    if (this.chartsMap.has(comida.id)) {
+      this.chartsMap.get(comida.id)?.destroy();
+    }
+
+    const chart = new Chart(canvas, {
+      type: 'pie',
+      data: {
+        labels: ['Proteínas', 'Carbohidratos', 'Grasas'],
+        datasets: [{
+          data: [
+            comida.proteinas,
+            comida.carbohidratos,
+            comida.grasas
+          ],
+          backgroundColor: [
+            '#FFB74D',  // naranja premium
+            '#81D4FA',  // celeste moderno
+            '#FF8A80'   // coral suave
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: { size: 12 }
+            }
           }
         }
       }
-    }
-  });
+    });
 
-  this.chartsMap.set(comida.id, chart);
-}
+    this.chartsMap.set(comida.id, chart);
+  }
 
 }
