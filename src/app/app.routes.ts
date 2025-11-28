@@ -19,7 +19,7 @@ export const routes: Routes = [
     {path: 'favoritas', title:"Comidas Favoritas", component: ComidasFavoritasComponent, canActivate: [authGuard]},
     {path: "listar-solicitudes/:mode", title: "Solicitudes", component: ListarSolicitudes, canActivate: [authGuard]},
     {path: 'calendario/:fecha', component: Calendario, canActivate: [authGuard]},
-    {path: "alimentos-bdd", title: "Alimentos BDD", component: AlimentosBDD, canActivate: [authGuard]},
+    {path: "alimentos-bdd", title: "Alimentos BDD", component: AlimentosBDD, canActivate: [authGuard], data: { roles: ['ROLE_ADMIN'] } },
 
     // !!IMPORTANTE¡¡ -> esta ruta tiene que estar al final de todas ya que sino, desde este componente las que estan abajo no te redireccionan
     {path: "**", title: "Not Found 404", component: NotFound}      //ruta de 404 (pagina no encontrada)

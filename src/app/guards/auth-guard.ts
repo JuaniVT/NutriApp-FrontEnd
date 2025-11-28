@@ -11,8 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   // Si no está logueado
   if (!authService.isLoggedIn()) {
-    router.navigate(['/login']);
-    return false;
+    return router.parseUrl('/login');
   }
 
   // Si no se definieron roles en la ruta → cualquier usuario logueado puede entrar
@@ -25,7 +24,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (expectedRoles.includes(currentRole!)) {
     return true;
   } else {
-    router.navigate(['/unauthorized']);
-    return false;
+    return router.parseUrl('/unauthorized');
   }
 };
