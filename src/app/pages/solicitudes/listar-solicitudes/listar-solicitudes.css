@@ -1,14 +1,15 @@
 :host{
     width: 70%;
+    font-family: "Poppins", sans-serif;
     
 }
 
 .cotenedorPrincipal{
     width: 100%;
     min-height: 75vh;
-    background-color: var(--white-soft);
+    background-color: var(--background-color);
 
-    color: black;
+    color: var(--orange);
     padding: 30px 0 50px 0;
 
     display: flex;
@@ -24,29 +25,33 @@
     justify-content: center;
     align-items: center;
     gap: 20px;
+    font-size: larger;
 }
+
 
 .iconoAgregar{
     cursor: pointer;
     transform: scale(0.9);
     transition: transform 100ms linear 0s;
+    background: linear-gradient(90deg, #ff8c42, #ffb870);
+    border-radius: 50%;
+    padding: 6px;
+    box-shadow: 0 4px 10px rgba(255, 140, 66, 0.25);
 }
 
-.iconoAgregar:hover{
-    transform: scale(1.2);
+.iconoAgregar:hover {
+    transform: scale(1.08);
 }
 
-
-
-.contenedorSolicitud{
-    width: 40%;
-    background-color:#111;
-    
-    outline: 1px solid black;
-    border-radius: 1rem;
-    box-shadow:  0 0 10px var(--yellow);
-    
-
+.contenedorSolicitud {
+    width: min(100%, 560px);
+    background: #fff9f3;
+    color: #444;
+    border-radius: 22px;
+    box-shadow: 0 10px 24px rgba(255, 140, 66, 0.12);
+    border: 1px solid #ffeedd;
+    overflow: hidden;
+    position: relative;
 
     display: flex;
     flex-direction: column;
@@ -54,101 +59,118 @@
     align-items: center;
 }
 
-.headerSolicitud{
+/* COLOR ARRIBA DEL CONTENEDOR */
+.contenedorSolicitud::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff8c42, #ffb870);
+}
+
+
+
+.headerSolicitud {
     width: 100%;
-    padding: 2px 0 2px 11px;
+    padding: 12px 14px;
     cursor: pointer;
-    background: linear-gradient(135deg,
-        var(--orange-soft),
-        var(--yellow-soft),
-        var(--orange-soft)
-    );
-    border-radius: 1rem;
-    
+    color: var(--chocolate);
+    background: var(--crema);
+    border-bottom: 1px solid #ffd8b0;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-
-
-
-.arrowDown{
-    padding: 5px 15px 5px 15px;
-
-    transition-property: transform;
-    transition-duration: 400ms;
-    transition-timing-function: ease-out;
-    transition-delay: 0s;
+.headerSolicitud h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
 }
 
-.arrowUp{
+.arrowDown {
+    padding: 5px 10px;
+    transition: transform 400ms ease-out;
+    filter: brightness(0.95);
+}
+
+.arrowUp {
     transform: rotate(180deg);
 }
 
-
 /* FORMULARIO DE CONTENIDO DESPLEGABLE */
-.contSolicitudForm{
+.contSolicitudForm {
     width: 100%;
-    border-radius: 1rem;
-    padding-top: 10px;
-    color: white;
+    border-radius: 0 0 22px 22px;
+    padding: 0 16px;
+    color: #4a4a4a;
+    background: #fffdf9;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 10px;
-    
-    /* esta cerrado */
+
     max-height: 0;
     opacity: 0;
-    overflow: hidden;  /* MUY IMPORTANTE para que no ocupe espacio el contenido estando invisible */
-
-    transition: 
-    opacity 300ms ease-in 0s,
-    max-height 500ms ease 0s;
+    overflow: hidden;
+    transition: opacity 300ms ease-in 0s, max-height 500ms ease 0s, padding 300ms ease 0s;
 }
 
-.contSolicitudFormTransition{
-    max-height: 500px;
+.contSolicitudFormTransition {
+    max-height: 600px;
     opacity: 1;
+    padding: 14px 16px 24px;
 }
 
-.contSolicitudForm > fieldset{
+.contSolicitudForm > fieldset {
     border: none;
-    padding-left: 20px;
-    padding-top: 2px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
 
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-fieldset input{
-    width: 30%;
-    border: none;
-    outline: 0.5px solid black;
-    border-radius: 1rem;
-    padding: 3px;
-
+.contSolicitudForm fieldset label {
+    font-weight: 600;
+    color: #ff8c42;
+    min-width: 98px;
 }
 
-.errorMessage{
-    color: red;
+fieldset input {
+    flex: 1;
+    min-width: 150px;
+    border: 1px solid #ffd8b0;
+    border-radius: 999px;
+    padding: 7px 10px;
+    background: #fff;
+    outline: none;
 }
 
+fieldset input:focus {
+    border-color: #ff8c42;
+    box-shadow: 0 0 0 2px rgba(255, 140, 66, 0.16);
+}
+
+.errorMessage {
+    color: #c0392b;
+}
 
 /* BOTONES */
-.contendorBotones{
+.contendorBotones {
     width: 100%;
-    
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    margin-top: 6px;
 }
 
 .contendorBotones div{
@@ -161,71 +183,88 @@ fieldset input{
     padding: 10px;
 }
 
-.botonSolicitud{
-    padding: 10px;
+.botonSolicitud {
+    padding: 10px 14px;
     border: none;
-    border-radius: 2rem;
+    border-radius: 999px;
+    color: white;
     cursor: pointer;
-
-    transition: 
-    transform 150ms ease 0s,
-    background-color 150ms ease 0s;
+    font-weight: 600;
+    transition: transform 150ms ease 0s, background-color 150ms ease 0s, box-shadow 150ms ease 0s;
 }
 
-.botonSolicitud:hover{
-    transform: scale(1.05);
+.botonSolicitud:hover {
+    transform: scale(1.04);
 }
-
 
 /* ACEPTAR */
-#botonAceptar{
-    background-color: rgb(1, 197, 1);
+#botonAceptar {
+    background: linear-gradient(90deg, #2e9b45, #46b85d);
 }
 
-#botonAceptar:hover{
-    background-color: rgb(0, 167, 0);
-    box-shadow: 0 0 5px rgb(0, 167, 0);
+#botonAceptar:hover {
+    background: linear-gradient(90deg, #24853a, #3ca352);
+    box-shadow: 0 0 6px rgba(46, 155, 69, 0.22);
 }
 
-#botonAceptar:disabled{
-    background-color: rgb(0, 127, 0);
+#botonAceptar:disabled {
+    background: #7ecb95;
     cursor: not-allowed;
 }
 
-#botonAceptar:disabled:hover{
-    background-color: rgb(0, 127, 0);
-    box-shadow: 0 0 0 rgb(0, 127, 0);
-    transform: scale(1.0);
+#botonAceptar:disabled:hover {
+    background: #7ecb95;
+    box-shadow: none;
+    transform: scale(1);
 }
 
 /* DENEGAR */
-#botonDenegar{
-    background-color: rgb(235, 0, 0);
+#botonDenegar {
+    background: linear-gradient(90deg, #d94a3a, #ef6a4d);
 }
 
-#botonDenegar:hover{
-    background-color: rgb(205, 0, 0);
-    box-shadow: 0 0 5px rgb(205, 0, 0);
+#botonDenegar:hover {
+    background: linear-gradient(90deg, #c03d31, #dc5d44);
+    box-shadow: 0 0 6px rgba(217, 74, 58, 0.24);
 }
-
 
 /* EDITAR */
-#botonEditar{
-    background-color: rgb(0, 0, 220);
+#botonEditar {
+    background: linear-gradient(90deg, #ff8c42, #ffb870);
 }
 
-#botonEditar:hover{
-    background-color: rgb(0, 0, 190);
-    box-shadow: 0 0 5px rgb(0, 0, 190);
+#botonEditar:hover {
+    background: linear-gradient(90deg, #f07a2d, #f2b15d);
+    box-shadow: 0 0 6px rgba(255, 140, 66, 0.24);
 }
 
-#botonEditar:disabled{
-    background-color: rgb(0, 0, 150);
+#botonEditar:disabled {
+    background: #ffbf86;
     cursor: not-allowed;
 }
 
-#botonEditar:disabled:hover{
-    background-color: rgb(0, 0, 150);
-    box-shadow: 0 0 0 rgb(0, 0, 190);
-    transform: scale(1.0);
+#botonEditar:disabled:hover {
+    background: #ffbf86;
+    box-shadow: none;
+    transform: scale(1);
+}
+
+@media (max-width: 768px) {
+    .cotenedorPrincipal {
+        padding: 24px 14px 40px;
+    }
+
+    .contenedorSolicitud {
+        width: 100%;
+    }
+
+    .contSolicitudForm > fieldset {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    fieldset input {
+        width: 100%;
+        min-width: 0;
+    }
 }

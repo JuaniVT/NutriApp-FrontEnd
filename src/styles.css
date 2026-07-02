@@ -20,6 +20,8 @@
         #fdf0e1 100%
       );
     --white-soft: rgba(224, 219, 255, 0.295);
+    --chocolate: #7a441a;
+    --crema: linear-gradient(90deg, #fff2e3 0%, #ffe5b3 100%);
 }
 
 body{
