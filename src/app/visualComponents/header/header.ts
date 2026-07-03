@@ -33,7 +33,7 @@ export class Header implements OnInit{
   }
 
   redirectHome (){
-    this.router.navigateByUrl("/home");
+    this.router.navigateByUrl('/dia/' + this.fechaHoy);
   }
 
   logOut (){

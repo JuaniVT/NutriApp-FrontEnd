@@ -21,7 +21,8 @@
       );
     --white-soft: rgba(224, 219, 255, 0.295);
     --chocolate: #7a441a;
-    --crema: linear-gradient(90deg, #fff2e3 0%, #ffe5b3 100%);
+    --crema: linear-gradient(100deg, #faf4e8 100%, #fdebd6 0%);
+    --orange-degradado: linear-gradient(90deg, #ff8c42, #ffb870);
 }
 
 body{

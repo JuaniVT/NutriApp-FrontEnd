@@ -1,7 +1,7 @@
 /* CONTENEDOR PRINCIPAL */
 .panel-agregar-comida {
   width: 100%;
-  max-width: 500px; /* antes 420px, ahora un poco más ancho */
+  max-width: 500px;
   background: #ffffff;
   padding: 25px;
   border-radius: 20px;

@@ -33,9 +33,9 @@
     cursor: pointer;
     transform: scale(0.9);
     transition: transform 100ms linear 0s;
-    background: linear-gradient(90deg, #ff8c42, #ffb870);
+    background: var(--orange-degradado);
     border-radius: 50%;
-    padding: 6px;
+    padding: 3px;
     box-shadow: 0 4px 10px rgba(255, 140, 66, 0.25);
 }
 
