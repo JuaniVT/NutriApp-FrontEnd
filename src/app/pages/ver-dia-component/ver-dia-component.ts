@@ -1,7 +1,7 @@
 import { AfterViewInit, ElementRef, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-
+import { HidratacionComponent } from '../hidratacion-component/hidratacion-component';
 import { DiaDTO, DiaService } from '../../service/dia-service';
 import { ComidaIngeridaSalidaDTO } from '../../models/comida-ingerida-salida.dto';
 import { modificarComidaIngeridaDTO } from '../../models/modificar-comida-ingerida-dto';
@@ -22,13 +22,15 @@ Chart.register(...registerables);
 
 Chart.register(ArcElement, Tooltip);
 
-@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule, CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
+@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule, CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent, HidratacionComponent],
+templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
 export class VerDiaComponent implements OnInit, AfterViewInit {
 
   @ViewChild('arcFill', { static: false }) arcFill!: ElementRef<SVGPathElement>;
   arcLength = 0;
   @ViewChild('miChart', { static: false }) miChart!: ElementRef<HTMLCanvasElement>;
-
+  // En tu componente padre
+@ViewChild(HidratacionComponent, { static: false }) hidratacionHijo!: HidratacionComponent;
   progressChart?: Chart;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
@@ -44,16 +46,33 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   protected fechaReferenciaSemana = this.fecha; // fecha independiente de el dia actual para no cambiar el titulo de la fecha cuando se navega por las semanas
 
   longitudPath: number = 0;
+  totalEnPadre: number = 0;
 
+  handleTotalRecibido(total: number) {
+    this.totalEnPadre = total;
+  }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      if (!this.arcFill) return;
+  setTimeout(() => {
+    // 1. Verificación de seguridad del elemento DOM
+    if (!this.arcFill) {
+      console.warn('arcFill no está disponible aún');
+      return;
+    }
 
-      this.arcLength = this.arcFill.nativeElement.getTotalLength();
-      this.actualizarProgreso();
-    });
-  }
+    // 2. Ejecución de lógica propia
+    this.arcLength = this.arcFill.nativeElement.getTotalLength();
+    this.actualizarProgreso();
+
+    // 3. Ejecución segura del componente hijo
+    if (this.hidratacionHijo) {
+      console.log('Llamando a obtenerTotal con fecha:', this.fecha);
+      this.hidratacionHijo.obtenerTotal(this.fecha);
+    } else {
+      console.error('El componente hidratacionHijo no ha sido encontrado en el ViewChild');
+    }
+  });
+}
 
   renderProgressChart() {
     if (!this.miChart || !this.dia) return;
@@ -167,6 +186,9 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
         // Guardamos el día cargado
         this.dia = data;
+        this.totalEnPadre = this.dia.hidratacion.cantidadMl;
+        this.renderProgressChart();
+
         this.cargando = false;
 
         // Actualizamos la barra de progreso SVG
