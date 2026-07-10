@@ -145,4 +145,23 @@
         <button class="btn" id="btn-actualizar" [disabled]="(personForm.pristine && nutritionalProfileForm.pristine) || (personForm.invalid || nutritionalProfileForm.invalid)" (click)="handleActualizar()">Actualizar</button>
         <button class="btn" id="btn-borrar" (click)="handleBorrarCuenta()">Borrar Cuenta</button>
     </div>
+
+    <div class="logrosConteiner">
+
+        @if (logrosResumen().length === 0) {
+            <span class="errorMessage">No tiene logros ganados</span>
+        }
+
+        @for (logro of logrosResumen(); track logro.logro_id) {
+            @if (logro.nivel === "level 1") {
+                <img src="logros/Meta Diaria bronce.png" alt="Logro Bronce" class="logro">
+            }
+            @if (logro.nivel === "level 2") {
+                <img src="logros/Meta Diaria Plata .png" alt="Logro Plata" class="logro">
+            }
+            @if (logro.nivel === "level 3") {
+                <img src="logros/Meta Diaria Oro.png" alt="Logro Oro" class="logro">
+            }
+        }
+    </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { ProfileService } from '../../service/profile';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { EmailValidator, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,8 @@ import { NivelActividadFisica, ObjetivoCaloricoTipo } from '../../models/nutriti
 import { UserService } from '../../service/user';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth';
+import { LogroService } from '../../service/logro';
+import { LogroHistorial } from '../../models/logro-historial';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -17,6 +19,7 @@ import { AuthService } from '../../service/auth';
 })
 export class MiPerfilComponente {
 
+  //perfil
   private readonly profileService = inject(ProfileService);
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService)
@@ -24,6 +27,69 @@ export class MiPerfilComponente {
   protected readonly personProfile = toSignal(this.profileService.getPersonProfile());
   protected readonly nutritionalProfilePerson = toSignal(this.profileService.getNutritionalProfile())
   
+  //logros
+  private readonly logroService = inject(LogroService);
+  protected readonly historialLogros = toSignal(this.logroService.getAll());
+
+  private readonly tiposLogro = [
+    "META_CALORICA_DIARIA", "LOGIN", "HIDRATACION_DIARIA"
+  ]
+
+  //resumen que devuelve una lista con el nivel de cada logro y las veces que se gano,
+  //necesita computed() ya que se usa historialLogros() que es una signal
+  protected readonly logrosResumen = computed(() => {
+    
+    //si no hay nigun logro retornamo una lista vacia
+    if(!this.historialLogros()){
+      return [];
+    }
+
+    //lista para despues retornarla
+    const logrosList: Array<{
+      logro_id: string,
+      cantGanado: number,
+      nivel: string
+    }> = [];
+
+    //recorremos los tipos de logro{
+    this.tiposLogro.forEach(tipo => {
+      //variable contadora de veces ganado el tipo de logro
+      let vecesGanado = 0;
+
+      //por cada tipo de logro recorremos el historial y nos fijamos si coicide el tipo
+      this.historialLogros()?.forEach(logro => {
+        if(tipo == logro.logro_id){
+          vecesGanado++;
+        }
+      })
+      
+      //solo agregamos los logros que el usuario obtuvo al menos una vez.
+      if(vecesGanado > 0){
+        //le insertamos un objeto a la lista para retornas despues llamadno al metodo obtenerNivelLogro
+        logrosList.push({
+          logro_id: tipo,
+          cantGanado: vecesGanado,
+          nivel: this.obtenerNivelLogro(vecesGanado)
+        })
+      }
+    })
+
+    //retornamos la lista
+    return logrosList;
+  });
+
+  private obtenerNivelLogro(vecesGanado: number){
+    if (vecesGanado >= 30) {
+      return 'level 3';
+    }
+
+    if (vecesGanado >= 7) {
+      return 'level 2';
+    }
+
+    return 'level 1';
+  }
+
 
 
   protected readonly personForm = new FormBuilder().nonNullable.group({
@@ -61,8 +127,6 @@ export class MiPerfilComponente {
       this.nutritionalProfileForm.patchValue(this.nutritionalProfilePerson()!)
     })
   }
-
-
 
 
 
