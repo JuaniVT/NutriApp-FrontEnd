@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class EmailVerificationService {
 
-   private apiUrl = 'http://localhost:8080/verificacion'; // Ajusta si tu ruta cambia
+   private apiUrl = 'https://nutriapp-backend-fko0.onrender.com/verificacion'; // Ajusta si tu ruta cambia
 
   constructor(private http: HttpClient) {}
 

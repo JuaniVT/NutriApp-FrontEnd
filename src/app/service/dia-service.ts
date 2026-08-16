@@ -29,7 +29,7 @@ export interface DiaDTO {
 })
 export class DiaService {
 
-  private apiUrl = 'http://localhost:8080'; 
+  private apiUrl = 'https://nutriapp-backend-fko0.onrender.com'; 
   private readonly http = inject(HttpClient); 
 
 

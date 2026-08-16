@@ -8,7 +8,7 @@ import { HidratacionEntradaDTO, HidratacionSalidaDTO } from '../models/hidrataci
 })
 export class HidratacionService {
 
-  private apiUrl = 'http://localhost:8080/api/hidratacion'; 
+  private apiUrl = 'https://nutriapp-backend-fko0.onrender.com/api/hidratacion'; 
   private readonly http = inject(HttpClient); 
 
   verHidratacionDia(fecha: string): Observable<HidratacionSalidaDTO> {

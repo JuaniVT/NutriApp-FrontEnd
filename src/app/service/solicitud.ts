@@ -8,7 +8,7 @@ import { identifierName } from '@angular/compiler';
 })
 export class SolicitudService {
   private readonly http = inject(HttpClient);
-  private readonly baseURL = "http://localhost:8080/api/solicitud";
+  private readonly baseURL = "https://nutriapp-backend-fko0.onrender.com/api/solicitud";
 
   
   //USERS

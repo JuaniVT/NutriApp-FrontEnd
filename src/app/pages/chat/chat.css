@@ -1,0 +1,232 @@
+/* ============================================================
+   NUTRIBOT · CHAT — "DARK MODE ÉPICO"
+   ============================================================ */
+
+:root {
+  --bg-void: #121212;
+  --bg-panel: #181818;
+  --bg-card: #1e1e1e;
+  --bg-card-hover: #232323;
+
+  --neon-orange: #ff9f43;
+  --neon-orange-soft: rgba(255, 159, 67, 0.35);
+  --neon-cyan: #00d2ff;
+  --neon-cyan-soft: rgba(0, 210, 255, 0.35);
+
+  --text-primary: #ffffff;
+  --text-secondary: #9a9a9a;
+  --text-muted: #5c5c5c;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  --font-main: 'Poppins', 'Inter', system-ui, sans-serif;
+
+  --shadow-depth: 0 10px 40px rgba(0, 0, 0, 0.6);
+  --shadow-cyan-glow: 0 0 14px var(--neon-cyan-soft), 0 0 2px var(--neon-cyan);
+  --shadow-orange-glow: 0 0 14px var(--neon-orange-soft), 0 0 2px var(--neon-orange);
+
+  --radius-lg: 24px;
+  --radius-md: 20px;
+  --radius-sm: 25px;
+}
+
+/* ---------- Contenedor principal del chat ---------- */
+.chat-wrapper {
+  max-width: 600px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
+  background: linear-gradient(180deg, var(--bg-panel) 0%, var(--bg-void) 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-depth);
+  padding: 24px;
+  overflow: hidden;
+  position: relative;
+  font-family: var(--font-main);
+}
+
+/* resplandor ambiental sutil, igual que en el resto del dashboard */
+.chat-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle at 15% 10%, var(--neon-orange-soft), transparent 40%),
+              radial-gradient(circle at 85% 90%, var(--neon-cyan-soft), transparent 40%);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/* ---------- Contenedor de mensajes con scroll ---------- */
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: var(--bg-card-hover);
+  border-radius: 10px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------- Burbujas de mensaje ---------- */
+.msg-user,
+.msg-bot {
+  max-width: 85%;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  line-height: 1.6;
+  position: relative;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  animation: aparecer 0.3s ease;
+  z-index: 1;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Usuario: borde sutil cian neón */
+.msg-user {
+  align-self: flex-end;
+  border: 1px solid var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan-soft);
+  border-bottom-right-radius: 6px;
+}
+
+/* NutriBot: borde sutil naranja neón + "avatar" hexagonal */
+.msg-bot {
+  align-self: flex-start;
+  border: 1px solid var(--neon-orange);
+  box-shadow: 0 0 10px var(--neon-orange-soft);
+  border-bottom-left-radius: 6px;
+  padding-left: 44px;
+}
+
+.msg-bot::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  width: 20px;
+  height: 20px;
+  background: var(--neon-orange);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  box-shadow: 0 0 10px var(--neon-orange);
+}
+
+/* ---------- Indicador de carga ---------- */
+.loader {
+  font-size: 13px;
+  color: var(--neon-cyan);
+  padding: 10px;
+  font-style: italic;
+  text-shadow: 0 0 8px var(--neon-cyan-soft);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.loader::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan);
+  animation: parpadeo 1s ease-in-out infinite;
+}
+
+@keyframes parpadeo {
+  0%, 100% { opacity: 0.2; }
+  50%      { opacity: 1; }
+}
+
+/* ---------- Área de input ---------- */
+.input-area {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  z-index: 1;
+}
+
+.input-area:focus-within {
+  border-color: var(--neon-cyan);
+  box-shadow: var(--shadow-cyan-glow);
+}
+
+.input-area input {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+  font-family: var(--font-main);
+  color: var(--text-primary);
+}
+
+.input-area input::placeholder {
+  color: var(--text-muted);
+}
+
+.input-area button {
+  background: var(--neon-orange);
+  color: #121212;
+  border: none;
+  padding: 0 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.input-area button:hover {
+  background: #ffb366;
+  box-shadow: var(--shadow-orange-glow);
+  transform: scale(1.03);
+}
+
+.input-area button:active {
+  transform: scale(0.97);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .chat-wrapper {
+    margin: 16px;
+    height: 85vh;
+    padding: 16px;
+  }
+
+  .msg-user,
+  .msg-bot {
+    max-width: 92%;
+    font-size: 14px;
+  }
+}

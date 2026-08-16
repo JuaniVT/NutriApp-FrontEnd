@@ -9,8 +9,8 @@ import { NutritionalProfile } from '../models/nutritional-profile';
 export class ProfileService {
   
   private readonly http = inject(HttpClient);
-  private readonly baseURL_Person = "http://localhost:8080/api/persona";
-  private readonly baseURL_NutritionalProfile = "http://localhost:8080/api/perfil-nutricional";
+  private readonly baseURL_Person = "https://nutriapp-backend-fko0.onrender.com/api/persona";
+  private readonly baseURL_NutritionalProfile = "https://nutriapp-backend-fko0.onrender.com/api/perfil-nutricional";
 
   //Person Profile
   getPersonProfile (){

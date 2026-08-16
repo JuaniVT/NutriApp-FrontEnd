@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class PaqueteService {
-  private baseUrl = 'http://localhost:8080/comidas-favoritas';
+  private baseUrl = 'https://nutriapp-backend-fko0.onrender.com/comidas-favoritas';
 
   constructor(private http: HttpClient) {}
 

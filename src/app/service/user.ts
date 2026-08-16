@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 })
 export class UserService {
   private readonly http = inject (HttpClient);
-  private readonly baseURL = "http://localhost:8080/usuario";
+  private readonly baseURL = "https://nutriapp-backend-fko0.onrender.com/usuario";
 
   deleteAccount (){
     return this.http.delete(this.baseURL + "/eliminarCuenta", {responseType: "text"});

@@ -1,0 +1,15 @@
+<div class="chat-wrapper">
+  <div *ngFor="let msg of messages" 
+       [ngClass]="msg.role === 'user' ? 'msg-user' : 'msg-bot'">
+    {{ msg.content }}
+  </div>
+  
+  <div *ngIf="isLoading" class="loader">NutriBot está pensando...</div>
+
+  <div class="input-area">
+    <input [(ngModel)]="newMessage" 
+           (keyup.enter)="sendMessage()" 
+           placeholder="¿Qué quieres consultar hoy?">
+    <button (click)="sendMessage()">Enviar</button>
+  </div>
+</div>

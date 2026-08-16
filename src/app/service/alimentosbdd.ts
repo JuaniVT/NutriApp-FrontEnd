@@ -8,7 +8,7 @@ import { ComidaBDD } from '../models/comida-bdd';
 })
 export class AlimentosbddService {
   private readonly http = inject(HttpClient);
-  private readonly baseURL = "http://localhost:8080/api/alimentos-usuario";
+  private readonly baseURL = "https://nutriapp-backend-fko0.onrender.com/api/alimentos-usuario";
 
   getAll (){
     return this.http.get<ComidaBDD[]>(this.baseURL + "/listarTodos");

@@ -7,7 +7,7 @@ import { Authority } from '../models/authority';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseURL = 'http://localhost:8080/auth';
+  private baseURL = 'https://nutriapp-backend-fko0.onrender.com/auth';
   protected readonly http = inject(HttpClient);
 
 
@@ -36,7 +36,7 @@ export class AuthService {
   }
   
   getRoleRequest (){
-    return this.http.get<Authority>("http://localhost:8080/api/rol/obtener");
+    return this.http.get<Authority>("https://nutriapp-backend-fko0.onrender.com/api/rol/obtener");
   }
   
   
