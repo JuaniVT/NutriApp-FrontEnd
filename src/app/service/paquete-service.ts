@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { ComidaFavoritaDTO } from '../models/comidaFavoritaDTO';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaqueteService {
-  private baseUrl = 'https://nutriapp-backend-fko0.onrender.com/comidas-favoritas';
+  private baseUrl = `${environment.apiUrl}/comidas-favoritas`;
 
   constructor(private http: HttpClient) {}
 

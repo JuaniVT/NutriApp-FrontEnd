@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { inject } from '@angular/core';
+import { environment } from '../../../environments/environment.development';
 
 interface Message {
   role: 'user' | 'bot';
@@ -37,7 +38,7 @@ export class Chat {
 
     // 3. CAMBIO CRÍTICO: Usar POST y enviar el cuerpo
     // La URL debe ser la que definiste en tu @RequestMapping("/ai") y @PostMapping("/ask")
-    this.http.post<{ reply: string }>('https://nutriapp-backend-fko0.onrender.com/ai/ask', body)
+    this.http.post<{ reply: string }>('${environment.apiUrl}/ai/ask', body)
       .subscribe({
         next: (response) => {
           this.messages.push({ role: 'bot', content: response.reply });

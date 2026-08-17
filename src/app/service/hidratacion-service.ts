@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { HidratacionEntradaDTO, HidratacionSalidaDTO } from '../models/hidratacion';
+import { environment } from '../../environments/environment.development';
 @Injectable({
   providedIn: 'root',
 })
 export class HidratacionService {
 
-  private apiUrl = 'https://nutriapp-backend-fko0.onrender.com/api/hidratacion'; 
+  private apiUrl = `${environment.apiUrl}`; 
   private readonly http = inject(HttpClient); 
 
   verHidratacionDia(fecha: string): Observable<HidratacionSalidaDTO> {

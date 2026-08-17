@@ -2,12 +2,13 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Authority } from '../models/authority';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseURL = 'https://nutriapp-backend-fko0.onrender.com/auth';
+  private baseURL = `${environment.apiUrl}/auth`;
   protected readonly http = inject(HttpClient);
 
 
@@ -36,7 +37,7 @@ export class AuthService {
   }
   
   getRoleRequest (){
-    return this.http.get<Authority>("https://nutriapp-backend-fko0.onrender.com/api/rol/obtener");
+    return this.http.get<Authority>(`${environment.apiUrl}/api/rol/obtener`);
   }
   
   

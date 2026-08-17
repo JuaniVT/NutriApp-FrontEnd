@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmailVerificationService {
 
-   private apiUrl = 'https://nutriapp-backend-fko0.onrender.com/verificacion'; // Ajusta si tu ruta cambia
+   private apiUrl = `${environment.apiUrl}`; // Ajusta si tu ruta cambia
 
   constructor(private http: HttpClient) {}
 

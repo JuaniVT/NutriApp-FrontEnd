@@ -6,6 +6,7 @@ import { modificarComidaIngeridaDTO } from '../models/modificar-comida-ingerida-
 import { AlimentoBusquedaDTO } from '../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../models/comidaingeridadto';
 import { HidratacionSalidaDTO } from '../models/hidratacion';
+import { environment } from '../../environments/environment.development';
 
 
 export interface ActividadFisicaSalidaDTO {
@@ -29,7 +30,7 @@ export interface DiaDTO {
 })
 export class DiaService {
 
-  private apiUrl = 'https://nutriapp-backend-fko0.onrender.com'; 
+  private apiUrl = `${environment.apiUrl}`; 
   private readonly http = inject(HttpClient); 
 
 
