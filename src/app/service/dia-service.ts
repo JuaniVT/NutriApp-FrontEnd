@@ -6,7 +6,7 @@ import { modificarComidaIngeridaDTO } from '../models/modificar-comida-ingerida-
 import { AlimentoBusquedaDTO } from '../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../models/comidaingeridadto';
 import { HidratacionSalidaDTO } from '../models/hidratacion';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 
 export interface ActividadFisicaSalidaDTO {
