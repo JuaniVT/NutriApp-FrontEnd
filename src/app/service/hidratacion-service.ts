@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class HidratacionService {
 
-  private apiUrl = `${environment.apiUrl}`; 
+  private apiUrl = `${environment.apiUrl}/api/hidratacion`;
   private readonly http = inject(HttpClient); 
 
   verHidratacionDia(fecha: string): Observable<HidratacionSalidaDTO> {

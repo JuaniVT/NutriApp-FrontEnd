@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
@@ -17,12 +17,27 @@ interface Message {
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
-export class Chat {
+export class Chat implements AfterViewChecked {
   private http = inject(HttpClient);
-  
+
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef<HTMLDivElement>;
+
   messages: Message[] = [{ role: 'bot', content: '¡Hola! Soy tu NutriBot. ¿En qué puedo ayudarte hoy?' }];
   newMessage: string = '';
   isLoading: boolean = false;
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    try {
+      const el = this.messagesContainer.nativeElement;
+      el.scrollTop = el.scrollHeight;
+    } catch {
+      // el contenedor todavía no está renderizado
+    }
+  }
 
   sendMessage() {
     if (!this.newMessage.trim()) return;
@@ -38,7 +53,7 @@ export class Chat {
 
     // 3. CAMBIO CRÍTICO: Usar POST y enviar el cuerpo
     // La URL debe ser la que definiste en tu @RequestMapping("/ai") y @PostMapping("/ask")
-    this.http.post<{ reply: string }>('${environment.apiUrl}/ai/ask', body)
+    this.http.post<{ reply: string }>(`${environment.apiUrl}/ai/ask`, body)
       .subscribe({
         next: (response) => {
           this.messages.push({ role: 'bot', content: response.reply });

@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 })
 export class EmailVerificationService {
 
-   private apiUrl = `${environment.apiUrl}`; // Ajusta si tu ruta cambia
+   private apiUrl = `${environment.apiUrl}/verificacion`; // Ajusta si tu ruta cambia
 
   constructor(private http: HttpClient) {}
 
