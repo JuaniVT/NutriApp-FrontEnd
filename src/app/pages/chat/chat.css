@@ -79,6 +79,63 @@
   font-weight: 500;
 }
 
+/* ---------- Acciones rápidas ---------- */
+.quick-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  padding: 12px 24px 14px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-subtle) transparent;
+}
+
+.quick-actions::-webkit-scrollbar {
+  height: 6px;
+}
+
+.quick-actions::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 10px;
+}
+
+.quick-actions::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.quick-action-chip {
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: var(--accent-orange-soft);
+  color: var(--accent-orange);
+  border: 1px solid transparent;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.quick-action-chip:hover:not(:disabled) {
+  background: #fbd8ae;
+}
+
+.quick-action-chip:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.quick-action-chip:disabled {
+  background: var(--bg-soft);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
 /* ---------- Contenedor de mensajes con scroll ---------- */
 .messages-container {
   flex: 1;
@@ -236,5 +293,16 @@
   .msg-bot {
     max-width: 90%;
     font-size: 14px;
+  }
+
+  .quick-actions {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .quick-action-chip {
+    font-size: 12px;
+    padding: 6px 12px;
   }
 }

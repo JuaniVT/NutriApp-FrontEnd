@@ -11,6 +11,11 @@ interface Message {
   content: string;
 }
 
+interface QuickAction {
+  label: string;
+  prompt: string;
+}
+
 @Component({
   selector: 'app-chat',
   standalone: true,
@@ -27,6 +32,13 @@ export class Chat implements AfterViewChecked {
   newMessage: string = '';
   isLoading: boolean = false;
 
+  quickActions: QuickAction[] = [
+    { label: 'Registrar una comida', prompt: 'Quiero registrar una comida' },
+    { label: 'Ver resumen semanal', prompt: 'Dame mi resumen semanal' },
+    { label: 'Generar plan de hoy', prompt: 'Generame un plan de alimentación para hoy' },
+    { label: 'Recomendarme algo', prompt: '¿Qué me recomendás comer ahora?' },
+  ];
+
   ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
@@ -38,6 +50,12 @@ export class Chat implements AfterViewChecked {
     } catch {
       // el contenedor todavía no está renderizado
     }
+  }
+
+  sendQuickAction(action: QuickAction) {
+    if (this.isLoading) return;
+    this.newMessage = action.prompt;
+    this.sendMessage();
   }
 
   sendMessage() {

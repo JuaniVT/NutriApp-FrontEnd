@@ -7,6 +7,16 @@
     </div>
   </header>
 
+  <div class="quick-actions">
+    <button *ngFor="let action of quickActions"
+            class="quick-action-chip"
+            type="button"
+            [disabled]="isLoading"
+            (click)="sendQuickAction(action)">
+      {{ action.label }}
+    </button>
+  </div>
+
   <div class="messages-container" #messagesContainer>
     <div *ngFor="let msg of messages"
          class="msg-row"
