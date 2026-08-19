@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { MarkdownModule } from 'ngx-markdown';
 
 interface Message {
   role: 'user' | 'bot';
@@ -13,7 +14,7 @@ interface Message {
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MarkdownModule],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })

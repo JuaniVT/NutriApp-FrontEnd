@@ -12,7 +12,8 @@
          class="msg-row"
          [ngClass]="msg.role === 'user' ? 'msg-row-user' : 'msg-row-bot'">
       <div [ngClass]="msg.role === 'user' ? 'msg-user' : 'msg-bot'">
-        {{ msg.content }}
+        <span *ngIf="msg.role === 'user'">{{ msg.content }}</span>
+        <markdown *ngIf="msg.role === 'bot'" [data]="msg.content"></markdown>
       </div>
     </div>
 
