@@ -27,10 +27,10 @@
             <small>El usuario es obligatorio.</small>
             }
             @if (username.errors?.['minlength']) {
-            <small>Mínimo {{ username.errors['minlength'].requiredLength }} caracteres.</small>
+            <small>Mínimo {{ username.errors?.['minlength']?.requiredLength }} caracteres.</small>
             }
             @if (username.errors?.['maxlength']) {
-            <small>Máximo {{ username.errors['maxlength'].requiredLength }} caracteres.</small>
+            <small>Máximo {{ username.errors?.['maxlength']?.requiredLength }} caracteres.</small>
             }
           </div>
           }
@@ -49,7 +49,7 @@
             <small>La contraseña es obligatoria.</small>
             }
             @if (password.errors?.['minlength']) {
-            <small>Debe tener al menos {{ password.errors['minlength'].requiredLength }} caracteres.</small>
+            <small>Debe tener al menos {{ password.errors?.['minlength']?.requiredLength }} caracteres.</small>
             }
           </div>
           }
