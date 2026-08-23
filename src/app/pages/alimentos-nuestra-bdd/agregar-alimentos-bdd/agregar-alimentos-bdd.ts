@@ -5,6 +5,7 @@ import { AlimentosBDD } from '../alimentos-bdd/alimentos-bdd';
 import { ComidaBDD } from '../../../models/comida-bdd';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Loading } from '../../../visualComponents/loading/loading';
+import { DialogService } from '../../../service/dialog';
 
 @Component({
   selector: 'app-agregar-alimentos-bdd',
@@ -15,6 +16,7 @@ import { Loading } from '../../../visualComponents/loading/loading';
 export class AgregarAlimentosBDD {
 
   private readonly alimentosBddService= inject(AlimentosbddService);
+  private readonly dialog = inject(DialogService);
 
   //output para cerra la ventana modal
   readonly isOpen = output<boolean>();
@@ -76,8 +78,9 @@ export class AgregarAlimentosBDD {
   }
 
 
-  handleAdd(){
-    if(confirm("Seguro que desea agregar la comida?")){
+  async handleAdd(){
+    const confirmado = await this.dialog.confirm("Seguro que desea agregar la comida?");
+    if(confirmado){
 
       //bloqueamo la UI
       this.isLoading.set(true);
@@ -91,13 +94,14 @@ export class AgregarAlimentosBDD {
           //cerramos el form
           this.isOpen.emit(false);
         },
-        error: (e) => {alert(e.message), this.isLoading.set(false)}
+        error: (e) => {this.dialog.error(e.message), this.isLoading.set(false)}
       })
     }
   }
 
-  handleEdit(){
-    if(confirm("Seguro que desea editar la comida?")){
+  async handleEdit(){
+    const confirmado = await this.dialog.confirm("Seguro que desea editar la comida?");
+    if(confirmado){
 
       //bloqueamo la UI
       this.isLoading.set(true);
@@ -111,9 +115,9 @@ export class AgregarAlimentosBDD {
           //cerramos el form
           this.isOpen.emit(false);
         },
-        error: (e) => {alert(e.message), this.isLoading.set(false)}
+        error: (e) => {this.dialog.error(e.message), this.isLoading.set(false)}
       })
-        
+
     }
   }
 

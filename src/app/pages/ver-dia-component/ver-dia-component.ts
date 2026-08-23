@@ -16,6 +16,7 @@ import { catchError, of } from 'rxjs';
 import { Paquete } from '../../models/paquete';
 import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 import { FechaLocalService } from '../../service/FechaLocalService';
+import { DialogService } from '../../service/dialog';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { ArcElement, Chart, ChartDataset, registerables, Tooltip } from 'chart.js';
 Chart.register(...registerables);
@@ -36,6 +37,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   private diaService = inject(DiaService);
   protected manejadorSemana = inject(ManejadorSemana);
   protected manejadorFechas = inject(FechaLocalService);
+  private dialog = inject(DialogService);
 
   protected semana: any[] = [];
   protected dia?: DiaDTO;
@@ -255,9 +257,9 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
     limiteAtras.setDate(hoy.getDate() - limiteMaximoDiasAtras);
 
     if (nueva < limiteAtras) {
-      alert("Para ver días más antiguos usá el calendario 🙂");
+      this.dialog.info("Para ver días más antiguos usá el calendario 🙂");
       return;
-    } 
+    }
 
     this.fechaReferenciaSemana = nueva.toISOString().split("T")[0];
     this.cargarSemana();
@@ -394,7 +396,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   eliminarComida(comida: ComidaIngeridaSalidaDTO) {
     this.diaService.eliminarComida(comida.id, this.fecha!, comida.tipoComida.toUpperCase()).subscribe({
       next: (res) => {
-        alert(res.mensaje);
+        this.dialog.success(res.mensaje);
         this.cargarDia(this.fecha!); // actualiza la lista solo cuando la eliminación termine
       },
       error: (err) => console.error(err)
@@ -406,7 +408,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
       .pipe(
         catchError(err => {
           console.error(err);
-          alert('Error al cargar comidas favoritas');
+          this.dialog.error('Error al cargar comidas favoritas');
           return of([]);
         })
       )
@@ -429,8 +431,8 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
     this.comidaFavoritaService.agregarPaqueteADia(nombrePaquete, this.tipoSeleccionado, this.fecha!)
       .subscribe({
         next: (res) => {
-          // Muestra un alert con el mensaje del backend
-          alert(res.mensaje || 'Paquete agregado correctamente.');
+          // Muestra la modal con el mensaje del backend
+          this.dialog.success(res.mensaje || 'Paquete agregado correctamente.');
 
           this.agregado.emit();   // notifica al padre para recargar el día
           this.cargarDia(this.fecha!);
@@ -438,7 +440,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
         },
         error: (err) => {
           const mensajeError = err.error?.error || 'No se pudo agregar el paquete.';
-          alert(mensajeError);  // muestra un alert con el error
+          this.dialog.error(mensajeError);  // muestra la modal con el error
           this.error = mensajeError;
           console.error(err);
         }

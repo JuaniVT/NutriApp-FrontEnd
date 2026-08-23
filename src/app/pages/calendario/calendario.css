@@ -1,6 +1,8 @@
 :host {
-    font-family: 'Poppins', sans-serif;
-    margin: 70px;
+    display: block;
+    font-family: var(--app-font-family, 'Poppins', sans-serif);
+    padding: var(--space-8, 32px);
+    box-sizing: border-box;
 }
 
 /* =============================== */
@@ -8,14 +10,15 @@
 /* =============================== */
 
 .calendario-mes {
+    width: 100%;
     max-width: 380px;
     flex-shrink: 1;
     margin: auto;
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
-    font-family: 'Inter', sans-serif;
-    animation: fadeIn 0.4s ease;
+    gap: var(--space-5, 20px);
+    font-family: var(--app-font-family, 'Inter', sans-serif);
+    animation: fadeIn 0.26s var(--ease-out, ease-out);
 }
 
 
@@ -27,16 +30,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 .5rem;
+    padding: 0 var(--space-2, 8px);
 }
 
 .header-mes h2 {
-    font-size: 1.8rem;
+    font-size: var(--font-xl, 24px);
     font-weight: 700;
-    color: #ff8c42;
-    letter-spacing: 1px;
-    animation: slideDown 0.4s ease;
-    margin: 10px 0 15px;
+    color: var(--app-orange-700, #b45309);
+    letter-spacing: 0.5px;
+    animation: slideDown 0.26s var(--ease-out, ease-out);
+    margin: var(--space-2, 8px) 0 var(--space-4, 16px);
     text-align: center;
 }
 
@@ -48,20 +51,21 @@
     background: white;
     border: none;
     border-radius: 50%;
-    color: #1976d2;
-    font-size: 1.7rem;
+    color: var(--app-orange-700, #b45309);
+    font-size: var(--font-lg, 20px);
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 
-    transition: 0.25s;
+    transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+                background var(--duration-base, 200ms) var(--ease-out, ease-out);
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .header-mes button:hover {
-    background: #eaf3ff;
+    background: var(--app-orange-soft, #fde6d1);
     transform: scale(1.1);
 }
 
@@ -79,9 +83,10 @@
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
     font-weight: 600;
-    color: #6d6d6d;
-    padding-bottom: 0.5rem;
-    animation: fadeIn 0.5s ease;
+    font-size: var(--font-xs, 12px);
+    color: var(--app-text-secondary, #6b7280);
+    padding-bottom: var(--space-2, 8px);
+    animation: fadeIn 0.26s var(--ease-out, ease-out);
 }
 
 
@@ -92,8 +97,8 @@
 .dias {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    animation: slideFade 0.35s ease;
+    gap: var(--space-2, 8px);
+    animation: slideFade 0.26s var(--ease-out, ease-out);
 }
 
 
@@ -111,15 +116,17 @@
     justify-content: center;
     align-items: center;
 
-    font-size: 0.95rem;
+    font-size: var(--font-sm, 14px);
     cursor: pointer;
 
-    transition: 0.2s;
+    transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+                background var(--duration-base, 200ms) var(--ease-out, ease-out),
+                box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.07);
 }
 
 .dia:hover {
-    background: #f0f7ff;
+    background: var(--app-orange-soft, #fde6d1);
     transform: translateY(-3px);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -133,14 +140,14 @@
 
 /* Día de hoy */
 .dia.hoy {
-    background: #1976d2;
+    background: var(--app-orange-700, #b45309);
     color: white;
     font-weight: bold;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.18);
 }
 
 .dia.hoy:hover {
-    background: #1560a8;
+    background: #8f4108;
 }
 
 /* Días futuros */
@@ -151,21 +158,13 @@
 }
 
 .dia span {
-    font-size: 0.9rem;
+    font-size: var(--font-xs, 12px);
     font-weight: 600;
     user-select: none;
 }
 
 .dias.animando {
-    animation: slideFade 0.35s ease;
-}
-
-h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #ff8c42;
-    margin: 10px 0 15px;
-    text-align: center;
+    animation: slideFade 0.26s var(--ease-out, ease-out);
 }
 
 /* =============================== */
@@ -184,7 +183,7 @@ h2 {
 
 @keyframes slideDown {
     from {
-        transform: translateY(-10px);
+        transform: translateY(-8px);
         opacity: 0
     }
 
@@ -196,12 +195,32 @@ h2 {
 
 @keyframes slideFade {
     from {
-        transform: translateY(15px);
+        transform: translateY(8px) scale(0.97);
         opacity: 0
     }
 
     to {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1
+    }
+}
+
+/* =============================== */
+/*   RESPONSIVE                    */
+/* =============================== */
+
+@media (max-width: 768px) {
+    :host {
+        padding: var(--space-5, 20px);
+    }
+}
+
+@media (max-width: 420px) {
+    :host {
+        padding: var(--space-3, 12px);
+    }
+
+    .calendario-mes {
+        max-width: 100%;
     }
 }

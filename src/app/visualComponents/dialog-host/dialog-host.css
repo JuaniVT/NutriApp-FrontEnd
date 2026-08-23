@@ -1,4 +1,4 @@
-/* Fondo oscuro */
+/* Fondo oscuro, mismo patron que el resto de los modales de la app */
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -7,16 +7,15 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(3px);
-    z-index: 900;
+    z-index: 1900;
 }
 
-/* Contenedor principal */
-.modal-container {
+.dialog-container {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 350px;
+    width: 380px;
     max-width: 90vw;
     max-height: 90vh;
     overflow-y: auto;
@@ -27,7 +26,7 @@
     box-sizing: border-box;
 
     box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
-    z-index: 999;
+    z-index: 1999;
 
     display: flex;
     flex-direction: column;
@@ -46,31 +45,35 @@
     }
 }
 
-/* Título */
-.modal-title {
+.dialog-title {
     text-align: center;
-    margin-bottom: var(--space-4, 15px);
+    margin-bottom: var(--space-3, 12px);
     font-size: var(--font-lg, 20px);
     font-weight: 700;
     color: var(--app-text-primary, #374151);
 }
 
-/* Inputs */
-.modal-form label {
-    margin-top: var(--space-2, 10px);
-    font-weight: 600;
-    font-size: var(--font-sm, 14px);
-    color: var(--app-text-secondary, #6b7280);
-    display: block;
+.dialog-title-success {
+    color: var(--app-green-700, #047857);
 }
 
-.modal-form input {
+.dialog-title-error {
+    color: #b91c1c;
+}
+
+.dialog-message {
+    text-align: center;
+    font-size: var(--font-md, 16px);
+    color: var(--app-text-secondary, #6b7280);
+    white-space: pre-line;
+}
+
+.dialog-input {
     width: 100%;
     padding: var(--space-2, 8px) var(--space-3, 12px);
     border-radius: 12px;
     border: 1px solid #e5e7eb;
-    margin-top: var(--space-1, 4px);
-    margin-bottom: var(--space-2, 5px);
+    margin-top: var(--space-4, 15px);
     box-sizing: border-box;
 
     background: var(--app-bg, #fff9f0);
@@ -79,12 +82,12 @@
     transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
-.modal-form input:focus {
+.dialog-input:focus {
     outline: none;
     border-color: var(--app-orange-600, #d97706);
 }
 
-/* Contenedor de botones */
+/* Contenedor de botones, mismas clases que agregar-alimentos-bdd.css para mantener look & feel */
 .botones {
     display: flex;
     justify-content: space-between;
@@ -92,7 +95,10 @@
     margin-top: var(--space-5, 20px);
 }
 
-/* Botón verde */
+.dialog-btn-full {
+    width: 100%;
+}
+
 .btn-aceptar {
     background: var(--app-green-700, #047857);
     padding: var(--space-3, 10px) var(--space-4, 15px);
@@ -102,45 +108,45 @@
     cursor: pointer;
     color: white;
     font-weight: 600;
+    flex: 1;
     transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
                 box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
                 transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
-.btn-aceptar:hover:not(:disabled){
+.btn-aceptar:hover {
     background-color: #035c40;
     box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.2);
 }
 
-.btn-aceptar:active:not(:disabled) {
+.btn-aceptar:active {
     transform: scale(0.97);
 }
 
-.btn-aceptar:disabled{
-    background-color: var(--app-text-muted, #9ca3af);
-    cursor: not-allowed;
+/* variante para confirmaciones destructivas (borrar cuenta, borrar alimento, etc.) */
+.btn-aceptar.btn-danger {
+    background: #b91c1c;
 }
 
-/* Botón rojo */
+.btn-aceptar.btn-danger:hover {
+    background: #991616;
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+}
+
 .btn-denegar {
-    background: #b91c1c;
+    background: transparent;
     padding: var(--space-3, 10px) var(--space-4, 15px);
     min-height: var(--tap-target-min, 44px);
     border-radius: 20px;
-    border: none;
+    border: 1px solid #e5e7eb;
     cursor: pointer;
-    color: white;
+    color: var(--app-text-secondary, #6b7280);
     font-weight: 600;
+    flex: 1;
     transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
                 box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .btn-denegar:hover {
-    background: #991616;
-    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
-}
-
-.errorMessage{
-    color: #b91c1c;
-    font-size: var(--font-sm, 14px);
+    background: #f3f4f6;
 }

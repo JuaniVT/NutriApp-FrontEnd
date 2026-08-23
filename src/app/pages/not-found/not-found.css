@@ -7,55 +7,79 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background: linear-gradient(135deg, #f1f7ff, #e7f0ff);
-  color: #fff;
+  min-height: 100vh;
+  padding: var(--space-6, 24px);
+  box-sizing: border-box;
+  background: linear-gradient(135deg, var(--app-bg, #fff9f0), #fef3e2);
+  color: var(--app-text-primary, #374151);
   text-align: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--app-font-family, 'Poppins', sans-serif);
 }
 
 .error-code {
-  font-size: 8rem;
+  font-size: 7rem;
   font-weight: 700;
-  color: #ff4b4b;
+  color: var(--app-orange-700, #b45309);
   margin: 0;
-  animation: pulse 1.5s infinite;
+  animation: pulse 1.8s infinite;
 }
 
 .error-message {
-  font-size: 2rem;
-  margin-top: 10px;
+  font-size: var(--font-xl, 24px);
+  font-weight: 600;
+  margin-top: var(--space-2, 8px);
+  color: var(--app-text-primary, #374151);
 }
 
 .error-description {
-  font-size: 1rem;
-  color: #ccc;
-  margin: 10px 0 20px;
+  font-size: var(--font-md, 16px);
+  color: var(--app-text-secondary, #6b7280);
+  margin: var(--space-2, 8px) 0 var(--space-5, 20px);
   max-width: 400px;
 }
 
 .back-button {
   text-decoration: none;
   color: white;
-  background-color: #ff4b4b;
-  padding: 10px 20px;
+  background-color: var(--app-orange-700, #b45309);
+  padding: var(--space-3, 12px) var(--space-5, 20px);
+  min-height: var(--tap-target-min, 44px);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
   border-radius: 30px;
-  transition: 0.3s ease;
-  font-weight: 500;
+  transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
+  font-weight: 600;
   cursor: pointer;
 }
 
 .back-button:hover {
-  background-color: #ff7373;
+  background-color: #8f4108;
   transform: scale(1.05);
+}
+
+.back-button:active {
+  transform: scale(0.97);
 }
 
 /* animación sutil */
 @keyframes pulse {
   0%, 100% {
-    text-shadow: 0 0 3px #ff4b4b, 0 0 10px #ff4b4b;
+    text-shadow: 0 0 3px rgba(180, 83, 9, 0.35), 0 0 10px rgba(180, 83, 9, 0.2);
   }
   50% {
-    text-shadow: 0 0 7px #ff7373, 0 0 20px #ff7373;
+    text-shadow: 0 0 7px rgba(180, 83, 9, 0.5), 0 0 20px rgba(180, 83, 9, 0.3);
+  }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .error-code {
+    font-size: 4.5rem;
+  }
+
+  .error-message {
+    font-size: var(--font-lg, 20px);
   }
 }

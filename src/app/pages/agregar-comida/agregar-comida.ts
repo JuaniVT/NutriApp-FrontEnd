@@ -5,6 +5,7 @@ import { AlimentoBusquedaDTO } from '../../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../../models/comidaingeridadto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DialogService } from '../../service/dialog';
 
 @Component({
   selector: 'app-agregar-comida',
@@ -26,7 +27,7 @@ export class AgregarComidaComponent {
   alimentoSeleccionado?: AlimentoBusquedaDTO;
   gramos: number = 100;
 
-  constructor(private diaService: DiaService) {}
+  constructor(private diaService: DiaService, private dialog: DialogService) {}
 
   buscarAlimentos() {
     if (!this.filtro) return;
@@ -54,7 +55,7 @@ export class AgregarComidaComponent {
 
     this.diaService.agregarComidaIngerida(comida).subscribe({
       next: res => {
-        alert(res.mensaje);
+        this.dialog.success(res.mensaje);
         this.alimentoSeleccionado = undefined;
         this.filtro = '';
         this.alimentos = [];

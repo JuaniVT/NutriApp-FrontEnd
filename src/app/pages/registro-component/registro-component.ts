@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../service/auth';
 import { EmailVerificationService } from '../../service/email-verification-service';
 import { CustomAsyncValidators } from '../../models/CustomAsyncValidators';
+import { DialogService } from '../../service/dialog';
 
 @Component({
   selector: 'app-registro-component',
@@ -17,6 +18,7 @@ export class RegistroComponent implements OnInit{
 
  protected readonly client = inject(AuthService);
   private router = inject(Router);
+  private dialog = inject(DialogService);
  fechaHoy = new Date().toLocaleDateString('en-CA');
 
   fechaMinima2017(control: AbstractControl): ValidationErrors | null {
@@ -89,15 +91,15 @@ export class RegistroComponent implements OnInit{
   console.log(datos);
   this.client.register(datos).subscribe({
     next: (resp) => {
-      alert('Cuenta creada correctamente');
+      this.dialog.success('Cuenta creada correctamente');
       this.router.navigate(['/dia', this.fechaHoy]);
     },
     error: (err) => {
       // Revisamos si el backend envió un 'mensaje'
       if (err.error && err.error.mensaje) {
-        alert(err.error.mensaje); // ahora sí mostrará "El nombre de usuario ya está en uso", etc.
+        this.dialog.error(err.error.mensaje); // ahora sí mostrará "El nombre de usuario ya está en uso", etc.
       } else {
-        alert('Ocurrió un error al registrarse.');
+        this.dialog.error('Ocurrió un error al registrarse.');
       }
     }
   });

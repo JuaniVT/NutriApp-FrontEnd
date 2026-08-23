@@ -1,21 +1,25 @@
 :host{
-    width: 70%;
-    
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: block;
+    box-sizing: border-box;
 }
 
 .cotenedorPrincipal{
     width: 100%;
     min-height: 75vh;
-    background-color: var(--white-soft);
+    background-color: var(--app-bg, #fff9f0);
 
-    color: black;
-    padding: 30px 0 50px 0;
+    color: var(--app-text-primary, #374151);
+    padding: 30px var(--space-4, 16px) 50px;
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 40px;
+    gap: var(--space-8, 32px);
 }
 
 
@@ -23,30 +27,31 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: var(--space-5, 20px);
 }
 
 .iconoAgregar{
     cursor: pointer;
     transform: scale(0.9);
-    transition: transform 100ms linear 0s;
+    transition: transform var(--duration-fast, 150ms) var(--ease-out, ease-out);
 }
 
 .iconoAgregar:hover{
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
 
 
 .contenedorSolicitud{
-    width: 40%;
-    background-color:#111;
-    
-    outline: 1px solid black;
-    border-radius: 1rem;
-    box-shadow:  0 0 10px var(--yellow);
-    
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--app-surface, #ffffff);
 
+    border: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    overflow: hidden;
 
     display: flex;
     flex-direction: column;
@@ -56,15 +61,15 @@
 
 .headerSolicitud{
     width: 100%;
-    padding: 2px 0 2px 11px;
+    padding: var(--space-2, 8px) var(--space-4, 16px);
     cursor: pointer;
     background: linear-gradient(135deg,
-        var(--orange-soft),
-        var(--yellow-soft),
-        var(--orange-soft)
+        var(--app-orange-soft, #fde6d1),
+        #fff3e0,
+        var(--app-orange-soft, #fde6d1)
     );
-    border-radius: 1rem;
-    
+    box-sizing: border-box;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -74,12 +79,12 @@
 
 
 .arrowDown{
-    padding: 5px 15px 5px 15px;
+    padding: var(--space-1, 5px) var(--space-4, 15px);
+    color: var(--app-orange-700, #b45309);
 
     transition-property: transform;
-    transition-duration: 400ms;
-    transition-timing-function: ease-out;
-    transition-delay: 0s;
+    transition-duration: var(--duration-base, 260ms);
+    transition-timing-function: var(--ease-out, ease-out);
 }
 
 .arrowUp{
@@ -91,23 +96,24 @@
 .contSolicitudForm{
     width: 100%;
     border-radius: 1rem;
-    padding-top: 10px;
-    color: white;
+    padding-top: var(--space-2, 10px);
+    color: var(--app-text-primary, #374151);
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 10px;
-    
+    gap: var(--space-2, 10px);
+
     /* esta cerrado */
     max-height: 0;
     opacity: 0;
     overflow: hidden;  /* MUY IMPORTANTE para que no ocupe espacio el contenido estando invisible */
 
-    transition: 
-    opacity 300ms ease-in 0s,
-    max-height 500ms ease 0s;
+    transition:
+    opacity var(--duration-slow, 260ms) var(--ease-out, ease-out),
+    max-height var(--duration-slow, 280ms) var(--ease-out, ease-out);
 }
 
 .contSolicitudFormTransition{
@@ -117,59 +123,75 @@
 
 .contSolicitudForm > fieldset{
     border: none;
-    padding-left: 20px;
+    padding-left: var(--space-5, 20px);
     padding-top: 2px;
+    box-sizing: border-box;
+    width: 100%;
+    flex-wrap: wrap;
 
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 15px;
+    gap: var(--space-4, 15px);
 }
 
 fieldset input{
     width: 30%;
-    border: none;
-    outline: 0.5px solid black;
+    min-width: 100px;
+    border: 1px solid #e5e7eb;
+    outline: none;
     border-radius: 1rem;
-    padding: 3px;
+    padding: var(--space-1, 4px) var(--space-2, 8px);
+    box-sizing: border-box;
+    font-size: var(--font-sm, 14px);
+    transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
 
+fieldset input:focus {
+    border-color: var(--app-orange-600, #d97706);
 }
 
 .errorMessage{
-    color: red;
+    color: #b91c1c;
+    font-size: var(--font-sm, 14px);
 }
 
 
 /* BOTONES */
 .contendorBotones{
     width: 100%;
-    
+    box-sizing: border-box;
+
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-2, 10px);
 }
 
 .contendorBotones div{
     width: 100%;
+    flex-wrap: wrap;
 
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 
-    padding: 10px;
+    padding: var(--space-2, 10px);
 }
 
 .botonSolicitud{
-    padding: 10px;
+    padding: var(--space-2, 10px) var(--space-4, 16px);
+    min-height: var(--tap-target-min, 44px);
     border: none;
     border-radius: 2rem;
     cursor: pointer;
+    color: white;
+    font-weight: 600;
 
-    transition: 
-    transform 150ms ease 0s,
-    background-color 150ms ease 0s;
+    transition:
+    transform var(--duration-fast, 150ms) var(--ease-out, ease-out),
+    background-color var(--duration-fast, 150ms) var(--ease-out, ease-out);
 }
 
 .botonSolicitud:hover{
@@ -179,53 +201,68 @@ fieldset input{
 
 /* ACEPTAR */
 #botonAceptar{
-    background-color: rgb(1, 197, 1);
+    background-color: var(--app-green-700, #047857);
 }
 
 #botonAceptar:hover{
-    background-color: rgb(0, 167, 0);
-    box-shadow: 0 0 5px rgb(0, 167, 0);
+    background-color: #035c40;
+    box-shadow: 0 0 5px rgba(4, 120, 87, 0.4);
 }
 
 #botonAceptar:disabled{
-    background-color: rgb(0, 127, 0);
+    background-color: var(--app-text-muted, #9ca3af);
     cursor: not-allowed;
 }
 
 #botonAceptar:disabled:hover{
-    background-color: rgb(0, 127, 0);
-    box-shadow: 0 0 0 rgb(0, 127, 0);
+    background-color: var(--app-text-muted, #9ca3af);
+    box-shadow: none;
     transform: scale(1.0);
 }
 
 /* DENEGAR */
 #botonDenegar{
-    background-color: rgb(235, 0, 0);
+    background-color: #b91c1c;
 }
 
 #botonDenegar:hover{
-    background-color: rgb(205, 0, 0);
-    box-shadow: 0 0 5px rgb(205, 0, 0);
+    background-color: #991616;
+    box-shadow: 0 0 5px rgba(153, 22, 22, 0.4);
 }
 
 
 /* EDITAR */
 #botonEditar{
-    background-color: rgb(0, 0, 220);
+    background-color: var(--app-orange-700, #b45309);
 }
 
 #botonEditar:hover{
-    background-color: rgb(0, 0, 190);
-    box-shadow: 0 0 5px rgb(0, 0, 190);
+    background-color: #8f4108;
+    box-shadow: 0 0 5px rgba(143, 65, 8, 0.4);
 }
 
 #botonEditar:disabled{
-    background-color: rgb(0, 0, 150);
+    background-color: var(--app-text-muted, #9ca3af);
     cursor: not-allowed;
 }
 
 #botonEditar:disabled:hover{
-    background-color: rgb(0, 0, 150);
-    box-shadow: 0 0 0 rgb(0, 0, 190);
+    background-color: var(--app-text-muted, #9ca3af);
+    box-shadow: none;
     transform: scale(1.0);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    .contenedorSolicitud {
+        max-width: 100%;
+    }
+
+    fieldset input {
+        width: 100%;
+    }
+
+    .contSolicitudForm > fieldset {
+        gap: var(--space-2, 8px);
+    }
 }

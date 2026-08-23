@@ -3,6 +3,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from './service/auth';
+import { DialogService } from './service/dialog';
 
 let alreadyHanded401 = false;
 
@@ -11,6 +12,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
   const router = inject(Router)
+  const dialog = inject(DialogService)
 
   let modifiedReq = req
 
@@ -26,18 +28,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   //retornamos la peticion con el token agregado y manejamos si llegua a haber error de token expirado
   return next(modifiedReq).pipe(
-    catchError((error) => {
-      if (error.status === 401 && !alreadyHanded401) {       
-                                                             
-        //seteamos que ya estamos manejando el 401 para que si llegua un segundo 401 se ejecute solo una vez     
-        alreadyHanded401 = true;                             
-        
+    catchError(async (error) => {
+      if (error.status === 401 && !alreadyHanded401) {
+
+        //seteamos que ya estamos manejando el 401 para que si llegua un segundo 401 se ejecute solo una vez
+        alreadyHanded401 = true;
+
         authService.clearToken();                  //si recibe un error de 401 (token expirado)
-        alert("Sesion Expirada");                  //clerea el token en la memoria del navegador
-        router.navigateByUrl("/login");            //mensaje de alerta y redirecciona al login
+        await dialog.info("Sesion Expirada");       //clerea el token en la memoria del navegador
+        router.navigateByUrl("/login");             //mensaje de alerta y redirecciona al login
       }
 
-      return throwError(() => error);
+      throw error;
     })
   );
 }

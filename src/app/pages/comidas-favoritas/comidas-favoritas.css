@@ -4,19 +4,21 @@
 .panel-agregar-comida {
   width: 100%;
   max-width: 540px;
-  background: #fff9f3;
+  background: var(--app-bg, #fff9f0);
   padding: 32px 28px;
   border-radius: 28px;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   gap: 22px;
-  font-family: "Poppins", sans-serif;
-  color: #333;
-  margin: 50px auto;
-  transition: all 0.3s ease;
+  font-family: var(--app-font-family, "Poppins", sans-serif);
+  color: var(--app-text-primary, #374151);
+  margin: var(--space-8, 32px) auto;
+  transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
+  box-sizing: border-box;
   position: relative;
-  border: 1px solid #ffeedd;
+  border: 1px solid var(--app-orange-soft, #fde6d1);
 }
 
 /* TITULOS */
@@ -24,7 +26,7 @@
 .panel-agregar-comida h3 {
   margin: 0;
   font-weight: 600;
-  color: #ff8c42;
+  color: var(--app-orange-700, #b45309);
 }
 
 /* BOTÓN CREAR PAQUETE */
@@ -32,17 +34,18 @@
   align-self: flex-start;
   padding: 8px 18px;
   border-radius: 20px;
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .panel-agregar-comida > button:hover {
   transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.4);
 }
 
 /* ===========================================
@@ -50,16 +53,17 @@
    =========================================== */
 .panel-agregar-comida input[type="text"] {
   width: 100%;
-  border: 1px solid #ffd8b0;
+  border: 1px solid #e9c396;
   padding: 12px 16px;
   border-radius: 16px;
-  font-size: 0.95rem;
-  transition: all 0.25s ease;
+  font-size: var(--font-md, 16px);
+  transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .panel-agregar-comida input[type="text"]:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 8px rgba(255, 140, 66, 0.35);
+  border-color: var(--app-orange-700, #b45309);
+  box-shadow: 0 0 8px rgba(180, 83, 9, 0.35);
   outline: none;
 }
 
@@ -73,29 +77,30 @@
   max-height: 260px;
   overflow-y: auto;
   border-radius: 16px;
-  background-color: #fffaf0;
-  border: 1px solid #ffeedd;
+  background-color: var(--app-bg, #fff9f0);
+  border: 1px solid var(--app-orange-soft, #fde6d1);
 }
 
 .panel-agregar-comida li {
   padding: 12px 16px;
-  border-bottom: 1px solid #f4e6d0;
+  border-bottom: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
   border-radius: 12px;
   margin: 2px 4px;
 }
 
 .panel-agregar-comida li:hover {
-  background: #ffe5b3;
+  background: var(--app-orange-soft, #fde6d1);
   transform: translateX(3px);
 }
 
 .panel-agregar-comida li.seleccionado {
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 3px 8px rgba(255, 140, 66, 0.3);
+  box-shadow: 0 3px 8px rgba(180, 83, 9, 0.3);
 }
 
 /* ===========================================
@@ -103,11 +108,11 @@
    =========================================== */
 .panel-detalle {
   margin-top: 14px;
-  background-color: #fff9f3;
-  border-left: 5px solid #ff8c42;
+  background-color: var(--app-bg, #fff9f0);
+  border-left: 5px solid var(--app-orange-700, #b45309);
   border-radius: 18px;
   padding: 20px;
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.15);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.15);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -116,10 +121,10 @@
 /* LABELS Y PARRAFOS */
 .panel-detalle label,
 .panel-detalle p {
-  font-size: 0.9rem;
+  font-size: var(--font-sm, 14px);
   font-weight: 500;
-  color: #444;
-  margin: 6px 0;
+  color: var(--app-text-secondary, #6b7280);
+  margin: var(--space-2, 8px) 0;
 }
 
 /* INPUTS DEL DETALLE */
@@ -128,15 +133,16 @@
   width: 100%;
   padding: 12px;
   border-radius: 14px;
-  border: 1px solid #ffd8b0;
-  font-size: 0.95rem;
-  transition: all 0.25s ease;
+  border: 1px solid #e9c396;
+  font-size: var(--font-md, 16px);
+  transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .panel-detalle input:focus,
 .panel-detalle select:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 6px rgba(255, 140, 66, 0.3);
+  border-color: var(--app-orange-700, #b45309);
+  box-shadow: 0 0 6px rgba(180, 83, 9, 0.3);
   outline: none;
 }
 
@@ -144,37 +150,40 @@
    BOTONES DETALLE
    =========================================== */
 .panel-detalle button {
-  padding: 12px 22px;
+  padding: var(--space-3, 12px) var(--space-5, 20px);
   border-radius: 22px;
   font-weight: 600;
+  font-size: var(--font-sm, 14px);
   cursor: pointer;
   border: none;
-  transition: all 0.25s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* BOTÓN AGREGAR */
 .panel-detalle button:first-of-type {
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
 }
 
 .panel-detalle button:first-of-type:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.45);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.45);
 }
 
 /* BOTÓN CANCELAR */
 .panel-detalle button:last-of-type {
-  background: #fff9f3;
+  background: var(--app-bg, #fff9f0);
   color: #444;
-  border: 2px solid #ff8c42;
+  border: 2px solid var(--app-orange-700, #b45309);
 }
 
 .panel-detalle button:last-of-type:hover {
-  background: #ffeedd;
+  background: var(--app-orange-soft, #fde6d1);
   transform: scale(1.06);
-  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
 }
 
 /* ===========================================
@@ -185,12 +194,12 @@
 }
 
 .panel-agregar-comida ul::-webkit-scrollbar-thumb {
-  background: #ffb347;
+  background: var(--app-orange-600, #d97706);
   border-radius: 10px;
 }
 
 .panel-agregar-comida ul::-webkit-scrollbar-track {
-  background: #fffaf0;
+  background: var(--app-bg, #fff9f0);
   border-radius: 10px;
 }
 
@@ -205,8 +214,8 @@
   max-height: 220px;
   overflow-y: auto;
   border-radius: 16px;
-  background-color: #fffaf0;
-  border: 1px solid #ffeedd;
+  background-color: var(--app-bg, #fff9f0);
+  border: 1px solid var(--app-orange-soft, #fde6d1);
 }
 
 .panel-agregar-comida .panel-paquete li {
@@ -214,16 +223,17 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
-  border-bottom: 1px solid #f4e6d0;
+  border-bottom: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
   border-radius: 12px;
   margin: 4px 2px;
-  transition: all 0.25s ease;
+  transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
   cursor: pointer;
-  background-color: #fff9f3;
+  background-color: var(--app-bg, #fff9f0);
 }
 
 .panel-agregar-comida .panel-paquete li:hover {
-  background-color: #ffe5b3;
+  background-color: var(--app-orange-soft, #fde6d1);
   transform: translateX(2px);
 }
 
@@ -234,36 +244,39 @@
 
 /* BOTÓN ELIMINAR DE LISTA */
 .panel-agregar-comida .panel-paquete li button {
-  padding: 6px 12px;
-  font-size: 0.85rem;
+  padding: 8px 12px;
+  font-size: var(--font-xs, 12px);
   border: none;
   border-radius: 12px;
-  background: #ff8c42;
+  background: var(--app-orange-700, #b45309);
   color: #fff;
   cursor: pointer;
-  transition: all 0.25s ease, transform 0.15s ease;
-  box-shadow: 0 2px 6px rgba(255, 140, 66, 0.3);
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
+  box-shadow: 0 2px 6px rgba(180, 83, 9, 0.3);
 }
 
 .panel-agregar-comida .panel-paquete li button:hover {
-  background: #ffb347;
+  background: var(--app-orange-600, #d97706);
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.4);
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.4);
 }
 
 /* Input estilo actual */
 .panel-agregar-comida input[type="text"] {
   width: 100%;
-  border: 1px solid #ffd8b0;
+  border: 1px solid #e9c396;
   padding: 12px 16px;
   border-radius: 16px;
-  font-size: 0.95rem;
-  transition: all 0.25s ease;
+  font-size: var(--font-md, 16px);
+  transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .panel-agregar-comida input[type="text"]:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 8px rgba(255, 140, 66, 0.35);
+  border-color: var(--app-orange-700, #b45309);
+  box-shadow: 0 0 8px rgba(180, 83, 9, 0.35);
   outline: none;
 }
 
@@ -273,47 +286,49 @@
   border-radius: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .agregar-alimento:hover {
   transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.4);
 }
 
 /* Mensaje de error debajo del buscador */
 .mensaje-error {
-  color: #ff4c42;
-  font-size: 0.9rem;
+  color: #b91c1c;
+  font-size: var(--font-sm, 14px);
   font-weight: 500;
-  margin-top: 6px;
-  padding: 6px 12px;
+  margin-top: var(--space-2, 8px);
+  padding: var(--space-2, 8px) var(--space-3, 12px);
   border-radius: 12px;
-  background-color: #fff0eb;
-  border: 1px solid #ffb3a2;
+  background-color: #fdecea;
+  border: 1px solid #f3b4ac;
 }
 
 /* Botón "Agregar Alimento" estilo +Nuevo Paquete */
 .agregar-alimento {
   padding: 8px 18px;
   border-radius: 20px;
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
   margin-bottom: 12px;
 }
 
 .agregar-alimento:hover {
   transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.4);
 }
 
 /* Lista de resultados */
@@ -324,27 +339,52 @@
   max-height: 220px;
   overflow-y: auto;
   border-radius: 16px;
-  background-color: #fffaf0;
-  border: 1px solid #ffeedd;
+  background-color: var(--app-bg, #fff9f0);
+  border: 1px solid var(--app-orange-soft, #fde6d1);
 }
 
 .panel-agregar-comida li {
   padding: 12px 16px;
-  border-bottom: 1px solid #f4e6d0;
+  border-bottom: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
   border-radius: 12px;
   margin: 2px 4px;
 }
 
 .panel-agregar-comida li:hover {
-  background: #ffe5b3;
+  background: var(--app-orange-soft, #fde6d1);
   transform: translateX(2px);
 }
 
 .panel-agregar-comida li.seleccionado {
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 3px 8px rgba(255, 140, 66, 0.3);
+  box-shadow: 0 3px 8px rgba(180, 83, 9, 0.3);
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+@media (max-width: 768px) {
+  .panel-agregar-comida {
+    padding: var(--space-5, 20px) var(--space-4, 16px);
+    margin: var(--space-5, 20px) auto;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel-agregar-comida > button,
+  .agregar-alimento,
+  .panel-detalle button {
+    min-height: var(--tap-target-min, 44px);
+  }
+
+  .panel-agregar-comida .panel-paquete li button {
+    min-height: var(--tap-target-min, 44px);
+    min-width: var(--tap-target-min, 44px);
+  }
 }
