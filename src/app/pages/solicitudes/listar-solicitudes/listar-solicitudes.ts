@@ -11,6 +11,7 @@ import { signalUpdateFn } from '@angular/core/primitives/signals';
 import { map } from 'rxjs';
 import { AgregarSolicitud } from '../agregar-solicitud/agregar-solicitud';
 import { Loading } from '../../../visualComponents/loading/loading';
+import { DialogService } from '../../../service/dialog';
 
 @Component({
   selector: 'listar-solicitudes',
@@ -115,6 +116,7 @@ export class ListarSolicitudes {
   //SERVICES
   private readonly authService = inject(AuthService);
   private readonly solicitudService = inject(SolicitudService);
+  private readonly dialog = inject(DialogService);
 
   //FORM BUILDER
   private readonly fb = inject(FormBuilder);
@@ -157,7 +159,7 @@ export class ListarSolicitudes {
           //si llegua un error significa que no hay solicitudes cargadas, entonces se vuelve a setear
           //la lista vacia porque puede lleguar a ver fugas de memoria en la lista ya que el compoenente
           //no se resetea y por lo tanto la lista tampoco, entonces puede lleguar a quedar cargada igual aunque no lo este
-          error: (e) => {alert(e.message), this.solicitudesList.set([])}  
+          error: (e) => {this.dialog.error(e.message), this.solicitudesList.set([])}
         });
 
         
@@ -173,7 +175,7 @@ export class ListarSolicitudes {
           //si llegua un error significa que no hay solicitudes cargadas, entonces se vuelve a setear
           //la lista vacia porque puede lleguar a ver fugas de memoria en la lista ya que el compoenente
           //no se resetea y por lo tanto la lista tampoco, entonces puede lleguar a quedar cargada igual aunque no lo este
-          error: (e) => {alert(e.message), this.solicitudesList.set([])}
+          error: (e) => {this.dialog.error(e.message), this.solicitudesList.set([])}
         })
 
       }
@@ -233,21 +235,22 @@ export class ListarSolicitudes {
 
 
   //HANDLERS de los botones
-  handleAccept(index: number){
-    
-    if(confirm("Seguro que desea aceptar la solicitud? ")){
+  async handleAccept(index: number){
+
+    const confirmado = await this.dialog.confirm("Seguro que desea aceptar la solicitud? ");
+    if(confirmado){
 
       //seteamos isLoading para que se bloquee la UI y que espere a que se complete la peticion o retorne un error
       this.isLoading.set(true);
 
       //si el formulario no fue modificado
       if(this.formList()[index].pristine){
-  
+
         //le pasamos el id de la solcitud que tiene el indice que se nos paso
         this.solicitudService.accept(this.solicitudesList()[index].id!).subscribe({
-  
+
           next: (s) => {
-            console.log(s); 
+            console.log(s);
             //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
             this.toggleExpand(index),
             //elminamos uno elemento desde la posicion del index en las dos listas
@@ -255,32 +258,33 @@ export class ListarSolicitudes {
             //debloquemas la UI cuando el back retorne algo
             this.isLoading.set(false);
           },
-          error: (e) => {alert("Hubo un error: " + e.message), this.isLoading.set(false)}
+          error: (e) => {this.dialog.error("Hubo un error: " + e.message), this.isLoading.set(false)}
         })
       }else{
 
         //si el formulario fue modificado modificamos y aceptamos
         this.solicitudService.modifyAndAccept(this.solicitudesList()[index].nombreComida, this.formList()[index].getRawValue()).subscribe({
-          
+
           next: (s) => {
-            console.log(s); 
+            console.log(s);
             //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
             this.toggleExpand(index),
             //elminamos uno elemento desde la posicion del index en las dos listas
-            this.solicitudesList().splice(index, 1), this.formList().splice(index, 1); 
+            this.solicitudesList().splice(index, 1), this.formList().splice(index, 1);
             //debloquemas la UI cuando el back retorne algo
             this.isLoading.set(false);
           },
-          error: (e) => {alert("Hubo un error" + e.message), this.isLoading.set(false)}
+          error: (e) => {this.dialog.error("Hubo un error" + e.message), this.isLoading.set(false)}
         })
       }
-      
+
     }
 
   }
 
-  handleDeny(index: number){
-    if(confirm("Seguro que desea rechazar la solicitud: " + this.solicitudesList()[index].nombreComida+ "?")){
+  async handleDeny(index: number){
+    const confirmado = await this.dialog.confirm("Seguro que desea rechazar la solicitud: " + this.solicitudesList()[index].nombreComida+ "?");
+    if(confirmado){
 
       //si confirma bloqueamos la UI
       this.isLoading.set(true);
@@ -290,17 +294,18 @@ export class ListarSolicitudes {
           //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
           this.toggleExpand(index),
           //elminamos uno elemento desde la posicion del index en las dos listas
-          this.solicitudesList().splice(index, 1), this.formList().splice(index, 1); 
+          this.solicitudesList().splice(index, 1), this.formList().splice(index, 1);
           //debloquemas la UI cuando el back retorne algo
           this.isLoading.set(false);
         },
-        error: (e) => {alert("Hubo un error: " + e.message), this.isLoading.set(false)}
+        error: (e) => {this.dialog.error("Hubo un error: " + e.message), this.isLoading.set(false)}
       })
     }
   }
 
-  handleEdit(index: number){
-    if(confirm("Seguro que desea editar su solicitud: " + this.solicitudesList()[index].nombreComida)){
+  async handleEdit(index: number){
+    const confirmado = await this.dialog.confirm("Seguro que desea editar su solicitud: " + this.solicitudesList()[index].nombreComida);
+    if(confirmado){
 
       //si confirma bloqueamos la UI
       this.isLoading.set(true);
@@ -314,13 +319,14 @@ export class ListarSolicitudes {
           //desbloqueamos la UI
           this.isLoading.set(false);
         },
-        error: (e) => {alert(e.message), this.isLoading.set(false)}
+        error: (e) => {this.dialog.error(e.message), this.isLoading.set(false)}
       })
     }
   }
 
-  handleDelete(index: number){
-    if(confirm("Seguro que desea eliminar su solicitud: " + this.solicitudesList()[index].nombreComida)){
+  async handleDelete(index: number){
+    const confirmado = await this.dialog.confirm("Seguro que desea eliminar su solicitud: " + this.solicitudesList()[index].nombreComida, { danger: true });
+    if(confirmado){
 
       //si confirma bloqueamos la UI
       this.isLoading.set(true);
@@ -330,11 +336,11 @@ export class ListarSolicitudes {
           //cerramos el expandible porque sino queda abierta la tarjeta que tiene el indice de la anterior
           this.toggleExpand(index),
           //elminamos uno elemento desde la posicion del index en las dos listas
-          this.solicitudesList().splice(index, 1), this.formList().splice(index, 1); 
+          this.solicitudesList().splice(index, 1), this.formList().splice(index, 1);
           //debloquemas la UI cuando el back retorne algo
           this.isLoading.set(false);
         },
-        error: (e) => {alert(e.message), this.isLoading.set(false)}
+        error: (e) => {this.dialog.error(e.message), this.isLoading.set(false)}
       })
     }
   }

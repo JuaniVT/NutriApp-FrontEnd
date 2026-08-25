@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmailVerificationService {
 
-   private apiUrl = 'http://localhost:8080/verificacion'; // Ajusta si tu ruta cambia
+   private apiUrl = `${environment.apiUrl}/verificacion`; // Ajusta si tu ruta cambia
 
   constructor(private http: HttpClient) {}
 

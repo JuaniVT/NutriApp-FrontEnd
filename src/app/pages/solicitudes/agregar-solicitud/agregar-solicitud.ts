@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { config } from 'rxjs';
 import { Solicitud } from '../../../models/solicitud';
 import { Loading } from '../../../visualComponents/loading/loading';
+import { DialogService } from '../../../service/dialog';
 
 @Component({
   selector: 'app-agregar-solicitud',
@@ -14,6 +15,7 @@ import { Loading } from '../../../visualComponents/loading/loading';
 export class AgregarSolicitud {
 
   private readonly solicitudService = inject(SolicitudService);
+  private readonly dialog = inject(DialogService);
 
   //output para cerra la ventana modal
   readonly isAdding = output<boolean>();
@@ -59,8 +61,9 @@ export class AgregarSolicitud {
   }
 
 
-  handleAdd(){
-    if(confirm("Seguro que desea agregar la solicitud: ")){
+  async handleAdd(){
+    const confirmado = await this.dialog.confirm("Seguro que desea agregar la solicitud: ");
+    if(confirmado){
 
       //bloqueamo la UI
       this.isLoading.set(true);
@@ -74,8 +77,8 @@ export class AgregarSolicitud {
           //desbloquemos la UI
           this.isLoading.set(false);
         },
-        error: (e) => {alert(e.message), this.isLoading.set(false)}
-      })    
+        error: (e) => {this.dialog.error(e.message), this.isLoading.set(false)}
+      })
     }
   }
 

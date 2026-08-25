@@ -1,29 +1,30 @@
 :host{
+    display: block;
     height: 100%;
 }
 
 .form-container {
     width: 100%;
     height: 100%;
-    padding: 20px 70px;
+    padding: var(--space-5, 20px) 70px;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: var(--app-font-family, Arial, sans-serif);
 }
 
 /* TITULO SECCIÓN */
 .section-title {
-    margin-top: 25px;
-    margin-bottom: 15px;
-    font-size: 1.2rem;
+    margin-top: var(--space-6, 24px);
+    margin-bottom: var(--space-4, 16px);
+    font-size: var(--font-lg, 20px);
     font-weight: 700;
-    color: #acacac;
+    color: var(--app-text-primary, #374151);
 }
 
 /* GRID GENERAL */
 .form {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px 20px;
+    gap: var(--space-4, 16px) var(--space-5, 20px);
 }
 
 /* CAMPO */
@@ -34,23 +35,25 @@
 }
 
 label {
-    margin-bottom: 4px;
-    font-size: 0.9rem;
-    color: #929292;
+    margin-bottom: var(--space-1, 4px);
+    font-size: var(--font-sm, 14px);
+    color: var(--app-text-secondary, #6b7280);
 }
 
 /* INPUTS */
 input, select {
-    padding: 8px 10px;
+    padding: var(--space-2, 8px) var(--space-3, 12px);
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 0.95rem;
+    font-size: var(--font-md, 16px);
     background-color: #fafafa;
+    box-sizing: border-box;
+    transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 input:focus, select:focus {
     outline: none;
-    border-color: #888;
+    border-color: var(--app-orange-600, #d97706);
 }
 
 /* INPUTS DESABILITADOS A LA EDICION */
@@ -64,40 +67,48 @@ input:focus, select:focus {
 /* BOTÓN */
 .buttonConteiner{
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-start;
     align-items: center;
-    gap: 30px;
-    margin-top: 50px;
+    gap: var(--space-6, 24px);
+    margin-top: var(--space-8, 32px);
 }
 
 
 .btn{
-    margin-top: 30px;
-    padding: 12px 20px;
-    font-size: 1rem;
+    padding: var(--space-3, 12px) var(--space-5, 20px);
+    font-size: var(--font-md, 16px);
     font-weight: bold;
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+                transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
-#btn-actualizar{   
-    background-color: #39c240;
+.btn:active:not(:disabled) {
+    transform: scale(0.97);
 }
 
-#btn-actualizar:hover {
-    background-color: #43a047;
+#btn-actualizar{
+    background-color: var(--app-green-700, #047857);
+    color: #fff;
+}
+
+#btn-actualizar:hover:not(:disabled) {
+    background-color: #035c40;
 }
 
 #btn-actualizar:disabled {
     cursor: not-allowed;
-    background-color: #39c240;
+    background-color: var(--app-text-muted, #9ca3af);
 }
 
 
 
 #btn-borrar{
     background-color: #d80303;
+    color: #fff;
 }
 
 #btn-borrar:hover {
@@ -107,6 +118,36 @@ input:focus, select:focus {
 
 /* MENSAJE DE ERROR */
 .errorMessage{
-    color: red;
-    margin-top: 10px;
+    color: #b91c1c;
+    font-size: var(--font-sm, 14px);
+    margin-top: var(--space-2, 8px);
+    display: inline-block;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+    .form-container {
+        padding: var(--space-5, 20px) var(--space-8, 32px);
+    }
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: var(--space-4, 16px) var(--space-5, 20px);
+    }
+
+    .buttonConteiner {
+        gap: var(--space-4, 16px);
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        padding: var(--space-4, 16px);
+    }
+
+    .btn {
+        min-height: var(--tap-target-min, 44px);
+        flex: 1 1 auto;
+    }
 }

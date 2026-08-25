@@ -2,15 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Person } from '../models/person';
 import { NutritionalProfile } from '../models/nutritional-profile';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
   
   private readonly http = inject(HttpClient);
-  private readonly baseURL_Person = "http://localhost:8080/api/persona";
-  private readonly baseURL_NutritionalProfile = "http://localhost:8080/api/perfil-nutricional";
+  private readonly baseURL_Person = `${environment.apiUrl}/api/persona`;
+  private readonly baseURL_NutritionalProfile = `${environment.apiUrl}/api/perfil-nutricional`;
 
   //Person Profile
   getPersonProfile (){

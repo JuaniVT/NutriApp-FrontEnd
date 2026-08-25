@@ -1,0 +1,45 @@
+<div class="chat-wrapper">
+  <header class="chat-header">
+    <div class="chat-header-avatar">🥗</div>
+    <div class="chat-header-info">
+      <h2>NutriBot</h2>
+      <span class="chat-header-status">Tu asistente de nutrición</span>
+    </div>
+  </header>
+
+  <div class="quick-actions">
+    <button *ngFor="let action of quickActions"
+            class="quick-action-chip"
+            type="button"
+            [disabled]="isLoading"
+            (click)="sendQuickAction(action)">
+      {{ action.label }}
+    </button>
+  </div>
+
+  <div class="messages-container" #messagesContainer>
+    <div *ngFor="let msg of messages"
+         class="msg-row"
+         [ngClass]="msg.role === 'user' ? 'msg-row-user' : 'msg-row-bot'">
+      <div [ngClass]="msg.role === 'user' ? 'msg-user' : 'msg-bot'">
+        <span *ngIf="msg.role === 'user'">{{ msg.content }}</span>
+        <markdown *ngIf="msg.role === 'bot'" [data]="msg.content"></markdown>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="msg-row msg-row-bot">
+      <div class="msg-bot typing-indicator" aria-label="NutriBot está escribiendo">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input [(ngModel)]="newMessage"
+           (keyup.enter)="sendMessage()"
+           placeholder="¿Qué quieres consultar hoy?">
+    <button (click)="sendMessage()" [disabled]="isLoading">Enviar</button>
+  </div>
+</div>

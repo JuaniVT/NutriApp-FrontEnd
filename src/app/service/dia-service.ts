@@ -5,6 +5,8 @@ import { ComidaIngeridaSalidaDTO } from '../models/comida-ingerida-salida.dto';
 import { modificarComidaIngeridaDTO } from '../models/modificar-comida-ingerida-dto';
 import { AlimentoBusquedaDTO } from '../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../models/comidaingeridadto';
+import { HidratacionSalidaDTO } from '../models/hidratacion';
+import { environment } from '../../environments/environment';
 
 
 export interface ActividadFisicaSalidaDTO {
@@ -20,6 +22,7 @@ export interface DiaDTO {
   caloriasRestantes: number;
   comidasIngeridas: ComidaIngeridaSalidaDTO[];
   actividadesFisicasRealizadas: ActividadFisicaSalidaDTO[];
+  hidratacion: HidratacionSalidaDTO;
 }
 
 @Injectable({
@@ -27,7 +30,7 @@ export interface DiaDTO {
 })
 export class DiaService {
 
-  private apiUrl = 'http://localhost:8080'; 
+  private apiUrl = `${environment.apiUrl}`; 
   private readonly http = inject(HttpClient); 
 
 

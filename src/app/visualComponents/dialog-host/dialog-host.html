@@ -1,0 +1,50 @@
+@if (dialog.request(); as req) {
+  <div class="modal-backdrop" (click)="onBackdropClick()"></div>
+
+  <div
+    class="dialog-container"
+    [class.dialog-success]="req.kind === 'success'"
+    [class.dialog-error]="req.kind === 'error'"
+    role="alertdialog"
+    aria-modal="true"
+    tabindex="-1"
+    (keydown.escape)="onEscape()"
+  >
+    <p class="dialog-title" [class.dialog-title-success]="req.kind === 'success'" [class.dialog-title-error]="req.kind === 'error'">
+      {{ req.title || (req.kind === 'success' ? 'Éxito' : req.kind === 'error' ? 'Error' : req.kind === 'confirm' ? 'Confirmar' : 'Aviso') }}
+    </p>
+
+    <p class="dialog-message">{{ req.message }}</p>
+
+    @if (req.kind === 'prompt') {
+      <input
+        #promptInput
+        class="dialog-input"
+        type="text"
+        [value]="promptValue()"
+        (input)="onPromptInput(promptInput.value)"
+        (keydown.enter)="accept()"
+      />
+    }
+
+    <div class="botones">
+      @if (req.kind === 'confirm' || req.kind === 'prompt') {
+        <button type="button" class="btn-denegar" (click)="cancel()">
+          {{ req.cancelText || 'Cancelar' }}
+        </button>
+        <button
+          type="button"
+          class="btn-aceptar"
+          [class.btn-danger]="req.danger"
+          (click)="accept()"
+        >
+          {{ req.confirmText || 'Aceptar' }}
+        </button>
+      } @else {
+        <button type="button" class="btn-aceptar dialog-btn-full" (click)="accept()">
+          {{ req.confirmText || 'Aceptar' }}
+        </button>
+      }
+    </div>
+  </div>
+}
