@@ -102,41 +102,55 @@
 
 .input-wrapper {
   display: flex;
+  align-items: stretch;
   gap: var(--space-2, 8px);
   flex: 1 1 220px;
   min-width: 0;
 }
 
 .input-ml {
-  flex-grow: 1;
+  flex: 2 1 0%;
   min-width: 0;
-  border: 1px solid var(--app-orange-soft, #FDE6D1);
-  border-radius: 8px;
-  padding: var(--space-2, 8px) var(--space-3, 12px);
-  background: #fff;
+  min-height: 48px;
+  border: none;
+  border-radius: 14px;
+  padding: 10px 14px;
+  background: #f3f5f8;
   font-size: var(--font-md, 16px);
   box-sizing: border-box;
-  transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.08);
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
+
+.input-ml:focus {
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+  outline: none;
 }
 
 .btn-agregar {
-  background-color: var(--app-green-700, #047857);
+  flex: 1 1 auto;
+  min-width: 100px;
+  min-height: 48px;
+  background-color: var(--app-orange-700, #b45309);
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: var(--space-2, 8px) var(--space-5, 20px);
-  min-height: 36px;
+  border-radius: 14px;
+  padding: var(--space-2, 8px) var(--space-4, 16px);
   font-size: var(--font-sm, 14px);
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
-              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .btn-agregar:hover:not(:disabled) {
-  background-color: #035c40;
-  transform: translateY(-1px);
+  background-color: var(--app-orange-800, #92400e);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
 }
 
 .btn-agregar:active:not(:disabled) {
@@ -147,6 +161,7 @@
   background-color: var(--app-text-muted, #9ca3af);
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 /* ---------- Responsive ---------- */
@@ -164,6 +179,15 @@
     flex-direction: column;
   }
 
+  /* .input-wrapper usa flex: 1 1 220px pensado para modo fila (220px = ancho
+     mínimo). Al pasar el padre a columna, ese 220px pasa a interpretarse
+     como alto en el eje principal e infla el input y el botón. Se anula
+     acá para que solo ocupe el alto de su contenido. */
+  .input-wrapper {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
   .botones-rapidos {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -175,5 +199,14 @@
   .btn-rapido,
   .btn-agregar {
     min-height: var(--tap-target-min, 44px);
+  }
+
+  .input-wrapper {
+    flex-direction: column;
+  }
+
+  .btn-agregar {
+    width: 100%;
+    min-width: 0;
   }
 }

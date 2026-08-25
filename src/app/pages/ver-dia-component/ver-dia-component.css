@@ -12,10 +12,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-direction: column; 
+  flex-direction: column;
   box-sizing: border-box;
   max-width: 900px;
   margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .total-hidratacion {
@@ -78,7 +80,7 @@
 }
 
 .titulo-semana {
-  font-size: 1.8rem;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
   font-weight: 700;
   color: var(--app-orange-700, #b45309);
   margin: 10px 0 15px;
@@ -330,6 +332,25 @@
   }
 }
 
+/* Contenedor general: acciones + gráfico
+   (declarado antes de RESPONSIVE GENERAL a propósito: con especificidad
+   empatada, si esta regla quedara después de los @media que la modifican,
+   ganaría siempre ella y los overrides de los media queries nunca se aplicarían) */
+.container-graficos-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(20px, 4vw, 60px);
+  padding: 10px 0 16px;
+  width: 100%;
+}
+
+/* Contenedor del formulario */
+.acciones {
+  flex: 1 1 280px;
+  max-width: 320px;
+}
 
 /* ==========================
    RESPONSIVE GENERAL
@@ -339,12 +360,18 @@
 @media (max-width: 1024px) {
   .container-graficos-acciones {
     flex-direction: column;
-    gap: 60px;
+    align-items: center;
+    gap: clamp(24px, 5vw, 40px);
     padding-bottom: 60px;
   }
 
+  /* .acciones usa flex: 1 1 280px pensado como ancho mínimo cuando
+     .container-graficos-acciones está en fila. Al pasar el padre a
+     columna (arriba), ese 280px pasa a interpretarse como alto mínimo
+     e infla el formulario con espacio vacío. Se anula acá. */
   .acciones {
-    width: 100%;
+    flex: 1 1 auto;
+    max-width: 100%;
   }
 
   .macro-container {
@@ -772,25 +799,26 @@
 }
 
 
-/* Contenedor general: acciones + gráfico */
-.container-graficos-acciones {
-  display: flex;
-  justify-content: flex-start;
-  gap: 150px;
-  padding: 10px 0 100px;
-  width: 100%;
-}
-
-/* Contenedor del formulario */
-.acciones {
-  width: 50%;
-}
-
 .acciones form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
-  gap: 14px;
+  gap: 10px;
+}
+
+/* Label, input y mensaje de error ocupan la fila completa;
+   Actualizar/Eliminar quedan como los dos únicos ítems restantes
+   y el auto-placement de grid los ubica lado a lado. */
+.acciones label,
+#entrada,
+.error-mensaje {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 360px) {
+  .acciones form {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Label */
@@ -803,7 +831,7 @@
 /* Input nuevo */
 #entrada {
   width: auto;
-  padding: 12px 14px;
+  padding: 9px 12px;
   border: none;
   margin-left: 10px;
   /* SIN BORDES COMO PEDISTE */
@@ -834,21 +862,30 @@
 .info-macro-cards {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-  margin-top: 15px;
+  gap: 12px;
+  margin: 10px 0;
   justify-content: space-between;
 }
 
 /* Tarjeta individual */
 .macro-card {
   flex: 1;
+  box-sizing: border-box;
   background: #fff;
   border-radius: 14px;
-  padding: 18px;
+  padding: 12px 10px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--app-orange-soft, #fde6d1);
   transition: transform .2s ease, box-shadow .2s ease;
+}
+
+/* Label dentro de las macro-cards del detalle de alimento: fuente algo
+   más chica y sin wrap para que "Carbohidratos" no corte feo en cards
+   angostas. Escopado a .macro-card para no afectar a .macros-resumen .macro,
+   que reutiliza el mismo nombre de clase .macro-label en otro contexto. */
+.macro-card .macro-label {
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 /* Hover premium */
@@ -890,7 +927,6 @@
   font-size: var(--font-sm, 15px);
   font-weight: 600;
   border-radius: 10px;
-  margin-top: 10px;
   cursor: pointer;
   transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
               opacity var(--duration-base, 200ms) var(--ease-out, ease-out),
@@ -918,7 +954,6 @@
   font-size: var(--font-sm, 15px);
   font-weight: 600;
   border-radius: 10px;
-  margin-top: 8px;
   cursor: pointer;
   transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
               transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
@@ -930,32 +965,43 @@
 }
 
 .grafico-macros {
-  margin-top: 12px;
-  width: auto;
   display: flex;
-  margin-right: 200px;
+  flex: 1 1 170px;
+  max-width: 170px;
+  margin: 0;
   justify-content: center;
 }
 
 .grafico-macros canvas {
-  width: 220px !important;
-  /* 🔥 más chico */
-  height: 220px !important;
-  /* 🔥 más chico */
+  width: 100% !important;
+  max-width: 170px !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1;
 }
 
 
 .macros {
   display: flex;
   flex-direction: row;
-  gap: 20px;
-  margin-bottom: 20px;
-  margin-top: 15px;
+  gap: 12px;
+  margin: 0;
   justify-content: space-between;
 }
 
-.container-graficos-acciones {
-  display: flex;
+/* 3 macro-cards en fila ya no entran junto a su valor (20px) sin
+   desbordar el panel a este ancho: se pasa a 2 columnas en vez de
+   seguir reduciendo la fuente hasta hacerla ilegible.
+   (declarado después de .macros/.macro-card a propósito, ver nota de
+   cascada junto a .container-graficos-acciones más arriba en el archivo) */
+@media (max-width: 360px) {
+  .macros {
+    flex-wrap: wrap;
+  }
+
+  .macro-card {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 0;
+  }
 }
 
 
@@ -976,7 +1022,7 @@
 
 /* Fecha del día */
 .resumen-dia h2 {
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
   font-weight: 700;
   color: var(--app-orange-700, #b45309);
   text-align: center;
@@ -985,7 +1031,7 @@
 
 /* Número de calorías */
 .arc-number {
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
   font-weight: 700;
   color: var(--app-orange-700, #b45309);
   text-align: center;
@@ -1039,12 +1085,7 @@
     padding: 15px 18px;
   }
 
-  .resumen-dia h2 {
-    font-size: 1.4rem;
-  }
-
   .arc-number {
-    font-size: 1.2rem;
     padding: 10px 0;
   }
 
