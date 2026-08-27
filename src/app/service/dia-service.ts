@@ -5,6 +5,7 @@ import { ComidaIngeridaSalidaDTO } from '../models/comida-ingerida-salida.dto';
 import { modificarComidaIngeridaDTO } from '../models/modificar-comida-ingerida-dto';
 import { AlimentoBusquedaDTO } from '../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../models/comidaingeridadto';
+import { HidratacionSalidaDTO } from '../models/hidratacion';
 
 
 export interface ActividadFisicaSalidaDTO {
@@ -20,6 +21,7 @@ export interface DiaDTO {
   caloriasRestantes: number;
   comidasIngeridas: ComidaIngeridaSalidaDTO[];
   actividadesFisicasRealizadas: ActividadFisicaSalidaDTO[];
+  hidratacion: HidratacionSalidaDTO;
 }
 
 @Injectable({

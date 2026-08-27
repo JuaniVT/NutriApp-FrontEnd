@@ -12,9 +12,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-direction: column; 
   box-sizing: border-box;
   max-width: 900px;
   margin: 0 auto;
+}
+
+.total-hidratacion {
+    color: #2e7d32; /* Un verde oscuro legible */
+    background-color: #e8f5e9; /* Fondo verde muy suave */
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-left: 5px solid #2e7d32; /* Un acento lateral queda muy bien */
+    margin: 15px 0;
 }
 
 /* Barra de navegación semanal */
@@ -1173,6 +1185,15 @@
   /* que esté por encima de todo */
 }
 
+/* Contenedor para el componente de hidratación */
+.hidratacion-wrapper {
+  width: 100%; /* Ocupa todo el ancho del contenedor padre */
+  display: flex;
+  justify-content: center; /* Centra la tarjeta dentro del wrapper */
+  box-sizing: border-box;
+  align-self: stretch; /* Clave: Hace que este elemento ignore el 'align-items: center' del padre y se estire */
+}
+
 /* Ventana modal */
 .modal-agregar {
   position: fixed;
@@ -1191,4 +1212,3 @@
   max-height: 90vh;
   overflow-y: auto;
 }
-
