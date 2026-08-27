@@ -18,6 +18,8 @@ import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 import { FechaLocalService } from '../../service/FechaLocalService';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { ArcElement, Chart, ChartDataset, registerables, Tooltip } from 'chart.js';
+import { NotificacionLogro } from '../../service/notificacion-logro';
+import { LogroService } from '../../service/logro';
 Chart.register(...registerables);
 
 Chart.register(ArcElement, Tooltip);
@@ -32,6 +34,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   progressChart?: Chart;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
+  private readonly notificacionLogroService = inject(NotificacionLogro);
   protected manejadorSemana = inject(ManejadorSemana);
   protected manejadorFechas = inject(FechaLocalService);
 
@@ -413,6 +416,9 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
           this.agregado.emit();   // notifica al padre para recargar el día
           this.cargarDia(this.fecha!);
           this.cerrarAgregar();
+
+          //llamamos a comprobar si se gano algun logro y lo mostramos
+          this.notificacionLogroService.obtenerUltimoLogroYmostrarNotificacion();
         },
         error: (err) => {
           const mensajeError = err.error?.error || 'No se pudo agregar el paquete.';

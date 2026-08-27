@@ -1,0 +1,27 @@
+@if (notificacionLogroService.mostrarNotificacionLogro()) {
+    <aside class="logro-notificacion" role="status" aria-live="polite">
+        <button
+            class="boton-cerrar"
+            type="button"
+            aria-label="Cerrar notificación"
+            title="Cerrar"
+            (click)="notificacionLogroService.cerrarNotificacion()"
+        >
+            &#10005;
+        </button>
+
+        <div class="logro-icono" aria-hidden="true">★</div>
+
+        <div class="logro-contenido">
+            <p class="logro-etiqueta">¡Nuevo logro!</p>
+            <p class="logro-mensaje">Ganaste el logro de '
+                {{notificacionLogroService.ultimoLogroGanado()?.logro_id
+                ?.replaceAll("_", " ")}}
+                '</p>
+
+            <button class="boton-ver-logros" type="button" (click)="verLogros()">
+                Haz clic para ver tus logros
+            </button>
+        </div>
+    </aside>
+}

@@ -1,10 +1,14 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, signal } from '@angular/core';
 
 import { DiaService } from '../../service/dia-service';
 import { AlimentoBusquedaDTO } from '../../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../../models/comidaingeridadto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LogroService } from '../../service/logro';
+import { LogroHistorial } from '../../models/logro-historial';
+import { errorContext } from 'rxjs/internal/util/errorContext';
+import { NotificacionLogro } from '../../service/notificacion-logro';
 
 @Component({
   selector: 'app-agregar-comida',
@@ -14,6 +18,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './agregar-comida.css',
 })
 export class AgregarComidaComponent {
+  //service para las notificaciones de los logros
+  private readonly notificacionLogroService = inject(NotificacionLogro);
+
   // agregar-comida.component.ts
   mostrarModal: boolean = false;   // 👈 NECESARIO
  @Input() tipoComida!: 'DESAYUNO' | 'ALMUERZO' | 'CENA' | 'SNACK';
@@ -59,6 +66,10 @@ export class AgregarComidaComponent {
         this.filtro = '';
         this.alimentos = [];
         this.comidaAgregada.emit(); // notifica al padre
+
+        //se llama a comprobar si gano algun logro dentro de este metodo asyncrono, porque si lo ponemos afuera, se podria llegar
+        //a ejecutar antes de que se registre la comida, y asi, no comprobar el logro correctamente
+        this.notificacionLogroService.obtenerUltimoLogroYmostrarNotificacion();
       },
       error: err => console.error(err)
     });
@@ -72,12 +83,12 @@ export class AgregarComidaComponent {
 
   abrirModal() {
   this.mostrarModal = true;
-}
+  }
 
-cerrarModal() {
-  this.mostrarModal = false;
-  this.alimentoSeleccionado = undefined;
-  this.filtro = "";
-  this.alimentos = [];
-}
+  cerrarModal() {
+    this.mostrarModal = false;
+    this.alimentoSeleccionado = undefined;
+    this.filtro = "";
+    this.alimentos = [];
+  }
 }
