@@ -214,32 +214,33 @@
 
         <div class="logrosConteiner">
 
-        @if (logrosResumen().length === 0) {
-            <div class="empty-achievements">
-                <strong>Todavía no tenés logros</strong>
-                <span>Seguí cuidando tus hábitos para desbloquearlos.</span>
-            </div>
-        }@else {
-            @for (logro of logrosResumen(); track logro.logro_id) {
-                <article class="achievement-card">
-                    <div class="achievement-image">
-                        @if (logro.nivel === "level 1") {
-                            <img src="logros/{{logro.logro_id}} bronce.png" alt="Logro Bronce" class="logro">
-                        }
-                        @if (logro.nivel === "level 2") {
-                            <img src="logros/{{logro.logro_id}} plata.png" alt="Logro Plata" class="logro">
-                        }
-                        @if (logro.nivel === "level 3") {
-                            <img src="logros/{{logro.logro_id}} oro.png" alt="Logro Oro" class="logro">
-                        }
-                    </div>
-                    <div>
-                        <h3>{{ logro.logro_id.replaceAll('_', ' ') }}</h3>
-                        <span>{{ logro.nivel }} · {{ logro.cantGanado }} {{ logro.cantGanado === 1 ? 'vez' : 'veces' }}</span>
-                    </div>
-                </article>
+            @if (logrosResumen().length === 0) {
+                <div class="empty-achievements">
+                    <strong>Todavía no tenés logros</strong>
+                    <span>Seguí cuidando tus hábitos para desbloquearlos.</span>
+                </div>
+            }@else {
+                @for (logro of logrosResumen(); track logro.logro_id) {
+                    <article class="achievement-card">
+                        <div class="achievement-image">
+                            @if (logro.nivel === "level 1") {
+                                <img src="logros/{{logro.logro_id}} bronce.png" alt="Logro Bronce" class="logro">
+                            }
+                            @if (logro.nivel === "level 2") {
+                                <img src="logros/{{logro.logro_id}} plata.png" alt="Logro Plata" class="logro">
+                            }
+                            @if (logro.nivel === "level 3") {
+                                <img src="logros/{{logro.logro_id}} oro.png" alt="Logro Oro" class="logro">
+                            }
+                        </div>
+                        <div>
+                            <h3>{{ logro.logro_id.replaceAll('_', ' ') }}</h3>
+                            <span>{{ logro.nivel }} · {{ logro.cantGanado }} {{ logro.cantGanado === 1 ? 'vez' : 'veces' }}</span>
+                        </div>
+                    </article>
+                }
             }
-        }
+            
         </div>
     </section>
 
