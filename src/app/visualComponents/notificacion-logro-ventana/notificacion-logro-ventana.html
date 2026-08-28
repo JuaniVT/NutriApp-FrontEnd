@@ -1,12 +1,6 @@
 @if (notificacionLogroService.mostrarNotificacionLogro()) {
     <aside class="logro-notificacion" role="status" aria-live="polite">
-        <button
-            class="boton-cerrar"
-            type="button"
-            aria-label="Cerrar notificación"
-            title="Cerrar"
-            (click)="notificacionLogroService.cerrarNotificacion()"
-        >
+        <button class="boton-cerrar" type="button" aria-label="Cerrar notificación" title="Cerrar" (click)="notificacionLogroService.cerrarNotificacion()">
             &#10005;
         </button>
 

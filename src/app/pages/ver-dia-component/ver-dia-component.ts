@@ -383,6 +383,10 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
         console.log('Comida modificada correctamente:', resp.mensaje);
 
         this.cargarDia(this.fecha!);
+
+        //se llama a comprobar si gano algun logro dentro de este metodo asyncrono, porque si lo ponemos afuera, se podria llegar
+        //a ejecutar antes de que se registre la comida, y asi, no comprobar el logro correctamente
+        this.notificacionLogroService.obtenerUltimoLogroYmostrarNotificacion();
       },
       error: (err) => {
         console.error('Error al modificar la comida:', err);
