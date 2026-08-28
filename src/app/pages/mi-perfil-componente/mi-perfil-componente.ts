@@ -1,10 +1,10 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ProfileService } from '../../service/profile';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { EmailValidator, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { from } from 'rxjs';
-import { Genero } from '../../models/person';
-import { NivelActividadFisica, ObjetivoCaloricoTipo } from '../../models/nutritional-profile';
+import { Genero, Person } from '../../models/person';
+import { NivelActividadFisica, NutritionalProfile, ObjetivoCaloricoTipo } from '../../models/nutritional-profile';
 import { UserService } from '../../service/user';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth';
@@ -24,8 +24,20 @@ export class MiPerfilComponente {
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService)
   private readonly router = inject(Router);
-  protected readonly personProfile = toSignal(this.profileService.getPersonProfile());
-  protected readonly nutritionalProfilePerson = toSignal(this.profileService.getNutritionalProfile())
+  private readonly personProfile = toSignal(this.profileService.getPersonProfile());
+  private readonly nutritionalProfilePerson = toSignal(this.profileService.getNutritionalProfile())
+
+  //signals para mostrar datos en tiempo real al ser actualizados
+  protected readonly personProfileSignal = signal<Person | undefined>(undefined);
+  protected readonly nutritionalProfileSignal = signal<NutritionalProfile | undefined>(undefined);
+
+  protected readonly nombreSignal = computed(() => this.personProfile()?.nombre!)
+  protected readonly apellidoSignal = computed(() => this.personProfile()?.apellido!);
+  protected readonly emailSignal = computed(() => this.personProfile()?.email!);
+  protected readonly nivelActividadFisicaSignal = computed(() => this.nutritionalProfilePerson()?.nivelActividadFisica!);
+  protected readonly objetivoDiarioSignal = computed(() => this.nutritionalProfilePerson()?.objetivoDiario!);
+  protected readonly gebSignal = computed(() => this.nutritionalProfilePerson()?.geb!);
+  protected readonly pesoSignal = computed(() => this.nutritionalProfilePerson()?.peso!);
   
   //logros
   private readonly logroService = inject(LogroService);
@@ -124,7 +136,12 @@ export class MiPerfilComponente {
       //incializamos el formulario con los datos que nos llega
       this.personForm.patchValue(this.personProfile()!)
       
+      //incializamos el formulario con los datos que nos llega
       this.nutritionalProfileForm.patchValue(this.nutritionalProfilePerson()!)
+
+      //seteamos los valores a las signals que son para mostrar dinamicamente
+      this.personProfileSignal.set(this.personProfile())
+      this.nutritionalProfileSignal.set(this.nutritionalProfilePerson())
     })
   }
 
@@ -132,22 +149,54 @@ export class MiPerfilComponente {
 
   handleActualizar(){
     if (confirm("Desea actualizar los datos? ")){
-      if(this.personForm.valid && this.nutritionalProfileForm.valid){
-        
-        //actualizamos la persona
-        this.profileService.updatePersonProfile(this.personForm.getRawValue()).subscribe({
-          next: (p) => this.personForm.patchValue(p),
-          error: (e) => alert(e)
-        })
+      //actualizamos la persona
+      this.profileService.updatePersonProfile(this.personForm.getRawValue()).subscribe({
+        next: (p) => {
+          //patcheamos el formulario con lo que nos respondio el back
+          this.personForm.patchValue(p)
+          
+          //actualizamos la signal que es para mostrar los datos dinamicamente
+          this.personProfileSignal.set(p); 
 
-        //actualizamos el perfil nutricional
-        this.profileService.updateNutritionalProfile(this.nutritionalProfileForm.getRawValue()!).subscribe({
-          next: (n) => this.nutritionalProfileForm.patchValue(n),
-          error: (e) => alert(e)
-        })
-      }
+          //actualizamos el perfil nutricional adentro del suscribe para que se ejecute esta peticion una vez que el back
+          //responde para no generar una inconsistencia, que es lo que pasaba antes
+          this.profileService.updateNutritionalProfile(this.nutritionalProfileForm.getRawValue()!).subscribe({
+            next: (n) => {
+              //patcheamos el formulario con lo que nos respondio el back
+              this.nutritionalProfileForm.patchValue(n)
+
+              //actualizamos la signal que es para mostrar los datos dinamicamente
+              this.nutritionalProfileSignal.set(n);
+            },
+            error: (e) => alert(e)
+          })
+        },
+        error: (e) => alert(e)
+      })
+      
+      
+      // //actualizamos las signals del dashboard para muestre la info de forma dinamica
+      // this.actualizarSignalsDashboardNutritional(n);
+      // //actualizamos las signals del dashboard para muestre la info de forma dinamica
+      // this.actualizarSignalsDashboardPerson(p);
+      
     }
   }
+
+
+  // actualizarSignalsDashboardPerson(personProfile: Person){
+  //   this.nombreSignal.set(personProfile.nombre);
+  //   this.apellidoSignal.set(personProfile.apellido);
+  //   this.emailSignal.set(personProfile.email);
+  // }
+
+  // actualizarSignalsDashboardNutritional(nutritionalProfile: NutritionalProfile){
+  //   this.objetivoDiarioSignal.set(nutritionalProfile.objetivoDiario);
+  //   this.gebSignal.set(nutritionalProfile.geb);
+  //   this.pesoSignal.set(nutritionalProfile.peso);
+  //   this.nivelActividadFisicaSignal.set(nutritionalProfile.nivelActividadFisica);
+  // }
+  
 
   handleBorrarCuenta(){
     if(confirm("Seguro que desea eliminar su cuenta?")){
