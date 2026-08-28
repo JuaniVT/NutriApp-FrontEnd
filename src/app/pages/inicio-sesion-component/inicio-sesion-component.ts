@@ -33,11 +33,14 @@ export class InicioSesionComponent implements OnInit{
         callback: (resp: any) => { this.handleCredentialResponse(resp)
         }
       })
-    google.accounts.id.renderButton(document.getElementById("google-btn"), {
-      theme: 'filled_blue',
+    const googleBtnContainer = document.getElementById("google-btn");
+    const anchoDisponible = googleBtnContainer?.offsetWidth || 350;
+    google.accounts.id.renderButton(googleBtnContainer, {
+      theme: 'outline',
       size: 'large',
-      shape: 'rectangle',
-      width: 350
+      shape: 'pill',
+      logo_alignment: 'left',
+      width: Math.min(350, anchoDisponible)
     })
   }
 

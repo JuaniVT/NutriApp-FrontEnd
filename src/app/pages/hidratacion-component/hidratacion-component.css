@@ -1,12 +1,17 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .hidratacion-card {
   background: var(--app-bg, #FFF9F0);
   border: 1px solid var(--app-orange-soft, #FDE6D1);
   border-radius: 16px;
   padding: 1.25rem 1.5rem;
-  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.1);
+  box-shadow: 0 4px 14px rgba(180, 83, 9, 0.14);
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
   font-family: var(--app-font-family, 'Poppins', sans-serif);
 }
 
@@ -165,27 +170,53 @@
 }
 
 /* ---------- Responsive ---------- */
+/* Mobile: se compacta todo (paddings, fuentes, vasos) pero se mantiene el
+   mismo contenido visible siempre, sin ocultar nada, para no ocupar tanto alto. */
 @media (max-width: 640px) {
   .hidratacion-card {
-    padding: var(--space-4, 16px);
+    padding: var(--space-3, 12px) var(--space-4, 16px);
   }
 
   .hidratacion-header {
-    grid-template-columns: 1fr;
     gap: var(--space-2, 8px);
+    margin-bottom: var(--space-1, 4px);
+  }
+
+  .label {
+    font-size: 10px;
+  }
+
+  .valor {
+    font-size: var(--font-sm, 14px);
+  }
+
+  .progreso-info {
+    margin-bottom: var(--space-2, 8px);
+  }
+
+  .vasos-row {
+    gap: 6px;
+    margin-bottom: var(--space-2, 8px);
+  }
+
+  .vaso {
+    width: 12px;
+    height: 22px;
   }
 
   .seccion-agregar {
-    flex-direction: column;
+    padding-top: var(--space-2, 8px);
+    gap: var(--space-2, 8px);
   }
 
-  /* .input-wrapper usa flex: 1 1 220px pensado para modo fila (220px = ancho
-     mínimo). Al pasar el padre a columna, ese 220px pasa a interpretarse
-     como alto en el eje principal e infla el input y el botón. Se anula
-     acá para que solo ocupe el alto de su contenido. */
   .input-wrapper {
     flex: 1 1 auto;
     width: 100%;
+  }
+
+  .input-ml,
+  .btn-agregar {
+    min-height: var(--tap-target-min, 44px);
   }
 
   .botones-rapidos {
@@ -193,20 +224,8 @@
     -webkit-overflow-scrolling: touch;
     padding-bottom: 2px;
   }
-}
 
-@media (max-width: 480px) {
-  .btn-rapido,
-  .btn-agregar {
-    min-height: var(--tap-target-min, 44px);
-  }
-
-  .input-wrapper {
-    flex-direction: column;
-  }
-
-  .btn-agregar {
-    width: 100%;
-    min-width: 0;
+  .btn-rapido {
+    min-height: 38px;
   }
 }

@@ -27,10 +27,10 @@
             <small>El usuario es obligatorio.</small>
             }
             @if (username.errors?.['minlength']) {
-            <small>Mínimo {{ username.errors?.['minlength']?.requiredLength }} caracteres.</small>
+            <small>Mínimo {{ username.errors['minlength'].requiredLength }} caracteres.</small>
             }
             @if (username.errors?.['maxlength']) {
-            <small>Máximo {{ username.errors?.['maxlength']?.requiredLength }} caracteres.</small>
+            <small>Máximo {{ username.errors['maxlength'].requiredLength }} caracteres.</small>
             }
           </div>
           }
@@ -49,7 +49,7 @@
             <small>La contraseña es obligatoria.</small>
             }
             @if (password.errors?.['minlength']) {
-            <small>Debe tener al menos {{ password.errors?.['minlength']?.requiredLength }} caracteres.</small>
+            <small>Debe tener al menos {{ password.errors['minlength'].requiredLength }} caracteres.</small>
             }
           </div>
           }
@@ -72,10 +72,12 @@
         <button type="button" class="link-btn" (click)="irRegistro()">Registrate</button>
       </p>
 
-
     </div>
 
     <div class="google-container">
+      <div class="separador-o">
+        <span>o continuá con</span>
+      </div>
       <div id="google-btn"></div>
     </div>
   </div>
@@ -89,22 +91,37 @@
 
   <div class="nosotros-cards">
 
-    <div class="nosotros-card">
-      <img src="icons/food-icon.png" alt="Icono nutrición" class="nosotros-icon">
-      <h3>Nutrición Inteligente</h3>
+    <details class="nosotros-card">
+      <summary class="nosotros-card-summary">
+        <img src="icons/food-icon.png" alt="Icono nutrición" class="nosotros-icon">
+        <h3>Nutrición Inteligente</h3>
+        <svg class="nosotros-card-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </summary>
       <p>Te ayudamos a registrar tus comidas de forma simple, rápida y precisa para mejorar tu bienestar día a día.</p>
-    </div>
+    </details>
 
-    <div class="nosotros-card">
-      <img src="icons/goal-icon.png" alt="Icono objetivos" class="nosotros-icon">
-      <h3>Seguimiento de Objetivos</h3>
+    <details class="nosotros-card">
+      <summary class="nosotros-card-summary">
+        <img src="icons/goal-icon.png" alt="Icono objetivos" class="nosotros-icon">
+        <h3>Seguimiento de Objetivos</h3>
+        <svg class="nosotros-card-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </summary>
       <p>Visualizá tu proceso semanal y mensual, y descubrí cómo avanzás según tus metas.</p>
-    </div>
+    </details>
 
-    <div class="nosotros-card">
-      <img src="icons/tech-icon.png" alt="Icono tecnología" class="nosotros-icon">
-      <h3>Tecnología Inteligente</h3>
+    <details class="nosotros-card">
+      <summary class="nosotros-card-summary">
+        <img src="icons/tech-icon.png" alt="Icono tecnología" class="nosotros-icon">
+        <h3>Tecnología Inteligente</h3>
+        <svg class="nosotros-card-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </summary>
       <p>Usamos herramientas modernas para ofrecerte una experiencia rápida, clara y agradable.</p>
-    </div>
+    </details>
 
   </div>

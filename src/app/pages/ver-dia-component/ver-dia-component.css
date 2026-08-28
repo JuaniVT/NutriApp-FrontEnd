@@ -5,7 +5,7 @@
 /* ======== ESTILO GENERAL ======== */
 .ver-dia-container {
   min-height: 100vh;
-  padding: 1rem;
+  padding: 1.25rem;
   background-color: #ffffff;
   font-family: 'Poppins', sans-serif;
   color: #333;
@@ -60,11 +60,11 @@
 
   background: #ffffff;
   padding: 1rem;
-  border: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 18px;
   margin-bottom: 2rem;
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
 
   overflow: hidden;        /* <- evita que el hover expanda el contenedor */
   position: relative;
@@ -183,7 +183,7 @@
   max-width: 700px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 /* ======== CARDS DE COMIDA ======== */
@@ -191,8 +191,8 @@
   background-color: #fff;
   border-radius: 18px;
   padding: 15px 20px;
-  border: 1px solid #f2f2f2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 }
 
@@ -1010,10 +1010,11 @@
   width: 100%;
   max-width: 700px;
   background: linear-gradient(145deg, #fff8f0, #fffdf9);
+  border: 1px solid var(--app-orange-soft, #fde6d1);
   border-radius: 18px;
   padding: 20px 25px;
-  box-shadow: 0 6px 20px rgba(180, 83, 9, 0.1);
-  margin-bottom: 25px;
+  box-shadow: 0 8px 24px rgba(180, 83, 9, 0.15);
+  margin-bottom: 28px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -1052,11 +1053,12 @@
 .macro {
   flex: 1;
   background: #ffffff;
+  border: 1px solid var(--app-border-subtle, rgba(0, 0, 0, 0.08));
+  border-left: 6px solid var(--app-orange-700, #b45309);
   border-radius: 12px;
   padding: 12px 15px;
   text-align: center;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-  border-left: 6px solid var(--app-orange-700, #b45309);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -1089,9 +1091,23 @@
     padding: 10px 0;
   }
 
+  /* Se mantienen en fila (no apiladas) para no ocupar tanto alto en mobile */
   .macros-resumen {
-    flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+  }
+
+  .macro {
+    padding: 8px 6px;
+    border-left-width: 4px;
+  }
+
+  .macro-label {
+    font-size: 11px;
+  }
+
+  .macro-value {
+    font-size: 15px;
+    margin-top: 3px;
   }
 
  .semana-container {
@@ -1194,6 +1210,7 @@
 /* Contenedor para el componente de hidratación */
 .hidratacion-wrapper {
   width: 100%; /* Ocupa todo el ancho del contenedor padre */
+  max-width: 700px; /* Misma dimensión que .resumen-dia y .comidas-section */
   display: flex;
   justify-content: center; /* Centra la tarjeta dentro del wrapper */
   box-sizing: border-box;

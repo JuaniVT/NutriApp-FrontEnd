@@ -198,13 +198,33 @@ input.invalid {
 
 /* GOOGLE */
 .google-container {
-  margin-top: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.separador-o {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: var(--app-text-muted, #9ca3af);
+  font-size: var(--font-sm, 14px);
+}
+
+.separador-o::before,
+.separador-o::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--app-border-subtle, rgba(0, 0, 0, 0.1));
 }
 
 #google-btn {
-  display: inline-block;
-  margin-top: 10px;
+  display: block;
+  width: 100%;
 }
 
 /* SECCIÓN NOSOTROS */
@@ -247,7 +267,7 @@ input.invalid {
   flex-shrink: 1;
 }
 
-/* TARJETAS */
+/* TARJETAS (son <details> nativos: en mobile funcionan como desplegable, en desktop siempre se ven abiertas) */
 .nosotros-card {
   width: 320px;
   padding: 30px;
@@ -262,6 +282,21 @@ input.invalid {
 .nosotros-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 16px 40px rgba(217, 119, 6, 0.25);
+}
+
+.nosotros-card-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+}
+
+.nosotros-card-summary::-webkit-details-marker {
+  display: none;
+}
+
+.nosotros-card-chevron {
+  display: none;
 }
 
 /* ICONOS */
@@ -288,6 +323,23 @@ input.invalid {
 /* ===================== */
 /*    RESPONSIVE BASE    */
 /* ===================== */
+
+/* Desktop/tablet: el contenido del desplegable se muestra siempre, sin importar
+   el estado nativo abierto/cerrado del <details> (el acordeón es solo para mobile) */
+@media (min-width: 651px) {
+  .nosotros-card > p {
+    display: block;
+  }
+
+  /* Chrome moderno renderiza el contenido no-summary de <details> a través
+     del pseudo-elemento ::details-content; hay que forzar su visibilidad ahí también */
+  .nosotros-card::details-content {
+    content-visibility: visible;
+    display: block;
+    block-size: auto;
+    overflow: visible;
+  }
+}
 
 /* Tablets horizontales o pantallas medianas */
 @media (max-width: 1130px) {
@@ -387,6 +439,47 @@ input.invalid {
   .nosotros-card {
     width: 90%;
     max-width: 320px;
+    padding: 20px 24px;
+  }
+
+  /* Acordeón: la fila (ícono + título + flecha) siempre visible y clickeable,
+     el texto se despliega debajo solo cuando se toca la tarjeta */
+  .nosotros-card-summary {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .nosotros-card .nosotros-icon {
+    width: 36px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .nosotros-card h3 {
+    flex: 1;
+    margin-bottom: 0;
+    font-size: var(--font-md, 16px);
+  }
+
+  .nosotros-card-chevron {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    color: var(--app-orange-600, #d97706);
+    flex-shrink: 0;
+    transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out);
+  }
+
+  .nosotros-card[open] .nosotros-card-chevron {
+    transform: rotate(90deg);
+  }
+
+  .nosotros-card > p {
+    margin: 14px 0 0;
+    text-align: left;
   }
 }
 

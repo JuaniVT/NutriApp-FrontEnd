@@ -32,69 +32,58 @@
         }
     </div>
 
-
-    <div class="medio">
-
-    </div>
-
     <div class="derecha">
         @if (auth.isLoggedIn()) {
 
-        <!-- <div class="conetendorIconoCabecera">
-                <img src="" alt="dad" class="iconoPopeable">
-            </div>
-            
-            <div class="conetendorIconoCabecera">
-                <img src="" alt="da" class="iconoPopeable">
-            </div> -->
-    
-            <div class="conetendorIconoCabecera" onclick="menuPerfil.togglePopover()">
+            <div class="conetendorIconoCabecera" (click)="perfilPopover.togglePopover()">
                 <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
             </div>
-            <div class="cajaPerfil" id="menuPerfil" popover="manual">            
-                <a routerLink="/perfil" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
-                
+            <div class="cajaPerfil" id="menuPerfil" #perfilPopover popover="manual">
+                <a routerLink="/perfil" (click)="perfilPopover.togglePopover()" class="botonDesplegablePerfil">Perfil</a>
+
                 @if (role() == "ROLE_ADMIN") {
-                    <a routerLink="/listar-solicitudes/system" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Solicitudes del Sistema</a>
-                    <a routerLink="/alimentos-bdd" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Alimentos del Sistema</a>
+                    <a routerLink="/listar-solicitudes/system" (click)="perfilPopover.togglePopover()" class="botonDesplegablePerfil">Solicitudes del Sistema</a>
+                    <a routerLink="/alimentos-bdd" (click)="perfilPopover.togglePopover()" class="botonDesplegablePerfil">Alimentos del Sistema</a>
                 }@else {
-                    <a routerLink="/listar-solicitudes/mine" onclick="menuPerfil.togglePopover()" class="botonDesplegablePerfil">Mis Solicitudes</a>
+                    <a routerLink="/listar-solicitudes/mine" (click)="perfilPopover.togglePopover()" class="botonDesplegablePerfil">Mis Solicitudes</a>
                 }
-                <a routerLink="/login"  class="botonDesplegablePerfil" onclick="menuPerfil.togglePopover()" (click)="logOut()">Cerrar Sesion</a>
+                <a routerLink="/login" class="botonDesplegablePerfil botonDesplegablePerfil-salir" (click)="perfilPopover.togglePopover(); logOut()">Cerrar Sesion</a>
             </div>
 
         }@else {
         <a routerLink="/login" id="iniciarSesion">Iniciar Sesion</a>
         }
 
-
-
         <!-- DESPLEGABLE QUE SOLO SE MUESTRA EN CELULAR (CSS se encarga) -->
         <div class="hamburger" id="hamburgerMenu" (click)="toggleMenu()">
             <img src="iconos/desplegable-icon.png" alt="Menu">
         </div>
 
-        <div class="menuMobile" id="menuMobile" popover="manual">
+        <div class="menuMobile" id="menuMobile" #mobilePopover popover="manual">
 
             @if (auth.isLoggedIn()) {
 
             <div class="conetendorBotonCabecera">
-                <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active" onclick="menuMobile.togglePopover()">Mi
+                <a class="botonCabecera" [routerLink]="['/calendario', fechaHoy]" routerLinkActive="active" (click)="mobilePopover.togglePopover()">Mi
                     Calendario</a>
             </div>
 
             <div class="conetendorBotonCabecera">
-                <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active" onclick="menuMobile.togglePopover()">Día de Hoy</a>
+                <a class="botonCabecera" [routerLink]="['/dia', fechaHoy]" routerLinkActive="active" (click)="mobilePopover.togglePopover()">Día de Hoy</a>
             </div>
 
             <div class="conetendorBotonCabecera">
-                <a routerLink="/favoritas" routerLinkActive="active" class="botonCabecera" onclick="menuMobile.togglePopover()">Agregar Comida Favorita</a>
+                <a routerLink="/favoritas" routerLinkActive="active" class="botonCabecera" (click)="mobilePopover.togglePopover()">Agregar Comida Favorita</a>
+            </div>
+
+            <div class="conetendorBotonCabecera">
+                <a routerLink="/chat" routerLinkActive="active" class="botonCabecera" (click)="mobilePopover.togglePopover()">Ir a NutriBot</a>
             </div>
 
             }@else {
 
             <div class="conetendorBotonCabecera">
-                <a class="botonCabecera especial-login" (click)="irASeccion('nosotros-section')">
+                <a class="botonCabecera especial-login" (click)="irASeccion('nosotros-section'); mobilePopover.togglePopover()">
                     Nosotros
                 </a>
             </div>
