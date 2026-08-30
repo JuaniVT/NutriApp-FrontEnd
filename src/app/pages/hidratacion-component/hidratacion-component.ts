@@ -4,6 +4,8 @@ import { HidratacionService } from '../../service/hidratacion-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NotificacionLogro } from '../../service/notificacion-logro';
+import { LogroService } from '../../service/logro';
 
 @Component({
   selector: 'app-hidratacion-component',
@@ -13,6 +15,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './hidratacion-component.css',
 })
 export class HidratacionComponent {
+  private readonly notificacionLogroService = inject(NotificacionLogro);
+
   @Output() registroExitoso = new EventEmitter<void>();
   private hidratacionService = inject(HidratacionService);
   @Input() fecha?: string;
@@ -66,6 +70,10 @@ export class HidratacionComponent {
         this.loading = false;
         this.obtenerTotal(this.fecha!); // Recargar el total
         this.registroExitoso.emit();
+
+        //se llama a comprobar si gano algun logro dentro de este metodo asyncrono, porque si lo ponemos afuera, se podria llegar
+        //a ejecutar antes de que se registre la comida, y asi, no comprobar el logro correctamente
+        this.notificacionLogroService.obtenerUltimoLogroYmostrarNotificacion();
       },
       error: () => {
         this.mostrarMensaje('Error al conectar.', true);

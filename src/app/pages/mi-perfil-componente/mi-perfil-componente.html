@@ -1,148 +1,254 @@
-<div class="form-container">
+<div class="profile-page">
+    <header class="profile-hero">
+        <div class="profile-heading">
+            <span class="eyebrow">Mi cuenta</span>
+            <h1>{{ personProfileSignal()?.nombre }} {{ personProfileSignal()?.apellido }}</h1>
+            <p>{{ personProfileSignal()?.email }}</p>
+        </div>
+        <div class="profile-mark" aria-hidden="true">{{ (personProfileSignal()?.nombre || 'N').charAt(0).toUpperCase() }}</div>
+    </header>
 
-    <h2 class="section-title">Datos Personales</h2>
+    <section class="metrics" aria-label="Resumen nutricional">
+        <article class="metric-card metric-card--accent">
+            <span class="metric-label">Objetivo diario</span>
+            <strong>{{ nutritionalProfileSignal()?.objetivoDiario }}</strong>
+            <span class="metric-unit">kcal</span>
+        </article>
+        <article class="metric-card">
+            <span class="metric-label">Gasto basal</span>
+            <strong>{{ nutritionalProfileSignal()?.geb }}</strong>
+            <span class="metric-unit">kcal</span>
+        </article>
+        <article class="metric-card">
+            <span class="metric-label">Peso actual</span>
+            <strong>{{ nutritionalProfileSignal()?.peso || 0 }}</strong>
+            <span class="metric-unit">kg</span>
+        </article>
+        <article class="metric-card">
+            <span class="metric-label">Actividad</span>
+            <strong class="metric-text">{{ nutritionalProfileSignal()?.nivelActividadFisica?.replaceAll("_", " ") || 'Sin datos' }}</strong>
+            <span class="metric-unit">nivel actual</span>
+        </article>
+    </section>
 
-    <form class="form" [formGroup]="personForm">
-        <fieldset class="field">
-            <label>Nombre</label>
-            <input type="text" placeholder="Nombre" formControlName="nombre">
-            @if (nombre.dirty && nombre.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
+    <div class="section-heading">
+        <div>
+            <span class="eyebrow">Información editable</span>
+            <h2>Datos de tu perfil</h2>
+        </div>
+    </div>
 
-        <fieldset class="field">
-            <label>Apellido</label>
-            <input type="text" placeholder="Apellido" formControlName="apellido">
-            @if (apellido.dirty && apellido.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
+    <section class="profile-grid">
+        <article class="profile-panel">
+            <div class="panel-heading">
+                <div class="panel-icon" aria-hidden="true">01</div>
+                <div>
+                    <h3>Datos personales</h3>
+                    <p>La información básica de tu cuenta</p>
+                </div>
+            </div>
 
-        <fieldset class="field">
-            <label>DNI</label>
-            <input type="text" placeholder="DNI" formControlName="dni">
-            @if (dni.dirty && dni.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Fecha de nacimiento</label>
-            <input type="date" formControlName="fechaNacimiento">
-            @if (fechaNacimiento.dirty && fechaNacimiento.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Teléfono</label>
-            <input type="text" placeholder="Teléfono" formControlName="telefono">
-            @if (telefono.dirty && telefono.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Dirección</label>
-            <input type="text" placeholder="Dirección" formControlName="direccion">
-            @if (direccion.dirty && direccion.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Género</label>
-            <select formControlName="genero">
-                <option value="MASCULINO">Masculino</option>
-                <option value="FEMENINO">Femenino</option>
-            </select>
-            @if (genero.dirty && genero.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Email</label>
-            <input type="email" placeholder="Email" formControlName="email">
-            @if (email.dirty && email.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-    </form>
-
-    <h2 class="section-title">Perfil Nutricional</h2>
-
-    <form class="form" [formGroup]="nutritionalProfileForm">
-        <fieldset class="field">
-            <label>Peso (kg)</label>
-            <input type="number" placeholder="Peso" formControlName="peso">
-            @if (peso.dirty && peso.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Altura (cm)</label>
-            <input type="number" placeholder="Altura" formControlName="altura">
-            @if (altura.dirty && altura.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Nivel de actividad física</label>
-            <select formControlName="nivelActividadFisica">
-                @for (n of tiposNivelActividadFisica; track $index) {
-                    <option [value]="n"> {{n}} </option>
+        <form class="form" [formGroup]="personForm">
+            <fieldset class="field">
+                <label>Nombre</label>
+                <input type="text" placeholder="Nombre" formControlName="nombre">
+                @if (nombre.dirty && nombre.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
                 }
-            </select>
-            @if (nivelActividadFisica.dirty && nivelActividadFisica.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
+            </fieldset>
 
-        <fieldset class="field">
-            <label>Objetivo calórico</label>
-            <select formControlName="objetivoCaloricoTipo">
-                @for (o of tiposObjetivoCaloricoTipo; track $index) {
-                    <option [value]="o"> {{o}} </option>
+            <fieldset class="field">
+                <label>Apellido</label>
+                <input type="text" placeholder="Apellido" formControlName="apellido">
+                @if (apellido.dirty && apellido.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
                 }
-            </select>
-            @if (objetivoCaloricoTipo.dirty && objetivoCaloricoTipo.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
+            </fieldset>
+
+            <fieldset class="field">
+                <label>DNI</label>
+                <input type="text" placeholder="DNI" formControlName="dni">
+                @if (dni.dirty && dni.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
+                }
+            </fieldset>
+
+            <fieldset class="field">
+                <label>Fecha de nacimiento</label>
+                <input type="date" formControlName="fechaNacimiento">
+                @if (fechaNacimiento.dirty && fechaNacimiento.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
+                }
+            </fieldset>
+
+            <fieldset class="field">
+                <label>Teléfono</label>
+                <input type="text" placeholder="Teléfono" formControlName="telefono">
+                @if (telefono.dirty && telefono.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
+                }
+            </fieldset>
+
+            <fieldset class="field">
+                <label>Dirección</label>
+                <input type="text" placeholder="Dirección" formControlName="direccion">
+                @if (direccion.dirty && direccion.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
+                }
+            </fieldset>
+
+            <fieldset class="field">
+                <label>Género</label>
+                <select formControlName="genero">
+                    <option value="MASCULINO">Masculino</option>
+                    <option value="FEMENINO">Femenino</option>
+                </select>
+                @if (genero.dirty && genero.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
+                }
+            </fieldset>
+
+            <fieldset class="field">
+                <label>Email</label>
+                <input type="email" placeholder="Email" formControlName="email">
+                @if (email.dirty && email.invalid) {
+                    <span class="errorMessage">Formato Invalido</span>
+                }
+            </fieldset>
+
+        </form>
+        </article>
+
+        <article class="profile-panel">
+            <div class="panel-heading">
+                <div class="panel-icon panel-icon--gold" aria-hidden="true">02</div>
+                <div>
+                    <h3>Perfil nutricional</h3>
+                    <p>Valores usados para tus objetivos diarios</p>
+                </div>
+            </div>
+
+            <form class="form" [formGroup]="nutritionalProfileForm">
+                <fieldset class="field">
+                    <label>Peso (kg)</label>
+                    <input type="number" placeholder="Peso" formControlName="peso">
+                    @if (peso.dirty && peso.invalid) {
+                        <span class="errorMessage">Formato Invalido</span>
+                    }
+                </fieldset>
+
+                <fieldset class="field">
+                    <label>Altura (cm)</label>
+                    <input type="number" placeholder="Altura" formControlName="altura">
+                    @if (altura.dirty && altura.invalid) {
+                        <span class="errorMessage">Formato Invalido</span>
+                    }
+                </fieldset>
+
+                <fieldset class="field">
+                    <label>Nivel de actividad física</label>
+                    <select formControlName="nivelActividadFisica">
+                        @for (n of tiposNivelActividadFisica; track $index) {
+                            <option [value]="n"> {{n}} </option>
+                        }
+                    </select>
+                    @if (nivelActividadFisica.dirty && nivelActividadFisica.invalid) {
+                        <span class="errorMessage">Formato Invalido</span>
+                    }
+                </fieldset>
+
+                <fieldset class="field">
+                    <label>Objetivo calórico</label>
+                    <select formControlName="objetivoCaloricoTipo">
+                        @for (o of tiposObjetivoCaloricoTipo; track $index) {
+                            <option [value]="o"> {{o}} </option>
+                        }
+                    </select>
+                    @if (objetivoCaloricoTipo.dirty && objetivoCaloricoTipo.invalid) {
+                        <span class="errorMessage">Formato Invalido</span>
+                    }
+                </fieldset>
+
+                <fieldset class="field">
+                    <label>Edad</label>
+                    <input type="number" placeholder="Edad" formControlName="edad">
+                    @if (edad.dirty && edad.invalid) {
+                        <span class="errorMessage">Formato Invalido</span>
+                    }
+                </fieldset>
+
+                <fieldset class="field">
+                    <label>Gasto Energético Basal (GEB)</label>
+                    <input type="number" placeholder="Gasto Energético Basal" formControlName="geb" class="inputDisabled" readonly>
+                    @if (geb.dirty && geb.invalid) {
+                        <span class="errorMessage">Formato Invalido</span>
+                    }
+                </fieldset>
+
+                <fieldset class="field">
+                    <label>Objetivo Calorico Diario</label>
+                    <input type="number" placeholder="Objetivo Diario" formControlName="objetivoDiario" class="inputDisabled" readonly>
+                    @if (objetivoDiario.dirty && objetivoDiario.invalid) {
+                        <span class="errorMessage">Formato Invalido</span>
+                    }
+                </fieldset>
+            </form> 
+        </article>
+    </section>
+
+    <div class="action-bar">
+        <div>
+            <strong>¿Cambiaste algún dato?</strong>
+            <span>Guardá los cambios para mantener tu perfil al día.</span>
+        </div>
+        <button class="btn btn-primary" id="btn-actualizar" [disabled]="(personForm.pristine && nutritionalProfileForm.pristine) || (personForm.invalid || nutritionalProfileForm.invalid)" (click)="handleActualizar()">Actualizar perfil</button>
+    </div>
+
+    <section class="achievements-section">
+        <div class="section-heading section-heading--achievements">
+            <div>
+                <span class="eyebrow">Tus avances</span>
+                <h2>Logros conseguidos</h2>
+            </div>
+        </div>
+
+        <div class="logrosConteiner">
+
+            @if (logrosResumen().length === 0) {
+                <div class="empty-achievements">
+                    <strong>Todavía no tenés logros</strong>
+                    <span>Seguí cuidando tus hábitos para desbloquearlos.</span>
+                </div>
+            }@else {
+                @for (logro of logrosResumen(); track logro.logro_id) {
+                    <article class="achievement-card">
+                        <div class="achievement-image">
+                            @if (logro.nivel === "level 1") {
+                                <img src="logros/{{logro.logro_id}} bronce.png" alt="Logro Bronce" class="logro">
+                            }
+                            @if (logro.nivel === "level 2") {
+                                <img src="logros/{{logro.logro_id}} plata.png" alt="Logro Plata" class="logro">
+                            }
+                            @if (logro.nivel === "level 3") {
+                                <img src="logros/{{logro.logro_id}} oro.png" alt="Logro Oro" class="logro">
+                            }
+                        </div>
+                        <div>
+                            <h3>{{ logro.logro_id.replaceAll('_', ' ') }}</h3>
+                            <span>{{ logro.nivel }} · {{ logro.cantGanado }} {{ logro.cantGanado === 1 ? 'vez' : 'veces' }}</span>
+                        </div>
+                    </article>
+                }
             }
-        </fieldset>
+            
+        </div>
+    </section>
 
-        <fieldset class="field">
-            <label>Edad</label>
-            <input type="number" placeholder="Edad" formControlName="edad">
-            @if (edad.dirty && edad.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Gasto Energético Basal (GEB)</label>
-            <input type="number" placeholder="Gasto Energético Basal" formControlName="geb" class="inputDisabled" readonly>
-            @if (geb.dirty && geb.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-
-        <fieldset class="field">
-            <label>Objetivo Calorico Diario</label>
-            <input type="number" placeholder="Objetivo Diario" formControlName="objetivoDiario" class="inputDisabled" readonly>
-            @if (objetivoDiario.dirty && objetivoDiario.invalid) {
-                <span class="errorMessage">Formato Invalido</span>
-            }
-        </fieldset>
-    </form>
-
-
-    <div class="buttonConteiner">
-        <button class="btn" id="btn-actualizar" [disabled]="(personForm.pristine && nutritionalProfileForm.pristine) || (personForm.invalid || nutritionalProfileForm.invalid)" (click)="handleActualizar()">Actualizar</button>
-        <button class="btn" id="btn-borrar" (click)="handleBorrarCuenta()">Borrar Cuenta</button>
+    <div class="danger-zone">
+        <div>
+            <strong>Zona de cuenta</strong>
+            <span>Esta acción no se puede deshacer.</span>
+        </div>
+        <button class="btn btn-danger" id="btn-borrar" (click)="handleBorrarCuenta()">Borrar cuenta</button>
     </div>
 </div>

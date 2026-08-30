@@ -34,8 +34,8 @@
 
     <div class="derecha">
         @if (auth.isLoggedIn()) {
-
-            <div class="conetendorIconoCabecera" (click)="perfilPopover.togglePopover()">
+    
+            <div class="conetendorIconoCabecera" id="botonPerfil" (click)="togglePerfil()">
                 <img src="iconos/person-icon.png" alt="Icono Persona" class="iconoPopeable">
             </div>
             <div class="cajaPerfil" id="menuPerfil" #perfilPopover popover="manual">
@@ -55,7 +55,7 @@
         }
 
         <!-- DESPLEGABLE QUE SOLO SE MUESTRA EN CELULAR (CSS se encarga) -->
-        <div class="hamburger" id="hamburgerMenu" (click)="toggleMenu()">
+        <div class="hamburger" id="hamburgerMenu" (click)="toggleMobile()">
             <img src="iconos/desplegable-icon.png" alt="Menu">
         </div>
 
