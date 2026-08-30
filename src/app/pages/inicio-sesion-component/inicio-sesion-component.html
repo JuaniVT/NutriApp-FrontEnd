@@ -1,36 +1,43 @@
 <div class="session">
 
-
   <div class="hero">
     <img src="icons/logo-inicio.png" alt="Logo" class="hero-logo">
     <div class="texto">
-      <h1 class="bienvenido">Bienvenido a NutriApp</h1>
+      <h1 class="bienvenido">Bienvenido a <span class="brand">NutriApp</span></h1>
       <p class="bienvenido-text">Tu compañero de seguimiento nutricional</p>
+
+      <ul class="hero-badges" aria-label="Qué te ofrece NutriApp">
+        <li class="hero-badge"><span class="hero-badge-icon" aria-hidden="true">📊</span> Control de macros diario</li>
+        <li class="hero-badge"><span class="hero-badge-icon" aria-hidden="true">🔒</span> Autenticación segura</li>
+        <li class="hero-badge"><span class="hero-badge-icon" aria-hidden="true">🥗</span> Seguimiento personalizado</li>
+      </ul>
     </div>
 
   </div>
 
   <div class="logins">
-    <div class="login-container">
+    <div class="login-container" [class.shake]="shake">
       <h2>Iniciar sesión</h2>
 
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
         <!-- USUARIO -->
         <div class="form-group">
-          <label for="username">Usuario</label>
-          <input id="username" type="text" formControlName="username" placeholder="Tu nombre de usuario"
-            [class.invalid]="username.invalid && (username.touched || username.dirty)" autocomplete="username" />
+          <div class="float-field">
+            <input id="username" type="text" formControlName="username" placeholder=" "
+              [class.invalid]="username.invalid && (username.touched || username.dirty)" autocomplete="username" />
+            <label for="username">Usuario</label>
+          </div>
 
           @if (username.invalid && (username.touched || username.dirty)) {
           <div class="error">
             @if (username.errors?.['required']) {
             <small>El usuario es obligatorio.</small>
             }
-            @if (username.errors?.['minlength']) {
-            <small>Mínimo {{ username.errors['minlength'].requiredLength }} caracteres.</small>
+            @if (username.errors?.['minlength']; as minErr) {
+            <small>Mínimo {{ minErr.requiredLength }} caracteres.</small>
             }
-            @if (username.errors?.['maxlength']) {
-            <small>Máximo {{ username.errors['maxlength'].requiredLength }} caracteres.</small>
+            @if (username.errors?.['maxlength']; as maxErr) {
+            <small>Máximo {{ maxErr.requiredLength }} caracteres.</small>
             }
           </div>
           }
@@ -38,18 +45,41 @@
 
         <!-- CONTRASEÑA -->
         <div class="form-group">
-          <label for="password">Contraseña</label>
-          <input id="password" type="password" formControlName="password" placeholder="Tu contraseña"
-            [class.invalid]="password.invalid && (password.touched || password.dirty)"
-            autocomplete="current-password" />
+          <div class="float-field">
+            <div class="password-wrap">
+              <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                placeholder=" "
+                [class.invalid]="password.invalid && (password.touched || password.dirty)"
+                autocomplete="current-password" />
+              <button type="button" class="toggle-password" (click)="showPassword = !showPassword"
+                [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                [attr.aria-pressed]="showPassword" tabindex="-1">
+                @if (showPassword) {
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M3 3l18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M10.6 10.6a2 2 0 002.8 2.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M9.9 4.24A9.1 9.1 0 0112 4c5 0 9 4.5 9 8a12.3 12.3 0 01-2.16 3.19M6.6 6.6C4.3 8 2.7 10.3 2 12c1 3.5 5 8 10 8a9.7 9.7 0 004.5-1.1"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                } @else {
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
+                </svg>
+                }
+              </button>
+            </div>
+            <label for="password">Contraseña</label>
+          </div>
 
           @if (password.invalid && (password.touched || password.dirty)) {
           <div class="error">
             @if (password.errors?.['required']) {
             <small>La contraseña es obligatoria.</small>
             }
-            @if (password.errors?.['minlength']) {
-            <small>Debe tener al menos {{ password.errors['minlength'].requiredLength }} caracteres.</small>
+            @if (password.errors?.['minlength']; as minErr) {
+            <small>Debe tener al menos {{ minErr.requiredLength }} caracteres.</small>
             }
           </div>
           }
@@ -62,10 +92,20 @@
         </div>
         }
 
-        <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">
+        <button type="submit" class="btn-submit" [disabled]="loginForm.invalid || loading">
+          @if (loading) {
+          <span class="spinner" aria-hidden="true"></span>Ingresando…
+          } @else {
           Ingresar
+          }
         </button>
       </form>
+
+      <div class="separador-o">
+        <span>o continuá con</span>
+      </div>
+
+      <div id="google-btn"></div>
 
       <p class="help">
         ¿No tenés cuenta?
@@ -73,55 +113,83 @@
       </p>
 
     </div>
-
-    <div class="google-container">
-      <div class="separador-o">
-        <span>o continuá con</span>
-      </div>
-      <div id="google-btn"></div>
-    </div>
   </div>
 </div>
 
 
 <!-- SECCIÓN NOSOTROS -->
 <div id="nosotros-section" class="nosotros-section">
-  <h2 class="nosotros-title">Sobre Nosotros</h2>
-  <p class="nosotros-subtitle">Conocé más sobre NutriApp y nuestra misión</p>
+  <h2 class="nosotros-title">Probá cómo funciona</h2>
+  <p class="nosotros-subtitle">Así se siente usar NutriApp — jugá con los controles</p>
 
-  <div class="nosotros-cards">
+  <div class="demo-panel">
 
-    <details class="nosotros-card">
-      <summary class="nosotros-card-summary">
-        <img src="icons/food-icon.png" alt="Icono nutrición" class="nosotros-icon">
-        <h3>Nutrición Inteligente</h3>
-        <svg class="nosotros-card-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- MACROS -->
+    <div class="demo-col">
+      <div class="demo-col-head">
+        <span class="demo-label">Meta diaria</span>
+        <output class="demo-kcal-val">{{ metaKcal }} kcal</output>
+      </div>
+
+      <input #kcalInput type="range" class="demo-slider" min="1400" max="3200" step="50"
+        [value]="metaKcal" (input)="onMetaKcal(kcalInput.value)"
+        aria-label="Meta de calorías diarias" />
+
+      <div class="demo-ring-wrap">
+        <svg class="demo-ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="demo-ring-track" cx="60" cy="60" r="52" />
+          <circle class="demo-ring-track" cx="60" cy="60" r="42" />
+          <circle class="demo-ring-track" cx="60" cy="60" r="32" />
+          <circle class="demo-arc demo-arc-p" cx="60" cy="60" r="52"
+            [style.stroke-dasharray]="circP" [style.stroke-dashoffset]="dashP" />
+          <circle class="demo-arc demo-arc-c" cx="60" cy="60" r="42"
+            [style.stroke-dasharray]="circC" [style.stroke-dashoffset]="dashC" />
+          <circle class="demo-arc demo-arc-g" cx="60" cy="60" r="32"
+            [style.stroke-dasharray]="circG" [style.stroke-dashoffset]="dashG" />
         </svg>
-      </summary>
-      <p>Te ayudamos a registrar tus comidas de forma simple, rápida y precisa para mejorar tu bienestar día a día.</p>
-    </details>
+        <div class="demo-ring-center">
+          <strong>{{ metaKcal }}</strong>
+          <span>kcal</span>
+        </div>
+      </div>
 
-    <details class="nosotros-card">
-      <summary class="nosotros-card-summary">
-        <img src="icons/goal-icon.png" alt="Icono objetivos" class="nosotros-icon">
-        <h3>Seguimiento de Objetivos</h3>
-        <svg class="nosotros-card-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </summary>
-      <p>Visualizá tu proceso semanal y mensual, y descubrí cómo avanzás según tus metas.</p>
-    </details>
+      <ul class="demo-macro-list">
+        <li><span class="demo-dot demo-dot-p"></span> Proteínas <b>{{ gramosP }} g</b></li>
+        <li><span class="demo-dot demo-dot-c"></span> Carbohidratos <b>{{ gramosC }} g</b></li>
+        <li><span class="demo-dot demo-dot-g"></span> Grasas <b>{{ gramosG }} g</b></li>
+      </ul>
+    </div>
 
-    <details class="nosotros-card">
-      <summary class="nosotros-card-summary">
-        <img src="icons/tech-icon.png" alt="Icono tecnología" class="nosotros-icon">
-        <h3>Tecnología Inteligente</h3>
-        <svg class="nosotros-card-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- HIDRATACIÓN -->
+    <div class="demo-col">
+      <div class="demo-col-head">
+        <span class="demo-label">Hidratación de hoy</span>
+        <button type="button" class="demo-reset" (click)="resetAgua()" aria-label="Reiniciar hidratación">↺</button>
+      </div>
+
+      <div class="demo-glass-wrap" [style.--agua]="aguaPct">
+        <!-- el <svg> raíz recorta su viewBox por defecto: el agua se traslada
+             hacia abajo y lo que sobresale queda oculto, sin necesitar url(#id) -->
+        <svg class="demo-glass" viewBox="0 0 56 72" aria-hidden="true">
+          <rect class="demo-glass-water" x="6" y="4" width="44" height="64" rx="8" ry="8" />
+          <rect class="demo-glass-outline" x="6" y="4" width="44" height="64" rx="8" ry="8" />
         </svg>
-      </summary>
-      <p>Usamos herramientas modernas para ofrecerte una experiencia rápida, clara y agradable.</p>
-    </details>
+      </div>
+
+      <div class="demo-hidra-val">{{ aguaMl }} <span>/ {{ aguaMeta }} ml</span></div>
+      <div class="demo-hidra-bar"><span [style.width.%]="aguaPct"></span></div>
+
+      <div class="demo-hidra-btns">
+        <button type="button" (click)="sumarAgua(250)">+250 ml</button>
+        <button type="button" (click)="sumarAgua(500)">+500 ml</button>
+      </div>
+    </div>
 
   </div>
+
+  <ul class="nosotros-feats" aria-label="Qué ofrece NutriApp">
+    <li class="nosotros-feat"><span aria-hidden="true">🍽️</span> Registro por comida, en gramos</li>
+    <li class="nosotros-feat"><span aria-hidden="true">📈</span> Seguimiento diario y semanal</li>
+    <li class="nosotros-feat"><span aria-hidden="true">🤖</span> NutriBot te ayuda a cargar</li>
+  </ul>
+</div>

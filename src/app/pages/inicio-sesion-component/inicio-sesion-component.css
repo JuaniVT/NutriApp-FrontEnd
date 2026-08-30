@@ -1,16 +1,30 @@
 :host {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-   background: linear-gradient(
-    135deg,
-    #ffffff 0%,
-    #FFF4E6 35%,
-    #FFEEDB 100%
-  );
+
+  /* --bg-progress (0→1) lo actualiza el componente según el scroll hacia
+     "Sobre Nosotros": el degradé base pasa de crema (hero) a durazno cálido.
+     Con fallback 0 → si no hay JS / reduced-motion, queda el crema de siempre. */
+  --bg-top: color-mix(in oklab, #fffdf9, #ffe4cc calc(var(--bg-progress, 0) * 100%));
+  --bg-bottom: color-mix(in oklab, #fff2e4, #ffd4ac calc(var(--bg-progress, 0) * 100%));
+
+  /* color plano de respaldo si el navegador no soporta color-mix */
+  background-color: #fffaf2;
+  /* mesh de manchas radiales tenues (textura) + degradé base que cambia con el scroll */
+  background:
+    radial-gradient(42rem 42rem at 12% 18%, rgba(255, 204, 0, 0.10), transparent 60%),
+    radial-gradient(38rem 38rem at 88% 12%, rgba(217, 119, 6, 0.08), transparent 60%),
+    radial-gradient(46rem 46rem at 70% 88%, rgba(253, 230, 209, 0.55), transparent 62%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  background-attachment: fixed;
+
   font-family: "Outfit", sans-serif;
   gap: 150px;
+  /* las formas difuminadas del hero pueden asomar unos px fuera del borde;
+     clip evita el scroll horizontal sin volverse contenedor de scroll */
+  overflow-x: clip;
 }
 
 
@@ -30,6 +44,7 @@
 
 /* SECCIÓN IZQUIERDA */
 .hero {
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -39,9 +54,70 @@
   align-items: center;
 }
 
+/* Formas geométricas difuminadas detrás del hero: un círculo y un
+   rombo apenas visibles que aportan textura sin competir con el texto. */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  filter: blur(48px);
+  pointer-events: none;
+}
+
+.hero::before {
+  width: 260px;
+  height: 260px;
+  top: -60px;
+  left: -80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 204, 0, 0.28), transparent 70%);
+}
+
+.hero::after {
+  width: 200px;
+  height: 200px;
+  right: -40px;
+  bottom: -70px;
+  border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  background: radial-gradient(circle, rgba(217, 119, 6, 0.20), transparent 70%);
+}
+
+/* BADGES DE FORTALEZAS */
+.hero-badges {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: var(--font-sm, 14px);
+  font-weight: 500;
+  color: var(--app-orange-800, #92400e);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--app-orange-soft, #FDE6D1);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.hero-badge-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
 .hero-logo {
   width: 120px;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
+  view-transition-name: auth-logo;
 }
 
 .texto {
@@ -55,6 +131,26 @@
   font-weight: 700;
   color: #0d0d0d;
   margin: 0;
+  view-transition-name: auth-title;
+}
+
+/* "NutriApp" con texto en degradé y un brillo que recorre muy lento */
+.bienvenido .brand {
+  background: linear-gradient(
+    90deg,
+    var(--app-orange-600, #d97706),
+    var(--yellow, #ffcc00),
+    var(--app-orange-600, #d97706)
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: brand-shine 6s linear infinite;
+}
+
+@keyframes brand-shine {
+  to { background-position: 200% center; }
 }
 
 .bienvenido-text {
@@ -109,17 +205,23 @@ input {
   width: 100%;
   padding: 12px 14px;
   font-size: var(--font-md, 16px);
-  border: 1px solid #e9c396;
+  border: 1.5px solid #ece1cf;
   border-radius: 12px;
-  background: var(--app-bg, #FFF9F0);
+  background: #f7efe2;
   box-sizing: border-box;
   transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              background var(--duration-base, 200ms) var(--ease-out, ease-out),
               box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
+input:hover:not(:focus) {
+  border-color: #e2d1b6;
+}
+
 input:focus {
-  border-color: var(--app-orange-600, #d97706);
-  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+  border-color: #ff7b00;
+  background: #fffdf9;
+  box-shadow: 0 0 0 3px rgba(255, 123, 0, 0.18);
   outline: none;
 }
 
@@ -130,6 +232,51 @@ input.invalid {
 .error small {
   color: #b91c1c;
   margin-top: 5px;
+}
+
+/* LABEL FLOTANTE
+   El label arranca dentro del input y sube/achica al enfocar o escribir.
+   Se usa :has() para funcionar igual con el input suelto (usuario) y con
+   el input envuelto en .password-wrap (contraseña). */
+.float-field {
+  position: relative;
+}
+
+/* evita el hueco de baseline del input inline para centrar bien el label */
+.float-field > input {
+  display: block;
+}
+
+.float-field > label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  padding: 0 4px;
+  /* en reposo el label está centrado sobre el input: no necesita tapar nada,
+     así que sin fondo (evita el recuadro de color distinto al del input) */
+  background: transparent;
+  color: var(--app-text-muted, #9ca3af);
+  font-weight: 500;
+  pointer-events: none;
+  transition: top 150ms var(--ease-out, ease-out),
+              font-size 150ms var(--ease-out, ease-out),
+              color 150ms var(--ease-out, ease-out);
+}
+
+.float-field:has(input:focus) > label,
+.float-field:has(input:not(:placeholder-shown)) > label {
+  top: 0;
+  font-size: 12px;
+  color: var(--app-orange-700, #b45309);
+  /* al subir se apoya sobre el borde: fondo blanco (color de la tarjeta) para
+     cortar la línea del borde de forma limpia */
+  background: #ffffff;
+}
+
+.float-field:has(input.invalid) > label {
+  color: #b91c1c;
 }
 
 /* ERROR DEL SERVIDOR */
@@ -144,6 +291,12 @@ input.invalid {
 
 /* BOTÓN INGRESAR */
 .btn-submit {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   padding: 12px;
   min-height: var(--tap-target-min, 44px);
@@ -156,22 +309,102 @@ input.invalid {
   font-weight: 600;
   cursor: pointer;
   box-sizing: border-box;
-  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.28);
+  transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out),
               box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
+/* brillo diagonal que barre el botón al pasar el mouse */
+.btn-submit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  transform: translateX(-120%);
+  transition: transform 600ms var(--ease-out, ease-out);
+  pointer-events: none;
+}
+
+.btn-submit:hover:not(:disabled)::after {
+  transform: translateX(120%);
+}
+
 .btn-submit:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(217, 119, 6, 0.3);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(217, 119, 6, 0.38);
 }
 
 .btn-submit:active:not(:disabled) {
   transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
 }
 
 .btn-submit:disabled {
   background: #d9d1c7;
+  box-shadow: none;
   cursor: not-allowed;
+}
+
+/* spinner de "Ingresando…" */
+.spinner {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: 2px solid rgba(31, 41, 55, 0.35);
+  border-top-color: #1f2937;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* MOSTRAR/OCULTAR CONTRASEÑA */
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  padding-right: 44px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  color: var(--app-text-muted, #9ca3af);
+  cursor: pointer;
+  transition: color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              background var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
+
+.toggle-password:hover {
+  color: var(--app-orange-700, #b45309);
+  background: rgba(217, 119, 6, 0.08);
+}
+
+.toggle-password:focus-visible {
+  outline: 2px solid var(--app-orange-600, #d97706);
+  outline-offset: 1px;
+}
+
+.toggle-password svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* LINK REGISTRO */
@@ -196,20 +429,13 @@ input.invalid {
   color: var(--app-orange-800, #92400e);
 }
 
-/* GOOGLE */
-.google-container {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* GOOGLE (dentro de la tarjeta, como parte del panel de autenticación) */
 .separador-o {
   width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin: 22px 0 16px;
   color: var(--app-text-muted, #9ca3af);
   font-size: var(--font-sm, 14px);
 }
@@ -223,7 +449,8 @@ input.invalid {
 }
 
 #google-btn {
-  display: block;
+  display: flex;
+  justify-content: center;
   width: 100%;
 }
 
@@ -231,13 +458,11 @@ input.invalid {
 .nosotros-section {
   display: flex;
   flex-direction: column;
+  align-items: center; /* centra el panel y los chips (antes quedaban pegados a la izquierda por el max-width) */
   width: 100%;
   padding: 80px 40px;
-  background: linear-gradient(
-    180deg,
-    #FFF4E6 0%,
-    #FFEEDB 100%
-  );
+  /* sin fondo propio: continúa el wash del :host, sin costura */
+  background: transparent;
   text-align: center;
   font-family: "Outfit", sans-serif;
 }
@@ -254,90 +479,278 @@ input.invalid {
   font-size: 18px;
   font-weight: 300;
   color: var(--app-orange-700, #b45309);
-  margin-bottom: 60px;
+  margin-bottom: 48px;
 }
 
-/* CONTENEDOR TARJETAS */
-.nosotros-cards {
+/* ==========================================================
+   DEMO INTERACTIVA "Probá cómo funciona"
+   ========================================================== */
+.demo-panel {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  flex-shrink: 1;
+  max-width: 760px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 40px;
 }
 
-/* TARJETAS (son <details> nativos: en mobile funcionan como desplegable, en desktop siempre se ven abiertas) */
-.nosotros-card {
-  width: 320px;
-  padding: 30px;
-  background: #ffffff;
-  border-radius: 22px;
-  box-shadow: 0 10px 30px rgba(217, 119, 6, 0.15);
-  border: 1px solid var(--app-orange-soft, #FDE6D1);
-  transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out),
-              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
-}
-
-.nosotros-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 16px 40px rgba(217, 119, 6, 0.25);
-}
-
-.nosotros-card-summary {
+.demo-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  list-style: none;
+  justify-content: center; /* reparte el sobrante para que la columna más corta no quede con hueco abajo */
+  padding: 24px 22px;
+  background: #ffffff;
+  border: 1px solid var(--app-orange-soft, #FDE6D1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(217, 119, 6, 0.12);
 }
 
-.nosotros-card-summary::-webkit-details-marker {
-  display: none;
+.demo-col-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
 }
 
-.nosotros-card-chevron {
-  display: none;
-}
-
-/* ICONOS */
-.nosotros-icon {
-  width: 70px;
-  margin-bottom: 20px;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));
-}
-
-/* TEXTOS TARJETA */
-.nosotros-card h3 {
-  font-size: 22px;
+.demo-label {
+  font-size: var(--font-sm, 14px);
   font-weight: 600;
-  margin-bottom: 12px;
-  color: #0d0d0d;
+  color: var(--app-orange-800, #92400e);
 }
 
-.nosotros-card p {
-  font-size: 15px;
+.demo-kcal-val {
+  font-size: var(--font-sm, 14px);
+  font-weight: 700;
+  color: var(--app-orange-700, #b45309);
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-slider {
+  width: 100%;
+  margin: 0 0 18px;
+  accent-color: var(--app-orange-600, #d97706);
+  cursor: pointer;
+}
+
+/* --- anillo de macros --- */
+.demo-ring-wrap {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  margin-bottom: 16px;
+}
+
+.demo-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.demo-ring-track {
+  fill: none;
+  stroke: #f0e6d6;
+  stroke-width: 9;
+}
+
+.demo-arc {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+
+.demo-arc-p { stroke: var(--app-orange-600, #d97706); }
+.demo-arc-c { stroke: var(--yellow, #ffcc00); }
+.demo-arc-g { stroke: #7cc4fb; }
+
+.demo-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.1;
+  pointer-events: none;
+}
+
+.demo-ring-center strong {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0d0d0d;
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-ring-center span {
+  font-size: 12px;
+  color: var(--app-text-muted, #9ca3af);
+}
+
+.demo-macro-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.demo-macro-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-sm, 14px);
   color: #444;
-  line-height: 1.55;
+}
+
+.demo-macro-list b {
+  margin-left: auto;
+  color: #0d0d0d;
+  font-variant-numeric: tabular-nums;
+}
+
+.demo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.demo-dot-p { background: var(--app-orange-600, #d97706); }
+.demo-dot-c { background: var(--yellow, #ffcc00); }
+.demo-dot-g { background: #7cc4fb; }
+
+/* --- hidratación --- */
+.demo-reset {
+  border: none;
+  background: none;
+  color: var(--app-text-muted, #9ca3af);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 8px;
+  transition: color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              background var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
+.demo-reset:hover {
+  color: var(--app-orange-700, #b45309);
+  background: rgba(217, 119, 6, 0.08);
+}
+
+.demo-glass-wrap {
+  width: 106px;
+  height: 137px;
+  margin: 10px 0 16px;
+}
+
+.demo-glass {
+  width: 100%;
+  height: 100%;
+}
+
+.demo-glass-water {
+  fill: #7cc4fb;
+  /* --agua (0–100) lo pone el componente: baja el agua fuera del viewBox del <svg>
+     (que recorta por defecto) y la sube a medida que se llena */
+  transform: translateY(calc((100 - var(--agua, 0)) * 0.68px));
+}
+
+.demo-glass-outline {
+  fill: none;
+  stroke: #cfe6fa;
+  stroke-width: 3;
+}
+
+.demo-hidra-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0d0d0d;
+  font-variant-numeric: tabular-nums;
+}
+.demo-hidra-val span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--app-text-muted, #9ca3af);
+}
+
+.demo-hidra-bar {
+  width: 100%;
+  height: 8px;
+  margin: 10px 0 16px;
+  background: #f0e6d6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.demo-hidra-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #7cc4fb, #4aa8f0);
+}
+
+.demo-hidra-btns {
+  display: flex;
+  gap: 10px;
+}
+.demo-hidra-btns button {
+  border: 1px solid var(--app-orange-soft, #FDE6D1);
+  background: #fff;
+  color: var(--app-orange-700, #b45309);
+  font-weight: 600;
+  font-size: var(--font-sm, 14px);
+  padding: 9px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
+}
+.demo-hidra-btns button:hover { background: var(--app-orange-soft, #FDE6D1); }
+.demo-hidra-btns button:active { transform: scale(0.96); }
+
+/* --- features cortas debajo del panel --- */
+.nosotros-feats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.nosotros-feat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: var(--font-sm, 14px);
+  font-weight: 500;
+  color: #444;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--app-orange-soft, #FDE6D1);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* transiciones suaves de la demo, solo si el usuario no pidió menos movimiento */
+@media (prefers-reduced-motion: no-preference) {
+  .demo-arc { transition: stroke-dashoffset 550ms var(--ease-out, ease-out); }
+  .demo-glass-water { transition: transform 500ms var(--ease-out, ease-out); }
+  .demo-hidra-bar span { transition: width 500ms var(--ease-out, ease-out); }
 }
 
 /* ===================== */
 /*    RESPONSIVE BASE    */
 /* ===================== */
 
-/* Desktop/tablet: el contenido del desplegable se muestra siempre, sin importar
-   el estado nativo abierto/cerrado del <details> (el acordeón es solo para mobile) */
-@media (min-width: 651px) {
-  .nosotros-card > p {
-    display: block;
-  }
-
-  /* Chrome moderno renderiza el contenido no-summary de <details> a través
-     del pseudo-elemento ::details-content; hay que forzar su visibilidad ahí también */
-  .nosotros-card::details-content {
-    content-visibility: visible;
-    display: block;
-    block-size: auto;
-    overflow: visible;
+@media (max-width: 640px) {
+  .demo-panel {
+    grid-template-columns: 1fr;
+    max-width: 400px;
   }
 }
 
@@ -393,6 +806,10 @@ input.invalid {
     align-items: center;
   }
 
+  .hero-badges {
+    justify-content: center;
+  }
+
   .logins {
     width: 100%;
     max-width: 360px;
@@ -436,50 +853,8 @@ input.invalid {
     margin-bottom: 40px;
   }
 
-  .nosotros-card {
-    width: 90%;
-    max-width: 320px;
-    padding: 20px 24px;
-  }
-
-  /* Acordeón: la fila (ícono + título + flecha) siempre visible y clickeable,
-     el texto se despliega debajo solo cuando se toca la tarjeta */
-  .nosotros-card-summary {
-    flex-direction: row;
-    align-items: center;
-    gap: 14px;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .nosotros-card .nosotros-icon {
-    width: 36px;
-    margin-bottom: 0;
-    flex-shrink: 0;
-  }
-
-  .nosotros-card h3 {
-    flex: 1;
-    margin-bottom: 0;
-    font-size: var(--font-md, 16px);
-  }
-
-  .nosotros-card-chevron {
-    display: inline-flex;
-    width: 20px;
-    height: 20px;
-    color: var(--app-orange-600, #d97706);
-    flex-shrink: 0;
-    transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out);
-  }
-
-  .nosotros-card[open] .nosotros-card-chevron {
-    transform: rotate(90deg);
-  }
-
-  .nosotros-card > p {
-    margin: 14px 0 0;
-    text-align: left;
+  .demo-col {
+    padding: 20px 18px;
   }
 }
 
@@ -524,10 +899,6 @@ input.invalid {
   .nosotros-title {
     font-size: 28px;
   }
-
-  .nosotros-card {
-    padding: 22px;
-  }
 }
 
 /* Pantallas con poca altura (celus en horizontal, notebooks chicos) */
@@ -542,6 +913,130 @@ input.invalid {
 
   .login-container {
     padding: 25px;
+  }
+}
+
+/* =========================================================
+   ANIMACIONES (solo CSS)
+   - Entrada escalonada del hero + card de login al cargar
+   - Reveal on-scroll de la sección "Sobre Nosotros"
+   Todo respeta prefers-reduced-motion (bloque al final).
+   ========================================================= */
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes logo-pop {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* temblor del formulario cuando el login falla o hay campos inválidos */
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+/* Mantiene 'fade-rise' en la misma posición de la lista (ya terminado, no
+   se reinicia) y sólo agrega 'shake', para que al quitar la clase no vuelva
+   a dispararse la animación de entrada. */
+.login-container.shake {
+  animation:
+    fade-rise 320ms var(--ease-out, ease-out) 220ms both,
+    shake 0.5s var(--ease-out, ease-out) 0s both;
+}
+
+/* --- Entrada al cargar (time-based, corta y sutil) --- */
+.hero-logo {
+  animation: logo-pop var(--duration-slow, 260ms) var(--ease-out, ease-out) both;
+}
+
+.bienvenido {
+  animation: fade-rise var(--duration-slow, 260ms) var(--ease-out, ease-out) both;
+  animation-delay: 80ms;
+}
+
+.bienvenido-text {
+  animation: fade-rise var(--duration-slow, 260ms) var(--ease-out, ease-out) both;
+  animation-delay: 160ms;
+}
+
+.login-container {
+  animation: fade-rise 320ms var(--ease-out, ease-out) both;
+  animation-delay: 220ms;
+}
+
+.hero-badges {
+  animation: fade-rise var(--duration-slow, 260ms) var(--ease-out, ease-out) both;
+  animation-delay: 240ms;
+}
+
+/* --- Reveal on-scroll de "Sobre Nosotros" ---
+   El componente agrega la clase .revealed a .nosotros-section cuando entra en
+   viewport (IntersectionObserver, funciona en todos los navegadores). Acá se
+   define el estado oculto inicial y la transición escalonada al aparecer.
+   Se anima 'translate' (no 'transform') para no pisar el hover-lift de las tarjetas.
+   Todo dentro de no-preference: si el usuario pidió menos movimiento, nunca se
+   oculta nada. */
+@media (prefers-reduced-motion: no-preference) {
+  .nosotros-section .nosotros-title,
+  .nosotros-section .nosotros-subtitle,
+  .nosotros-section .demo-panel,
+  .nosotros-section .nosotros-feat {
+    opacity: 0;
+    translate: 0 30px;
+    transition: opacity 550ms var(--ease-out, ease-out),
+                translate 550ms var(--ease-out, ease-out);
+  }
+
+  .nosotros-section.revealed .nosotros-title,
+  .nosotros-section.revealed .nosotros-subtitle,
+  .nosotros-section.revealed .demo-panel,
+  .nosotros-section.revealed .nosotros-feat {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* escalonado: título → subtítulo → panel → chips de features */
+  .nosotros-section.revealed .nosotros-subtitle { transition-delay: 90ms; }
+  .nosotros-section.revealed .demo-panel { transition-delay: 180ms; }
+  .nosotros-section.revealed .nosotros-feat:nth-child(1) { transition-delay: 320ms; }
+  .nosotros-section.revealed .nosotros-feat:nth-child(2) { transition-delay: 380ms; }
+  .nosotros-section.revealed .nosotros-feat:nth-child(3) { transition-delay: 440ms; }
+}
+
+/* --- Accesibilidad: sin movimiento si el usuario lo pidió --- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo,
+  .bienvenido,
+  .bienvenido-text,
+  .hero-badges,
+  .login-container {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .nosotros-title,
+  .nosotros-subtitle,
+  .demo-panel,
+  .nosotros-feat {
+    animation: none;
+    opacity: 1;
+    translate: none;
+  }
+
+  .login-container.shake,
+  .bienvenido .brand {
+    animation: none;
+  }
+
+  .btn-submit::after {
+    display: none;
   }
 }
 
