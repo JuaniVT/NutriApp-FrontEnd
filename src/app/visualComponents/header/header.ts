@@ -47,10 +47,10 @@ export class Header {
     const menuMobile = document.getElementById("menuMobile") as HTMLElement;
     
     //escondemos el otro menu
-    menuMobile.hidePopover();
-    
+    menuMobile?.hidePopover();
+
     //toggleamos el que si queremos
-    menuPerfil.togglePopover();
+    menuPerfil?.togglePopover();
   }
 
   //metodo para abrir o cerrar el menu del desplegable en mobile
@@ -59,10 +59,10 @@ export class Header {
     const menuMobile = document.getElementById("menuMobile") as HTMLElement;
   
     //escondemos el otro menu
-    menuPerfil.hidePopover();
-    
+    menuPerfil?.hidePopover();
+
     //toggleamos el que si queremos
-    menuMobile.togglePopover();
+    menuMobile?.togglePopover();
   }
   
   //decorador para el metodo que se ejecuta cuando en el documento ocurre determinado evento (en este caso es el 'click')
@@ -80,18 +80,18 @@ export class Header {
     const botonMobile = document.getElementById("hamburgerMenu") as HTMLElement;
 
     //si clickeo en el menu del perfil o el del mobile, no hacemos nada
-    if(menuPerfil?.contains(target) || menuMobile.contains(target)){
+    if(menuPerfil?.contains(target) || menuMobile?.contains(target)){
       return;
     }
 
     //si clickeo en el boton del perfil o el del mobile, no hacemos nada
-    if(botonPerfil?.contains(target) || botonMobile.contains(target)){
+    if(botonPerfil?.contains(target) || botonMobile?.contains(target)){
       return;
     }
 
-    
+
     //si clickeo afuera de cualquier menu, cerramos los dos
-    menuPerfil.hidePopover();
-    menuMobile.hidePopover();
+    menuPerfil?.hidePopover();
+    menuMobile?.hidePopover();
   }
 }
