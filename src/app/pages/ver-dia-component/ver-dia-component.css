@@ -1214,7 +1214,7 @@
   display: flex;
   justify-content: center; /* Centra la tarjeta dentro del wrapper */
   box-sizing: border-box;
-  align-self: stretch; /* Clave: Hace que este elemento ignore el 'align-items: center' del padre y se estire */
+  align-self: center; /* Igual que .resumen-dia y .comidas-section: centrado dentro del padre (900px). Con 'stretch' + max-width:700px quedaba pegado a la izquierda */
 }
 
 /* Ventana modal */
