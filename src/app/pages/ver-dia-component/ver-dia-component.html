@@ -9,11 +9,21 @@
   <header class="resumen-dia">
     <h2>{{ formatearFechaCorta(fecha) }}</h2>
 
-    <!-- Número de calorías -->
-    <div class="arc-number">
-      {{ calcularTotalCalorias() | number:'1.0-0' }}
-      /
-      {{ calcularTotalCalorias() + dia.caloriasRestantes | number:'1.0-0' }} kcal
+    <!-- Progreso de calorías del día -->
+    <div class="cal-progress">
+      <div class="cal-progress-top">
+        <span class="cal-progress-label">Calorías</span>
+        <span class="cal-progress-num">
+          {{ calcularTotalCalorias() | number:'1.0-0' }} / {{ metaCalorias | number:'1.0-0' }} kcal
+        </span>
+      </div>
+
+      <div class="cal-progress-track" role="progressbar" aria-label="Calorías consumidas"
+        [attr.aria-valuenow]="porcentajeCalorias | number:'1.0-0'" aria-valuemin="0" aria-valuemax="100">
+        <div class="cal-progress-fill" [style.width.%]="porcentajeCalorias"></div>
+      </div>
+
+      <span class="cal-progress-pct">{{ porcentajeCalorias | number:'1.0-0' }}%</span>
     </div>
 
     <div class="macros-resumen">

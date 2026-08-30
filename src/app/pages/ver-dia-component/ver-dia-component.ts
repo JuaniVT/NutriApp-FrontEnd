@@ -17,6 +17,7 @@ import { Paquete } from '../../models/paquete';
 import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 import { FechaLocalService } from '../../service/FechaLocalService';
 import { DialogService } from '../../service/dialog';
+import { ProfileService } from '../../service/profile';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { ArcElement, Chart, ChartDataset, registerables, Tooltip } from 'chart.js';
 import { NotificacionLogro } from '../../service/notificacion-logro';
@@ -37,6 +38,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   progressChart?: Chart;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
+  private profileService = inject(ProfileService);
   private readonly notificacionLogroService = inject(NotificacionLogro);
   protected manejadorSemana = inject(ManejadorSemana);
   protected manejadorFechas = inject(FechaLocalService);
@@ -52,6 +54,12 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
   longitudPath: number = 0;
   totalEnPadre: number = 0;
+
+  /** Objetivo calórico diario del perfil nutricional del usuario. Se usa como
+      meta cuando el día todavía no tiene ingestas: el back sólo completa
+      `caloriasRestantes` tras la primera comida, así que sin esto se vería
+      "0 / 0" al abrir un día vacío. */
+  protected objetivoDiario = 0;
 
   handleTotalRecibido(total: number) {
     this.totalEnPadre = total;
@@ -135,6 +143,21 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
     return (this.consumidas / this.total) * 100;
   }
 
+  /** Meta de calorías del día para la barra de progreso.
+      Con ingestas cargadas: consumidas + caloriasRestantes (incluye ajuste por
+      actividad). Día vacío (todavía "0 / 0" desde el back): objetivo del perfil. */
+  get metaCalorias(): number {
+    const totalDelDia = this.calcularTotalCalorias() + (this.dia?.caloriasRestantes ?? 0);
+    return totalDelDia > 0 ? totalDelDia : this.objetivoDiario;
+  }
+
+  /** Progreso de calorías consumidas sobre la meta, recortado a 0–100. */
+  get porcentajeCalorias(): number {
+    const meta = this.metaCalorias;
+    if (meta <= 0) return 0;
+    return Math.min(Math.max((this.calcularTotalCalorias() / meta) * 100, 0), 100);
+  }
+
   // Convierte el progreso en un stroke visible
   getStrokeDash(): string {
     const total = this.calcularTotalCalorias() + this.dia!.caloriasRestantes;
@@ -179,7 +202,12 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
     }
 
-
+    // Objetivo diario para la barra de progreso cuando el día está vacío.
+    // Si falla queda en 0 y la barra usa el total que devuelva el back.
+    this.profileService.getNutritionalProfile().subscribe({
+      next: (perfil) => { this.objetivoDiario = perfil?.objetivoDiario ?? 0; },
+      error: (err) => console.error('No se pudo obtener el perfil nutricional:', err)
+    });
   }
 
 

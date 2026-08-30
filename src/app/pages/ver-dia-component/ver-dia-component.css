@@ -1030,17 +1030,69 @@
   margin: 0;
 }
 
-/* Número de calorías */
-.arc-number {
-  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
-  font-weight: 700;
-  color: var(--app-orange-700, #b45309);
-  text-align: center;
+/* Barra de progreso de calorías del día */
+.cal-progress {
   background: #fff5e6;
   border: 1px solid #ffdab1;
   border-radius: 12px;
-  padding: 12px 0;
+  padding: 14px 16px;
   box-shadow: inset 0 2px 6px rgba(180, 83, 9, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal-progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.cal-progress-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #8a5a2b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cal-progress-num {
+  font-size: clamp(1rem, 3.4vw, 1.3rem);
+  font-weight: 700;
+  color: var(--app-orange-700, #b45309);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cal-progress-track {
+  width: 100%;
+  height: 12px;
+  background: #ffe7cc;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(180, 83, 9, 0.2);
+}
+
+.cal-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f59e0b, #b45309);
+  transition: width 600ms var(--ease-out, ease-out);
+}
+
+.cal-progress-pct {
+  align-self: flex-end;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8a5a2b;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cal-progress-fill {
+    transition: none;
+  }
 }
 
 /* Contenedor de macros */
@@ -1087,8 +1139,8 @@
     padding: 15px 18px;
   }
 
-  .arc-number {
-    padding: 10px 0;
+  .cal-progress {
+    padding: 12px 14px;
   }
 
   /* Se mantienen en fila (no apiladas) para no ocupar tanto alto en mobile */
