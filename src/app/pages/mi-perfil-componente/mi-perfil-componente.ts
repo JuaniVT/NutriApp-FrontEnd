@@ -8,6 +8,7 @@ import { NivelActividadFisica, ObjetivoCaloricoTipo } from '../../models/nutriti
 import { UserService } from '../../service/user';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth';
+import { DialogService } from '../../service/dialog';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -21,6 +22,7 @@ export class MiPerfilComponente {
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService)
   private readonly router = inject(Router);
+  private readonly dialog = inject(DialogService);
   protected readonly personProfile = toSignal(this.profileService.getPersonProfile());
   protected readonly nutritionalProfilePerson = toSignal(this.profileService.getNutritionalProfile())
   
@@ -66,30 +68,32 @@ export class MiPerfilComponente {
 
 
 
-  handleActualizar(){
-    if (confirm("Desea actualizar los datos? ")){
+  async handleActualizar(){
+    const confirmado = await this.dialog.confirm("Desea actualizar los datos? ");
+    if (confirmado){
       if(this.personForm.valid && this.nutritionalProfileForm.valid){
-        
+
         //actualizamos la persona
         this.profileService.updatePersonProfile(this.personForm.getRawValue()).subscribe({
           next: (p) => this.personForm.patchValue(p),
-          error: (e) => alert(e)
+          error: (e) => this.dialog.error(e.message)
         })
 
         //actualizamos el perfil nutricional
         this.profileService.updateNutritionalProfile(this.nutritionalProfileForm.getRawValue()!).subscribe({
           next: (n) => this.nutritionalProfileForm.patchValue(n),
-          error: (e) => alert(e)
+          error: (e) => this.dialog.error(e.message)
         })
       }
     }
   }
 
-  handleBorrarCuenta(){
-    if(confirm("Seguro que desea eliminar su cuenta?")){
+  async handleBorrarCuenta(){
+    const confirmado = await this.dialog.confirm("Seguro que desea eliminar su cuenta?", { danger: true });
+    if(confirmado){
       this.userService.deleteAccount().subscribe({
-        next: (r) => {alert(r), this.authService.clearToken(), this.router.navigateByUrl("/home")},
-        error: (e) => alert("Hubo un error")
+        next: (r) => {this.dialog.success(r), this.authService.clearToken(), this.router.navigateByUrl("/home")},
+        error: (e) => this.dialog.error("Hubo un error")
       })
     }
   }

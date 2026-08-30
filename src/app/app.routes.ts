@@ -20,6 +20,7 @@ export const routes: Routes = [
     {path: "listar-solicitudes/:mode", title: "Solicitudes", component: ListarSolicitudes, canActivate: [authGuard]},
     {path: 'calendario/:fecha', component: Calendario, canActivate: [authGuard]},
     {path: "alimentos-bdd", title: "Alimentos BDD", component: AlimentosBDD, canActivate: [authGuard], data: { roles: ['ROLE_ADMIN'] } },
+    {path: 'chat',loadComponent: () => import('./pages/chat/chat').then(m => m.Chat) },
 
     // !!IMPORTANTE¡¡ -> esta ruta tiene que estar al final de todas ya que sino, desde este componente las que estan abajo no te redireccionan
     {path: "**", title: "Not Found 404", component: NotFound}      //ruta de 404 (pagina no encontrada)

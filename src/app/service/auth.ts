@@ -2,12 +2,13 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Authority } from '../models/authority';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseURL = 'http://localhost:8080/auth';
+  private baseURL = `${environment.apiUrl}/auth`;
   protected readonly http = inject(HttpClient);
 
 
@@ -36,7 +37,7 @@ export class AuthService {
   }
   
   getRoleRequest (){
-    return this.http.get<Authority>("http://localhost:8080/api/rol/obtener");
+    return this.http.get<Authority>(`${environment.apiUrl}/api/rol/obtener`);
   }
   
   

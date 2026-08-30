@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth';
 import { SocialAuthService, GoogleLoginProvider, SocialUser } from '@abacritt/angularx-social-login';
+import { DialogService } from '../../service/dialog';
 declare var google : any;
 
 @Component({
@@ -22,6 +23,7 @@ export class InicioSesionComponent implements OnInit{
   submitted = false;
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly dialog = inject(DialogService);
   fechaHoy = new Date().toLocaleDateString('en-CA');
 
    ngOnInit(): void {
@@ -31,11 +33,14 @@ export class InicioSesionComponent implements OnInit{
         callback: (resp: any) => { this.handleCredentialResponse(resp)
         }
       })
-    google.accounts.id.renderButton(document.getElementById("google-btn"), {
-      theme: 'filled_blue',
+    const googleBtnContainer = document.getElementById("google-btn");
+    const anchoDisponible = googleBtnContainer?.offsetWidth || 350;
+    google.accounts.id.renderButton(googleBtnContainer, {
+      theme: 'outline',
       size: 'large',
-      shape: 'rectangle',
-      width: 350
+      shape: 'pill',
+      logo_alignment: 'left',
+      width: Math.min(350, anchoDisponible)
     })
   }
 
@@ -60,7 +65,7 @@ get password()
     this.authService.login(username!, password!).subscribe({
   next: (res) => {
     this.authService.saveToken(res.token);
-    alert("Login exitoso");
+    this.dialog.success("Login exitoso");
     this.router.navigate(['/dia', this.fechaHoy])
     this.errorMessage = '';
   },
@@ -101,7 +106,7 @@ handleCredentialResponse(response: any) {
       // Usuario EXISTE → guardar token y entrar a la app
       this.authService.saveToken(res.token); // asegurate que saveToken guarde en localStorage
 
-      alert("Login con Google exitoso");
+      this.dialog.success("Login con Google exitoso");
       this.router.navigate(['/dia', this.fechaHoy]);
     },
     error: (err) => {

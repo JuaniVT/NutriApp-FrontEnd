@@ -20,6 +20,62 @@
         #fdf0e1 100%
       );
     --white-soft: rgba(224, 219, 255, 0.295);
+
+    /* ============================================================
+       DESIGN TOKENS — paleta unificada de la app
+       ============================================================ */
+
+    /* Color: fondo y superficies */
+    --app-bg: #fff9f0;
+    --app-surface: #ffffff;
+    --app-surface-tint: #f3e4ce;
+    --app-border-subtle: rgba(0, 0, 0, 0.06);
+
+    /* Color: acento naranja
+       -600 = uso decorativo (iconos, bordes, elementos grandes)
+       -700 = fondo sólido con texto blanco encima (botones, cumple AA)
+       -800 = texto sobre fondo naranja claro (chips, cumple AA)
+       -soft = fondo claro de tinte */
+    --app-orange-600: #d97706;
+    --app-orange-700: #b45309;
+    --app-orange-800: #92400e;
+    --app-orange-soft: #fde6d1;
+
+    /* Color: acento verde (mismo criterio que el naranja) */
+    --app-green-600: #10b981;
+    --app-green-700: #047857;
+    --app-green-soft: #d1fae5;
+
+    /* Color: texto */
+    --app-text-primary: #374151;
+    --app-text-secondary: #6b7280;
+    --app-text-muted: #9ca3af;
+
+    /* Tipografía: escala consistente */
+    --font-xs: 12px;
+    --font-sm: 14px;
+    --font-md: 16px;
+    --font-lg: 20px;
+    --font-xl: 24px;
+    --app-font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+
+    /* Espaciado: múltiplos de 4px */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+
+    /* Motion: nunca ease-in, siempre ease-out o curva custom */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --duration-fast: 120ms;
+    --duration-base: 200ms;
+    --duration-slow: 260ms;
+
+    /* Tamaño mínimo de área táctil (accesibilidad mobile) */
+    --tap-target-min: 44px;
     --chocolate: #7a441a;
     --crema: linear-gradient(100deg, #faf4e8 100%, #fdebd6 0%);
     --orange-degradado: linear-gradient(90deg, #ff8c42, #ffb870);

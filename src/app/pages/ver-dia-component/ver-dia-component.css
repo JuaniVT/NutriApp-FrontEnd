@@ -5,16 +5,30 @@
 /* ======== ESTILO GENERAL ======== */
 .ver-dia-container {
   min-height: 100vh;
-  padding: 1rem;
+  padding: 1.25rem;
   background-color: #ffffff;
   font-family: 'Poppins', sans-serif;
   color: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-direction: column;
   box-sizing: border-box;
   max-width: 900px;
   margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.total-hidratacion {
+    color: var(--app-green-700, #047857);
+    background-color: var(--app-green-soft, #d1fae5);
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: var(--font-md, 16px);
+    border-left: 5px solid var(--app-green-700, #047857);
+    margin: 16px 0;
 }
 
 /* Barra de navegación semanal */
@@ -25,19 +39,17 @@
   gap: 4px;
   justify-content: center;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out);
   width: 100%;
   height: 5rem;
   padding: 1rem;
   min-width: 60px;
   border-radius: 12px;
   align-items: center;
-
-  
 }
 
 .dia:hover {
-  background-color: #ececec;
+  background-color: var(--app-orange-soft, #fde6d1);
 }
 
 .semana-container {
@@ -48,11 +60,11 @@
 
   background: #ffffff;
   padding: 1rem;
-  border: 2px solid black;
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 18px;
   margin-bottom: 2rem;
 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
 
   overflow: hidden;        /* <- evita que el hover expanda el contenedor */
   position: relative;
@@ -68,9 +80,9 @@
 }
 
 .titulo-semana {
-  font-size: 1.8rem;
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
   font-weight: 700;
-  color: #ff8c42;
+  color: var(--app-orange-700, #b45309);
   margin: 10px 0 15px;
   text-align: center;
 }
@@ -114,7 +126,7 @@
   background: white;
   border: none;
   border-radius: 50%;
-  color: #1976d2;
+  color: var(--app-orange-700, #b45309);
   font-size: 1.6rem;
   font-weight: bold;
 
@@ -134,7 +146,7 @@
 
 .btn-nav:hover {
   transform: scale(1.1);   /* <- YA NO EXPANDE EL CONTENEDOR */
-  background: #eaf3ff;
+  background: var(--app-orange-soft, #fde6d1);
 }
 
 .btn-nav:active {
@@ -155,7 +167,7 @@
 
 /* Día actual */
 .dia.hoy {
-  background-color: #007bff;
+  background-color: var(--app-orange-700, #b45309);
   color: white;
 }
 
@@ -171,7 +183,7 @@
   max-width: 700px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 /* ======== CARDS DE COMIDA ======== */
@@ -179,8 +191,8 @@
   background-color: #fff;
   border-radius: 18px;
   padding: 15px 20px;
-  border: 1px solid #f2f2f2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 }
 
@@ -193,7 +205,7 @@
 }
 
 .comida-card h3 {
-  color: #ff8c42;
+  color: var(--app-orange-700, #b45309);
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
@@ -222,7 +234,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #ff8c42, #ffc857);
+  background: var(--app-orange-700, #b45309);
   padding: 10px 15px;
   border-radius: 12px;
   color: white;
@@ -233,27 +245,33 @@
 
 .alimento-header:hover {
   transform: scale(1.02);
-  box-shadow: 0 4px 10px rgba(255, 140, 66, 0.25);
+  box-shadow: 0 4px 10px rgba(180, 83, 9, 0.25);
 }
 
 /* ======== DETALLES DESPLEGABLES ======== */
 .alimento-detalle {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: all 0.4s ease;
-  background-color: #fff9f3;
-  border-left: 4px solid #ff8c42;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  border-left: 4px solid var(--app-orange-700, #b45309);
   border-radius: 10px;
   margin-top: 8px;
-  padding: 0 15px;
+  padding: 10px 15px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  border-top: 1px solid #f2f2f7;
+  border-right: 1px solid #f2f2f7;
+  border-bottom: 1px solid #f2f2f7;
 }
 
 .alimento-detalle.mostrar {
-  max-height: 500px;
-  opacity: 1;
-  padding: 10px 15px;
-  animation: fadeIn 0.4s ease;
+  display: flex;
+  animation: detalleFadeIn 0.24s var(--ease-out, ease-out);
+}
+
+@keyframes detalleFadeIn {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .alimento-detalle .info p {
@@ -314,6 +332,25 @@
   }
 }
 
+/* Contenedor general: acciones + gráfico
+   (declarado antes de RESPONSIVE GENERAL a propósito: con especificidad
+   empatada, si esta regla quedara después de los @media que la modifican,
+   ganaría siempre ella y los overrides de los media queries nunca se aplicarían) */
+.container-graficos-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(20px, 4vw, 60px);
+  padding: 10px 0 16px;
+  width: 100%;
+}
+
+/* Contenedor del formulario */
+.acciones {
+  flex: 1 1 280px;
+  max-width: 320px;
+}
 
 /* ==========================
    RESPONSIVE GENERAL
@@ -323,12 +360,18 @@
 @media (max-width: 1024px) {
   .container-graficos-acciones {
     flex-direction: column;
-    gap: 60px;
+    align-items: center;
+    gap: clamp(24px, 5vw, 40px);
     padding-bottom: 60px;
   }
 
+  /* .acciones usa flex: 1 1 280px pensado como ancho mínimo cuando
+     .container-graficos-acciones está en fila. Al pasar el padre a
+     columna (arriba), ese 280px pasa a interpretarse como alto mínimo
+     e infla el formulario con espacio vacío. Se anula acá. */
   .acciones {
-    width: 100%;
+    flex: 1 1 auto;
+    max-width: 100%;
   }
 
   .macro-container {
@@ -509,7 +552,7 @@
 /* Estilos del modal */
 .modal-agregar h2 {
   margin-bottom: 15px;
-  color: #ff8c42;
+  color: var(--app-orange-700, #b45309);
   text-align: center;
 }
 
@@ -536,7 +579,7 @@
   background: #f0f0f0;
   margin-bottom: 6px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .modal-agregar li:hover {
@@ -544,7 +587,7 @@
 }
 
 .seleccionado {
-  background: linear-gradient(90deg, #ff8c42, #ffc857) !important;
+  background: var(--app-orange-700, #b45309) !important;
   color: white !important;
 }
 
@@ -559,7 +602,7 @@
 }
 
 .btn-agregar {
-  background: linear-gradient(135deg, #42b883, #2ecc71);
+  background: var(--app-green-700, #047857);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -598,11 +641,14 @@
   cursor: pointer;
   background-color: #f0f0f0;
   color: #555;
-  transition: all 0.2s ease;
+  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+              border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              background var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .modal-agregar .tabs button.active {
-  background: #ff8c42;
+  background: var(--app-orange-700, #b45309);
   color: white;
 }
 
@@ -630,18 +676,21 @@
   flex-direction: column;
   gap: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+              border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              background var(--duration-base, 200ms) var(--ease-out, ease-out);
   border: 2px solid transparent;
 }
 
 .paquete-card:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
-  border-color: #ff8c42;
+  border-color: var(--app-orange-700, #b45309);
 }
 
 .paquete-card.seleccionado {
-  border-color: #ff8c42;
+  border-color: var(--app-orange-700, #b45309);
   background: #fff5e6;
 }
 
@@ -650,7 +699,7 @@
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ff8c42;
+  color: var(--app-orange-700, #b45309);
 }
 
 /* 🔹 Lista de alimentos dentro del paquete */
@@ -669,19 +718,22 @@
 /* 🔹 Botón de agregar paquete */
 .paquete-card .btn-agregar {
   align-self: flex-end;
-  background: linear-gradient(135deg, #42b883, #2ecc71);
+  background: var(--app-green-700, #047857);
   color: white;
   border: none;
   border-radius: 10px;
   padding: 8px 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+              border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              background var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .paquete-card .btn-agregar:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+  box-shadow: 0 4px 8px rgba(4, 120, 87, 0.3);
 }
 
 /* 🔹 Scroll barra personalizada para tab */
@@ -739,28 +791,6 @@
   flex-direction: column;
 }
 
-/* Contenedor muy largo */
-
-
-
-/* Contenedor del desplegable */
-.alimento-detalle {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 18px 20px;
-  margin-top: 10px;
-  display: none;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-  border: 1px solid #f2f2f7;
-  transition: all .3s ease;
-}
-
-.alimento-detalle.mostrar {
-  display: flex;
-}
-
 /* Contenedor de macros */
 .macro-container {
   display: flex;
@@ -769,25 +799,26 @@
 }
 
 
-/* Contenedor general: acciones + gráfico */
-.container-graficos-acciones {
-  display: flex;
-  justify-content: flex-start;
-  gap: 150px;
-  padding: 10px 0 100px;
-  width: 100%;
-}
-
-/* Contenedor del formulario */
-.acciones {
-  width: 50%;
-}
-
 .acciones form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
-  gap: 14px;
+  gap: 10px;
+}
+
+/* Label, input y mensaje de error ocupan la fila completa;
+   Actualizar/Eliminar quedan como los dos únicos ítems restantes
+   y el auto-placement de grid los ubica lado a lado. */
+.acciones label,
+#entrada,
+.error-mensaje {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 360px) {
+  .acciones form {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Label */
@@ -800,7 +831,7 @@
 /* Input nuevo */
 #entrada {
   width: auto;
-  padding: 12px 14px;
+  padding: 9px 12px;
   border: none;
   margin-left: 10px;
   /* SIN BORDES COMO PEDISTE */
@@ -813,89 +844,59 @@
 
 #entrada:focus {
   background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(74, 157, 252, 0.25);
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
   outline: none;
-}
-
-/* Botón Actualizar */
-.btn-actualizar {
-  background: #1a73e8;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-actualizar:hover {
-  background: #1665ca;
-  transform: translateY(-2px);
-}
-
-.btn-actualizar:disabled {
-  background: #b9c8e6;
-}
-
-/* Botón Eliminar */
-.eliminar {
-  background: #ffe4e4;
-  color: #c93030;
-  border: none;
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  transition: 0.2s;
-}
-
-.eliminar:hover {
-  background: #ffd1d1;
-  transform: translateY(-2px);
 }
 
 /* Error */
 .error-mensaje {
-  background: #ffe4e4;
-  border: 1px solid #ffbcbc;
-  color: #c93030;
+  background: #fdecea;
+  border: 1px solid #f3b4ac;
+  color: #b91c1c;
   padding: 8px 12px;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: var(--font-xs, 13px);
 }
 
 /* Contenedor de las tarjetas */
 .info-macro-cards {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-  margin-top: 15px;
+  gap: 12px;
+  margin: 10px 0;
   justify-content: space-between;
 }
 
 /* Tarjeta individual */
 .macro-card {
   flex: 1;
+  box-sizing: border-box;
   background: #fff;
   border-radius: 14px;
-  padding: 18px;
+  padding: 12px 10px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid #ffe2c6;
+  border: 1px solid var(--app-orange-soft, #fde6d1);
   transition: transform .2s ease, box-shadow .2s ease;
+}
+
+/* Label dentro de las macro-cards del detalle de alimento: fuente algo
+   más chica y sin wrap para que "Carbohidratos" no corte feo en cards
+   angostas. Escopado a .macro-card para no afectar a .macros-resumen .macro,
+   que reutiliza el mismo nombre de clase .macro-label en otro contexto. */
+.macro-card .macro-label {
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 /* Hover premium */
 .macro-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(255, 153, 51, 0.18);
+  box-shadow: 0 6px 20px rgba(180, 83, 9, 0.18);
 }
 
 /* Estética naranja NutriApp */
 .macro-orange {
-  border-left: 6px solid #ff8c42;
+  border-left: 6px solid var(--app-orange-700, #b45309);
   background: linear-gradient(to right, #fff, #fff7ef);
 }
 
@@ -912,21 +913,29 @@
   margin-top: 6px;
   font-size: 20px;
   font-weight: 700;
-  color: #ff6c00;
+  color: var(--app-orange-700, #b45309);
 }
 
 /* Botón Actualizar (verde) */
 .btn-actualizar {
   width: 100%;
   padding: 10px 0;
-  background: #32c260;
+  min-height: var(--tap-target-min, 44px);
+  background: var(--app-green-700, #047857);
   border: none;
   color: white;
+  font-size: var(--font-sm, 15px);
   font-weight: 600;
   border-radius: 10px;
-  margin-top: 10px;
   cursor: pointer;
-  transition: opacity .2s ease, transform .15s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              opacity var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
+}
+
+.btn-actualizar:hover:not(:disabled) {
+  background: #035c40;
+  transform: translateY(-2px);
 }
 
 .btn-actualizar:disabled {
@@ -938,47 +947,61 @@
 .eliminar {
   width: 100%;
   padding: 10px 0;
-  background: #ffdddd;
-  color: #d64545;
+  min-height: var(--tap-target-min, 44px);
+  background: #fdecea;
+  color: #b91c1c;
   border: none;
+  font-size: var(--font-sm, 15px);
   font-weight: 600;
   border-radius: 10px;
-  margin-top: 8px;
   cursor: pointer;
-  transition: background .2s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
 .eliminar:hover {
-  background: #ffc7c7;
+  background: #f8d3ce;
+  transform: translateY(-2px);
 }
 
 .grafico-macros {
-  margin-top: 12px;
-  width: auto;
   display: flex;
-  margin-right: 200px;
+  flex: 1 1 170px;
+  max-width: 170px;
+  margin: 0;
   justify-content: center;
 }
 
 .grafico-macros canvas {
-  width: 220px !important;
-  /* 🔥 más chico */
-  height: 220px !important;
-  /* 🔥 más chico */
+  width: 100% !important;
+  max-width: 170px !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1;
 }
 
 
 .macros {
   display: flex;
   flex-direction: row;
-  gap: 20px;
-  margin-bottom: 20px;
-  margin-top: 15px;
+  gap: 12px;
+  margin: 0;
   justify-content: space-between;
 }
 
-.container-graficos-acciones {
-  display: flex;
+/* 3 macro-cards en fila ya no entran junto a su valor (20px) sin
+   desbordar el panel a este ancho: se pasa a 2 columnas en vez de
+   seguir reduciendo la fuente hasta hacerla ilegible.
+   (declarado después de .macros/.macro-card a propósito, ver nota de
+   cascada junto a .container-graficos-acciones más arriba en el archivo) */
+@media (max-width: 360px) {
+  .macros {
+    flex-wrap: wrap;
+  }
+
+  .macro-card {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 0;
+  }
 }
 
 
@@ -987,10 +1010,11 @@
   width: 100%;
   max-width: 700px;
   background: linear-gradient(145deg, #fff8f0, #fffdf9);
+  border: 1px solid var(--app-orange-soft, #fde6d1);
   border-radius: 18px;
   padding: 20px 25px;
-  box-shadow: 0 6px 20px rgba(255, 140, 66, 0.1);
-  margin-bottom: 25px;
+  box-shadow: 0 8px 24px rgba(180, 83, 9, 0.15);
+  margin-bottom: 28px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -999,24 +1023,24 @@
 
 /* Fecha del día */
 .resumen-dia h2 {
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
   font-weight: 700;
-  color: #ff8c42;
+  color: var(--app-orange-700, #b45309);
   text-align: center;
   margin: 0;
 }
 
 /* Número de calorías */
 .arc-number {
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
   font-weight: 700;
-  color: #ff6c00;
+  color: var(--app-orange-700, #b45309);
   text-align: center;
   background: #fff5e6;
   border: 1px solid #ffdab1;
   border-radius: 12px;
   padding: 12px 0;
-  box-shadow: inset 0 2px 6px rgba(255, 140, 66, 0.15);
+  box-shadow: inset 0 2px 6px rgba(180, 83, 9, 0.15);
 }
 
 /* Contenedor de macros */
@@ -1029,17 +1053,18 @@
 .macro {
   flex: 1;
   background: #ffffff;
+  border: 1px solid var(--app-border-subtle, rgba(0, 0, 0, 0.08));
+  border-left: 6px solid var(--app-orange-700, #b45309);
   border-radius: 12px;
   padding: 12px 15px;
   text-align: center;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-  border-left: 6px solid #ff8c42;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .macro:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.18);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.18);
 }
 
 .macro-label {
@@ -1052,7 +1077,7 @@
 .macro-value {
   font-size: 20px;
   font-weight: 700;
-  color: #ff6c00;
+  color: var(--app-orange-700, #b45309);
   margin-top: 6px;
 }
 
@@ -1062,18 +1087,27 @@
     padding: 15px 18px;
   }
 
-  .resumen-dia h2 {
-    font-size: 1.4rem;
-  }
-
   .arc-number {
-    font-size: 1.2rem;
     padding: 10px 0;
   }
 
+  /* Se mantienen en fila (no apiladas) para no ocupar tanto alto en mobile */
   .macros-resumen {
-    flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+  }
+
+  .macro {
+    padding: 8px 6px;
+    border-left-width: 4px;
+  }
+
+  .macro-label {
+    font-size: 11px;
+  }
+
+  .macro-value {
+    font-size: 15px;
+    margin-top: 3px;
   }
 
  .semana-container {
@@ -1173,6 +1207,16 @@
   /* que esté por encima de todo */
 }
 
+/* Contenedor para el componente de hidratación */
+.hidratacion-wrapper {
+  width: 100%; /* Ocupa todo el ancho del contenedor padre */
+  max-width: 700px; /* Misma dimensión que .resumen-dia y .comidas-section */
+  display: flex;
+  justify-content: center; /* Centra la tarjeta dentro del wrapper */
+  box-sizing: border-box;
+  align-self: stretch; /* Clave: Hace que este elemento ignore el 'align-items: center' del padre y se estire */
+}
+
 /* Ventana modal */
 .modal-agregar {
   position: fixed;
@@ -1191,4 +1235,3 @@
   max-height: 90vh;
   overflow-y: auto;
 }
-

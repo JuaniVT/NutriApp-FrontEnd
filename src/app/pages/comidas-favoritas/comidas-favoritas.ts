@@ -10,6 +10,7 @@ import { PaqueteService } from '../../service/paquete-service';
 import { ComidaFavoritaDTO } from '../../models/comidaFavoritaDTO';
 import { ComidaIngeridaSalidaDTO } from '../../models/comida-ingerida-salida.dto';
 import { catchError, debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
+import { DialogService } from '../../service/dialog';
 
 @Component({
   selector: 'app-comidas-favoritas',
@@ -27,6 +28,7 @@ export class ComidasFavoritasComponent {
   alimentoSeleccionado?: AlimentoBusquedaDTO;
   protected gramos = 100;
   protected readonly search = inject(DiaService);
+  private dialog = inject(DialogService);
   mensajeError: string = '';
 
 
@@ -74,7 +76,7 @@ export class ComidasFavoritasComponent {
       .pipe(
         catchError(err => {
           console.error(err);
-          alert('Error al cargar comidas favoritas');
+          this.dialog.error('Error al cargar comidas favoritas');
           return of([]);
         })
       )
@@ -92,11 +94,11 @@ export class ComidasFavoritasComponent {
       });
   }
 
-  crearPaquete(): void {
-    const nombre = prompt('Ingrese el nombre del nuevo paquete');
+  async crearPaquete(): Promise<void> {
+    const nombre = await this.dialog.prompt('Ingrese el nombre del nuevo paquete');
     if (!nombre) return;
     this.paquetes.push({ nombrePaquete: nombre, alimentos: [] });
-    alert(`Paquete "${nombre}" creado con éxito`);
+    this.dialog.success(`Paquete "${nombre}" creado con éxito`);
   }
 
   abrirAgregarAlimento(paquete: Paquete) {
@@ -135,14 +137,14 @@ export class ComidasFavoritasComponent {
 
     this.client.addComidaFavorita(nuevaComida).subscribe({
   next: mensaje => {
-    alert(mensaje); // "Comida agregada correctamente."
+    this.dialog.success(mensaje); // "Comida agregada correctamente."
     this.paqueteSeleccionado?.alimentos.push(elemento);
     this.cerrarModal();
     this.cargarComidasFavoritas();
   },
   error: err => {
     console.error(err);
-    alert('Error al agregar comida al paquete');
+    this.dialog.error('Error al agregar comida al paquete');
   }
 });}
 
@@ -152,11 +154,11 @@ export class ComidasFavoritasComponent {
         next: () => {
           paquete.alimentos = paquete.alimentos.filter(a => a.id !== alimento.id);
           this.cargarComidasFavoritas();
-          alert(`Alimento "${alimento.nombre}" eliminado del paquete "${paquete.nombrePaquete}"`);
+          this.dialog.success(`Alimento "${alimento.nombre}" eliminado del paquete "${paquete.nombrePaquete}"`);
         },
         error: err => {
           console.error(err);
-          alert('Error al eliminar alimento del paquete');
+          this.dialog.error('Error al eliminar alimento del paquete');
         }
       });
   }

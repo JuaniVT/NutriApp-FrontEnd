@@ -1,0 +1,58 @@
+<div class="hidratacion-card">
+  <!-- Encabezado con el total y la meta -->
+  <div class="hidratacion-header">
+    <!-- Info de texto a la izquierda -->
+    <div>
+      <p class="label">Hidratación</p>
+      <span class="valor">{{ totalMl | number:'1.0-0' }} / {{ metaDiaria }} ml</span>
+    </div>
+
+    <!-- Barra de progreso en el centro -->
+    <div class="progreso-track">
+      <div class="progreso-fill" [style.width.%]="porcentajeVisual" [style.background]="colorProgreso"></div>
+    </div>
+  </div>
+
+  <!-- Información del progreso -->
+  <div class="progreso-info">
+    <span [class.cumplida]="metaCumplida">
+      @if (metaCumplida) {
+        Meta cumplida
+      } @else {
+        Faltan {{ mlFaltantes }} ml
+      }
+    </span>
+    <span class="porcentaje">{{ porcentaje }}%</span>
+  </div>
+
+  <!-- Fila de vasos SVG -->
+  <div class="vasos-row">
+    @for (i of vasosArray; track i) {
+      <svg viewBox="0 0 24 32" class="vaso">
+        <defs>
+          <clipPath [id]="'clip-' + i">
+            <rect x="0" [attr.y]="32 - (32 * fillRatio(i))" width="24" [attr.height]="32 * fillRatio(i)" />
+          </clipPath>
+        </defs>
+        <path d="M4 2 L20 2 L17.5 30 L6.5 30 Z" class="vaso-base" />
+        <path d="M4 2 L20 2 L17.5 30 L6.5 30 Z" class="vaso-relleno" [attr.clip-path]="'url(#clip-' + i + ')'" />
+      </svg>
+    }
+  </div>
+
+  <!-- Sección para agregar agua -->
+  <div class="seccion-agregar">
+    <div class="input-wrapper">
+      <input type="number" [(ngModel)]="cantidad" class="input-ml" placeholder="Cantidad en ml" min="1">
+      <button class="btn-agregar" (click)="registrar()" [disabled]="loading || !cantidad">
+        {{ loading ? '...' : 'Agregar' }}
+      </button>
+    </div>
+    <!-- Botones rápidos adicionales si se desean aquí abajo -->
+    <div class="botones-rapidos">
+      <button class="btn-rapido" (click)="registrarRapido(250)">+250ml</button>
+      <button class="btn-rapido" (click)="registrarRapido(500)">+500ml</button>
+      <button class="btn-rapido" (click)="registrarRapido(750)">+750ml</button>
+    </div>
+  </div>
+</div>

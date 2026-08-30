@@ -7,6 +7,7 @@ import { not } from 'rxjs/internal/util/not';
 import { Conditional } from '@angular/compiler';
 import { AgregarAlimentosBDD } from '../agregar-alimentos-bdd/agregar-alimentos-bdd';
 import { ComidaBDD } from '../../../models/comida-bdd';
+import { DialogService } from '../../../service/dialog';
 
 @Component({
   selector: 'alimentos-bdd',
@@ -16,6 +17,7 @@ import { ComidaBDD } from '../../../models/comida-bdd';
 })
 export class AlimentosBDD {
   private readonly alimentosBddService = inject(AlimentosbddService);
+  private readonly dialog = inject(DialogService);
 
   //signal para inciarlizar la pagina con los ultimos 10 alimentos
   private readonly ultimos10Alimnetos = toSignal(this.alimentosBddService.getLast10());
@@ -71,14 +73,15 @@ export class AlimentosBDD {
         }
 
       },
-      error: (e) => {alert(e.message), this.isLoading.set(false)}
+      error: (e) => {this.dialog.error(e.message), this.isLoading.set(false)}
     })
   }
 
-  handleDelete(index: number){
-    if(confirm("Seguro que desea eliminar el alimento?")){
+  async handleDelete(index: number){
+    const confirmado = await this.dialog.confirm("Seguro que desea eliminar el alimento?", { danger: true });
+    if(confirmado){
 
-      //bloqueamos UI 
+      //bloqueamos UI
       this.isLoading.set(true);
 
       this.alimentosBddService.delete(this.alimentosFiltrados()![index].id!).subscribe({
@@ -88,7 +91,7 @@ export class AlimentosBDD {
           //eliminamos de la vista
           this.alimentosFiltrados()?.splice(index, 1);
         },
-        error: (e) => {alert(e.message), this.isLoading.set(false)}
+        error: (e) => {this.dialog.error(e.message), this.isLoading.set(false)}
       })
     }
   }

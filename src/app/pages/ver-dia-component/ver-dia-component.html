@@ -62,7 +62,6 @@
         <span class="fecha"> {{dia.nombreDia}}</span>
 
       </div>
-
       }
 
     </div>
@@ -72,7 +71,14 @@
 
   </div>
 
-
+  <!-- Contenedor para dar espacio al componente de hidratación -->
+  <div class="hidratacion-wrapper">
+    <app-hidratacion-component 
+      [totalMl]="totalEnPadre" 
+      [fecha]="fecha" 
+      (registroExitoso)="cargarDia(fecha!)"> 
+    </app-hidratacion-component>
+  </div>
 
   <!-- ======= COMIDAS ======= -->
   <section class="comidas-section">
@@ -168,11 +174,9 @@
     </div>
     }
   </section>
-  <section class="actividades fisicas">
 
-
-  </section>
   }
+
   @if (mostrarAgregar)
   {
   <div class="overlay" (click)="cerrarAgregar()"></div>

@@ -5,7 +5,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(3px);
     z-index: 900;
 }
@@ -17,23 +17,27 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 350px;
-    background: #111;
-    padding: 25px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--app-surface, #ffffff);
+    padding: var(--space-6, 25px);
     border-radius: 15px;
-    color: white;
+    color: var(--app-text-primary, #374151);
+    box-sizing: border-box;
 
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
     z-index: 999;
 
     display: flex;
     flex-direction: column;
-    
-    animation: pop 0.25s ease-out;
+
+    animation: pop 0.22s var(--ease-out, ease-out);
 }
 
 @keyframes pop {
     from {
-        transform: translate(-50%, -50%) scale(0.8);
+        transform: translate(-50%, -50%) scale(0.95);
         opacity: 0;
     }
     to {
@@ -45,110 +49,127 @@
 /* Título */
 .modal-title {
     text-align: center;
-    margin-bottom: 15px;
-    font-size: 22px;
+    margin-bottom: var(--space-4, 15px);
+    font-size: var(--font-lg, 20px);
+    font-weight: 700;
+    color: var(--app-text-primary, #374151);
 }
 
 /* Inputs */
 .modal-form label {
-    margin-top: 10px;
-    font-weight: bold;
+    margin-top: var(--space-2, 10px);
+    font-weight: 600;
+    font-size: var(--font-sm, 14px);
+    color: var(--app-text-secondary, #6b7280);
     display: block;
 }
 
 .modal-form input {
     width: 100%;
-    padding: 7px;
-    border-radius: 20px;
-    border: none;
-    margin-top: 3px;
-    margin-bottom: 5px;
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    margin-top: var(--space-1, 4px);
+    margin-bottom: var(--space-2, 5px);
+    box-sizing: border-box;
 
-    background: white;
-    color: black;
-    font-size: 15px;
+    background: var(--app-bg, #fff9f0);
+    color: var(--app-text-primary, #374151);
+    font-size: var(--font-md, 15px);
+    transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
+
+.modal-form input:focus {
+    outline: none;
+    border-color: var(--app-orange-600, #d97706);
 }
 
 /* Contenedor de botones */
 .botones {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    gap: var(--space-3, 12px);
+    margin-top: var(--space-5, 20px);
 }
 
 /* Botón verde */
 .btn-aceptar {
-    background: #0f0;
-    padding: 10px 15px;
+    background: var(--app-green-700, #047857);
+    padding: var(--space-3, 10px) var(--space-4, 15px);
+    min-height: var(--tap-target-min, 44px);
     border-radius: 20px;
     border: none;
     cursor: pointer;
-    color: black;
-    font-weight: bold;
-    transition: 0.2s;
+    color: white;
+    font-weight: 600;
+    transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+                box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+                transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
-.btn-aceptar:hover{
-    background-color: rgb(0, 167, 0);
-    box-shadow: 0 0 5px rgb(0, 167, 0);
+.btn-aceptar:hover:not(:disabled){
+    background-color: #035c40;
+    box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.2);
+}
+
+.btn-aceptar:active:not(:disabled) {
+    transform: scale(0.97);
 }
 
 .btn-aceptar:disabled{
-    background-color: rgb(0, 127, 0);
+    background-color: var(--app-text-muted, #9ca3af);
     cursor: not-allowed;
-}
-
-.btn-aceptar:disabled:hover{
-    background-color: rgb(0, 127, 0);
-    box-shadow: 0 0 0 rgb(0, 127, 0);
-    transform: scale(1.0);
 }
 
 /* Botón rojo */
 .btn-denegar {
-    background: #f00;
-    padding: 10px 15px;
+    background: #b91c1c;
+    padding: var(--space-3, 10px) var(--space-4, 15px);
+    min-height: var(--tap-target-min, 44px);
     border-radius: 20px;
     border: none;
     cursor: pointer;
     color: white;
-    font-weight: bold;
-    transition: 0.2s;
+    font-weight: 600;
+    transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+                box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .btn-denegar:hover {
-    background: #c00;
-    box-shadow: 0 0 5px #c00;
+    background: #991616;
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
 }
 
 .btn-editar{
-    background: rgb(0, 4, 218);
-    padding: 10px 15px;
+    background: var(--app-orange-700, #b45309);
+    padding: var(--space-3, 10px) var(--space-4, 15px);
+    min-height: var(--tap-target-min, 44px);
     border-radius: 20px;
     border: none;
     cursor: pointer;
     color: white;
-    font-weight: bold;
-    transition: 0.2s;
+    font-weight: 600;
+    transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+                box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .btn-editar:hover{
-    background: rgb(0, 3, 190);
-    box-shadow: 0 0 5px rgb(0, 3, 190);
-
+    background: #8f4108;
+    box-shadow: 0 0 0 3px rgba(143, 65, 8, 0.2);
 }
 
 .btn-editar:disabled{
-    color: grey;
+    color: #e5e7eb;
     cursor: not-allowed;
-    background: rgb(0, 2, 134);
+    background: var(--app-text-muted, #9ca3af);
 }
 
 .btn-editar:hover:disabled{
-    background: rgb(0, 2, 134);
-    box-shadow: 0 0 0 rgb(0, 3, 190);
+    background: var(--app-text-muted, #9ca3af);
+    box-shadow: none;
 }
 
 .errorMessage{
-    color: red;
+    color: #b91c1c;
+    font-size: var(--font-sm, 14px);
 }

@@ -4,19 +4,21 @@
 .panel-agregar-comida {
   width: 100%;
   max-width: 540px;
-  background: #fff9f3;
+  background: var(--app-bg, #fff9f0);
   padding: 32px 28px;
   border-radius: 28px;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  font-family: "Poppins", sans-serif;
-  color: #333;
-  margin: 50px auto;
-  transition: all 0.3s ease;
+  gap: 16px;
+  font-family: var(--app-font-family, "Poppins", sans-serif);
+  color: var(--app-text-primary, #374151);
+  margin: var(--space-8, 32px) auto;
+  transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
+  box-sizing: border-box;
   position: relative;
-  border: 1px solid #ffeedd;
+  border: 1px solid var(--app-orange-soft, #fde6d1);
 }
 
 /* TITULOS */
@@ -24,25 +26,39 @@
 .panel-agregar-comida h3 {
   margin: 0;
   font-weight: 600;
-  color: #ff8c42;
+  color: var(--app-orange-700, #b45309);
 }
 
-/* BOTÓN CREAR PAQUETE */
-.panel-agregar-comida > button {
+/* ===========================================
+   BOTÓN "+ NUEVO PAQUETE" — acción primaria
+   =========================================== */
+.btn-nuevo-paquete {
   align-self: flex-start;
-  padding: 8px 18px;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  min-height: var(--tap-target-min, 44px);
+  border-radius: 14px;
+  background: var(--app-orange-700, #b45309);
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: var(--font-md, 16px);
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 3px 10px rgba(180, 83, 9, 0.25);
+  transition: transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+              background var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
-.panel-agregar-comida > button:hover {
-  transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+.btn-nuevo-paquete:hover {
+  background: var(--app-orange-800, #92400e);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(180, 83, 9, 0.35);
+}
+
+.btn-nuevo-paquete:active {
+  transform: scale(0.97);
 }
 
 /* ===========================================
@@ -50,21 +66,22 @@
    =========================================== */
 .panel-agregar-comida input[type="text"] {
   width: 100%;
-  border: 1px solid #ffd8b0;
+  border: 1px solid #e9c396;
   padding: 12px 16px;
   border-radius: 16px;
-  font-size: 0.95rem;
-  transition: all 0.25s ease;
+  font-size: var(--font-md, 16px);
+  transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .panel-agregar-comida input[type="text"]:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 8px rgba(255, 140, 66, 0.35);
+  border-color: var(--app-orange-700, #b45309);
+  box-shadow: 0 0 8px rgba(180, 83, 9, 0.35);
   outline: none;
 }
 
 /* ===========================================
-   LISTA DE ALIMENTOS
+   LISTA DE RESULTADOS DE BÚSQUEDA
    =========================================== */
 .panel-agregar-comida ul {
   list-style: none;
@@ -73,41 +90,42 @@
   max-height: 260px;
   overflow-y: auto;
   border-radius: 16px;
-  background-color: #fffaf0;
-  border: 1px solid #ffeedd;
+  background-color: var(--app-bg, #fff9f0);
+  border: 1px solid var(--app-orange-soft, #fde6d1);
 }
 
 .panel-agregar-comida li {
   padding: 12px 16px;
-  border-bottom: 1px solid #f4e6d0;
+  border-bottom: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
   border-radius: 12px;
   margin: 2px 4px;
 }
 
 .panel-agregar-comida li:hover {
-  background: #ffe5b3;
+  background: var(--app-orange-soft, #fde6d1);
   transform: translateX(3px);
 }
 
 .panel-agregar-comida li.seleccionado {
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
   font-weight: 600;
-  box-shadow: 0 3px 8px rgba(255, 140, 66, 0.3);
+  box-shadow: 0 3px 8px rgba(180, 83, 9, 0.3);
 }
 
 /* ===========================================
-   PANEL DETALLE
+   PANEL DETALLE (agregar alimento a un paquete)
    =========================================== */
 .panel-detalle {
   margin-top: 14px;
-  background-color: #fff9f3;
-  border-left: 5px solid #ff8c42;
+  background-color: var(--app-bg, #fff9f0);
+  border-left: 5px solid var(--app-orange-700, #b45309);
   border-radius: 18px;
   padding: 20px;
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.15);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.15);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -116,10 +134,10 @@
 /* LABELS Y PARRAFOS */
 .panel-detalle label,
 .panel-detalle p {
-  font-size: 0.9rem;
+  font-size: var(--font-sm, 14px);
   font-weight: 500;
-  color: #444;
-  margin: 6px 0;
+  color: var(--app-text-secondary, #6b7280);
+  margin: var(--space-2, 8px) 0;
 }
 
 /* INPUTS DEL DETALLE */
@@ -128,15 +146,16 @@
   width: 100%;
   padding: 12px;
   border-radius: 14px;
-  border: 1px solid #ffd8b0;
-  font-size: 0.95rem;
-  transition: all 0.25s ease;
+  border: 1px solid #e9c396;
+  font-size: var(--font-md, 16px);
+  transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 .panel-detalle input:focus,
 .panel-detalle select:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 6px rgba(255, 140, 66, 0.3);
+  border-color: var(--app-orange-700, #b45309);
+  box-shadow: 0 0 6px rgba(180, 83, 9, 0.3);
   outline: none;
 }
 
@@ -144,37 +163,40 @@
    BOTONES DETALLE
    =========================================== */
 .panel-detalle button {
-  padding: 12px 22px;
+  padding: var(--space-3, 12px) var(--space-5, 20px);
   border-radius: 22px;
   font-weight: 600;
+  font-size: var(--font-sm, 14px);
   cursor: pointer;
   border: none;
-  transition: all 0.25s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* BOTÓN AGREGAR */
 .panel-detalle button:first-of-type {
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
+  background: var(--app-orange-700, #b45309);
   color: #fff;
 }
 
 .panel-detalle button:first-of-type:hover {
   transform: scale(1.08);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.45);
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.45);
 }
 
 /* BOTÓN CANCELAR */
 .panel-detalle button:last-of-type {
-  background: #fff9f3;
+  background: var(--app-bg, #fff9f0);
   color: #444;
-  border: 2px solid #ff8c42;
+  border: 2px solid var(--app-orange-700, #b45309);
 }
 
 .panel-detalle button:last-of-type:hover {
-  background: #ffeedd;
+  background: var(--app-orange-soft, #fde6d1);
   transform: scale(1.06);
-  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.3);
 }
 
 /* ===========================================
@@ -185,166 +207,181 @@
 }
 
 .panel-agregar-comida ul::-webkit-scrollbar-thumb {
-  background: #ffb347;
+  background: var(--app-orange-600, #d97706);
   border-radius: 10px;
 }
 
 .panel-agregar-comida ul::-webkit-scrollbar-track {
-  background: #fffaf0;
+  background: var(--app-bg, #fff9f0);
   border-radius: 10px;
 }
 
+/* ===========================================
+   CARD DE PAQUETE
+   =========================================== */
+.panel-paquete {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--app-orange-soft, #fde6d1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  transition: box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
+
+.panel-paquete:hover {
+  box-shadow: 0 6px 18px rgba(180, 83, 9, 0.14);
+}
+
+/* Header de la card: nombre del paquete + acción de agregar alimento */
+.panel-paquete-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.panel-paquete-header h3 {
+  font-weight: 700;
+  text-transform: capitalize;
+  word-break: break-word;
+}
+
+/* BOTÓN "Agregar Alimento" — acción secundaria, estilo outline */
+.agregar-alimento {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  min-height: var(--tap-target-min, 44px);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--app-orange-700, #b45309);
+  border: 1.5px solid var(--app-orange-700, #b45309);
+  font-weight: 600;
+  font-size: var(--font-sm, 14px);
+  cursor: pointer;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
+
+.agregar-alimento:hover {
+  background: var(--app-orange-soft, #fde6d1);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(180, 83, 9, 0.2);
+}
 
 /* ===========================================
-   ITEMS DE LA LISTA DE ALIMENTOS
+   LISTA DE ALIMENTOS DENTRO DEL PAQUETE
    =========================================== */
-.panel-agregar-comida .panel-paquete ul {
+.panel-paquete ul {
   list-style: none;
   padding: 0;
   margin: 0;
   max-height: 220px;
   overflow-y: auto;
-  border-radius: 16px;
-  background-color: #fffaf0;
-  border: 1px solid #ffeedd;
+  border-radius: 12px;
 }
 
-.panel-agregar-comida .panel-paquete li {
+.panel-paquete li {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid #f4e6d0;
-  border-radius: 12px;
-  margin: 4px 2px;
-  transition: all 0.25s ease;
-  cursor: pointer;
-  background-color: #fff9f3;
+  gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
 }
 
-.panel-agregar-comida .panel-paquete li:hover {
-  background-color: #ffe5b3;
-  transform: translateX(2px);
+.panel-paquete li:last-child {
+  border-bottom: none;
 }
 
-.panel-agregar-comida .panel-paquete li span {
+.panel-paquete .alimento-nombre {
   font-weight: 500;
   color: #444;
+  overflow-wrap: anywhere;
 }
 
-/* BOTÓN ELIMINAR DE LISTA */
-.panel-agregar-comida .panel-paquete li button {
+/* BOTÓN "Eliminar" de un alimento — mismo lenguaje que .eliminar de ver-dia-component */
+.btn-eliminar-alimento {
+  flex-shrink: 0;
   padding: 6px 12px;
-  font-size: 0.85rem;
+  min-height: var(--tap-target-min, 44px);
+  min-width: 44px;
+  border-radius: 10px;
+  background: #fdecea;
+  color: #b91c1c;
   border: none;
-  border-radius: 12px;
-  background: #ff8c42;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.25s ease, transform 0.15s ease;
-  box-shadow: 0 2px 6px rgba(255, 140, 66, 0.3);
-}
-
-.panel-agregar-comida .panel-paquete li button:hover {
-  background: #ffb347;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.4);
-}
-
-/* Input estilo actual */
-.panel-agregar-comida input[type="text"] {
-  width: 100%;
-  border: 1px solid #ffd8b0;
-  padding: 12px 16px;
-  border-radius: 16px;
-  font-size: 0.95rem;
-  transition: all 0.25s ease;
-}
-
-.panel-agregar-comida input[type="text"]:focus {
-  border-color: #ff8c42;
-  box-shadow: 0 0 8px rgba(255, 140, 66, 0.35);
-  outline: none;
-}
-
-.agregar-alimento {
-  align-self: flex-start;
-  padding: 8px 18px;
-  border-radius: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
-  color: #fff;
+  font-size: var(--font-xs, 13px);
   font-weight: 600;
-  border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
-.agregar-alimento:hover {
-  transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
+.btn-eliminar-alimento:hover {
+  background: #f8d3ce;
+  transform: translateY(-1px);
 }
 
 /* Mensaje de error debajo del buscador */
 .mensaje-error {
-  color: #ff4c42;
-  font-size: 0.9rem;
+  color: #b91c1c;
+  font-size: var(--font-sm, 14px);
   font-weight: 500;
-  margin-top: 6px;
-  padding: 6px 12px;
+  margin-top: var(--space-2, 8px);
+  padding: var(--space-2, 8px) var(--space-3, 12px);
   border-radius: 12px;
-  background-color: #fff0eb;
-  border: 1px solid #ffb3a2;
+  background-color: #fdecea;
+  border: 1px solid #f3b4ac;
 }
 
-/* Botón "Agregar Alimento" estilo +Nuevo Paquete */
-.agregar-alimento {
-  padding: 8px 18px;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
-  color: #fff;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin-bottom: 12px;
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+@media (max-width: 768px) {
+  .panel-agregar-comida {
+    padding: var(--space-5, 20px) var(--space-4, 16px);
+    /* max-width:100% + margin:auto da 0px de margen real (el ancho ya
+       ocupa todo lo disponible, "auto" no tiene espacio para repartir).
+       Se resta el gutter directamente del max-width para que quede un
+       aire visible a los costados en vez de tocar el borde. */
+    margin: var(--space-5, 20px) auto;
+    max-width: calc(100% - 32px);
+  }
 }
 
-.agregar-alimento:hover {
-  transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
-}
+@media (max-width: 480px) {
+  .panel-agregar-comida {
+    max-width: calc(100% - 24px);
+  }
 
-/* Lista de resultados */
-.panel-agregar-comida ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-height: 220px;
-  overflow-y: auto;
-  border-radius: 16px;
-  background-color: #fffaf0;
-  border: 1px solid #ffeedd;
-}
+  .btn-nuevo-paquete,
+  .panel-detalle button {
+    min-height: var(--tap-target-min, 44px);
+  }
 
-.panel-agregar-comida li {
-  padding: 12px 16px;
-  border-bottom: 1px solid #f4e6d0;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  border-radius: 12px;
-  margin: 2px 4px;
-}
+  .panel-paquete {
+    padding: 14px;
+  }
 
-.panel-agregar-comida li:hover {
-  background: #ffe5b3;
-  transform: translateX(2px);
-}
+  /* Nombre del paquete + "Agregar Alimento" se apilan en vez de
+     compartir fila cuando no entran cómodos */
+  .panel-paquete-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.panel-agregar-comida li.seleccionado {
-  background: linear-gradient(90deg, #ff8c42, #ffb870);
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 3px 8px rgba(255, 140, 66, 0.3);
+  .agregar-alimento {
+    text-align: center;
+  }
+
+  .btn-eliminar-alimento {
+    min-height: var(--tap-target-min, 44px);
+    min-width: var(--tap-target-min, 44px);
+  }
 }

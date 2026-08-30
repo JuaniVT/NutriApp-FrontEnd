@@ -1,7 +1,7 @@
 import { AfterViewInit, ElementRef, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-
+import { HidratacionComponent } from '../hidratacion-component/hidratacion-component';
 import { DiaDTO, DiaService } from '../../service/dia-service';
 import { ComidaIngeridaSalidaDTO } from '../../models/comida-ingerida-salida.dto';
 import { modificarComidaIngeridaDTO } from '../../models/modificar-comida-ingerida-dto';
@@ -16,24 +16,28 @@ import { catchError, of } from 'rxjs';
 import { Paquete } from '../../models/paquete';
 import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 import { FechaLocalService } from '../../service/FechaLocalService';
+import { DialogService } from '../../service/dialog';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { ArcElement, Chart, ChartDataset, registerables, Tooltip } from 'chart.js';
 Chart.register(...registerables);
 
 Chart.register(ArcElement, Tooltip);
 
-@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule, CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent], templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
+@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule, CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent, HidratacionComponent],
+templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
 export class VerDiaComponent implements OnInit, AfterViewInit {
 
   @ViewChild('arcFill', { static: false }) arcFill!: ElementRef<SVGPathElement>;
   arcLength = 0;
   @ViewChild('miChart', { static: false }) miChart!: ElementRef<HTMLCanvasElement>;
-
+  // En tu componente padre
+@ViewChild(HidratacionComponent, { static: false }) hidratacionHijo!: HidratacionComponent;
   progressChart?: Chart;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
   protected manejadorSemana = inject(ManejadorSemana);
   protected manejadorFechas = inject(FechaLocalService);
+  private dialog = inject(DialogService);
 
   protected semana: any[] = [];
   protected dia?: DiaDTO;
@@ -44,16 +48,33 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   protected fechaReferenciaSemana = this.fecha; // fecha independiente de el dia actual para no cambiar el titulo de la fecha cuando se navega por las semanas
 
   longitudPath: number = 0;
+  totalEnPadre: number = 0;
 
+  handleTotalRecibido(total: number) {
+    this.totalEnPadre = total;
+  }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      if (!this.arcFill) return;
+  setTimeout(() => {
+    // 1. Verificación de seguridad del elemento DOM
+    if (!this.arcFill) {
+      console.warn('arcFill no está disponible aún');
+      return;
+    }
 
-      this.arcLength = this.arcFill.nativeElement.getTotalLength();
-      this.actualizarProgreso();
-    });
-  }
+    // 2. Ejecución de lógica propia
+    this.arcLength = this.arcFill.nativeElement.getTotalLength();
+    this.actualizarProgreso();
+
+    // 3. Ejecución segura del componente hijo
+    if (this.hidratacionHijo) {
+      console.log('Llamando a obtenerTotal con fecha:', this.fecha);
+      this.hidratacionHijo.obtenerTotal(this.fecha);
+    } else {
+      console.error('El componente hidratacionHijo no ha sido encontrado en el ViewChild');
+    }
+  });
+}
 
   renderProgressChart() {
     if (!this.miChart || !this.dia) return;
@@ -167,6 +188,9 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
         // Guardamos el día cargado
         this.dia = data;
+        this.totalEnPadre = this.dia.hidratacion.cantidadMl;
+        this.renderProgressChart();
+
         this.cargando = false;
 
         // Actualizamos la barra de progreso SVG
@@ -233,9 +257,9 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
     limiteAtras.setDate(hoy.getDate() - limiteMaximoDiasAtras);
 
     if (nueva < limiteAtras) {
-      alert("Para ver días más antiguos usá el calendario 🙂");
+      this.dialog.info("Para ver días más antiguos usá el calendario 🙂");
       return;
-    } 
+    }
 
     this.fechaReferenciaSemana = nueva.toISOString().split("T")[0];
     this.cargarSemana();
@@ -372,7 +396,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   eliminarComida(comida: ComidaIngeridaSalidaDTO) {
     this.diaService.eliminarComida(comida.id, this.fecha!, comida.tipoComida.toUpperCase()).subscribe({
       next: (res) => {
-        alert(res.mensaje);
+        this.dialog.success(res.mensaje);
         this.cargarDia(this.fecha!); // actualiza la lista solo cuando la eliminación termine
       },
       error: (err) => console.error(err)
@@ -384,7 +408,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
       .pipe(
         catchError(err => {
           console.error(err);
-          alert('Error al cargar comidas favoritas');
+          this.dialog.error('Error al cargar comidas favoritas');
           return of([]);
         })
       )
@@ -407,8 +431,8 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
     this.comidaFavoritaService.agregarPaqueteADia(nombrePaquete, this.tipoSeleccionado, this.fecha!)
       .subscribe({
         next: (res) => {
-          // Muestra un alert con el mensaje del backend
-          alert(res.mensaje || 'Paquete agregado correctamente.');
+          // Muestra la modal con el mensaje del backend
+          this.dialog.success(res.mensaje || 'Paquete agregado correctamente.');
 
           this.agregado.emit();   // notifica al padre para recargar el día
           this.cargarDia(this.fecha!);
@@ -416,7 +440,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
         },
         error: (err) => {
           const mensajeError = err.error?.error || 'No se pudo agregar el paquete.';
-          alert(mensajeError);  // muestra un alert con el error
+          this.dialog.error(mensajeError);  // muestra la modal con el error
           this.error = mensajeError;
           console.error(err);
         }
