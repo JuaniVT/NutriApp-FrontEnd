@@ -118,11 +118,19 @@
 
 
 <!-- SECCIÓN NOSOTROS -->
-<div id="nosotros-section" class="nosotros-section">
+<div id="nosotros-section" class="nosotros-section" [class.demo-colapsada]="!demoAbierta">
   <h2 class="nosotros-title">Probá cómo funciona</h2>
   <p class="nosotros-subtitle">Así se siente usar NutriApp — jugá con los controles</p>
 
-  <div class="demo-panel">
+  <!-- Sólo visible en pantallas chicas (ver CSS): despliega la demo, que ahí
+       arranca colapsada para no alargar el scroll. -->
+  <button type="button" class="demo-toggle" (click)="toggleDemo()"
+    [attr.aria-expanded]="demoAbierta" aria-controls="demo-panel">
+    {{ demoAbierta ? 'Ocultar demo' : 'Probar la demo interactiva' }}
+    <span class="demo-toggle-caret" aria-hidden="true">▾</span>
+  </button>
+
+  <div class="demo-panel" id="demo-panel">
 
     <!-- MACROS -->
     <div class="demo-col">

@@ -65,6 +65,15 @@ export class InicioSesionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /* ===== Demo interactiva de "Probá cómo funciona" ===== */
 
+  /** En pantallas chicas la demo arranca colapsada para no obligar a un scroll
+      largo antes de pasarla; el botón la despliega. En escritorio el CSS la
+      muestra siempre y oculta el botón, así que este flag no la afecta. */
+  demoAbierta = false;
+
+  toggleDemo(): void {
+    this.demoAbierta = !this.demoAbierta;
+  }
+
   /** Meta de calorías elegida con el slider. */
   metaKcal = 2100;
 

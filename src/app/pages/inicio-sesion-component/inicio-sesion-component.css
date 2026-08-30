@@ -485,6 +485,12 @@ input.invalid {
 /* ==========================================================
    DEMO INTERACTIVA "Probá cómo funciona"
    ========================================================== */
+/* botón para desplegar la demo: oculto por defecto, el CSS responsive lo
+   muestra sólo en pantallas chicas (≤900px) */
+.demo-toggle {
+  display: none;
+}
+
 .demo-panel {
   width: 100%;
   max-width: 760px;
@@ -787,14 +793,22 @@ input.invalid {
 
 /* Tablets verticales y pantallas medianas delgadas */
 @media (max-width: 900px) {
+  :host {
+    gap: 72px;
+  }
+
   .session {
     flex-direction: column;
-    margin-top: 80px;
+    /* el header es sticky (no fixed): este margen es sólo aire, se puede
+       recortar fuerte para que la tarjeta de login entre en el primer viewport */
+    margin-top: 32px;
+    gap: 28px;
     text-align: center;
   }
 
   .hero {
     width: 100%;
+    gap: 14px;
     justify-content: center;
   }
 
@@ -806,25 +820,64 @@ input.invalid {
     align-items: center;
   }
 
+  /* en móvil los badges empujan el login fuera de pantalla y además se repiten
+     como chips en "Probá cómo funciona": se ocultan acá */
   .hero-badges {
-    justify-content: center;
+    display: none;
   }
 
   .logins {
     width: 100%;
     max-width: 360px;
   }
+
+  /* --- Demo colapsable sólo en pantallas chicas --- */
+  .demo-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    padding: 11px 20px;
+    font-family: inherit;
+    font-size: var(--font-sm, 14px);
+    font-weight: 600;
+    color: var(--app-orange-800, #92400e);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--app-orange-soft, #FDE6D1);
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.10);
+    cursor: pointer;
+    transition: background var(--duration-base, 200ms) var(--ease-out, ease-out);
+  }
+
+  .demo-toggle:hover {
+    background: var(--app-orange-soft, #FDE6D1);
+  }
+
+  .demo-toggle-caret {
+    transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out);
+  }
+
+  .nosotros-section:not(.demo-colapsada) .demo-toggle-caret {
+    transform: rotate(180deg);
+  }
+
+  /* colapsada: ni el panel ni los chips ocupan espacio hasta desplegar */
+  .demo-colapsada .demo-panel,
+  .demo-colapsada .nosotros-feats {
+    display: none;
+  }
 }
 
 /* Celulares grandes */
 @media (max-width: 650px) {
   :host {
-    gap: 100px;
+    gap: 56px;
   }
 
   .session {
     padding: 0 15px;
-    gap: 60px;
+    gap: 28px;
   }
 
   .bienvenido {
@@ -861,8 +914,8 @@ input.invalid {
 /* Celulares chicos */
 @media (max-width: 430px) {
   .session {
-    gap: 40px;
-    margin-top: 60px;
+    gap: 24px;
+    margin-top: 24px;
   }
 
   .hero {
