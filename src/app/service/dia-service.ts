@@ -7,6 +7,7 @@ import { AlimentoBusquedaDTO } from '../models/alimentoBusquedadto';
 import { ComidaIngeridaDTO } from '../models/comidaingeridadto';
 import { HidratacionSalidaDTO } from '../models/hidratacion';
 import { environment } from '../../environments/environment';
+import { EstadoDiaDTO } from '../models/estado-dia.dto';
 
 
 export interface ActividadFisicaSalidaDTO {
@@ -14,7 +15,7 @@ export interface ActividadFisicaSalidaDTO {
   intensidad: string;
   duracionMin: number;
   caloriasGastadas: number;
- 
+
 }
 
 export interface DiaDTO {
@@ -30,22 +31,22 @@ export interface DiaDTO {
 })
 export class DiaService {
 
-  private apiUrl = `${environment.apiUrl}`; 
-  private readonly http = inject(HttpClient); 
+  private apiUrl = `${environment.apiUrl}`;
+  private readonly http = inject(HttpClient);
 
 
-  
+
   verDiaCompleto(fecha: string): Observable<DiaDTO> {
     return this.http.get<DiaDTO>(`${this.apiUrl}/dias/ver/completo?fecha=${fecha}`);
   }
 
   modificarComida(dto: modificarComidaIngeridaDTO) {
-  return this.http.put<{ mensaje: string }>(`${this.apiUrl}/comidas/modificar`, dto);
+    return this.http.put<{ mensaje: string }>(`${this.apiUrl}/comidas/modificar`, dto);
 
-  
-}
 
-// Buscar alimentos
+  }
+
+  // Buscar alimentos
   buscarAlimentos(nombre: string): Observable<AlimentoBusquedaDTO[]> {
     return this.http.get<AlimentoBusquedaDTO[]>(`${this.apiUrl}/api/alimentos/global/buscar`, {
       params: { nombreComida: nombre }
@@ -57,7 +58,7 @@ export class DiaService {
     return this.http.post<{ mensaje: string }>(`${this.apiUrl}/comidas/agregar`, comida);
   }
 
-eliminarComida(id: string, fecha: string, tipo: string): Observable<{ mensaje: string }> {
+  eliminarComida(id: string, fecha: string, tipo: string): Observable<{ mensaje: string }> {
     return this.http.delete<{ mensaje: string }>(`${this.apiUrl}/comidas/eliminar`, {
       params: {
         fecha: fecha,
@@ -65,6 +66,20 @@ eliminarComida(id: string, fecha: string, tipo: string): Observable<{ mensaje: s
         tipoComida: tipo // uso del map para enviar el número correcto
       }
     });
+  }
+
+
+  obtenerEstadosDelMes(año: number, mes: number): Observable<EstadoDiaDTO[]> {
+
+    return this.http.get<EstadoDiaDTO[]>(`${this.apiUrl}/dias/estados-mes`, {
+
+      params: {
+        año: año,
+        mes: mes
+      }
+
+    }
+    );
   }
 
 }

@@ -102,6 +102,8 @@
 }
 
 
+
+
 /* =============================== */
 /*   CUADRADOS DE DÍAS             */
 /* =============================== */
@@ -165,6 +167,63 @@
 
 .dias.animando {
     animation: slideFade 0.26s var(--ease-out, ease-out);
+}
+
+/* =============================== */
+/*   Estado de dias               */
+/* =============================== */
+
+
+.indicador-estado {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-top: 4px;
+}
+
+.indicador-estado.cumplido {
+    background: #22c55e;
+}
+
+.indicador-estado.pendiente {
+    background: #f59e0b;
+}
+
+.indicador-estado.excedido {
+    background: #ef4444;
+}
+
+.leyenda-estados {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--app-text-secondary, #6b7280);
+}
+
+.leyenda-estados > div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.punto {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.punto.cumplido {
+    background: #22c55e;
+}
+
+.punto.pendiente {
+    background: #f59e0b;
+}
+
+.punto.excedido {
+    background: #ef4444;
 }
 
 /* =============================== */

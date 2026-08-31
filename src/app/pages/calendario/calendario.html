@@ -12,35 +12,74 @@
     </div>
 
     <!-- header de la semana -->
-  <div class="week-header">
-      <div>LUN</div>
-      <div>MAR</div>
-      <div>MIÉ</div>
-      <div>JUE</div>
-      <div>VIE</div>
-      <div>SÁB</div>
-      <div>DOM</div>
-  </div>
+    <div class="week-header">
+        <div>LUN</div>
+        <div>MAR</div>
+        <div>MIÉ</div>
+        <div>JUE</div>
+        <div>VIE</div>
+        <div>SÁB</div>
+        <div>DOM</div>
+    </div>
 
-  <div class="dias">
+    <div class="dias">
 
-       @for (dia of diasMes; track $index) {
+        @for (dia of diasMes; track $index) {
 
-          <div class="dia"
-              [class.hoy]="dia.esHoy"
-              [class.futuro]="dia.esFuturo"
-              [class.vacio]="dia.vacio"
-              (click)="!dia.vacio && irAlDia(dia.fecha)">
+        <div class="dia" [class.hoy]="dia.esHoy" [class.futuro]="dia.esFuturo" [class.vacio]="dia.vacio"
+            (click)="!dia.vacio && irAlDia(dia.fecha)">
 
-              @if (!dia.vacio) {
-                  <span>{{ dia.numero }}</span>
-                  <span>{{ dia.nombre }}</span>
-              }
-          </div>
+            @if (!dia.vacio) {
+            <span>{{ dia.numero }}</span>
+            <span>{{ dia.nombre }}</span>
 
-      }
+            @if (dia.estadoDia) {
+            <span 
+                class="indicador-estado" 
+                [class.cumplido]="dia.estadoDia === 'CUMPLIDO'"
+                [class.pendiente]="dia.estadoDia === 'PENDIENTE'" 
+                [class.excedido]="dia.estadoDia === 'EXCEDIDO'"
+                [attr.title]="dia.estadoDia">
 
-  </div>
+            </span>
+
+            }
+
+            }
+
+        </div>
+
+        }
+
+    </div>
+
+
+    <div class="leyenda-estados">
+
+        <div>
+
+            <span class="punto cumplido"></span>
+            <span>Cumplido</span>
+
+        </div>
+        
+   
+        <div>
+
+            <span class="punto pendiente"></span>
+            <span>Pendiente</span>
+
+        </div>
+
+        <div>
+
+            <span class="punto excedido"></span>
+            <span>Excedido</span>
+
+        </div>
+
+
+    </div>
 
 
 </div>
