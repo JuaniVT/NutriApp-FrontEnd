@@ -87,14 +87,14 @@
         }
 
         <div class="botones">
-            
+
+            <button class="btn-denegar" type="button" (click)="handleCancel()">Cancelar</button>
+
             @if (isAdding()) {
                 <button class="btn-aceptar" type="submit" (click)="handleAdd()" [disabled]="form.invalid">Agregar</button>
             }@else if (isEditing()) {
                 <button class="btn-editar" type="submit" (click)="handleEdit()" [disabled]="form.invalid || form.pristine">Editar</button>
             }
-
-            <button class="btn-denegar" type="button" (click)="handleCancel()">Cancelar</button>
         </div>
 
     </form>

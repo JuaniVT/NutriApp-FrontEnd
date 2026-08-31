@@ -407,8 +407,8 @@
           </div>
         </div>
 
-        <button 
-          type="button" 
+        <button
+          type="button"
           class="btn-next"
           [disabled]="cargando || !codigo"
           (click)="verificarCodigo()">
@@ -417,6 +417,20 @@
           <span *ngIf="cargando">Verificando...</span>
 
         </button>
+
+        <!-- === REENVIAR CÓDIGO CON CONTADOR === -->
+        <div class="reenvio-codigo">
+          <span class="reenvio-texto">¿No recibiste el código?</span>
+          <button
+            type="button"
+            class="btn-reenviar"
+            [disabled]="contadorReenvio > 0 || reenviando || cargando"
+            (click)="reenviarCodigo()">
+            <span *ngIf="reenviando">Reenviando...</span>
+            <span *ngIf="!reenviando && contadorReenvio > 0">Reenviar código en {{ contadorReenvio }}s</span>
+            <span *ngIf="!reenviando && contadorReenvio === 0">Reenviar código</span>
+          </button>
+        </div>
 
       </div>
 

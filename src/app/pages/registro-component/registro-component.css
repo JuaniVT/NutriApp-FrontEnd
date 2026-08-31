@@ -714,3 +714,39 @@
   display: flex;
   justify-content: center;
 }
+
+/* === REENVIAR CÓDIGO CON CONTADOR === */
+.reenvio-codigo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 14px;
+}
+
+.reenvio-texto {
+  font-size: 14px;
+  color: #7b7369;
+}
+
+.btn-reenviar {
+  background: transparent;
+  border: none;
+  color: var(--app-orange-700, #b45309);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.btn-reenviar:hover:not(:disabled) {
+  background: #f0e6d6;
+  color: var(--app-orange-800, #92400e);
+}
+
+.btn-reenviar:disabled {
+  color: #a89f92;
+  cursor: not-allowed;
+}

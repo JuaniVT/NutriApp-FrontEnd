@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { DialogService } from '../../service/dialog';
   templateUrl: './registro-component.html',
   styleUrl: './registro-component.css',
 })
-export class RegistroComponent implements OnInit{
+export class RegistroComponent implements OnInit, OnDestroy {
 
  protected readonly client = inject(AuthService);
   private router = inject(Router);
@@ -203,7 +203,35 @@ mensaje: string = "";
 codigo: string = "";
 cargando: boolean = false;
 
+// Reenvío de código con contador
+readonly segundosReenvio = 30;
+contadorReenvio: number = 0;
+reenviando: boolean = false;
+private intervaloReenvio: any = null;
+
 constructor(private emailService: EmailVerificationService) {}
+
+ngOnDestroy(): void {
+  this.detenerContadorReenvio();
+}
+
+private iniciarContadorReenvio() {
+  this.detenerContadorReenvio();
+  this.contadorReenvio = this.segundosReenvio;
+  this.intervaloReenvio = setInterval(() => {
+    this.contadorReenvio--;
+    if (this.contadorReenvio <= 0) {
+      this.detenerContadorReenvio();
+    }
+  }, 1000);
+}
+
+private detenerContadorReenvio() {
+  if (this.intervaloReenvio) {
+    clearInterval(this.intervaloReenvio);
+    this.intervaloReenvio = null;
+  }
+}
 
 enviarCodigoEmail() {
   const email = this.registroForm.get('persona.email')?.value;
@@ -221,10 +249,40 @@ enviarCodigoEmail() {
       this.codigoEnviado = true;
       this.cargando = false;
       this.mensaje = "Código enviado a tu correo 📩";
+      this.iniciarContadorReenvio();
     },
     error: () => {
       this.cargando = false;
       this.mensaje = "Error al enviar el código. Intenta más tarde.";
+    }
+  });
+}
+
+reenviarCodigo() {
+  if (this.contadorReenvio > 0 || this.reenviando) {
+    return;
+  }
+
+  const email = this.registroForm.get('persona.email')?.value;
+
+  if (!email) {
+    this.mensaje = "Ingresa un email válido.";
+    return;
+  }
+
+  this.reenviando = true;
+  this.mensaje = "";
+
+  this.emailService.enviarCodigo(email).subscribe({
+    next: () => {
+      this.reenviando = false;
+      this.codigo = "";
+      this.mensaje = "Te reenviamos un nuevo código a tu correo 📩";
+      this.iniciarContadorReenvio();
+    },
+    error: () => {
+      this.reenviando = false;
+      this.mensaje = "Error al reenviar el código. Intenta más tarde.";
     }
   });
 }

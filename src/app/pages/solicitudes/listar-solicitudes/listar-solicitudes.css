@@ -1,18 +1,19 @@
-:host{
+:host {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--app-bg, #fff9f0);
+    font-family: var(--app-font-family, "Inter", "Poppins", sans-serif);
+}
+
+.cotenedorPrincipal {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    display: block;
-    box-sizing: border-box;
-}
-
-.cotenedorPrincipal{
-    width: 100%;
     min-height: 75vh;
-    background-color: var(--app-bg, #fff9f0);
 
     color: var(--app-text-primary, #374151);
-    padding: 30px var(--space-4, 16px) 50px;
+    padding: 40px var(--space-4, 16px) 56px;
     box-sizing: border-box;
 
     display: flex;
@@ -23,30 +24,70 @@
 }
 
 
-.tituloConteiner{
+.tituloConteiner {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: var(--space-5, 20px);
+    animation: fadeInDown 0.4s var(--ease-out, ease-out) both;
+}
+
+.tituloConteiner h1 {
+    font-size: var(--font-xl, 24px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--app-orange-700, #b45309);
 }
 
 
-.iconoAgregar{
+.iconoAgregar {
     cursor: pointer;
     transform: scale(0.9);
-    transition: transform var(--duration-fast, 150ms) var(--ease-out, ease-out);
+    background: var(--orange-degradado, linear-gradient(90deg, #ff8c42, #ffb870));
+    padding: 4px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(255, 140, 66, 0.28);
+    transition: transform var(--duration-fast, 150ms) var(--ease-out, ease-out),
+                box-shadow var(--duration-fast, 150ms) var(--ease-out, ease-out);
 }
 
-.iconoAgregar:hover{
-    transform: scale(1.15);
+.iconoAgregar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(255, 140, 66, 0.4);
 }
 
-.contenedorSolicitud{
+.iconoAgregar:active {
+    transform: scale(0.95);
+}
+
+/* ESTADO VACÍO */
+.sinSolicitudes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3, 12px);
+    padding: var(--space-8, 40px);
+    color: var(--app-text-secondary, #6b7280);
+    text-align: center;
+}
+
+.sinSolicitudesIcono {
+    font-size: 40px;
+    opacity: 0.7;
+}
+
+.sinSolicitudes p {
+    font-size: var(--font-md, 16px);
+    font-weight: 600;
+}
+
+.contenedorSolicitud {
+    position: relative;
     width: 100%;
     max-width: 480px;
     background-color: var(--app-surface, #ffffff);
 
-    border: 1px solid var(--app-border-subtle, rgba(0,0,0,0.08));
+    border: 1px solid var(--app-border-subtle, rgba(0, 0, 0, 0.08));
     border-radius: 1rem;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     box-sizing: border-box;
@@ -56,6 +97,14 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+
+    transition: box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
+                transform var(--duration-base, 200ms) var(--ease-out, ease-out);
+    animation: cardIn 0.42s var(--ease-out, ease-out) both;
+}
+
+.contenedorSolicitud:hover {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10);
 }
 
 /* COLOR ARRIBA DEL CONTENEDOR */
@@ -65,13 +114,13 @@
     inset: 0 0 auto 0;
     height: 4px;
     background: linear-gradient(90deg, #ff8c42, #ffb870);
+    z-index: 1;
 }
-
 
 
 .headerSolicitud {
     width: 100%;
-    padding: var(--space-2, 8px) var(--space-4, 16px);
+    padding: var(--space-3, 14px) var(--space-4, 16px);
     cursor: pointer;
     background: linear-gradient(135deg,
         var(--app-orange-soft, #fde6d1),
@@ -83,17 +132,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    transition: filter var(--duration-fast, 150ms) var(--ease-out, ease-out);
+}
+
+.headerSolicitud:hover {
+    filter: brightness(0.98);
 }
 
 .headerSolicitud h2 {
     margin: 0;
     font-size: 1.05rem;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--app-orange-800, #92400e);
 }
 
-.arrowDown{
-    padding: var(--space-1, 5px) var(--space-4, 15px);
-    color: var(--app-orange-700, #b45309);
+.arrowDown {
+    width: 30px;
+    padding: var(--space-1, 5px) var(--space-3, 12px);
 
     transition-property: transform;
     transition-duration: var(--duration-base, 260ms);
@@ -131,7 +188,7 @@
 .contSolicitudFormTransition {
     max-height: 600px;
     opacity: 1;
-    padding: 14px 16px 24px;
+    padding: 16px 18px 24px;
 }
 
 .contSolicitudForm > fieldset {
@@ -148,25 +205,55 @@
     gap: var(--space-4, 15px);
 }
 
-fieldset input{
+.contSolicitudForm > fieldset label {
+    font-size: var(--font-sm, 14px);
+    font-weight: 600;
+    color: var(--app-text-secondary, #6b7280);
+}
+
+.contSolicitudForm > fieldset p {
+    font-size: var(--font-sm, 14px);
+    color: var(--app-text-secondary, #6b7280);
+    font-weight: 600;
+}
+
+fieldset input {
     width: 30%;
     min-width: 100px;
     border: 1px solid #e5e7eb;
     outline: none;
-    border-radius: 1rem;
-    padding: var(--space-1, 4px) var(--space-2, 8px);
+    border-radius: 12px;
+    padding: var(--space-2, 8px) var(--space-3, 10px);
     box-sizing: border-box;
+    background: var(--app-bg, #fff9f0);
+    color: var(--app-text-primary, #374151);
+    font-family: inherit;
     font-size: var(--font-sm, 14px);
-    transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out);
+    transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out),
+                box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
 
 fieldset input:focus {
     border-color: var(--app-orange-600, #d97706);
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
 }
 
-.errorMessage{
+/* ocultar flechas de los number inputs */
+fieldset input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+fieldset input[type="number"]::-webkit-outer-spin-button,
+fieldset input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.errorMessage {
     color: #b91c1c;
-    font-size: var(--font-sm, 14px);
+    font-size: var(--font-xs, 12px);
+    font-weight: 600;
 }
 
 /* BOTONES */
@@ -181,86 +268,94 @@ fieldset input:focus {
     gap: var(--space-2, 10px);
 }
 
-.contendorBotones div{
+.contendorBotones div {
     width: 100%;
     flex-wrap: wrap;
 
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    gap: var(--space-3, 12px);
 
     padding: var(--space-2, 10px);
 }
 
-.botonSolicitud{
+.botonSolicitud {
+    flex: 1;
+    min-width: 120px;
     padding: var(--space-2, 10px) var(--space-4, 16px);
     min-height: var(--tap-target-min, 44px);
     border: none;
     border-radius: 999px;
     color: white;
     cursor: pointer;
-    color: white;
+    font-family: inherit;
     font-weight: 600;
+    font-size: var(--font-sm, 14px);
 
     transition:
     transform var(--duration-fast, 150ms) var(--ease-out, ease-out),
-    background-color var(--duration-fast, 150ms) var(--ease-out, ease-out);
+    background-color var(--duration-fast, 150ms) var(--ease-out, ease-out),
+    box-shadow var(--duration-fast, 150ms) var(--ease-out, ease-out);
 }
 
-.botonSolicitud:hover {
-    transform: scale(1.04);
+.botonSolicitud:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.botonSolicitud:active:not(:disabled) {
+    transform: scale(0.96);
 }
 
 /* ACEPTAR */
-#botonAceptar{
+#botonAceptar {
     background-color: var(--app-green-700, #047857);
 }
 
-#botonAceptar:hover{
+#botonAceptar:hover:not(:disabled) {
     background-color: #035c40;
-    box-shadow: 0 0 5px rgba(4, 120, 87, 0.4);
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.35);
 }
 
-#botonAceptar:disabled{
+#botonAceptar:disabled {
     background-color: var(--app-text-muted, #9ca3af);
     cursor: not-allowed;
-}
-
-#botonAceptar:disabled:hover{
-    background-color: var(--app-text-muted, #9ca3af);
-    box-shadow: none;
-    transform: scale(1.0);
 }
 
 /* DENEGAR */
-#botonDenegar{
+#botonDenegar {
     background-color: #b91c1c;
 }
 
-#botonDenegar:hover{
+#botonDenegar:hover {
     background-color: #991616;
-    box-shadow: 0 0 5px rgba(153, 22, 22, 0.4);
+    box-shadow: 0 4px 12px rgba(153, 22, 22, 0.35);
 }
 
 /* EDITAR */
-#botonEditar{
+#botonEditar {
     background-color: var(--app-orange-700, #b45309);
 }
 
-#botonEditar:hover{
+#botonEditar:hover:not(:disabled) {
     background-color: #8f4108;
-    box-shadow: 0 0 5px rgba(143, 65, 8, 0.4);
+    box-shadow: 0 4px 12px rgba(143, 65, 8, 0.35);
 }
 
-#botonEditar:disabled{
+#botonEditar:disabled {
     background-color: var(--app-text-muted, #9ca3af);
     cursor: not-allowed;
 }
 
-#botonEditar:disabled:hover{
-    background-color: var(--app-text-muted, #9ca3af);
-    box-shadow: none;
-    transform: scale(1.0);
+/* ANIMACIONES */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ---------- Responsive ---------- */
@@ -275,5 +370,20 @@ fieldset input:focus {
 
     .contSolicitudForm > fieldset {
         gap: var(--space-2, 8px);
+    }
+
+    .contendorBotones div {
+        flex-direction: column;
+    }
+
+    .botonSolicitud {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tituloConteiner,
+    .contenedorSolicitud {
+        animation: none;
     }
 }

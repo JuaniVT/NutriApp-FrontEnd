@@ -1,3 +1,5 @@
+/* Modal alineado con el sistema de diálogos de la app (dialog-host) */
+
 /* Fondo oscuro */
 .modal-backdrop {
     position: fixed;
@@ -16,10 +18,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 350px;
+    width: 360px;
     max-width: 90vw;
     max-height: 90vh;
     overflow-y: auto;
+    font-family: var(--app-font-family, "Inter", "Poppins", sans-serif);
     background: var(--app-surface, #ffffff);
     padding: var(--space-6, 25px);
     border-radius: 15px;
@@ -75,6 +78,7 @@
 
     background: var(--app-bg, #fff9f0);
     color: var(--app-text-primary, #374151);
+    font-family: inherit;
     font-size: var(--font-md, 15px);
     transition: border-color var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
@@ -82,6 +86,18 @@
 .modal-form input:focus {
     outline: none;
     border-color: var(--app-orange-600, #d97706);
+}
+
+/* ocultar flechas de los number inputs */
+.modal-form input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.modal-form input[type="number"]::-webkit-outer-spin-button,
+.modal-form input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Contenedor de botones */
@@ -92,7 +108,11 @@
     margin-top: var(--space-5, 20px);
 }
 
-/* Botón verde */
+.botones button {
+    flex: 1;
+}
+
+/* Botón principal (verde) */
 .btn-aceptar {
     background: var(--app-green-700, #047857);
     padding: var(--space-3, 10px) var(--space-4, 15px);
@@ -101,13 +121,14 @@
     border: none;
     cursor: pointer;
     color: white;
+    font-family: inherit;
     font-weight: 600;
     transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
                 box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out),
                 transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
-.btn-aceptar:hover:not(:disabled){
+.btn-aceptar:hover:not(:disabled) {
     background-color: #035c40;
     box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.2);
 }
@@ -116,31 +137,42 @@
     transform: scale(0.97);
 }
 
-.btn-aceptar:disabled{
+.btn-aceptar:disabled {
     background-color: var(--app-text-muted, #9ca3af);
     cursor: not-allowed;
 }
 
-/* Botón rojo */
+/* Botón secundario (fantasma) — mismo criterio que dialog-host */
 .btn-denegar {
-    background: #b91c1c;
+    background: transparent;
     padding: var(--space-3, 10px) var(--space-4, 15px);
     min-height: var(--tap-target-min, 44px);
     border-radius: 20px;
-    border: none;
+    border: 1px solid #e5e7eb;
     cursor: pointer;
-    color: white;
+    color: var(--app-text-secondary, #6b7280);
+    font-family: inherit;
     font-weight: 600;
     transition: background-color var(--duration-base, 200ms) var(--ease-out, ease-out),
-                box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
+                transform var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
 .btn-denegar:hover {
-    background: #991616;
-    box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15);
+    background: #f3f4f6;
 }
 
-.errorMessage{
+.btn-denegar:active {
+    transform: scale(0.97);
+}
+
+.errorMessage {
+    display: block;
     color: #b91c1c;
     font-size: var(--font-sm, 14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-container {
+        animation: none;
+    }
 }
