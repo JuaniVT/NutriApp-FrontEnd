@@ -11,12 +11,12 @@
     <section class="metrics" aria-label="Resumen nutricional">
         <article class="metric-card metric-card--accent">
             <span class="metric-label">Objetivo diario</span>
-            <strong>{{ nutritionalProfileSignal()?.objetivoDiario }}</strong>
+            <strong>{{ nutritionalProfileSignal()?.objetivoDiario | number:'1.0-0' }}</strong>
             <span class="metric-unit">kcal</span>
         </article>
         <article class="metric-card">
             <span class="metric-label">Gasto basal</span>
-            <strong>{{ nutritionalProfileSignal()?.geb }}</strong>
+            <strong>{{ nutritionalProfileSignal()?.geb | number:'1.0-0' }}</strong>
             <span class="metric-unit">kcal</span>
         </article>
         <article class="metric-card">

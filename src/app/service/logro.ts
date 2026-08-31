@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { LogroHistorial } from '../models/logro-historial';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class LogroService {
   
   private readonly http = inject(HttpClient);
-  private readonly baseURL = "http://localhost:8080/api/logro";
+  private readonly baseURL = `${environment.apiUrl}/api/logro`;
   
 
   getAll(){

@@ -42,17 +42,27 @@
 
   <!-- Sección para agregar agua -->
   <div class="seccion-agregar">
+    <!-- Toggle: sumar (por defecto) o descontar para corregir un registro -->
+    <div class="modo-toggle" role="group" aria-label="Modo de registro de hidratación">
+      <button type="button" class="modo-btn" [class.activo]="!modoRestar" (click)="modoRestar = false">
+        Agregar
+      </button>
+      <button type="button" class="modo-btn" [class.activo]="modoRestar" (click)="modoRestar = true">
+        Descontar
+      </button>
+    </div>
+
     <div class="input-wrapper">
       <input type="number" [(ngModel)]="cantidad" class="input-ml" placeholder="Cantidad en ml" min="1">
-      <button class="btn-agregar" (click)="registrar()" [disabled]="loading || !cantidad">
-        {{ loading ? '...' : 'Agregar' }}
+      <button class="btn-agregar" [class.modo-restar]="modoRestar" (click)="registrar()" [disabled]="loading || !cantidad">
+        {{ loading ? '...' : (modoRestar ? 'Descontar' : 'Agregar') }}
       </button>
     </div>
     <!-- Botones rápidos adicionales si se desean aquí abajo -->
     <div class="botones-rapidos">
-      <button class="btn-rapido" (click)="registrarRapido(250)">+250ml</button>
-      <button class="btn-rapido" (click)="registrarRapido(500)">+500ml</button>
-      <button class="btn-rapido" (click)="registrarRapido(750)">+750ml</button>
+      <button class="btn-rapido" (click)="registrarRapido(250)">{{ modoRestar ? '−' : '+' }}250ml</button>
+      <button class="btn-rapido" (click)="registrarRapido(500)">{{ modoRestar ? '−' : '+' }}500ml</button>
+      <button class="btn-rapido" (click)="registrarRapido(750)">{{ modoRestar ? '−' : '+' }}750ml</button>
     </div>
   </div>
 </div>

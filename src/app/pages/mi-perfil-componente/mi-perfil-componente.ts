@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { ProfileService } from '../../service/profile';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { EmailValidator, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -14,7 +15,7 @@ import { LogroHistorial } from '../../models/logro-historial';
 
 @Component({
   selector: 'app-mi-perfil',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DecimalPipe],
   templateUrl: './mi-perfil-componente.html',
   styleUrl: './mi-perfil-componente.css',
 })

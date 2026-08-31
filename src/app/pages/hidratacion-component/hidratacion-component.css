@@ -105,6 +105,48 @@
   gap: var(--space-4, 16px);
 }
 
+.modo-toggle {
+  flex: 1 1 100%;
+  display: flex;
+  gap: 4px;
+  background: var(--app-surface-tint, #F3E4CE);
+  border-radius: 12px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.modo-btn {
+  flex: 1 1 0%;
+  border: none;
+  background: transparent;
+  color: var(--app-orange-700, #B45309);
+  font-family: inherit;
+  font-size: var(--font-xs, 12px);
+  font-weight: 600;
+  min-height: 36px;
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background var(--duration-base, 200ms) var(--ease-out, ease-out),
+              color var(--duration-base, 200ms) var(--ease-out, ease-out),
+              box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
+}
+
+.modo-btn.activo {
+  background: #fff;
+  color: var(--app-text-primary, #374151);
+  box-shadow: 0 1px 4px rgba(180, 83, 9, 0.18);
+}
+
+.btn-agregar.modo-restar {
+  background-color: #64748b;
+}
+
+.btn-agregar.modo-restar:hover:not(:disabled) {
+  background-color: #475569;
+  box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);
+}
+
 .input-wrapper {
   display: flex;
   align-items: stretch;

@@ -30,6 +30,10 @@ export class HidratacionComponent {
   mensaje: string | null = null;
   isError: boolean = false;
 
+  // Cuando está activo, la cantidad ingresada se resta del total en vez de sumarse.
+  // Sirve para corregir un registro cargado de más.
+  modoRestar: boolean = false;
+
   // Nuevas propiedades para la UI de hidratación
   metaDiaria: number = 2000; // 2000ml como meta por defecto
   totalVasos: number = 8;    // 8 vasos por defecto
@@ -60,12 +64,16 @@ export class HidratacionComponent {
       return;
     }
 
+    // El backend suma lo que reciba y nunca deja el total por debajo de 0,
+    // así que para restar basta con mandar la cantidad en negativo.
+    const delta = this.modoRestar ? -this.cantidad : this.cantidad;
+
     this.loading = true;
     this.mensaje = null;
 
-    this.hidratacionService.registrar({ cantidadMl: this.cantidad }, this.fecha).subscribe({
+    this.hidratacionService.registrar({ cantidadMl: delta }, this.fecha).subscribe({
       next: (res) => {
-        this.mostrarMensaje(`¡Guardado!`, false);
+        this.mostrarMensaje(this.modoRestar ? '¡Descontado!' : '¡Guardado!', false);
         this.cantidad = null;
         this.loading = false;
         this.obtenerTotal(this.fecha!); // Recargar el total
