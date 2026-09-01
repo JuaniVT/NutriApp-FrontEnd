@@ -33,17 +33,14 @@
             <span>{{ dia.numero }}</span>
             <span>{{ dia.nombre }}</span>
 
-            @if (dia.estadoDia) {
-            <span 
-                class="indicador-estado" 
+            <span
+                class="indicador-estado"
+                [class.sin-estado]="!dia.estadoDia"
                 [class.cumplido]="dia.estadoDia === 'CUMPLIDO'"
-                [class.pendiente]="dia.estadoDia === 'PENDIENTE'" 
+                [class.pendiente]="dia.estadoDia === 'PENDIENTE'"
                 [class.excedido]="dia.estadoDia === 'EXCEDIDO'"
-                [attr.title]="dia.estadoDia">
-
+                [attr.title]="dia.estadoDia || 'Sin registro'">
             </span>
-
-            }
 
             }
 
