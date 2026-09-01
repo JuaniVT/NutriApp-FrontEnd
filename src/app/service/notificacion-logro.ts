@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { LogroService } from './logro';
 import { LogroHistorial } from '../models/logro-historial';
+import { NotExpr } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class NotificacionLogro {
         }
 
         //si ya se mostro el logro no hacemos nada
-        if(logro.id == this.logroService.getLast_ID_Notified()){
+        if(this.logroService.yaFueNotificado(logro.id?.toString()!)){
           return
         }
 
@@ -38,10 +39,8 @@ export class NotificacionLogro {
         //mostramos la ventana 
         this.mostrarNotificacionLogro.set(true);
 
-        if(logro.id != undefined){
-          //guardamos el id del ultimo notificado
-          this.logroService.saveLast_ID_Notified(logro.id.toString());
-        }
+        //guardamos el id del ultimo notificado en localStorage
+        this.logroService.saveLast_ID_Notified(logro.id!.toString());
 
         //programamos el cierre automatico de la notificacion
         this.timeoutNotificacion = setTimeout(() => {
@@ -60,5 +59,4 @@ export class NotificacionLogro {
 
     this.mostrarNotificacionLogro.set(false)
   }
-
 }

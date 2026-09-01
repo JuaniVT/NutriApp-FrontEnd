@@ -31,11 +31,29 @@ export class LogroService {
   
   //guardar el id del ultimo logro que se notifico
   saveLast_ID_Notified (id: string){
-    localStorage.setItem("lastNotified_id", id);
+    const logrosNotificados = this.getLogrosNotificados();
+
+    // Evitamos guardar dos veces el mismo ID
+    if (!logrosNotificados.includes(id)) {
+      logrosNotificados.push(id);
+
+      localStorage.setItem(
+        "logrosNotificados",
+        JSON.stringify(logrosNotificados)
+      );
+    }
   }
 
-  //obener el id del ultimo logro notificado
-  getLast_ID_Notified(){
-    return localStorage.getItem("lastNotified_id");
+  // Obtener la lista de IDs de logros que ya fueron notificados
+  private getLogrosNotificados(){
+    const datos = localStorage.getItem("logrosNotificados");
+
+    // Si todavía no existe la lista, devolvemos una lista vacía
+    return datos ? JSON.parse(datos) : [];
+  }
+
+  // Verificar si un logro ya fue notificado
+  yaFueNotificado(id: string){
+    return this.getLogrosNotificados().includes(id);
   }
 }

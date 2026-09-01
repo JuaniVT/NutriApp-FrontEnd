@@ -79,6 +79,7 @@ export class HidratacionComponent {
         this.obtenerTotal(this.fecha!); // Recargar el total
         this.registroExitoso.emit();
 
+  
         //se llama a comprobar si gano algun logro dentro de este metodo asyncrono, porque si lo ponemos afuera, se podria llegar
         //a ejecutar antes de que se registre la comida, y asi, no comprobar el logro correctamente
         this.notificacionLogroService.obtenerUltimoLogroYmostrarNotificacion();
