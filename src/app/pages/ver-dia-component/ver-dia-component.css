@@ -46,6 +46,7 @@
   min-width: 60px;
   border-radius: 12px;
   align-items: center;
+  overflow: hidden;
 }
 
 .dia:hover {
@@ -175,6 +176,67 @@
 .dia.futuro {
   opacity: 0.4;
   pointer-events: none;
+}
+
+/* =============================== */
+/*   Estado de dias               */
+/* =============================== */
+
+
+.barra-estado {
+    display: block;
+    width: 80%;
+    min-height: 6px;
+    height: 6px;
+    border-radius: 10px;
+    margin: 8px auto 0;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.barra-estado.estado-cumplido {
+    background-color: #4caf50;
+}
+
+.barra-estado.estado-pendiente {
+    background-color: #ff9800;
+}
+
+.barra-estado.estado-excedido {
+    background-color: #f44336;
+}
+
+.barra-leyenda {
+    display: inline-block;
+    width: 35px;
+    height: 6px;
+    border-radius: 10px;
+}
+
+.barra-leyenda.estado-cumplido {
+    background-color: green !important;
+}
+
+.barra-leyenda.estado-pendiente {
+     background-color: orange !important;
+}
+
+.barra-leyenda.estado-excedido {
+     background-color: red !important;
+}
+
+.leyenda-estados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin-top: 15px;
+}
+
+.leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 
 /* ======== SECCIONES DE COMIDAS ======== */

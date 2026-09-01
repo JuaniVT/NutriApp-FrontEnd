@@ -26,14 +26,19 @@ export class ManejadorSemana {
 
         for (let i = 0; i < 7; i++) {
             const fecha = new Date(inicio);
-            fecha.setDate(inicio.getDate() + i);   // Ajusta fecha al día correcto sumando i días al inicio
-            fecha.setHours(0, 0, 0, 0); // normalizar cada fecha también
+            fecha.setDate(inicio.getDate() + i);
+            fecha.setHours(0, 0, 0, 0);
+
+            const año = fecha.getFullYear();
+            const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+            const dia = String(fecha.getDate()).padStart(2, '0');
 
             semana.push({
                 fecha,
-                nombreDia: nombres[(fecha.getDay() + 6) % 7], // nombre del día en escala lunes-domingo
-                esFuturo: fecha > hoy,                       // true/false
-                iso: fecha.toISOString().split('T')[0]       //manda la fehca un    string ISO YYYY-MM-DD
+                nombreDia: nombres[(fecha.getDay() + 6) % 7],
+                esFuturo: fecha > hoy,
+                iso: `${año}-${mes}-${dia}`,
+                estadoDia: null
             });
         }
 

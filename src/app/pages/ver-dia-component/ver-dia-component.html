@@ -71,7 +71,20 @@
         <span class="nombre"> {{dia.fecha.getDate()}}</span>
         <span class="fecha"> {{dia.nombreDia}}</span>
 
+        
+         @if (dia.estadoDia) {
+
+  <span 
+    class="barra-estado" 
+    [class.estado-cumplido]="dia.estadoDia === 'CUMPLIDO'" 
+    [class.estado-pendiente]="dia.estadoDia === 'PENDIENTE'"  
+    [class.estado-excedido]="dia.estadoDia === 'EXCEDIDO'">
+  </span>
+
+}
+
       </div>
+
       }
 
     </div>
@@ -81,12 +94,33 @@
 
   </div>
 
+  <div class="leyenda-estados">
+
+    <div class="leyenda-item">
+        <span class="barra-leyenda estado-cumplido"></span>
+        <span>Cumplido</span>
+    </div>
+
+    <div class="leyenda-item">
+        <span class="barra-leyenda estado-pendiente"></span>
+        <span>Pendiente</span>
+    </div>
+
+    <div class="leyenda-item">
+        <span class="barra-leyenda estado-excedido"></span>
+        <span>Excedido</span>
+    </div>
+
+    <div class="leyenda-item">
+        <span class="sin-registro"></span>
+        <span>Sin registro</span>
+    </div>
+
+</div>
+
   <!-- Contenedor para dar espacio al componente de hidratación -->
   <div class="hidratacion-wrapper">
-    <app-hidratacion-component 
-      [totalMl]="totalEnPadre" 
-      [fecha]="fecha" 
-      (registroExitoso)="cargarDia(fecha!)"> 
+    <app-hidratacion-component [totalMl]="totalEnPadre" [fecha]="fecha" (registroExitoso)="cargarDia(fecha!)">
     </app-hidratacion-component>
   </div>
 
