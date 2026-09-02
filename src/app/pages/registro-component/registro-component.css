@@ -131,27 +131,15 @@
   gap: 20px;
 
   width: 100%;
-  max-width: 430px;
+  max-width: 1080px;        /* fila completa de tarjetas en desktop; el cap angosto vive en los media queries mobile */
   margin: 0 auto 40px;
-}
-
-@media (min-width: 600px) {
-  .objetivos-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 900px) {
-  .objetivos-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 .objetivo-card {
   background: rgba(255, 255, 255, 0.9);
   flex: 1;
   min-width: 0;              /* antes 260px: forzaba el ancho de la tarjeta más allá del viewport */
-  padding: 36px 40px;
+  padding: 28px 22px;
   border-radius: 22px;
   border: 1px solid rgba(230, 222, 208, 0.8);
 
