@@ -319,9 +319,20 @@
           <span class="card-text">Email</span>
         </div>
         <div class="card-action">
-          <input type="email" formControlName="email" placeholder="correo@gmail.com" class="list-text-input" />
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="correo@gmail.com"
+            class="list-text-input"
+            [readonly]="emailBloqueadoPorGoogle"
+            [class.list-text-input--locked]="emailBloqueadoPorGoogle"
+            [title]="emailBloqueadoPorGoogle ? 'Este email viene de tu cuenta de Google y no se puede modificar' : ''"
+          />
           <span class="action-arrow"></span>
         </div>
+      </div>
+      <div class="error-msg-hint" *ngIf="emailBloqueadoPorGoogle">
+        <small>Vinculado a tu cuenta de Google, no se puede modificar.</small>
       </div>
       <div class="error-msg" *ngIf="registroForm.get('persona.email')?.touched && registroForm.get('persona.email')?.invalid">
   <small *ngIf="registroForm.get('persona.email')?.errors?.['required']">
@@ -458,7 +469,6 @@
 
   <div class="contenedor-general">
 
-```
 <h2 class="titulo-datos-personales-2">¡Ya estás a un paso de completar tu registro!</h2>
 <p class="informativo-datos-2">
   Crea tu nombre de usuario y contraseña para finalizar.
@@ -542,7 +552,6 @@
     Finalizar Registro
   </button>
 </div>
-```
 
   </div>
 

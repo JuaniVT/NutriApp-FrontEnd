@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { LogroService } from './logro';
 import { LogroHistorial } from '../models/logro-historial';
-import { NotExpr } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
