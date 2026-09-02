@@ -3,11 +3,12 @@
 
 :host {
   display: block;
-  width: 100vw;      /* ancho total de la ventana */
-  height: 100vh;     /* alto total de la ventana */
+  width: 100%;           /* antes 100vw: incluía el scrollbar y desbordaba en móvil */
+  min-height: 100dvh;    /* antes 100vh fijo: se rompía con la barra del navegador móvil */
   margin: 0;
   padding: 0;
   background-color: #faf4e8;
+  overflow-x: hidden;    /* corta cualquier desborde horizontal en pantallas chicas */
   overflow-y: auto !important;
 }
 
@@ -15,7 +16,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 100%;
   flex-grow: 1;
+  overflow-x: hidden;
 }
 
 .intro-session,
@@ -147,8 +150,8 @@
 .objetivo-card {
   background: rgba(255, 255, 255, 0.9);
   flex: 1;
-  min-width: 260px;
-  padding: 40px 60px 40px 40px;
+  min-width: 0;              /* antes 260px: forzaba el ancho de la tarjeta más allá del viewport */
+  padding: 36px 40px;
   border-radius: 22px;
   border: 1px solid rgba(230, 222, 208, 0.8);
 
@@ -249,8 +252,8 @@
 
   .objetivo-card {
     flex: 1 1 45%;
-    min-width: 240px;
-    padding: 3.5rem 4rem; /* más padding dentro de la tarjeta */
+    min-width: 0;
+    padding: 2.5rem 2.25rem;
   }
 
   .btn-next {
@@ -287,7 +290,8 @@
 
   .objetivo-card {
     width: 100%;
-    padding: 3rem 3.5rem;
+    min-width: 0;
+    padding: 1.75rem 1.5rem;
   }
 
   .objetivo-card h3 {
@@ -367,7 +371,8 @@
   }
 
   .objetivo-card {
-    padding: 2rem 2.5rem;
+    min-width: 0;
+    padding: 1.5rem 1.25rem;
   }
 
   .objetivo-card h3 {
@@ -578,6 +583,10 @@
 .card-icon-email {
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
 }
+.card-icon-lock {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z'/%3E%3C/svg%3E");
+}
 
 
 
@@ -749,4 +758,203 @@
 .btn-reenviar:disabled {
   color: #a89f92;
   cursor: not-allowed;
+}
+
+/* ==========================================================
+   CLASES QUE FALTABAN (estaban en el HTML sin estilo)
+========================================================== */
+
+/* Bloque de error debajo de cada campo (pasos 4 y 6) */
+.error-msg {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: -6px 0 4px 4px;
+}
+
+.error-msg small {
+  font-size: 13px;
+  line-height: 1.35;
+  color: #b91c1c;
+}
+
+/* Aviso debajo de un campo bloqueado (email autocompletado por Google) */
+.error-msg-hint {
+  align-self: flex-start;
+  margin: -6px 0 4px 4px;
+}
+
+.error-msg-hint small {
+  font-size: 12px;
+  color: #7b7369;
+}
+
+/* Input de solo lectura (email traído de Google) */
+.list-text-input--locked {
+  color: #7b7369;
+  cursor: not-allowed;
+}
+
+/* Mensaje global (paso de verificación de email) */
+.mensaje-global {
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 14px;
+  color: #7b7369;
+  background: #fffdf6;
+  border: 1px solid #f0e6d6;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 4px;
+}
+
+/* Caja "correo verificado" */
+.email-verificado-box {
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+
+/* ==========================================================
+   RESPONSIVE — bloque agregado
+   Corrige el desborde horizontal y la falta de márgenes en
+   teléfonos, sobre todo en los pasos 3 a 6 (formularios)
+   que antes no tenían ninguna media query.
+========================================================== */
+@media (max-width: 768px) {
+  .intro-session,
+  .objetivo-session,
+  .actividad-session,
+  .contenedor-general {
+    padding: 20px 16px;
+  }
+
+  .objetivos-container,
+  .actividad-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 24px 0;
+    gap: 20px;
+  }
+
+  .titulo-objetivo {
+    font-size: 1.6rem;
+    line-height: 1.25;
+  }
+
+  .informativo {
+    font-size: 0.95rem;
+    margin-top: 0;
+  }
+
+  .objetivos-grid {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .buttons {
+    width: 100%;
+    max-width: 400px;
+    gap: 12px;
+  }
+
+  .buttons > button {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    padding: 12px 8px;
+  }
+
+  /* ---- pasos 3 a 6: tarjetas tipo lista ---- */
+  .titulo-datos-personales-2 {
+    font-size: 1.5rem;
+  }
+
+  .informativo-datos-2 {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .datos-list-wrapper {
+    max-width: 100%;
+  }
+
+  .list-data-card,
+  .list-data-card-input {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .card-icon-text {
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  .card-text {
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-action {
+    flex-shrink: 0;
+  }
+
+  .list-text-input {
+    width: 96px;
+  }
+
+  input[type="date"].list-text-input {
+    width: 130px;
+  }
+
+  .buttons-navigation {
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .btn-prev,
+  .buttons-navigation .btn-next {
+    flex: 1;
+    padding: 13px 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .titulo-objetivo {
+    font-size: 1.4rem;
+  }
+
+  .list-data-card,
+  .list-data-card-input {
+    padding: 12px;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+  }
+
+  .list-text-input {
+    width: 84px;
+    font-size: 14px;
+  }
+
+  input[type="date"].list-text-input {
+    width: 120px;
+  }
 }

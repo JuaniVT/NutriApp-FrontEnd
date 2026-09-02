@@ -199,6 +199,9 @@ get edad() { return this.registroForm.get('perfilNutricional.edad'); }
 
 emailVerificado: boolean = false;
 codigoEnviado: boolean = false;
+
+// true cuando el email vino autocompletado desde Google: el campo queda solo lectura
+emailBloqueadoPorGoogle: boolean = false;
 mensaje: string = "";
 codigo: string = "";
 cargando: boolean = false;
@@ -328,6 +331,11 @@ ngOnInit(): void {
       }
     });
 
+    // El email lo trae Google: no tiene sentido que el usuario lo edite.
+    // El nombre sí queda editable, se mantiene igual que antes.
+    if (userData.email) {
+      this.emailBloqueadoPorGoogle = true;
+    }
 
     // (Opcional) generar username automático si no existe
     if (userData.email && !this.registroForm.get('usuario.username')?.value) {
