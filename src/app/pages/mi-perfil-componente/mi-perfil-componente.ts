@@ -37,6 +37,9 @@ export class MiPerfilComponente {
   //logros
   private readonly logroService = inject(LogroService);
   protected readonly historialLogros = toSignal(this.logroService.getAll());
+  protected readonly abrirDetalleLogro = signal<boolean>(false);
+  protected readonly detalleLogrosList = signal<LogroHistorial[]>([]);
+  protected readonly logroSeleccionado = signal<string>('');
 
   private readonly tiposLogro = [
     "META_CALORICA_DIARIA", "LOGIN", "HIDRATACION_DIARIA"
@@ -85,7 +88,7 @@ export class MiPerfilComponente {
     return logrosList;
   });
 
-  private obtenerNivelLogro(vecesGanado: number){
+  protected obtenerNivelLogro(vecesGanado: number){
     if (vecesGanado >= 30) {
       return 'level 3';
     }
@@ -97,6 +100,97 @@ export class MiPerfilComponente {
     return 'level 1';
   }
 
+  protected getNivelTexto(nivel: string): string {
+    switch (nivel) {
+      case 'level 3':
+        return 'Oro';
+      case 'level 2':
+        return 'Plata';
+      default:
+        return 'Bronce';
+    }
+  }
+
+  protected getLogroImageUrl(tipoLogro: string): string {
+    const nivel = this.detalleLogrosList().length > 0 ? this.obtenerNivelLogro(this.detalleLogrosList().length) : 'level 1';
+    const sufijo = nivel === 'level 3' ? 'oro' : nivel === 'level 2' ? 'plata' : 'bronce';
+    return `logros/${tipoLogro} ${sufijo}.png`;
+  }
+
+  protected getFechaValor(logro: any, claves: string[]): string | null {
+    for (const clave of claves) {
+      const valor = logro?.[clave];
+      if (valor !== undefined && valor !== null && valor !== '') {
+        return String(valor);
+      }
+    }
+    return null;
+  }
+
+  protected obtenerFechaObtencion(logro: any): string {
+    const valor = this.getFechaValor(logro, ['fecha_obtencion', 'fechaObtencion', 'fechaObtencionLogro', 'fecha']);
+    return this.formatearFechaSoloDia(valor);
+  }
+
+  protected obtenerFechaRegistro(logro: any): string {
+    const valor = this.getFechaValor(logro, ['fecha_registro', 'fechaRegistro', 'fechaAsociada', 'fecha']);
+    return this.formatearFechaConHoraSiExiste(valor);
+  }
+
+  protected formatearFechaSoloDia(fecha: string | null | undefined): string {
+    if (!fecha) {
+      return 'Sin fecha';
+    }
+
+    const valor = String(fecha).trim();
+    if (!valor) {
+      return 'Sin fecha';
+    }
+
+    const fechaObj = new Date(valor.includes('T') ? valor.replace(' ', 'T') : valor);
+    if (Number.isNaN(fechaObj.getTime())) {
+      return valor;
+    }
+
+    return new Intl.DateTimeFormat('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(fechaObj);
+  }
+
+  protected formatearFechaConHoraSiExiste(fecha: string | null | undefined): string {
+    if (!fecha) {
+      return 'Sin fecha';
+    }
+
+    const valor = String(fecha).trim();
+    if (!valor) {
+      return 'Sin fecha';
+    }
+
+    const fechaObj = new Date(valor.includes('T') ? valor.replace(' ', 'T') : valor);
+    if (Number.isNaN(fechaObj.getTime())) {
+      return valor;
+    }
+
+    if (valor.includes('T') || valor.includes(':')) {
+      return new Intl.DateTimeFormat('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }).format(fechaObj);
+    }
+
+    return new Intl.DateTimeFormat('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(fechaObj);
+  }
 
 
   protected readonly personForm = new FormBuilder().nonNullable.group({
@@ -183,6 +277,24 @@ export class MiPerfilComponente {
         error: (e) => this.dialog.error("Hubo un error")
       })
     }
+  }
+
+  mostrarDetalleLogro(tipoLogro: string){
+    this.logroSeleccionado.set(tipoLogro);
+    this.abrirDetalleLogro.set(true);
+
+    this.logroService.getAllByTipoLogro(tipoLogro).subscribe({
+      next: (l) => {
+        this.detalleLogrosList.set(l);
+      },
+      error: () => this.dialog.error("Hubo un error")
+    })
+  }
+
+  cerrarDetalleLogro(){
+    this.abrirDetalleLogro.set(false);
+    this.detalleLogrosList.set([]);
+    this.logroSeleccionado.set('');
   }
 
 

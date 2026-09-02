@@ -277,7 +277,17 @@ input:focus, select:focus {
     border-radius: 16px; 
     background: #fff; 
     box-shadow: 0 8px 20px rgba(92, 58, 32, .05); 
+
+    transition: transform var(--duration-base, 200ms) var(--ease-out, ease-out),
+                box-shadow var(--duration-base, 200ms) var(--ease-out, ease-out);
 }
+
+.achievement-card:hover{
+    cursor: pointer;
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
 .achievement-image { 
     display: grid; 
     width: 76px; 
@@ -350,6 +360,176 @@ input:focus, select:focus {
 }
 .btn-danger:hover { 
     background: #fff2ef; 
+}
+
+.detalle-logro-overlay {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(34, 22, 16, 0.52);
+    z-index: 50;
+}
+
+.detalle-logro-modal {
+    position: relative;
+    width: min(620px, 100%);
+    max-height: min(84vh, 760px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #f3d8b8;
+    border-radius: 24px;
+    background: #fffaf4;
+    box-shadow: 0 24px 60px rgba(66, 35, 13, 0.2);
+    overscroll-behavior: contain;
+}
+
+.detalle-logro-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #5a3528;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.detalle-logro-header {
+    display: grid;
+    place-items: center;
+    padding: 28px 20px 18px;
+    background: linear-gradient(180deg, #fff4e7, #fffaf5 60%, #fffaf4);
+    border-bottom: 1px solid #f6e3d0;
+}
+
+.detalle-logro-image {
+    width: min(210px, 52vw);
+    aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 28px rgba(255, 143, 66, 0.18));
+}
+
+.detalle-logro-body {
+    padding: 24px 24px 22px;
+}
+
+.detalle-logro-title-wrap {
+    margin-bottom: 18px;
+}
+
+.detalle-logro-title-wrap h3 {
+    margin: 0;
+    color: #4a2b1b;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    text-transform: capitalize;
+}
+
+.detalle-logro-title-wrap p {
+    margin: 8px 0 0;
+    color: #8d6d58;
+    font-size: 0.8rem;
+}
+
+.detalle-logro-list {
+    display: grid;
+    gap: 12px;
+}
+
+.detalle-logro-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #f2e2d1;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.detalle-logro-item-index {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #fff1df;
+    color: #d6641a;
+    font-weight: 700;
+}
+
+.detalle-logro-item-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.detalle-logro-date {
+    position: relative;
+    cursor: help;
+}
+
+.detalle-logro-date::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 8px);
+    z-index: 3;
+    display: block;
+    max-width: 240px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: rgba(52, 31, 23, 0.96);
+    color: #fff;
+    font-size: 0.68rem;
+    line-height: 1.35;
+    white-space: normal;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    box-shadow: 0 10px 24px rgba(52, 31, 23, 0.18);
+}
+
+.detalle-logro-date:hover::after,
+.detalle-logro-date:focus-visible::after,
+.detalle-logro-date:focus::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.detalle-logro-label {
+    display: block;
+    color: #a68d7d;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.detalle-logro-item-content strong {
+    display: block;
+    margin-top: 5px;
+    color: #4a2b1b;
+    font-size: 0.82rem;
+}
+
+.detalle-logro-empty {
+    display: grid;
+    gap: 8px;
+    place-items: center;
+    padding: 38px 20px;
+    color: #8f715d;
+    text-align: center;
+}
+
+.detalle-logro-empty strong {
+    color: #53372d;
 }
 
 @media (max-width: 900px) {

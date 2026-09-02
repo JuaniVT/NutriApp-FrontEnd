@@ -28,6 +28,14 @@ export class LogroService {
   getLastWoned(): Observable<LogroHistorial | null>{
     return this.http.get<LogroHistorial>(this.baseURL + "/obtener/ultimo/ganado")
   }
+
+  //obtiene el historial de logros pero por Tipo de logro
+  getAllByTipoLogro(tipoLogroBuscar: string){
+    return this.http.get<LogroHistorial[]>(
+      this.baseURL + "/listar/historial/tipoLogro",
+      {params: {tipoLogro: tipoLogroBuscar}}
+    )
+  }
   
   //guardar el id del ultimo logro que se notifico
   saveLast_ID_Notified (id: string){

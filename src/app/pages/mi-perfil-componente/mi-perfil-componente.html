@@ -1,4 +1,50 @@
 <div class="profile-page">
+
+    @if (abrirDetalleLogro()) {
+        <div class="detalle-logro-overlay" (click)="cerrarDetalleLogro()">
+            <div class="detalle-logro-modal" (click)="$event.stopPropagation()">
+                <button class="detalle-logro-close" type="button" aria-label="Cerrar detalle de logro" (click)="cerrarDetalleLogro()">×</button>
+
+                @if (detalleLogrosList().length > 0 && logroSeleccionado()) {
+                    <div class="detalle-logro-header">
+                        <img [src]="getLogroImageUrl(logroSeleccionado())" alt="Logro {{ logroSeleccionado() }}" class="detalle-logro-image">
+                    </div>
+
+                    <div class="detalle-logro-body">
+                        <div class="detalle-logro-title-wrap">
+                            <span class="eyebrow">Logro desbloqueado</span>
+                            <h3>{{ logroSeleccionado().replaceAll('_', ' ') }}</h3>
+                            <p>{{ getNivelTexto(obtenerNivelLogro(detalleLogrosList().length)) }} · {{ detalleLogrosList().length }} {{ detalleLogrosList().length === 1 ? 'vez' : 'veces' }}</p>
+                        </div>
+
+                        <div class="detalle-logro-list">
+                            @for (logro of detalleLogrosList(); track $index) {
+                                <article class="detalle-logro-item">
+                                    <div class="detalle-logro-item-index">{{ $index + 1 }}</div>
+                                    <div class="detalle-logro-item-content">
+                                        <div class="detalle-logro-date" tabindex="0" [attr.data-tooltip]="'Fecha de registro: día y hora en que se registró este logro.'">
+                                            <span class="detalle-logro-label">Fecha Registro</span>
+                                            <strong>{{ obtenerFechaRegistro(logro) }}</strong>
+                                        </div>
+                                        <div class="detalle-logro-date" tabindex="0" [attr.data-tooltip]="'Fecha de obtención: día al que pertenece este logro.'">
+                                            <span class="detalle-logro-label">Fecha de obtención</span>
+                                            <strong>{{ obtenerFechaObtencion(logro) }}</strong>
+                                        </div>
+                                    </div>
+                                </article>
+                            }
+                        </div>
+                    </div>
+                } @else {
+                    <div class="detalle-logro-empty">
+                        <strong>No hay información disponible</strong>
+                        <span>Este logro todavía no registró detalles.</span>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
     <header class="profile-hero">
         <div class="profile-heading">
             <span class="eyebrow">Mi cuenta</span>
@@ -221,7 +267,7 @@
                 </div>
             }@else {
                 @for (logro of logrosResumen(); track logro.logro_id) {
-                    <article class="achievement-card">
+                    <article class="achievement-card" (click)="mostrarDetalleLogro(logro.logro_id)">
                         <div class="achievement-image">
                             @if (logro.nivel === "level 1") {
                                 <img src="logros/{{logro.logro_id}} bronce.png" alt="Logro Bronce" class="logro">
