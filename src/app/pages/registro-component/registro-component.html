@@ -352,11 +352,10 @@
     <div class="buttons-navigation">
       <button type="button" class="btn-prev" (click)="pasoAnteriorPersona()">Volver</button>
 
-      <button 
-        type="button" 
+      <button
+        type="button"
         class="btn-next"
-        [disabled]="
-          registroForm.get('persona')?.invalid"
+        [disabled]="!registroForm.get('persona')?.valid"
         (click)="siguientePasoPersona()">
         Siguiente
       </button>
@@ -544,10 +543,10 @@
 <!-- BOTONES -->
 <div class="buttons-navigation">
   <button type="button" class="btn-prev" (click)="pasoAnteriorPersona()">Volver</button>
-  <button 
-    type="submit" 
-    class="btn-next" 
-    [disabled]="registroForm.get('usuario')?.invalid"
+  <button
+    type="submit"
+    class="btn-next"
+    [disabled]="!registroForm.get('usuario')?.valid"
   >
     Finalizar Registro
   </button>

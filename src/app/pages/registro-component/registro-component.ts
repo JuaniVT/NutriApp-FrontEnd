@@ -109,7 +109,23 @@ export class RegistroComponent implements OnInit, OnDestroy {
 
  pasoPersona: number = 0;
 
+// Solo los pasos 4 (persona completa) y 6 (usuario) validan el grupo entero
+// acá; los pasos 1-3 ya controlan sus campos puntuales con [disabled] en el HTML.
+private grupoDelPaso(paso: number): FormGroup | null {
+  if (paso === 4) return this.registroForm.controls.persona;
+  if (paso === 6) return this.registroForm.controls.usuario;
+  return null;
+}
+
 siguientePasoPersona() {
+  const grupo = this.grupoDelPaso(this.pasoPersona);
+
+  // .valid es true SOLO si el status es 'VALID' (un grupo en PENDING no pasa).
+  if (grupo && !grupo.valid) {
+    grupo.markAllAsTouched();
+    return;
+  }
+
   this.pasoPersona++;
 }
 
