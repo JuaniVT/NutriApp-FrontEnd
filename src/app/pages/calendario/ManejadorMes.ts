@@ -48,7 +48,10 @@ export class ManejadorMes {
                 numero: inicio,
                 nombre: nombresDias[actual.getDay()],
                 esHoy:actual.toDateString() === hoy.toDateString(), // booleano que nos permite pintar el dia si es que el mismo es el actual
-                esFuturo: actual > hoy
+                esFuturo: actual > hoy,
+                estadoDia: null,
+                caloriasConsumidas: null,
+                objetivoCalorico: null
             });
 
 

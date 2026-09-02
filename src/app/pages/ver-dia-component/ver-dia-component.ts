@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ComidasFavoritasComponent } from '../comidas-favoritas/comidas-favoritas';
 import { PaqueteService } from '../../service/paquete-service';
-import { catchError, of } from 'rxjs';
+import { catchError, forkJoin, of } from 'rxjs';
 import { Paquete } from '../../models/paquete';
 import { AlimentoInPaquete } from '../../models/alimentoInPaquete';
 import { FechaLocalService } from '../../service/FechaLocalService';
@@ -22,19 +22,22 @@ import { NgxGaugeModule } from 'ngx-gauge';
 import { ArcElement, Chart, ChartDataset, registerables, Tooltip } from 'chart.js';
 import { NotificacionLogro } from '../../service/notificacion-logro';
 import { LogroService } from '../../service/logro';
+import { EstadoDiaDTO } from '../../models/estado-dia.dto';
 Chart.register(...registerables);
 
 Chart.register(ArcElement, Tooltip);
 
-@Component({ selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule, CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent, HidratacionComponent],
-templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css', })
+@Component({
+  selector: 'app-ver-dia-component', standalone: true, imports: [NgxGaugeModule, CommonModule, FormsModule, ReactiveFormsModule, AgregarComidaComponent, HidratacionComponent],
+  templateUrl: './ver-dia-component.html', styleUrl: './ver-dia-component.css',
+})
 export class VerDiaComponent implements OnInit, AfterViewInit {
 
   @ViewChild('arcFill', { static: false }) arcFill!: ElementRef<SVGPathElement>;
   arcLength = 0;
   @ViewChild('miChart', { static: false }) miChart!: ElementRef<HTMLCanvasElement>;
   // En tu componente padre
-@ViewChild(HidratacionComponent, { static: false }) hidratacionHijo!: HidratacionComponent;
+  @ViewChild(HidratacionComponent, { static: false }) hidratacionHijo!: HidratacionComponent;
   progressChart?: Chart;
   private route = inject(ActivatedRoute);
   private diaService = inject(DiaService);
@@ -46,6 +49,8 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
   protected semana: any[] = [];
   protected dia?: DiaDTO;
+  protected estadosDias: EstadoDiaDTO[] = [];
+  private semanaRequestId = 0; // identificador de request para cada carga de semana
 
   protected fecha = this.route.snapshot.paramMap.get('fecha')!;
   protected diaCargadoInicial = this.route.snapshot.paramMap.get('fecha')!; // solo referencia
@@ -66,26 +71,26 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-  setTimeout(() => {
-    // 1. Verificación de seguridad del elemento DOM
-    if (!this.arcFill) {
-      console.warn('arcFill no está disponible aún');
-      return;
-    }
+    setTimeout(() => {
+      // 1. Verificación de seguridad del elemento DOM
+      if (!this.arcFill) {
+        console.warn('arcFill no está disponible aún');
+        return;
+      }
 
-    // 2. Ejecución de lógica propia
-    this.arcLength = this.arcFill.nativeElement.getTotalLength();
-    this.actualizarProgreso();
+      // 2. Ejecución de lógica propia
+      this.arcLength = this.arcFill.nativeElement.getTotalLength();
+      this.actualizarProgreso();
 
-    // 3. Ejecución segura del componente hijo
-    if (this.hidratacionHijo) {
-      console.log('Llamando a obtenerTotal con fecha:', this.fecha);
-      this.hidratacionHijo.obtenerTotal(this.fecha);
-    } else {
-      console.error('El componente hidratacionHijo no ha sido encontrado en el ViewChild');
-    }
-  });
-}
+      // 3. Ejecución segura del componente hijo
+      if (this.hidratacionHijo) {
+        console.log('Llamando a obtenerTotal con fecha:', this.fecha);
+        this.hidratacionHijo.obtenerTotal(this.fecha);
+      } else {
+        console.error('El componente hidratacionHijo no ha sido encontrado en el ViewChild');
+      }
+    });
+  }
 
   renderProgressChart() {
     if (!this.miChart || !this.dia) return;
@@ -222,6 +227,13 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
         this.totalEnPadre = this.dia.hidratacion.cantidadMl;
         this.renderProgressChart();
 
+        // La semana debe volver a leer los estados reales del backend para que el
+        // día actualmente seleccionado no quede con estado en blanco aunque el día
+        // ya tenga información del back.
+        this.fecha = fecha;
+        this.fechaReferenciaSemana = fecha;
+        this.cargarSemana();
+
         this.cargando = false;
 
         // Actualizamos la barra de progreso SVG
@@ -248,13 +260,136 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
   }
 
 
+
   cargarSemana() {
+    const requestId = ++this.semanaRequestId;   // se incrementa la variable para que la request sea diferente y nueva con respecto a la anterior
 
     const fechaDate = this.manejadorFechas.toLocalDate(this.fechaReferenciaSemana); // crea fecha en TZ local a medianoche local
     this.semana = this.manejadorSemana.generarSemana(fechaDate);
 
+    const primerDia = this.semana[0].fecha;  //obtenemos la fecha del primer dia de la semana 
+    const ultimoDia = this.semana[6].fecha;  //obtenemos la fecha del ultimo dia de la semana 
+
+    const añoPrimerDia = primerDia.getFullYear();       // obtenemos la fecha del año y el mes del primer dia 
+    const mesPrimerDia = primerDia.getMonth() + 1;      
+
+    const añoUltimoDia = ultimoDia.getFullYear();       // obtenemos la fecha del año y el mes del ultimo dia
+    const mesUltimoDia = ultimoDia.getMonth() + 1;      // hacemos esto porque una semana puede estar entre un mes y el otro, lo mismo con el año, 
+                                                        // hay que contemplar esto, porque el endpoint que devuelve los estados los devuelve del mes y año 
+                                                        // que se pasen por parametro 
+
+
+    const aplicarSiSigueVigente = (estados: EstadoDiaDTO[]) => {
+      if (requestId !== this.semanaRequestId) return;
+      this.aplicarEstadosSemana(estados);
+    };
+
+    const limpiarSiSigueVigente = () => {
+      if (requestId !== this.semanaRequestId) return;       // estas funciones son para que solamente se actualicen 
+       this.limpiarEstadosSemana();                         // los estados si la request que viene del back es nueva y no vieja
+    };                                                      // De esa forma, la semana actual no queda pisada por una respuesta anterior.    
+
+
+    //preguntamos si el primer y el último día de la semana pertenecen al mismo mes y al mismo año
+    if (añoPrimerDia === añoUltimoDia && mesPrimerDia === mesUltimoDia) {
+
+      this.diaService.obtenerEstadosDelMes(
+        añoPrimerDia,                             // como la semana no cruza de mes pedimos los estados y los aplicamos 
+        mesPrimerDia
+      ).subscribe({
+        next: (estados) => {
+          aplicarSiSigueVigente(estados);     // se aplican los estados a los dias correspondientes
+        },
+        error: (err) => {
+          console.error('Error al obtener estados de los días:', err);
+          limpiarSiSigueVigente();          // si hay algun error no voy a mantener estados que podrían ser viejos o incorrectos
+        }
+      });
+
+      return;
+    }
+
+    //si La semana cruza de mes:
+    // obtenemos los estados de ambos meses
+    this.diaService.obtenerEstadosDelMes(
+      añoPrimerDia,
+      mesPrimerDia
+    ).subscribe({
+      next: (estadosPrimerMes) => {
+
+        this.diaService.obtenerEstadosDelMes(
+          añoUltimoDia,
+          mesUltimoDia
+        ).subscribe({
+         next: (estadosSegundoMes) => {
+
+
+
+    const todosLosEstados = [
+        ...estadosPrimerMes,             // combinamos los dos arrays de estados en uno solo llamado todosLosEstados gracias al spread operator . . . 
+        ...estadosSegundoMes
+    ];
+
+            aplicarSiSigueVigente(todosLosEstados);
+          },
+          error: (err) => {
+            console.error('Error al obtener estados del segundo mes:', err);
+            limpiarSiSigueVigente();
+          }
+        });
+
+      },
+      error: (err) => {
+        console.error('Error al obtener estados del primer mes:', err);
+        limpiarSiSigueVigente();
+      }
+    });
+
   }
 
+  
+
+  private aplicarEstadosSemana(estados: EstadoDiaDTO[]) {
+   
+    this.estadosDias = estados;
+
+    this.semana = this.semana.map(dia => {          // recorremos la semana para transformar cada elemento (dia) para que pueda tener su estado nutricional
+     
+      const estadoDia = estados.find(estado => estado.fecha === dia.iso);       // buscamos dentro del array el primer elemento que cumpla la condicion se busca que coincidan las fechas del dto del estado del dia y el objeto dia
+
+      return {
+        ...dia,
+        estadoDia: estadoDia?.estadoDia?.trim() ?? null,
+        caloriasConsumidas: estadoDia?.caloriasConsumidas ?? null,
+        objetivoCalorico: estadoDia?.objetivoCalorico ?? null   
+
+      };
+    });
+
+    // combinamos las propiedades del objeto dia y el estado, 
+    // para meterle el estado nutricional del dia al dia correspondiente     
+    // aca se pregunta si hay un estado usalo, si no hay se usa null y luego se devuelve el dia
+
+  }
+
+  
+
+  //Si no pudimos obtener información confiable, evitamos conservar o mostrar 
+  // información que podría ser vieja o incorrecta
+  private limpiarEstadosSemana() {  
+
+    this.estadosDias = [];
+
+    this.semana = this.semana.map(dia => ({
+      ...dia,
+      estadoDia: null,
+      caloriasConsumidas: null,
+      objetivoCalorico: null
+    }));
+  }
+
+
+  
   irAlDia(fechaIso: string) {
     this.fecha = fechaIso;
     this.diaActualSeleccionado = fechaIso;  // cambiamos la fecha del dia seleccionado para que en el css se muestre azul
@@ -292,7 +427,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.fechaReferenciaSemana = nueva.toISOString().split("T")[0];
+    this.fechaReferenciaSemana = this.manejadorFechas.toIsoDate(nueva);
     this.cargarSemana();
 
   }
@@ -413,6 +548,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
         console.log('Comida modificada correctamente:', resp.mensaje);
 
         this.cargarDia(this.fecha!);
+        this.cargarSemana();
 
         //se llama a comprobar si gano algun logro dentro de este metodo asyncrono, porque si lo ponemos afuera, se podria llegar
         //a ejecutar antes de que se registre la comida, y asi, no comprobar el logro correctamente
@@ -432,7 +568,8 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
     this.diaService.eliminarComida(comida.id, this.fecha!, comida.tipoComida.toUpperCase()).subscribe({
       next: (res) => {
         this.dialog.success(res.mensaje);
-        this.cargarDia(this.fecha!); // actualiza la lista solo cuando la eliminación termine
+        this.cargarDia(this.fecha!);        // actualiza la lista solo cuando la eliminación termine
+        this.cargarSemana();
       },
       error: (err) => console.error(err)
     });
@@ -471,6 +608,7 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
           this.agregado.emit();   // notifica al padre para recargar el día
           this.cargarDia(this.fecha!);
+          this.cargarSemana();
           this.cerrarAgregar();
 
           //llamamos a comprobar si se gano algun logro y lo mostramos

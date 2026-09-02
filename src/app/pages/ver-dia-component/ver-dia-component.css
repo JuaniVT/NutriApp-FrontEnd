@@ -46,6 +46,8 @@
   min-width: 60px;
   border-radius: 12px;
   align-items: center;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .dia:hover {
@@ -175,6 +177,112 @@
 .dia.futuro {
   opacity: 0.4;
   pointer-events: none;
+}
+
+/* =============================== */
+/*   Estado de dias               */
+/* =============================== */
+
+
+.estado-indicador {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 2px;
+    background: transparent;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+    flex-shrink: 0;
+    opacity: 0.3;
+    transform: scale(0.72);
+    transition: opacity 220ms ease, transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+}
+
+.estado-indicador.cumplido {
+    background-color: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.15);
+    opacity: 1;
+    transform: scale(1);
+    animation: estadoPulse 260ms ease-out;
+}
+
+.estado-indicador.pendiente {
+    background-color: #f59e0b;
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
+    opacity: 1;
+    transform: scale(1);
+    animation: estadoPulse 260ms ease-out;
+}
+
+.estado-indicador.excedido {
+    background-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);
+    opacity: 1;
+    transform: scale(1);
+    animation: estadoPulse 260ms ease-out;
+}
+
+.estado-indicador.sin-estado {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+    opacity: 0.25;
+    transform: scale(0.78);
+}
+
+@keyframes estadoPulse {
+    0% {
+        opacity: 0.2;
+        transform: scale(0.65);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.barra-leyenda,
+.punto-estado {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.barra-leyenda.estado-cumplido,
+.punto-estado.cumplido {
+    background-color: #22c55e;
+}
+
+.barra-leyenda.estado-pendiente,
+.punto-estado.pendiente {
+    background-color: #f59e0b;
+}
+
+.barra-leyenda.estado-excedido,
+.punto-estado.excedido {
+    background-color: #ef4444;
+}
+
+.leyenda-estados {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 6px 0 18px;
+    flex-wrap: wrap;
+}
+
+.leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #555;
+    font-size: 0.9rem;
 }
 
 /* ======== SECCIONES DE COMIDAS ======== */
