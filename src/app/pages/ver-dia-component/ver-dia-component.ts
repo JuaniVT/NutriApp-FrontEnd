@@ -359,7 +359,10 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
       return {
         ...dia,
-        estadoDia: estadoDia?.estadoDia?.trim() ?? null           
+        estadoDia: estadoDia?.estadoDia?.trim() ?? null,
+        caloriasConsumidas: estadoDia?.caloriasConsumidas ?? null,
+        objetivoCalorico: estadoDia?.objetivoCalorico ?? null   
+
       };
     });
 
@@ -379,7 +382,9 @@ export class VerDiaComponent implements OnInit, AfterViewInit {
 
     this.semana = this.semana.map(dia => ({
       ...dia,
-      estadoDia: null
+      estadoDia: null,
+      caloriasConsumidas: null,
+      objetivoCalorico: null
     }));
   }
 

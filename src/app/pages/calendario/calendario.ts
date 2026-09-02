@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FechaLocalService } from '../../service/FechaLocalService';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ManejadorMes } from './ManejadorMes';
@@ -6,7 +7,7 @@ import { DiaService } from '../../service/dia-service';
 
 @Component({
   selector: 'app-calendario',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './calendario.html',
   styleUrl: './calendario.css',
 })
@@ -31,6 +32,99 @@ export class Calendario {
 
   }
 
+  protected formatearKcal(valor: number | null | undefined): string {
+    const numero = Number(valor ?? 0);
+    return new Intl.NumberFormat('es-AR', {
+      maximumFractionDigits: 0,
+    }).format(Math.round(numero));
+  }
+
+  protected getEstadoLabel(estado: string | null): string {
+    const estadoNormalizado = (estado ?? '').trim().toUpperCase();
+
+    const etiquetaEstado: Record<string, string> = {
+      CUMPLIDO: 'Cumplido',
+      PENDIENTE: 'Pendiente',
+      EXCEDIDO: 'Excedido',
+    };
+
+    return etiquetaEstado[estadoNormalizado] ?? 'Sin registro';
+  }
+
+  protected getTooltipColorClass(estado: string | null): string {
+    const estadoNormalizado = (estado ?? '').trim().toUpperCase();
+
+    if (estadoNormalizado === 'CUMPLIDO') return 'tooltip-cumplido';
+    if (estadoNormalizado === 'PENDIENTE') return 'tooltip-pendiente';
+    if (estadoNormalizado === 'EXCEDIDO') return 'tooltip-excedido';
+
+    return 'tooltip-sin-estado';
+  }
+
+  protected getDetalleEstado(dia: any): string {
+    if (!dia || dia.vacio) {
+      return 'Sin registro';
+    }
+
+    const resumenDirecto =
+      dia.resumen ??
+      dia.descripcion ??
+      dia.detalle ??
+      dia.contexto ??
+      dia.mensaje ??
+      null;
+
+    if (typeof resumenDirecto === 'string' && resumenDirecto.trim()) {
+      return resumenDirecto.trim();
+    }
+
+    const estado = (dia.estadoDia ?? '').trim().toUpperCase();
+    const caloriasConsumidas = Number(dia.caloriasConsumidas ?? 0);
+    const objetivoCalorico = Number(dia.objetivoCalorico ?? 0);
+
+    if (!estado) {
+      return 'Sin datos registrados';
+    }
+
+    if (objetivoCalorico > 0) {
+      const porcentaje = Math.min(Math.max(Math.round((caloriasConsumidas / objetivoCalorico) * 100), 0), 100);
+      const diferencia = objetivoCalorico - caloriasConsumidas;
+
+      if (estado === 'CUMPLIDO') {
+        return `${this.formatearKcal(caloriasConsumidas)} / ${this.formatearKcal(objetivoCalorico)} kcal • ${porcentaje}% del objetivo`;
+      }
+
+      if (estado === 'PENDIENTE') {
+        return `faltan ${this.formatearKcal(Math.max(diferencia, 0))} kcal • ${porcentaje}% completado`;
+      }
+
+      if (estado === 'EXCEDIDO') {
+        const exceso = caloriasConsumidas - objetivoCalorico;
+        return `+${this.formatearKcal(Math.max(exceso, 0))} kcal sobre la meta`;
+      }
+    }
+
+    if (caloriasConsumidas > 0) {
+      return `${this.formatearKcal(caloriasConsumidas)} kcal consumidas`;
+    }
+
+    return 'Sin datos registrados';
+  }
+
+  protected getResumenEstado(dia: any): string {
+    if (!dia || dia.vacio) {
+      return 'Sin registro';
+    }
+
+    const estado = (dia.estadoDia ?? '').trim().toUpperCase();
+    const label = this.getEstadoLabel(estado || null);
+
+    if (!estado) {
+      return 'Sin registro';
+    }
+
+    return `${label} • ${this.getDetalleEstado(dia)}`;
+  }
 
 
   cargarMes(fecha: Date) {
@@ -68,7 +162,16 @@ export class Calendario {
 
                 if (estado) {
                     dia.estadoDia = estado.estadoDia;       // si se encontro un estado para este dia, se le asigna el estado que coincide con la fecha de el dia que nos retorna la lista del back
-                }
+                    dia.caloriasConsumidas = estado.caloriasConsumidas;
+                    dia.objetivoCalorico = estado.objetivoCalorico;
+                    dia.caloriasRestantes = estado.caloriasRestantes ?? null;
+                    dia.porcentajeCumplimiento = estado.porcentajeCumplimiento ?? null;
+                    dia.descripcion = estado.descripcion ?? null;
+                    dia.resumen = estado.resumen ?? null;
+                    dia.detalle = estado.detalle ?? null;
+                    dia.contexto = estado.contexto ?? null;
+                    dia.comidasRegistradas = estado.comidasRegistradas ?? null;
+                  }
             }
 
         });

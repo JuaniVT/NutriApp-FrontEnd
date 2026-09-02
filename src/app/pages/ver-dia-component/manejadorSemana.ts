@@ -38,7 +38,9 @@ export class ManejadorSemana {
                 nombreDia: nombres[(fecha.getDay() + 6) % 7],
                 esFuturo: fecha > hoy,
                 iso: `${año}-${mes}-${dia}`,
-                estadoDia: null
+                estadoDia: null,
+                caloriasConsumidas: null,
+                objetivoCalorico: null
             });
         }
 

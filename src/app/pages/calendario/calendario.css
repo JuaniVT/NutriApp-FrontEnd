@@ -109,6 +109,7 @@
 /* =============================== */
 
 .dia {
+    position: relative;
     width: 100%;
     aspect-ratio: 1;
     background: #ffffff;
@@ -117,6 +118,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: visible;
 
     font-size: var(--font-sm, 14px);
     cursor: pointer;
@@ -163,6 +165,78 @@
     font-size: var(--font-xs, 12px);
     font-weight: 600;
     user-select: none;
+}
+
+.tooltip-context {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 12px);
+    transform: translateX(-50%) translateY(6px);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 170px;
+    max-width: 210px;
+    padding: 9px 10px;
+    border-radius: 12px;
+    color: #f8fafc;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.28);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+
+.tooltip-context::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.tooltip-context.tooltip-cumplido {
+    background: rgba(21, 128, 61, 0.96);
+}
+
+.tooltip-context.tooltip-pendiente {
+    background: rgba(202, 138, 4, 0.96);
+}
+
+.tooltip-context.tooltip-excedido {
+    background: rgba(185, 28, 28, 0.96);
+}
+
+.tooltip-context.tooltip-sin-estado {
+    background: rgba(51, 65, 85, 0.96);
+}
+
+.tooltip-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.tooltip-body {
+    font-size: 11px;
+    line-height: 1.45;
+    color: #f8fafc;
+}
+
+.dia:hover .tooltip-context {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }
 
 .dias.animando {

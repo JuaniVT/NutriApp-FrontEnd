@@ -27,7 +27,9 @@
         @for (dia of diasMes; track $index) {
 
         <div class="dia" [class.hoy]="dia.esHoy" [class.futuro]="dia.esFuturo" [class.vacio]="dia.vacio"
-            (click)="!dia.vacio && irAlDia(dia.fecha)">
+            (click)="!dia.vacio && irAlDia(dia.fecha)"
+            [attr.title]="!dia.vacio ? getResumenEstado(dia) : null"
+            [attr.aria-label]="!dia.vacio ? getResumenEstado(dia) : null">
 
             @if (!dia.vacio) {
             <span>{{ dia.numero }}</span>
@@ -38,10 +40,13 @@
                 [class.sin-estado]="!dia.estadoDia"
                 [class.cumplido]="dia.estadoDia === 'CUMPLIDO'"
                 [class.pendiente]="dia.estadoDia === 'PENDIENTE'"
-                [class.excedido]="dia.estadoDia === 'EXCEDIDO'"
-                [attr.title]="dia.estadoDia || 'Sin registro'">
+                [class.excedido]="dia.estadoDia === 'EXCEDIDO'">
             </span>
 
+            <span class="tooltip-context" [ngClass]="getTooltipColorClass(dia.estadoDia)">
+                <span class="tooltip-header">{{ getEstadoLabel(dia.estadoDia) }}</span>
+                <span class="tooltip-body">{{ getDetalleEstado(dia) }}</span>
+            </span>
             }
 
         </div>
