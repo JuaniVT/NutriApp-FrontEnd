@@ -273,7 +273,7 @@ export class MiPerfilComponente {
     const confirmado = await this.dialog.confirm("Seguro que desea eliminar su cuenta?", { danger: true });
     if(confirmado){
       this.userService.deleteAccount().subscribe({
-        next: (r) => {this.dialog.success(r), this.authService.clearToken(), this.router.navigateByUrl("/home")},
+        next: (r) => {this.dialog.success(r), this.authService.clearToken(), this.router.navigateByUrl("/login")},
         error: (e) => this.dialog.error("Hubo un error")
       })
     }
